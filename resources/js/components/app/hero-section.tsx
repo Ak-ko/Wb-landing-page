@@ -15,7 +15,7 @@ export default function HeroSection() {
 
                 <div className="my-5 flex items-center gap-1.5">
                     <ActivePing />
-                    <span className="text-xs sm:text-sm">Available Now</span>
+                    <span className="text-sm sm:text-lg">Available Now</span>
                 </div>
             </div>
 

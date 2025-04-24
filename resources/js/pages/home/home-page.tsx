@@ -1,3 +1,4 @@
+import AvailableWorksSection from '@/components/app/available-works-section';
 import HeroSection from '@/components/app/hero-section';
 import Navbar from '@/components/app/nav';
 import { Head } from '@inertiajs/react';
@@ -10,6 +11,8 @@ export default function HomePage() {
             <Navbar />
 
             <HeroSection />
+
+            <AvailableWorksSection />
         </>
     );
 }

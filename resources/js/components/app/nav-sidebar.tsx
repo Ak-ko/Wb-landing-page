@@ -37,7 +37,7 @@ export default function NavSidebar() {
 
     return (
         <div
-            className={`fixed top-0 bottom-0 h-screen w-screen bg-black transition-all duration-300 ease-in md:w-[40vw] lg:w-[30vw] ${isToggle ? 'right-0' : '-right-[100%] md:-right-[60%]'}`}
+            className={`fixed top-0 bottom-0 z-[888] h-screen w-screen bg-black transition-all duration-300 ease-in md:w-[40vw] lg:w-[30vw] ${isToggle ? 'right-0' : '-right-[100%] md:-right-[60%]'}`}
         >
             <div className="hidden min-h-[92px] items-center justify-between border-b border-b-white/25 px-5 py-3 sm:flex">
                 <div className="flex items-center gap-2 text-white">
