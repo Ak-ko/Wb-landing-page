@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
 @import 'tailwindcss';
 
 @plugin 'tailwindcss-animate';
@@ -10,6 +12,10 @@
 @theme {
     --font-sans:
         'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+    --font-inter: var(--inter-font);
+
+    --text-69: 69px;
 
     --radius-lg: var(--radius);
     --radius-md: calc(var(--radius) - 2px);
@@ -77,6 +83,19 @@
     ::file-selector-button {
         border-color: var(--color-gray-200, currentColor);
     }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    a,
+    div,
+    span {
+        font-family: var(--font-inter);
+    }
 }
 
 :root {
@@ -113,6 +132,8 @@
     --sidebar-accent-foreground: oklch(0.205 0 0);
     --sidebar-border: oklch(0.922 0 0);
     --sidebar-ring: oklch(0.87 0 0);
+
+    --inter-font: 'Inter', sans-serif;
 }
 
 .dark {
@@ -161,5 +182,9 @@
 
     .app-container {
         @apply container mx-auto px-5 xl:px-0;
+    }
+
+    .hero-section-header-text-size {
+        @apply xl:text-69 text-[60px];
     }
 }

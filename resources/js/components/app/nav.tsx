@@ -26,7 +26,7 @@ export default function Navbar() {
                         }
                     }}
                 >
-                    <Logo className="size-[60px] sm:-translate-x-[50%]" />
+                    <Logo className="size-[60px] sm:-translate-x-[70%]" />
                 </div>
                 <button
                     onClick={handleOpenNav}
