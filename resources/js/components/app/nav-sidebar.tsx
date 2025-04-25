@@ -34,7 +34,6 @@ export default function NavSidebar() {
     const handleCloseNav = () => {
         toggle();
     };
-
     return (
         <div
             className={`fixed top-0 bottom-0 z-[888] h-screen w-screen bg-black transition-all duration-300 ease-in md:w-[40vw] lg:w-[30vw] ${isToggle ? 'right-0' : '-right-[100%] md:-right-[60%]'}`}
@@ -63,7 +62,7 @@ export default function NavSidebar() {
                         <div
                             onClick={() => scrollTo(link.href, 0, 400)}
                             key={link.href}
-                            className="flex min-h-[60px] w-full cursor-pointer items-center justify-center border-b border-b-white/25 font-bold text-white/50 uppercase transition-all duration-500 hover:text-white"
+                            className="font-inter flex min-h-[60px] w-full cursor-pointer items-center justify-center border-b border-b-white/25 font-bold text-white/50 uppercase transition-all duration-500 hover:text-white"
                         >
                             {link.label}
                         </div>
@@ -85,7 +84,7 @@ export default function NavSidebar() {
                 </div>
                 <div className="mx-5 flex h-[10%] items-center justify-center border-t border-t-white/25 text-white">
                     <button onClick={handleCloseNav} className="flex items-center justify-center gap-2">
-                        <span className="text-lg uppercase">Go Back</span>
+                        <span className="font-inter text-lg uppercase">Go Back</span>
                         <ChevronsRight size={25} />
                     </button>
                 </div>

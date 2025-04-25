@@ -14,6 +14,12 @@ export default function AvailableWorksSection() {
         { label: 'Logos', className: 'bg-[#1274EF] text-white' },
         { label: 'Branding', className: 'bg-[#FF1466] text-white' },
         { label: 'Rebranding', className: 'bg-[#101010] text-white' },
+
+        { label: 'Brand Guidelines', className: 'bg-[#FEC901]' },
+        { label: 'Social Media Designs', className: 'bg-[#FF5A01] text-white' },
+        { label: 'Logos', className: 'bg-[#1274EF] text-white' },
+        { label: 'Branding', className: 'bg-[#FF1466] text-white' },
+        { label: 'Rebranding', className: 'bg-[#101010] text-white' },
     ];
 
     const renderBadges = () => {
@@ -68,9 +74,6 @@ export default function AvailableWorksSection() {
         return (
             <div className="w-full py-4">
                 <div className="flex">
-                    <Marquee gradient={false} speed={40} className="overflow-hidden">
-                        {renderBadges()}
-                    </Marquee>
                     <Marquee gradient={false} speed={40} className="overflow-hidden">
                         {renderBadges()}
                     </Marquee>

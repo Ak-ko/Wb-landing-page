@@ -12,7 +12,7 @@ const useScroll = () => {
      * @param duration - Optional duration of the scroll animation in ms (default: 1000)
      */
     const scrollTo = useCallback((selector: string, offset = 0, duration = 1000) => {
-        const element = document.querySelector(selector);
+        const element = document.getElementById(selector.split('#').join(''));
 
         if (!element) {
             console.warn(`Element with selector "${selector}" not found`);
