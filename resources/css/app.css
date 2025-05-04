@@ -32,6 +32,8 @@
 
     --color-primary: var(--primary);
     --color-primary-foreground: var(--primary-foreground);
+    --color-crayola-blue: var(--crayola-blue);
+    --color-chillie-red: var(--chillie-red);
 
     --color-secondary-pink: var(--secondary-pink);
 
@@ -101,6 +103,8 @@
 }
 
 :root {
+    --crayola-blue: #1274ef;
+    --chillie-red: #e53726;
     --background: oklch(1 0 0);
     --foreground: oklch(0.145 0 0);
     --card: oklch(1 0 0);
@@ -202,5 +206,38 @@
             transform: none;
             animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
         }
+    }
+}
+
+/* For MAC Air */
+@media screen and (max-width: 1440px) {
+    .hero__left__mascot {
+        left: calc(100vw - 79%) !important;
+    }
+
+    .hero__right__mascot {
+        right: calc(100vw - 84%) !important;
+    }
+}
+
+/* For iPad Air */
+@media screen and (max-width: 1024px) {
+    .hero__left__mascot {
+        left: calc(100vw - 86%) !important;
+    }
+
+    .hero__right__mascot {
+        right: calc(100vw - 92%) !important;
+    }
+}
+
+/* For iPad Mini */
+@media screen and (max-width: 900px) {
+    .hero__left__mascot {
+        left: calc(100vw - 79%) !important;
+    }
+
+    .hero__right__mascot {
+        right: calc(100vw - 86%) !important;
     }
 }

@@ -8,7 +8,7 @@ import Logo from './icons/logo';
 import NavSidebar from './nav-sidebar';
 
 export default function Navbar() {
-    const { toggle } = useNavStore();
+    const { isToggle, toggle } = useNavStore();
     const isMobile = useIsMobile();
     const navToggleBtn = useRef<HTMLButtonElement>(null);
 
@@ -16,7 +16,13 @@ export default function Navbar() {
         toggle();
     };
 
-    useOnClickOutside(navToggleBtn as RefObject<HTMLButtonElement>, handleToggleNav);
+    const handleNavClickoutside = () => {
+        if (!isMobile && isToggle) {
+            handleToggleNav();
+        }
+    };
+
+    useOnClickOutside(navToggleBtn as RefObject<HTMLButtonElement>, handleNavClickoutside);
 
     return (
         <header className="min-h-[50px]">
