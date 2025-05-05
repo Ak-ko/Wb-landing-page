@@ -22,11 +22,22 @@ const CharacterWithCoffee = (props: SVGProps<SVGSVGElement>) => (
             fill="#000"
             d="M40.731 73.484v4.163c0 11.096 8.605 20.548 19.667 20.941 10.662.382 19.58-7.444 20.968-17.671a3.193 3.193 0 0 1 3.16-2.779c1.599 0 2.943 1.187 3.159 2.779 1.387 10.223 10.305 18.049 20.967 17.671 11.063-.393 19.667-9.845 19.667-20.941v-4.163a5.099 5.099 0 0 0-5.092-5.105H45.823a5.099 5.099 0 0 0-5.092 5.105Z"
         >
-            <animate attributeName="opacity" values="0;1" dur="1s" begin="0s" fill="freeze" />
-            <animate attributeName="transform" values="translate(0,-10);translate(0,0)" dur="1s" begin="0s" fill="freeze" />
-            <animate attributeName="transform" values="scale(1);scale(1.02);scale(1)" dur="2s" repeatCount="indefinite" additive="sum" />
-            <set attributeName="transform" to="scale(1.05)" begin="mouseover" end="mouseout" />
-            <set attributeName="transform" to="scale(0.95)" begin="mousedown" end="mouseup" />
+            <animate
+                attributeName="transform"
+                values="translate(0,0);translate(0,-10);translate(0,0)"
+                dur="2s"
+                repeatCount="indefinite"
+                calcMode="spline"
+                keySplines="0.4 0 0.2 1; 0.4 0 0.2 1"
+            />
+            <animate
+                attributeName="opacity"
+                values="0.8;1;0.8"
+                dur="2s"
+                repeatCount="indefinite"
+                calcMode="spline"
+                keySplines="0.4 0 0.2 1; 0.4 0 0.2 1"
+            />
         </path>
         <path
             stroke="#000"

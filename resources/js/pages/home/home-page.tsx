@@ -1,4 +1,5 @@
 import AvailableWorksSection from '@/components/app/available-works-section';
+import BrandSection from '@/components/app/brand-section';
 import HeroSection from '@/components/app/hero-section';
 import Navbar from '@/components/app/nav';
 import WhyUsSection from '@/components/app/why-us-section';
@@ -16,6 +17,8 @@ export default function HomePage() {
             <AvailableWorksSection />
 
             <WhyUsSection />
+
+            <BrandSection />
         </>
     );
 }
