@@ -1,4 +1,5 @@
 import { Card, CardContent } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
 import { ReactNode } from 'react';
 import { SimplePaginationControls } from '../simple-pagination-controls';
 
@@ -22,7 +23,7 @@ export function DataCardView<TData>({
     data,
     renderCard,
     className,
-    gridClassName = 'grid grid-cols-1 gap-4 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3',
+    gridClassName,
     onPaginationChange,
     onSelectChange,
     pageSizes = [5, 10, 25, 50, 100],
@@ -57,7 +58,7 @@ export function DataCardView<TData>({
                     </Card>
                 )
             ) : (
-                <div className={gridClassName}>{data.map(renderCard)}</div>
+                <div className={cn('grid grid-cols-1 gap-4 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3', gridClassName)}>{data.map(renderCard)}</div>
             )}
 
             {(onPaginationChange || onSelectChange) && (

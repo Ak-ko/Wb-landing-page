@@ -115,10 +115,10 @@ export default function Brands({
     });
 
     const renderBrandCard = (brand: BrandT) => (
-        <Card key={brand.id} className="overflow-hidden pt-0">
+        <Card key={brand.id} className="min-h-[200px] max-w-[300px] overflow-hidden pt-0">
             <div className="relative aspect-video bg-gray-100">
                 {brand.image ? (
-                    <img src={brand.image} alt={brand.name} className="h-[300px] w-full object-cover" />
+                    <img src={brand.image} alt={brand.name} className="h-[150px] w-full object-cover" />
                 ) : (
                     <div className="flex h-full w-full items-center justify-center">
                         <Image className="h-12 w-12 text-gray-400" />
@@ -129,19 +129,14 @@ export default function Brands({
                 <h3 className="text-lg font-medium">{brand.name}</h3>
                 <p className="text-sm text-gray-500">Added on {new Date(brand.created_at).toLocaleDateString()}</p>
                 {brand.description && <p className="mt-2 text-sm text-gray-600">{brand.description}</p>}
-                <div className="mt-2">
-                    <span className={`rounded-full px-2 py-1 text-xs ${brand.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                        {brand.is_active ? 'Active' : 'Inactive'}
-                    </span>
-                </div>
             </CardContent>
-            <CardFooter className="flex justify-end gap-2 p-4 pt-0">
+            <CardFooter className="flex justify-center p-4 pt-0 lg:justify-end">
                 <Button variant="ghost" size="sm" onClick={() => handleEdit(brand)}>
-                    <Edit className="mr-2 h-4 w-4" />
+                    <Edit className="h-4 w-4" />
                     Edit
                 </Button>
                 <Button variant="ghost" size="sm" className="text-red-500" onClick={() => handleDeleteClick(brand.id)}>
-                    <Trash2 className="mr-2 h-4 w-4" />
+                    <Trash2 className="h-4 w-4" />
                     Delete
                 </Button>
             </CardFooter>
@@ -198,6 +193,7 @@ export default function Brands({
                         renderCard={renderBrandCard}
                         onPaginationChange={onPaginationChange}
                         onSelectChange={onSelectChange}
+                        gridClassName="grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
                         pagingData={{
                             pageIndex: brands.current_page,
                             pageSize: brands.per_page,
