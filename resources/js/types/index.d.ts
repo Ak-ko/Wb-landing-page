@@ -42,3 +42,24 @@ export interface User {
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
 }
+
+export type TimestampsT = {
+    created_at: string;
+    updated_at: string;
+    deleted_at: string | null;
+};
+
+export type BrandT = {
+    id: number;
+    name: string;
+    image: string;
+    description: string;
+    is_active: boolean;
+} & TimestampsT;
+
+interface CommonPaginationT<T> {
+    data: T[];
+    current_page: number;
+    per_page: number;
+    total: number;
+}

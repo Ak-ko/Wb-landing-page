@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BrandController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -9,13 +10,12 @@ Route::get('/', function () {
 
 // Dashboard Routes
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/dashboard', function () {
+    Route::get('/admin/dashboard', function () {
         return Inertia::render('admin/dashboard');
     })->name('dashboard');
 
-    Route::get('/dashboard/brands', function () {
-        return Inertia::render('admin/brands/index');
-    })->name('brands.index');
+    // Brands routes
+    Route::resource('/admin/brands', BrandController::class);
 });
 
 require __DIR__ . "/auth.php";

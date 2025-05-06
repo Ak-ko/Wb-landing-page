@@ -43,10 +43,17 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'name' => config('app.name'),
             'quote' => ['message' => trim($message), 'author' => trim($author)],
+            'csrf_token' => csrf_token(),
+            'flash' => fn() => [
+                'success' => $request->session()->get('success'),
+                'info' => $request->session()->get('info'),
+                'error' => $request->session()->get('error'),
+                'warning' => $request->session()->get('warning'),
+            ],
             'auth' => [
                 'user' => $request->user(),
             ],
-            'ziggy' => fn (): array => [
+            'ziggy' => fn(): array => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
             ],

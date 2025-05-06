@@ -12,7 +12,7 @@ const mainNavItems: NavItem[] = [
         items: [
             {
                 title: 'Dashboard',
-                href: '/dashboard',
+                href: '/admin/dashboard',
                 icon: LayoutGrid,
             },
         ],
@@ -22,7 +22,7 @@ const mainNavItems: NavItem[] = [
         items: [
             {
                 title: 'Brands',
-                href: '/dashboard/brands',
+                href: '/admin/brands',
                 icon: Handshake,
             },
         ],

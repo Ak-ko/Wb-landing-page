@@ -112,6 +112,7 @@
     --popover: oklch(1 0 0);
     --popover-foreground: oklch(0.145 0 0);
     --primary: oklch(0.205 0 0);
+    --primary-foreground: oklch(1 0 0);
     --secondary-pink: #ff1466;
     --secondary: oklch(0.97 0 0);
     --secondary-foreground: oklch(0.205 0 0);
