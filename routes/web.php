@@ -1,11 +1,14 @@
 <?php
 
 use App\Http\Controllers\BrandController;
+use App\Models\Brand;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    return Inertia::render('home/home-page');
+    $brands = Brand::latest()->get();
+
+    return Inertia::render('home/home-page', ['brands' => $brands]);
 })->name('home');
 
 // Dashboard Routes
