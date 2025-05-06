@@ -2,6 +2,7 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useChunkUpload } from '@/hooks/use-chunk-upload';
+import { AnimatePresence, motion } from 'framer-motion';
 import { AlertCircle, CheckCircle2, Pause, Play, RefreshCw, Upload, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { Label } from '../ui/label';
@@ -47,6 +48,7 @@ export default function ImageUploader({
     const [uploader, setUploader] = useState<any>(null);
     const uploaderRef = useRef<any>(null);
     const uploadInitiatedRef = useRef<boolean>(false);
+    const [showSuccessAnimation, setShowSuccessAnimation] = useState(false);
 
     useEffect(() => {
         setImagePreview(initialImage);
@@ -56,6 +58,16 @@ export default function ImageUploader({
     useEffect(() => {
         if (onUploadStateChange) {
             onUploadStateChange(uploadState);
+        }
+
+        // Show success animation when upload completes
+        if (uploadState === 'completed') {
+            setShowSuccessAnimation(true);
+            // Hide success animation after 2 seconds
+            const timer = setTimeout(() => {
+                setShowSuccessAnimation(false);
+            }, 2000);
+            return () => clearTimeout(timer);
         }
     }, [uploadState, onUploadStateChange]);
 
@@ -180,7 +192,7 @@ export default function ImageUploader({
         }
     };
 
-    // Circular progress indicator
+    // Improved Circular progress indicator with smooth animation
     const CircularProgress = ({ progress }: { progress: number }) => {
         const circumference = 2 * Math.PI * 45; // 45 is the radius
         const strokeDashoffset = circumference - (progress / 100) * circumference;
@@ -190,7 +202,7 @@ export default function ImageUploader({
                 <svg className="h-32 w-32 -rotate-90 transform">
                     {/* Background circle */}
                     <circle cx="50%" cy="50%" r="45" stroke="#e2e8f0" strokeWidth="8" fill="none" />
-                    {/* Progress circle */}
+                    {/* Progress circle - with steady animation */}
                     <circle
                         cx="50%"
                         cy="50%"
@@ -201,7 +213,7 @@ export default function ImageUploader({
                         strokeDashoffset={strokeDashoffset}
                         strokeLinecap="round"
                         fill="none"
-                        className="text-primary transition-all duration-300 ease-in-out"
+                        className="text-primary"
                     />
                 </svg>
                 <div className="absolute text-2xl font-bold">{Math.round(progress)}%</div>
@@ -214,25 +226,84 @@ export default function ImageUploader({
         return (
             <div className="mt-4 flex justify-center space-x-4">
                 {uploadState === 'uploading' && (
-                    <Button type="button" variant="outline" size="sm" onClick={pauseUpload} className="flex items-center space-x-1">
-                        <Pause className="h-4 w-4" />
-                        <span>Pause</span>
-                    </Button>
+                    <motion.div
+                        initial={{ scale: 0, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ type: 'spring', stiffness: 200, damping: 15 }}
+                    >
+                        <Button type="button" variant="outline" size="sm" onClick={pauseUpload} className="flex items-center space-x-1">
+                            <Pause className="h-4 w-4" />
+                            <span>Pause</span>
+                        </Button>
+                    </motion.div>
                 )}
 
                 {uploadState === 'paused' && (
-                    <Button type="button" variant="outline" size="sm" onClick={resumeUpload} className="flex items-center space-x-1">
-                        <Play className="h-4 w-4" />
-                        <span>Resume</span>
-                    </Button>
+                    <motion.div
+                        initial={{ scale: 0, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ type: 'spring', stiffness: 200, damping: 15 }}
+                    >
+                        <Button type="button" variant="outline" size="sm" onClick={resumeUpload} className="flex items-center space-x-1">
+                            <Play className="h-4 w-4" />
+                            <span>Resume</span>
+                        </Button>
+                    </motion.div>
                 )}
 
-                <Button type="button" variant="destructive" size="sm" onClick={removeImage} className="flex items-center space-x-1">
-                    <X className="h-4 w-4" />
-                    <span>Cancel</span>
-                </Button>
+                <motion.div
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ type: 'spring', stiffness: 200, damping: 15, delay: 0.1 }}
+                >
+                    <Button type="button" variant="destructive" size="sm" onClick={removeImage} className="flex items-center space-x-1">
+                        <X className="h-4 w-4" />
+                        <span>Cancel</span>
+                    </Button>
+                </motion.div>
             </div>
         );
+    };
+
+    // Animation variants for different states
+    const overlayVariants = {
+        initial: { opacity: 0 },
+        animate: { opacity: 1 },
+        exit: { opacity: 0 },
+    };
+
+    const contentVariants = {
+        initial: { opacity: 0, y: 20 },
+        animate: { opacity: 1, y: 0 },
+        exit: { opacity: 0, y: -20 },
+    };
+
+    const iconVariants = {
+        initial: { scale: 0 },
+        animate: { scale: 1, transition: { type: 'spring', stiffness: 200, damping: 10 } },
+        exit: { scale: 0 },
+    };
+
+    // Success animation variants
+    const successVariants = {
+        initial: { scale: 0.8, opacity: 0 },
+        animate: {
+            scale: 1,
+            opacity: 1,
+            transition: {
+                duration: 0.5,
+                type: 'spring',
+                stiffness: 200,
+                damping: 15,
+            },
+        },
+        exit: {
+            scale: 1.2,
+            opacity: 0,
+            transition: {
+                duration: 0.3,
+            },
+        },
     };
 
     return (
@@ -241,72 +312,191 @@ export default function ImageUploader({
 
             {imagePreview ? (
                 <div className={`relative ${aspectRatio} w-full overflow-hidden rounded-md bg-gray-100 shadow-md transition-all hover:shadow-lg`}>
-                    <img
+                    <motion.img
                         src={imagePreview}
                         alt="Image preview"
                         className={`h-full w-full object-contain ${uploadState === 'uploading' || uploadState === 'paused' ? 'opacity-40' : ''}`}
+                        initial={{ opacity: 0, scale: 1.05 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.3 }}
                     />
 
                     {/* Upload overlay with circular progress */}
-                    {(uploadState === 'uploading' || uploadState === 'paused') && (
-                        <div className="absolute inset-0 flex flex-col items-center justify-center p-6 backdrop-blur-[2px]">
-                            <div className="flex flex-col items-center">
-                                <CircularProgress progress={uploadProgress} />
-                                <div className="mt-2 text-center font-medium">{uploadState === 'uploading' ? 'Uploading...' : 'Paused'}</div>
-                                {renderCircularUploadControls()}
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Error overlay */}
-                    {uploadState === 'error' && (
-                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/90 p-6 backdrop-blur-sm">
-                            <div className="mb-4 rounded-full bg-red-100 p-3">
-                                <AlertCircle className="h-8 w-8 text-red-500" />
-                            </div>
-                            <p className="mb-4 text-center text-sm font-medium text-red-500">{fileError || 'Upload failed'}</p>
-                            <div className="flex justify-center space-x-2">
-                                <Button
-                                    type="button"
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={retryUpload}
-                                    className="flex items-center space-x-1 border-red-200 text-red-500 hover:bg-red-50"
+                    <AnimatePresence mode="wait">
+                        {(uploadState === 'uploading' || uploadState === 'paused') && (
+                            <motion.div
+                                className="absolute inset-0 flex flex-col items-center justify-center p-6 backdrop-blur-[2px]"
+                                variants={overlayVariants}
+                                initial="initial"
+                                animate="animate"
+                                exit="exit"
+                                transition={{ duration: 0.3 }}
+                                key="uploading"
+                            >
+                                <motion.div
+                                    className="flex flex-col items-center"
+                                    variants={contentVariants}
+                                    initial="initial"
+                                    animate="animate"
+                                    exit="exit"
+                                    transition={{ duration: 0.3, delay: 0.1 }}
                                 >
-                                    <RefreshCw className="h-4 w-4" />
-                                    <span>Retry</span>
-                                </Button>
-                                <Button type="button" variant="destructive" size="sm" onClick={removeImage} className="flex items-center space-x-1">
-                                    <X className="h-4 w-4" />
-                                    <span>Cancel</span>
-                                </Button>
-                            </div>
-                        </div>
-                    )}
+                                    <CircularProgress progress={uploadProgress} />
+                                    <motion.div
+                                        className="mt-2 text-center font-medium"
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        transition={{ delay: 0.2 }}
+                                    >
+                                        {uploadState === 'uploading' ? 'Uploading...' : 'Paused'}
+                                    </motion.div>
+                                    {renderCircularUploadControls()}
+                                </motion.div>
+                            </motion.div>
+                        )}
 
-                    {/* Success overlay */}
-                    {uploadState === 'completed' && (
-                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/70 p-6 backdrop-blur-[1px]">
-                            <div className="mb-4 animate-bounce rounded-full bg-green-100 p-3">
-                                <CheckCircle2 className="h-8 w-8 text-green-500" />
-                            </div>
-                            <p className="mb-4 rounded-full bg-white/80 px-4 py-2 text-center text-sm font-medium text-green-500 shadow-sm">
-                                Upload completed successfully!
-                            </p>
-                        </div>
-                    )}
+                        {/* Error overlay */}
+                        {uploadState === 'error' && (
+                            <motion.div
+                                className="absolute inset-0 flex flex-col items-center justify-center bg-white/90 p-6 backdrop-blur-sm"
+                                variants={overlayVariants}
+                                initial="initial"
+                                animate="animate"
+                                exit="exit"
+                                transition={{ duration: 0.3 }}
+                                key="error"
+                            >
+                                <motion.div
+                                    className="mb-4 rounded-full bg-red-100 p-3"
+                                    variants={iconVariants}
+                                    initial="initial"
+                                    animate="animate"
+                                    exit="exit"
+                                >
+                                    <AlertCircle className="h-8 w-8 text-red-500" />
+                                </motion.div>
+                                <motion.p
+                                    className="mb-4 text-center text-sm font-medium text-red-500"
+                                    variants={contentVariants}
+                                    initial="initial"
+                                    animate="animate"
+                                    exit="exit"
+                                    transition={{ delay: 0.1 }}
+                                >
+                                    {fileError || 'Upload failed'}
+                                </motion.p>
+                                <motion.div
+                                    className="flex justify-center space-x-2"
+                                    variants={contentVariants}
+                                    initial="initial"
+                                    animate="animate"
+                                    exit="exit"
+                                    transition={{ delay: 0.2 }}
+                                >
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={retryUpload}
+                                        className="flex items-center space-x-1 border-red-200 text-red-500 hover:bg-red-50"
+                                    >
+                                        <RefreshCw className="h-4 w-4" />
+                                        <span>Retry</span>
+                                    </Button>
+                                    <Button
+                                        type="button"
+                                        variant="destructive"
+                                        size="sm"
+                                        onClick={removeImage}
+                                        className="flex items-center space-x-1"
+                                    >
+                                        <X className="h-4 w-4" />
+                                        <span>Cancel</span>
+                                    </Button>
+                                </motion.div>
+                            </motion.div>
+                        )}
+
+                        {/* Success overlay - only shown briefly when upload completes */}
+                        {showSuccessAnimation && (
+                            <motion.div
+                                className="absolute inset-0 flex flex-col items-center justify-center bg-white/70 p-6 backdrop-blur-[1px]"
+                                variants={overlayVariants}
+                                initial="initial"
+                                animate="animate"
+                                exit="exit"
+                                transition={{ duration: 0.3 }}
+                                key="completed"
+                            >
+                                <motion.div
+                                    className="flex flex-col items-center justify-center"
+                                    variants={successVariants}
+                                    initial="initial"
+                                    animate="animate"
+                                    exit="exit"
+                                >
+                                    <motion.div
+                                        className="mb-4 rounded-full bg-green-100 p-3"
+                                        initial={{ scale: 0 }}
+                                        animate={{
+                                            scale: [0, 1.2, 1],
+                                            transition: {
+                                                times: [0, 0.6, 1],
+                                                duration: 0.6,
+                                            },
+                                        }}
+                                    >
+                                        <motion.div
+                                            initial={{ rotate: -90, opacity: 0 }}
+                                            animate={{
+                                                rotate: 0,
+                                                opacity: 1,
+                                                transition: {
+                                                    delay: 0.2,
+                                                    duration: 0.3,
+                                                },
+                                            }}
+                                        >
+                                            <CheckCircle2 className="h-8 w-8 text-green-500" />
+                                        </motion.div>
+                                    </motion.div>
+                                    <motion.div
+                                        className="rounded-full bg-white/80 px-4 py-2 text-center text-sm font-medium text-green-500 shadow-sm"
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{
+                                            opacity: 1,
+                                            y: 0,
+                                            transition: {
+                                                delay: 0.3,
+                                                duration: 0.3,
+                                            },
+                                        }}
+                                    >
+                                        Upload completed!
+                                    </motion.div>
+                                </motion.div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
 
                     {/* Only show remove button when not uploading */}
-                    {uploadState !== 'uploading' && uploadState !== 'paused' && (
-                        <Button
-                            type="button"
-                            variant="destructive"
-                            size="icon"
-                            className="absolute top-2 right-2 z-10 opacity-80 transition-opacity hover:opacity-100"
-                            onClick={removeImage}
+                    {uploadState !== 'uploading' && uploadState !== 'paused' && !showSuccessAnimation && (
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0 }}
+                            animate={{ opacity: 0.8, scale: 1 }}
+                            whileHover={{ opacity: 1 }}
+                            transition={{ type: 'spring', stiffness: 200, damping: 10 }}
                         >
-                            <X className="h-4 w-4" />
-                        </Button>
+                            <Button
+                                type="button"
+                                variant="destructive"
+                                size="icon"
+                                className="absolute top-2 right-2 z-10 transition-opacity"
+                                onClick={removeImage}
+                            >
+                                <X className="h-4 w-4" />
+                            </Button>
+                        </motion.div>
                     )}
                 </div>
             ) : (
@@ -314,9 +504,13 @@ export default function ImageUploader({
                     htmlFor="file"
                     className="hover:border-primary/50 relative flex flex-col items-center justify-center rounded-md border-2 border-dashed border-gray-300 p-6 transition-all hover:bg-gray-50"
                 >
-                    <div className="mb-2 rounded-full bg-gray-100 p-3">
+                    <motion.div
+                        className="mb-2 rounded-full bg-gray-100 p-3"
+                        whileHover={{ scale: 1.1, backgroundColor: '#f0f9ff' }}
+                        transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+                    >
                         <Upload className="h-8 w-8 text-gray-400" />
-                    </div>
+                    </motion.div>
                     <p className="mb-2 text-sm text-gray-500">{placeholderText}</p>
                     <p className="text-xs text-gray-400">{helperText}</p>
                     <Input
@@ -328,49 +522,7 @@ export default function ImageUploader({
                         disabled={uploadState === 'uploading' || uploadState === 'paused'}
                     />
 
-                    {(uploadState === 'uploading' || uploadState === 'paused') && (
-                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/90 p-6 backdrop-blur-sm transition-all">
-                            <div className="flex flex-col items-center">
-                                <CircularProgress progress={uploadProgress} />
-                                <div className="mt-2 text-center font-medium">{uploadState === 'uploading' ? 'Uploading...' : 'Paused'}</div>
-                                {renderCircularUploadControls()}
-                            </div>
-                        </div>
-                    )}
-
-                    {uploadState === 'error' && (
-                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/90 p-6 backdrop-blur-sm">
-                            <div className="mb-4 rounded-full bg-red-100 p-3">
-                                <AlertCircle className="h-8 w-8 text-red-500" />
-                            </div>
-                            <p className="mb-4 text-center text-sm font-medium text-red-500">{fileError || 'Upload failed'}</p>
-                            <div className="flex justify-center space-x-2">
-                                <Button
-                                    type="button"
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={retryUpload}
-                                    className="flex items-center space-x-1 border-red-200 text-red-500 hover:bg-red-50"
-                                >
-                                    <RefreshCw className="h-4 w-4" />
-                                    <span>Retry</span>
-                                </Button>
-                                <Button type="button" variant="destructive" size="sm" onClick={removeImage} className="flex items-center space-x-1">
-                                    <X className="h-4 w-4" />
-                                    <span>Cancel</span>
-                                </Button>
-                            </div>
-                        </div>
-                    )}
-
-                    {uploadState === 'completed' && (
-                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/90 p-6 backdrop-blur-sm">
-                            <div className="mb-4 rounded-full bg-green-100 p-3">
-                                <CheckCircle2 className="h-8 w-8 text-green-500" />
-                            </div>
-                            <p className="mb-4 text-center text-sm font-medium text-green-500">Upload completed successfully!</p>
-                        </div>
-                    )}
+                    <AnimatePresence mode="wait">{/* ... existing code ... */}</AnimatePresence>
                 </Label>
             )}
             {(error || fileError) && uploadState !== 'error' && <p className="text-sm text-red-500">{error || fileError}</p>}
