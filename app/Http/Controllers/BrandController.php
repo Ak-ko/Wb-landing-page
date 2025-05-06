@@ -23,14 +23,9 @@ class BrandController extends Controller
                 ->orWhere('description', 'like', "%{$searchTerm}%");
         }
 
-        // Apply active filter if provided
-        if ($request->has('is_active')) {
-            $query->where('is_active', $request->boolean('is_active'));
-        }
-
         // Get paginated results
         $brands = $query->orderBy('name')
-            ->paginate($request->input('pageSize', 10))
+            ->paginate(5)
             ->withQueryString();
 
         return Inertia::render('admin/brands/index', [

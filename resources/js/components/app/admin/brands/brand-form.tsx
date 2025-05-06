@@ -87,7 +87,7 @@ export default function BrandForm({ brand, onSuccess }: BrandFormProps) {
                 onImageRemove={() => setData('image', '')}
                 error={errors.image}
                 placeholderText="Click to upload or drag and drop"
-                helperText="SVG, PNG, JPG or GIF (max. 10MB)"
+                helperText="SVG, PNG, JPG or GIF (max. 300MB)"
             />
 
             <div className="flex justify-end gap-2">

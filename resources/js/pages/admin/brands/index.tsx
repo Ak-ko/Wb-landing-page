@@ -19,9 +19,11 @@ import {
 } from '@/components/ui/alert-dialog';
 
 import { createBrandColumns } from '@/components/app/admin/brands/brand-columns';
+import BrandFilters from '@/components/app/admin/brands/brand-filters';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import useFilter from '@/hooks/use-filter';
 import AppLayout from '@/layouts/app-layout';
 import { BrandT, BreadcrumbItem, CommonPaginationT } from '@/types';
 
@@ -49,8 +51,44 @@ export default function Brands({
     const [selectedBrand, setSelectedBrand] = useState<BrandT | null>(null);
     const [brandIdToDelete, setBrandIdToDelete] = useState<number | null>(null);
 
-    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-        router.get('/brands', { query: e.target.value, is_active: filters.is_active }, { preserveState: true, preserveScroll: true });
+    // Set up filter states
+    const [filterStates, setFilterStates] = useState({
+        pageSize: brands?.per_page,
+        pageIndex: brands?.current_page,
+        query: filters.query || '',
+    });
+
+    // Use the filter hook
+    const { setIsFilter } = useFilter(
+        {
+            perPage: filterStates.pageSize,
+            page: filterStates.pageIndex,
+            query: filterStates.query,
+        },
+        route('brands.index'),
+        false,
+    );
+
+    const handleSearch = (query: string) => {
+        setFilterStates((prev) => ({ ...prev, query }));
+        setIsFilter(true);
+    };
+
+    const onPaginationChange = (page: number) => {
+        setIsFilter(true);
+        setFilterStates((prev) => ({
+            ...prev,
+            pageIndex: page,
+        }));
+    };
+
+    const onSelectChange = (value: number) => {
+        setIsFilter(true);
+        return setFilterStates((prev) => ({
+            ...prev,
+            pageIndex: 1,
+            pageSize: value,
+        }));
     };
 
     const handleEdit = (brand: BrandT) => {
@@ -115,36 +153,30 @@ export default function Brands({
             <Head title="Brands" />
 
             <div className="space-y-4 p-4">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col justify-between gap-2 md:flex-row md:items-center">
                     <DashboardTitle title="Brands" description="Manage your brands" />
 
-                    <div className="flex items-center gap-4">
-                        <div className="relative">
-                            <input
-                                type="text"
-                                placeholder="Search brands..."
-                                className="w-64 rounded-md border px-4 py-2"
-                                defaultValue={filters.query || ''}
-                                onChange={(e) => handleSearch(e)}
-                            />
+                    <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between md:gap-2">
+                        <BrandFilters onSearch={handleSearch} defaultQuery={filters.query || ''} />
+
+                        <div className="flex items-center justify-between gap-2">
+                            <ViewToggle viewMode={viewMode} onChange={setViewMode} />
+
+                            <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+                                <DialogTrigger asChild>
+                                    <Button>
+                                        <Plus className="mr-2 h-4 w-4" />
+                                        Add Brand
+                                    </Button>
+                                </DialogTrigger>
+                                <DialogContent className="sm:max-w-[425px]">
+                                    <DialogHeader>
+                                        <DialogTitle>Add New Brand</DialogTitle>
+                                    </DialogHeader>
+                                    <BrandForm onSuccess={() => setIsAddDialogOpen(false)} />
+                                </DialogContent>
+                            </Dialog>
                         </div>
-
-                        <ViewToggle viewMode={viewMode} onChange={setViewMode} />
-
-                        <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-                            <DialogTrigger asChild>
-                                <Button>
-                                    <Plus className="mr-2 h-4 w-4" />
-                                    Add Brand
-                                </Button>
-                            </DialogTrigger>
-                            <DialogContent className="sm:max-w-[425px]">
-                                <DialogHeader>
-                                    <DialogTitle>Add New Brand</DialogTitle>
-                                </DialogHeader>
-                                <BrandForm onSuccess={() => setIsAddDialogOpen(false)} />
-                            </DialogContent>
-                        </Dialog>
                     </div>
                 </div>
 
@@ -152,9 +184,10 @@ export default function Brands({
                     <DataTable
                         columns={brandColumns}
                         data={brands.data}
-                        onPaginationChange={(page) => router.get('/brands', { page: page + 1 }, { preserveState: true })}
+                        onPaginationChange={onPaginationChange}
+                        onSelectChange={onSelectChange}
                         pagingData={{
-                            pageIndex: brands.current_page - 1,
+                            pageIndex: brands.current_page,
                             pageSize: brands.per_page,
                             total: brands.total,
                         }}
@@ -163,9 +196,10 @@ export default function Brands({
                     <DataCardView
                         data={brands.data}
                         renderCard={renderBrandCard}
-                        onPaginationChange={(page) => router.get('/brands', { page: page + 1 }, { preserveState: true })}
+                        onPaginationChange={onPaginationChange}
+                        onSelectChange={onSelectChange}
                         pagingData={{
-                            pageIndex: brands.current_page - 1,
+                            pageIndex: brands.current_page,
                             pageSize: brands.per_page,
                             total: brands.total,
                         }}
