@@ -62,6 +62,7 @@ export default function Password() {
 
                             <Input
                                 id="current_password"
+                                // @ts-expect-error @ts-ignore
                                 ref={currentPasswordInput}
                                 value={data.current_password}
                                 onChange={(e) => setData('current_password', e.target.value)}
@@ -79,6 +80,7 @@ export default function Password() {
 
                             <Input
                                 id="password"
+                                // @ts-expect-error @ts-ignore
                                 ref={passwordInput}
                                 value={data.password}
                                 onChange={(e) => setData('password', e.target.value)}
@@ -108,7 +110,9 @@ export default function Password() {
                         </div>
 
                         <div className="flex items-center gap-4">
-                            <Button disabled={processing}>Save password</Button>
+                            <Button className="text-white" disabled={processing}>
+                                Save password
+                            </Button>
 
                             <Transition
                                 show={recentlySuccessful}
