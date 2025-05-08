@@ -57,6 +57,18 @@ export type BrandT = {
     is_active: boolean;
 } & TimestampsT;
 
+export type TestimonialT = {
+    id: number;
+    name: string | null;
+    email: string | null;
+    phone: string | null;
+    position: string | null;
+    company: string | null;
+    description: string | null;
+    image: string | null;
+    color_tag: string | null;
+} & TimestampsT;
+
 interface CommonPaginationT<T> {
     data: T[];
     current_page: number;

@@ -1,22 +1,36 @@
+import { TestimonialT } from '@/types';
 import CloseQuote from './icons/close-quote';
 
-export default function TestimonialCard() {
+interface TestimonialCardProps {
+    testimonial: TestimonialT;
+}
+
+export default function TestimonialCard({ testimonial }: TestimonialCardProps) {
+    const imageUrl = testimonial.image || '/assets/demo-testimonial-profile.png';
+    const textColor = testimonial.color_tag || '#000000';
+
     return (
-        <div className="w-full rounded-xl bg-[#F5F5F5] p-15 shadow lg:min-w-[550px]">
+        <div className="w-full rounded-xl bg-[#f4f4f4] p-12 shadow transition-all duration-300 lg:min-w-[550px]">
             <div className="mb-3 flex items-start justify-between">
-                <div>
-                    {/* avatar  */}
-                    <img />
+                <div className="flex items-start gap-2">
+                    <img className="h-[55px] w-[55px] rounded-full object-cover" src={imageUrl} alt={testimonial.name || 'Client'} />
                     <div>
-                        <h1 className="text-lg font-bold">[name]</h1>
-                        {/* dynamic text color */}
-                        <span className="text-sm">[role]</span>
+                        <h1 className="text-lg font-bold">{testimonial.name || 'Anonymous'}</h1>
+                        {testimonial?.position && testimonial?.company && (
+                            <p
+                                style={{
+                                    color: textColor,
+                                }}
+                                className="line-clamp-2 max-w-[350px] text-sm"
+                            >
+                                {testimonial.position}, {testimonial.company}
+                            </p>
+                        )}
                     </div>
                 </div>
-                {/* dynamic quote color */}
-                <CloseQuote width={50} />
+                <CloseQuote color={textColor} width={50} />
             </div>
-            <p className="line-clamp-3 text-sm leading-[2]">[dynamic paragraph]</p>
+            <p className="line-clamp-3 text-sm leading-[2]">{testimonial.description}</p>
         </div>
     );
 }

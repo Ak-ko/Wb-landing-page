@@ -27,6 +27,16 @@ const mainNavItems: NavItem[] = [
             },
         ],
     },
+    {
+        title: 'Testimonials Management',
+        items: [
+            {
+                title: 'Testimonials',
+                href: '/admin/testimonials',
+                icon: Handshake,
+            },
+        ],
+    },
 ];
 
 const footerNavItems: NavItem[] = [];
