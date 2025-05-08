@@ -1,5 +1,6 @@
 import AvailableWorksSection from '@/components/app/available-works-section';
 import BrandSection from '@/components/app/brand-section';
+import HarmonyOfTheDesignSection from '@/components/app/harmony-of-the-design-section';
 import HeroSection from '@/components/app/hero-section';
 import Navbar from '@/components/app/nav';
 import TestimonialSection from '@/components/app/testimonial-section';
@@ -23,6 +24,8 @@ export default function HomePage() {
             <BrandSection />
 
             <TestimonialSection />
+
+            <HarmonyOfTheDesignSection />
         </LandingLayout>
     );
 }

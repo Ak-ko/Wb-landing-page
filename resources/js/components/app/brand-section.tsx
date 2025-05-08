@@ -63,6 +63,8 @@ export default function BrandSection() {
         return index % 7 === 3 || index % 11 === 5 ? 'md:h-32 h-24' : 'h-24';
     };
 
+    if (!brands || brands.length === 0) return null;
+
     return (
         <section className="about-sections py-28" id="brands">
             <SectionHeader

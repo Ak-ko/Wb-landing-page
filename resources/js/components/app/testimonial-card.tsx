@@ -1,16 +1,18 @@
+import { cn } from '@/lib/utils';
 import { TestimonialT } from '@/types';
 import CloseQuote from './icons/close-quote';
 
 interface TestimonialCardProps {
     testimonial: TestimonialT;
+    containerClass?: string;
 }
 
-export default function TestimonialCard({ testimonial }: TestimonialCardProps) {
+export default function TestimonialCard({ testimonial, containerClass }: TestimonialCardProps) {
     const imageUrl = testimonial.image || '/assets/demo-testimonial-profile.png';
     const textColor = testimonial.color_tag || '#000000';
 
     return (
-        <div className="w-full rounded-xl bg-[#f4f4f4] p-12 shadow transition-all duration-300 lg:min-w-[550px]">
+        <div className={cn('w-full rounded-xl bg-[#f4f4f4] p-12 shadow transition-all duration-300 lg:min-w-[550px]', containerClass)}>
             <div className="mb-3 flex items-start justify-between">
                 <div className="flex items-start gap-2">
                     <img className="h-[55px] w-[55px] rounded-full object-cover" src={imageUrl} alt={testimonial.name || 'Client'} />
