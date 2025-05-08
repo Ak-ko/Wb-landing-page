@@ -29,38 +29,38 @@ export default function BrandSection() {
         },
     };
 
-    // Function to determine grid column span based on index
+    // Function to determine grid column span based on index - only for larger screens
     const getGridClass = (index: number) => {
         // Create a repeating pattern regardless of how many items we have
         const position = index % 12; // Using 12 as our pattern length for more variety
 
         // First row: 5 columns (1-2-1-1)
-        if (position === 0) return 'col-span-1';
-        if (position === 1) return 'col-span-2';
-        if (position === 2) return 'col-span-1';
-        if (position === 3) return 'col-span-1';
+        if (position === 0) return 'md:col-span-1';
+        if (position === 1) return 'md:col-span-2';
+        if (position === 2) return 'md:col-span-1';
+        if (position === 3) return 'md:col-span-1';
 
         // Second row: 4 columns (2-1-1)
-        if (position === 4) return 'col-span-2';
-        if (position === 5) return 'col-span-1';
-        if (position === 6) return 'col-span-1';
+        if (position === 4) return 'md:col-span-2';
+        if (position === 5) return 'md:col-span-1';
+        if (position === 6) return 'md:col-span-1';
 
         // Third row: 3 columns (1-2)
-        if (position === 7) return 'col-span-1';
-        if (position === 8) return 'col-span-2';
+        if (position === 7) return 'md:col-span-1';
+        if (position === 8) return 'md:col-span-2';
 
         // Fourth row: 4 columns (1-1-2)
-        if (position === 9) return 'col-span-1';
-        if (position === 10) return 'col-span-1';
-        if (position === 11) return 'col-span-2';
+        if (position === 9) return 'md:col-span-1';
+        if (position === 10) return 'md:col-span-1';
+        if (position === 11) return 'md:col-span-2';
 
-        return 'col-span-1';
+        return 'md:col-span-1';
     };
 
     // Function to determine if an item should be larger
     const getHeightClass = (index: number) => {
-        // Make some items taller for visual interest
-        return index % 7 === 3 || index % 11 === 5 ? 'h-32' : 'h-24';
+        // Make some items taller for visual interest - only on larger screens
+        return index % 7 === 3 || index % 11 === 5 ? 'md:h-32 h-24' : 'h-24';
     };
 
     return (
@@ -71,7 +71,7 @@ export default function BrandSection() {
             />
 
             <motion.div
-                className="app-container mt-16 grid auto-rows-auto grid-cols-5 gap-4 md:gap-6 lg:gap-8"
+                className="app-container mt-16 grid auto-rows-auto grid-cols-1 gap-4 md:grid-cols-5 md:gap-6 lg:gap-8"
                 variants={containerVariants}
                 initial="hidden"
                 whileInView="visible"
@@ -81,10 +81,10 @@ export default function BrandSection() {
                     brands?.map((brand: BrandT, index) => (
                         <motion.div
                             key={brand.id}
-                            className={`${getGridClass(index)} flex items-center justify-center rounded-lg bg-white p-4 shadow-sm transition-shadow duration-300 hover:shadow-md md:p-6`}
+                            className={`col-span-1 ${getGridClass(index)} flex items-center justify-center rounded-lg bg-white p-4 shadow-sm transition-shadow duration-300 hover:shadow-md md:p-6`}
                             variants={itemVariants}
                         >
-                            <div className={`flex ${getHeightClass(index)} w-full items-center justify-center`}>
+                            <div className={`flex ${getHeightClass(index)} w-full items-center justify-center transition-all duration-500`}>
                                 <img
                                     src={brand.image}
                                     alt={brand.name}
