@@ -12,7 +12,7 @@ export default function TestimonialCard({ testimonial, containerClass }: Testimo
     const textColor = testimonial.color_tag || '#000000';
 
     return (
-        <div className={cn('w-full rounded-xl bg-[#f4f4f4] p-12 shadow transition-all duration-300 lg:min-w-[550px]', containerClass)}>
+        <div className={cn('w-full rounded-xl bg-[#f4f4f4] p-4 shadow transition-all duration-300 md:p-12 lg:min-w-[550px]', containerClass)}>
             <div className="mb-3 flex items-start justify-between">
                 <div className="flex items-start gap-2">
                     <img className="h-[55px] w-[55px] rounded-full object-cover" src={imageUrl} alt={testimonial.name || 'Client'} />

@@ -33,7 +33,7 @@ export default function TestimonialSection() {
                 header="What our clients say"
                 description="We aren't just a great creative studio, we're an excellent business partner."
             />
-            <div className="relative w-full overflow-hidden py-20 lg:w-[550px] lg:py-0" style={{ height: '200px' }}>
+            <div className="relative mt-18 w-full overflow-hidden lg:mt-0 lg:w-[550px]" style={{ height: '200px' }}>
                 <AnimatePresence initial={false}>
                     <motion.div
                         key={currentIndex}
@@ -41,7 +41,7 @@ export default function TestimonialSection() {
                         animate="center"
                         exit="exit"
                         variants={scrollUpVarients}
-                        className="absolute top-0 left-0"
+                        className="absolute top-0 left-0 w-full"
                     >
                         <TestimonialCard testimonial={testimonials[currentIndex]} containerClass="mb-3" />
                     </motion.div>
