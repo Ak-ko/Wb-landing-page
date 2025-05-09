@@ -197,6 +197,11 @@
         @apply xl:text-69 text-[60px];
     }
 
+    .hide-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
     @keyframes why-us-img-bounce {
         0%,
         100% {

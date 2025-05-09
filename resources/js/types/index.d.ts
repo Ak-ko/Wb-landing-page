@@ -69,6 +69,16 @@ export type TestimonialT = {
     color_tag: string | null;
 } & TimestampsT;
 
+export type BusinessProcessT = {
+    id: number;
+    title: string;
+    description: string | null;
+    image: string | null;
+    color_tag: string;
+    is_active: boolean;
+    step: number;
+} & TimestampsT;
+
 interface CommonPaginationT<T> {
     data: T[];
     current_page: number;

@@ -37,6 +37,16 @@ const mainNavItems: NavItem[] = [
             },
         ],
     },
+    {
+        title: 'Business Process Management',
+        items: [
+            {
+                title: 'Business Processes',
+                href: '/admin/business-processes',
+                icon: Handshake,
+            },
+        ],
+    },
 ];
 
 const footerNavItems: NavItem[] = [];
