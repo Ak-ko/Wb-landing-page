@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { LucideIcon } from 'lucide-react';
 import type { Config } from 'ziggy-js';
 
@@ -79,9 +80,51 @@ export type BusinessProcessT = {
     step: number;
 } & TimestampsT;
 
+export type TagT = {
+    id: number;
+    name: string;
+    color: string;
+} & TimestampsT;
+
+export type BrandingProjectImageT = {
+    id: number;
+    branding_project_id: number;
+    image: string;
+    is_primary: boolean;
+    order: number;
+} & TimestampsT;
+
+export type BrandingProjectT = {
+    id: number;
+    title: string;
+    description: string | null;
+    client_name: string;
+    client_company: string;
+    client_email: string;
+    client_phone: string;
+    service_fees: number | null;
+    service_start_date: string | null;
+    service_end_date: string | null;
+    tags: TagT[];
+    images: BrandingProjectImageT[];
+} & TimestampsT;
+
 interface CommonPaginationT<T> {
     data: T[];
     current_page: number;
     per_page: number;
     total: number;
+}
+
+export interface ChunkUploadHook {
+    isUploading: boolean;
+    progress: number;
+    abort: () => void;
+    upload: (options: {
+        url: string;
+        file: File;
+        onProgress: (progress: UploadProgress) => void;
+        onComplete: (response: any) => void;
+        onError: (error: any) => void;
+    }) => void;
 }

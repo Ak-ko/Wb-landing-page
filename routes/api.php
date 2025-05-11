@@ -10,3 +10,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('image/upload', [ImageUploadController::class, 'uploadImage'])->name('api.image.upload');
 Route::post('image/upload/cancel', [ImageUploadController::class, 'cancelUpload'])->name('api.image.upload.cancel');
+Route::post('image/delete', [ImageUploadController::class, 'deleteImage'])->name('api.image.delete');

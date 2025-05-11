@@ -1,3 +1,6 @@
+import { ADMIN_PAGE_ENTER_CODE } from '@/lib/env';
+import { router } from '@inertiajs/react';
+import { useState } from 'react';
 import ActivePing from './active-ping';
 import HeroSectionBtn from './hero-section-btn';
 import CharacterRedWithSpring from './icons/characters/hero-section/character-red-with-spring';
@@ -5,10 +8,36 @@ import CharacterWithCoffee from './icons/characters/hero-section/character-with-
 import GlassesIcon from './icons/glasses';
 
 export default function HeroSection() {
+    const [showPasswordPrompt, setShowPasswordPrompt] = useState(false);
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+
+    const handleGlassesDoubleClick = () => {
+        setShowPasswordPrompt(true);
+        setPassword('');
+        setError('');
+    };
+
+    const handlePasswordSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (password === ADMIN_PAGE_ENTER_CODE) {
+            setShowPasswordPrompt(false);
+            router.visit('/admin/dashboard');
+        } else {
+            setError('Incorrect password');
+        }
+    };
+
+    const handleCancel = () => {
+        setShowPasswordPrompt(false);
+        setPassword('');
+        setError('');
+    };
+
     return (
         <div className="py-16">
             <div className="flex flex-col items-center">
-                <GlassesIcon className="mb-3 block" width={60} />
+                <GlassesIcon className="mb-3 block cursor-not-allowed select-none" width={60} onDoubleClick={handleGlassesDoubleClick} />
                 <h1 className="hero-section-header-text-size max-w-[360px] text-center font-extrabold uppercase sm:font-bold md:max-w-2xl xl:max-w-3xl">
                     creating brands <span className="text-secondary-pink">You can be proud of</span>
                 </h1>
@@ -16,6 +45,46 @@ export default function HeroSection() {
                     a branding agency with a vision
                 </p>
             </div>
+
+            {/* Password prompt modal */}
+            {showPasswordPrompt && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+                    <div className="mx-4 w-full max-w-md rounded-lg bg-white p-6 shadow-xl">
+                        <h2 className="mb-4 text-xl font-bold">Admin Access</h2>
+                        <form onSubmit={handlePasswordSubmit}>
+                            <div className="mb-4">
+                                <label htmlFor="password" className="mb-1 block text-sm font-medium">
+                                    Password
+                                </label>
+                                <input
+                                    type="password"
+                                    id="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    className="w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                                    autoFocus
+                                />
+                                {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
+                            </div>
+                            <div className="flex justify-end gap-2">
+                                <button
+                                    type="button"
+                                    onClick={handleCancel}
+                                    className="rounded-md bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-gray-500 focus:outline-none"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="submit"
+                                    className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                                >
+                                    Submit
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
 
             <div className="relative flex flex-col items-center justify-center gap-5 pt-7 lg:flex-row">
                 <div className="hidden w-full md:block">

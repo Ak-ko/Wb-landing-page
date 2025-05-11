@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { Handshake, LayoutGrid } from 'lucide-react';
+import { BarChart2, Briefcase, Building, LayoutDashboard, Settings, Tag, Users } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -13,7 +13,7 @@ const mainNavItems: NavItem[] = [
             {
                 title: 'Dashboard',
                 href: '/admin/dashboard',
-                icon: LayoutGrid,
+                icon: LayoutDashboard,
             },
         ],
     },
@@ -23,33 +23,59 @@ const mainNavItems: NavItem[] = [
             {
                 title: 'Brands',
                 href: '/admin/brands',
-                icon: Handshake,
+                icon: Building,
+            },
+            {
+                title: 'Branding Projects',
+                href: '/admin/branding-projects',
+                icon: Briefcase,
+            },
+            {
+                title: 'Tags',
+                href: '/admin/tags',
+                icon: Tag,
             },
         ],
     },
     {
-        title: 'Testimonials Management',
+        title: 'Content Management',
         items: [
             {
                 title: 'Testimonials',
                 href: '/admin/testimonials',
-                icon: Handshake,
+                icon: Users,
+            },
+            {
+                title: 'Business Processes',
+                href: '/admin/business-processes',
+                icon: BarChart2,
             },
         ],
     },
     {
-        title: 'Business Process Management',
+        title: 'Settings',
         items: [
             {
-                title: 'Business Processes',
-                href: '/admin/business-processes',
-                icon: Handshake,
+                title: 'Profile Settings',
+                href: '/settings/profile',
+                icon: Settings,
             },
         ],
     },
 ];
 
-const footerNavItems: NavItem[] = [];
+const footerNavItems: NavItem[] = [
+    // {
+    //     title: 'Documentation',
+    //     href: 'https://docs.walkingbrands.com',
+    //     icon: BookOpen,
+    // },
+    // {
+    //     title: 'Support',
+    //     href: 'https://support.walkingbrands.com',
+    //     icon: Handshake,
+    // },
+];
 
 export function AppSidebar() {
     return (
@@ -58,7 +84,7 @@ export function AppSidebar() {
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <Link href="/dashboard" prefetch>
+                            <Link href="/" prefetch>
                                 <AppLogo />
                             </Link>
                         </SidebarMenuButton>

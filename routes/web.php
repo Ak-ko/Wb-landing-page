@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\BrandingProjectController;
 use App\Http\Controllers\BusinessProcessController;
+use App\Http\Controllers\TagController;
 use App\Http\Controllers\TestimonialController;
 use App\Models\Brand;
 use App\Models\BusinessProcess;
@@ -38,7 +40,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Business Processes routes
     Route::resource('/admin/business-processes', BusinessProcessController::class);
+
+    // Branding Projects
+    Route::resource('/admin/branding-projects', BrandingProjectController::class);
+
+    // Tags
+    Route::resource('/admin/tags', TagController::class);
 });
 
 require __DIR__ . "/auth.php";
 require __DIR__ . "/settings.php";
+
+use App\Http\Controllers\ChunkUploadController;
