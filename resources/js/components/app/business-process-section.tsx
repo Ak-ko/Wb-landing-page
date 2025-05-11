@@ -15,6 +15,9 @@ export default function BusinessProcessSection() {
     const [isInView, setIsInView] = useState(false);
     const [scrollProgress, setScrollProgress] = useState(0);
     const [manualScroll, setManualScroll] = useState(false);
+    const lastActiveIndexChange = useRef(Date.now());
+    const animationCooldown = 1000; // Cooldown period in milliseconds
+    const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
         if (!businessProcesses || businessProcesses.length === 0) return;
@@ -63,36 +66,62 @@ export default function BusinessProcessSection() {
             }
             lastScrollY.current = currentScrollY;
 
-            // Calculate which item should be active based on scroll position
-            const itemCount = businessProcesses.length;
-            const newActiveIndex = Math.min(Math.max(Math.floor(progress * itemCount), 0), itemCount - 1);
-            setActiveIndex(newActiveIndex);
+            // Clear any existing timeout
+            if (scrollTimeoutRef.current) {
+                clearTimeout(scrollTimeoutRef.current);
+            }
+
+            // Set a timeout to update the active index after scrolling stops
+            scrollTimeoutRef.current = setTimeout(() => {
+                const itemCount = businessProcesses.length;
+                const newActiveIndex = Math.min(Math.max(Math.floor(progress * itemCount), 0), itemCount - 1);
+
+                // Only change active index if cooldown period has passed
+                const now = Date.now();
+                if (newActiveIndex !== activeIndex && now - lastActiveIndexChange.current > animationCooldown) {
+                    setActiveIndex(newActiveIndex);
+                    lastActiveIndexChange.current = now;
+                }
+            }, 100); // Small delay to wait for scrolling to settle
         };
 
-        // Use passive: true for better scroll performance
-        window.addEventListener('scroll', handleScroll, { passive: true });
+        // Use throttled scroll event for better performance
+        let ticking = false;
+        const throttledScroll = () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    handleScroll();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        };
+
+        window.addEventListener('scroll', throttledScroll, { passive: true });
         // Initial check
         handleScroll();
 
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, [businessProcesses]);
+        return () => {
+            window.removeEventListener('scroll', throttledScroll);
+            if (scrollTimeoutRef.current) {
+                clearTimeout(scrollTimeoutRef.current);
+            }
+        };
+    }, [businessProcesses, activeIndex]);
 
     // Handle manual navigation
     const handleDotClick = (index: number) => {
         setManualScroll(true);
         setActiveIndex(index);
+        lastActiveIndexChange.current = Date.now();
         // Reset manual scroll after animation completes
-        setTimeout(() => setManualScroll(false), 700);
+        setTimeout(() => setManualScroll(false), 1200);
     };
 
     if (!businessProcesses || businessProcesses.length === 0) return null;
 
     return (
-        <section
-            ref={sectionRef}
-            className="relative bg-gradient-to-b from-white to-gray-50 py-20 dark:from-gray-900 dark:to-gray-950"
-            // Removed fixed height to allow scrolling
-        >
+        <section ref={sectionRef} className="relative bg-gradient-to-b from-white to-gray-50 py-20 dark:from-gray-900 dark:to-gray-950">
             {/* Background decorative elements */}
             <div className="pointer-events-none absolute inset-0 overflow-hidden opacity-10">
                 <div className="bg-primary/20 absolute -top-24 -left-24 h-96 w-96 rounded-full blur-3xl"></div>
