@@ -6,7 +6,9 @@ use App\Http\Controllers\BusinessProcessController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\TestimonialController;
 use App\Models\Brand;
+use App\Models\BrandingProject;
 use App\Models\BusinessProcess;
+use App\Models\Tag;
 use App\Models\Testimonial;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -18,10 +20,16 @@ Route::get('/', function () {
 
     $businessProcesses = BusinessProcess::active()->orderBy('step')->get();
 
+    $brandingProjects = BrandingProject::latest()->with('tags', 'images')->get()->take(6);
+
+    $brandingProjectTags = Tag::whereHas('brandingProjects')->get();
+
     return Inertia::render('home/home-page', [
         'brands' => $brands,
         'testimonials' => $testimonials,
         'businessProcesses' => $businessProcesses,
+        'brandingProjects' =>  $brandingProjects,
+        'brandingProjectTags' => $brandingProjectTags,
         'page' => 'home'
     ]);
 })->name('home');
@@ -50,5 +58,3 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 require __DIR__ . "/auth.php";
 require __DIR__ . "/settings.php";
-
-use App\Http\Controllers\ChunkUploadController;

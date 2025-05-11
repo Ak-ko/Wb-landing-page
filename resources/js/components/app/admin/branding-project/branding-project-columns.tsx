@@ -22,7 +22,7 @@ export const createBrandingProjectColumns = ({ handleDeleteClick }: BrandingProj
             return (
                 <div className="flex justify-center">
                     {primaryImage ? (
-                        <img src={`/storage/${primaryImage.image}`} alt={row.original.title} className="h-10 w-10 rounded-md object-cover" />
+                        <img src={`${primaryImage.image}`} alt={row.original.title} className="h-10 w-10 rounded-md object-cover" />
                     ) : (
                         <div className="flex h-10 w-10 items-center justify-center rounded-md bg-gray-200">
                             <Image className="h-5 w-5 text-gray-500" />

@@ -44,7 +44,7 @@ export default function BrandingProjectForm({ brandingProject, tags, onSuccess, 
     const [existingImages, setExistingImages] = useState(
         brandingProject?.images.map((img) => ({
             id: img.id,
-            url: `/storage/${img.image}`,
+            url: `${img.image}`,
             is_primary: img.is_primary,
         })) || [],
     );

@@ -16,4 +16,24 @@ class Tag extends Model
     {
         return $this->morphedByMany(BrandingProject::class, 'taggable');
     }
+
+    /**
+     * Get all tags that are associated with branding projects.
+     * 
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public static function getBrandingProjectTags()
+    {
+        return self::whereHas('brandingProjects')->get();
+    }
+
+    /**
+     * Get branding projects that have this specific tag.
+     * 
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getBrandingProjects()
+    {
+        return $this->brandingProjects()->get();
+    }
 }
