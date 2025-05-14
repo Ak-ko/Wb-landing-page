@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\BrandingProjectController;
 use App\Http\Controllers\BusinessProcessController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\TestimonialController;
+use App\Models\Blog;
 use App\Models\Brand;
 use App\Models\BrandingProject;
 use App\Models\BusinessProcess;
@@ -24,12 +26,15 @@ Route::get('/', function () {
 
     $brandingProjectTags = Tag::whereHas('brandingProjects')->get();
 
+    $blogs = Blog::latest()->published()->with(['tags', 'images'])->take(6)->get();
+
     return Inertia::render('home/home-page', [
         'brands' => $brands,
         'testimonials' => $testimonials,
         'businessProcesses' => $businessProcesses,
         'brandingProjects' =>  $brandingProjects,
         'brandingProjectTags' => $brandingProjectTags,
+        'blogs' => $blogs,
         'page' => 'home'
     ]);
 })->name('home');
@@ -51,6 +56,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Branding Projects
     Route::resource('/admin/branding-projects', BrandingProjectController::class);
+
+    // Blogs
+    Route::resource('/admin/blogs', BlogController::class);
 
     // Tags
     Route::resource('/admin/tags', TagController::class);

@@ -54,8 +54,6 @@ const images = {
     },
 };
 
-console.log(images);
-
 export default function HarmonyOfTheDesignSection() {
     return (
         <section id="harmony-of-the-designs-section" className="py-28">

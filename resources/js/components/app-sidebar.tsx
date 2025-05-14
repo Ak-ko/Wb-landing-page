@@ -50,6 +50,11 @@ const mainNavItems: NavItem[] = [
                 href: '/admin/business-processes',
                 icon: BarChart2,
             },
+            {
+                title: 'Blog',
+                href: '/admin/blogs',
+                icon: Briefcase,
+            },
         ],
     },
     {

@@ -17,6 +17,11 @@ class Tag extends Model
         return $this->morphedByMany(BrandingProject::class, 'taggable');
     }
 
+    public function blogs(): MorphToMany
+    {
+        return $this->morphedByMany(Blog::class, 'taggable');
+    }
+
     /**
      * Get all tags that are associated with branding projects.
      * 

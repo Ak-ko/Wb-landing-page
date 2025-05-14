@@ -109,6 +109,24 @@ export type BrandingProjectT = {
     images: BrandingProjectImageT[];
 } & TimestampsT;
 
+export type BlogImage = {
+    id: number;
+    blog_id: number;
+    image: string;
+    is_primary: boolean;
+    order: number;
+};
+
+export type BlogT = {
+    id: number;
+    title: string;
+    color: string;
+    description: string | null;
+    is_published: boolean;
+    images: BlogImage[];
+    tags: TagT[];
+} & TimestampsT;
+
 interface CommonPaginationT<T> {
     data: T[];
     current_page: number;

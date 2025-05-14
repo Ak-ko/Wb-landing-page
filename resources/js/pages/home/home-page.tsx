@@ -1,4 +1,5 @@
 import AvailableWorksSection from '@/components/app/available-works-section';
+import BlogSection from '@/components/app/blog-section';
 import BrandSection from '@/components/app/brand-section';
 import BrandingProjectSection from '@/components/app/branding-project-section';
 import BusinessProcessSection from '@/components/app/business-process-section';
@@ -32,6 +33,8 @@ export default function HomePage() {
             <BusinessProcessSection />
 
             <BrandingProjectSection />
+
+            <BlogSection />
         </LandingLayout>
     );
 }
