@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\FaqAskedMail;
 use App\Models\Faq;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 
 class FaqController extends Controller
@@ -114,5 +116,21 @@ class FaqController extends Controller
         $faq->delete();
 
         return redirect()->route('faqs.index')->with('success', 'FAQ deleted successfully.');
+    }
+
+    public function sendFaqEmail()
+    {
+        $cleanData = request()->validate([
+            'email' => 'required|email',
+            'question' => 'required|string|max:255',
+        ]);
+
+        $subject = 'A Question is Asked !';
+
+        $adminEmail = config('app.admin_email');
+
+        Mail::to($adminEmail)->send(new FaqAskedMail($cleanData, $subject));
+
+        return back()->with('success', 'Email sent successfully!');
     }
 }

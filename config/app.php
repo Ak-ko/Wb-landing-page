@@ -105,6 +105,8 @@ return [
         ),
     ],
 
+    'admin_email' => env('ADMIN_EMAIL', 'admin@demo.com'),
+
     /*
     |--------------------------------------------------------------------------
     | Maintenance Mode Driver

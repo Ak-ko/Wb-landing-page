@@ -7,7 +7,7 @@ interface PropsT {
 }
 
 export default function LandingLayout({ children }: PropsT) {
-    const flash = usePage().props;
+    const { flash } = usePage().props;
     return (
         <section>
             {children}

@@ -56,13 +56,13 @@ export default function BlogSection() {
                         {blogs.map((blog, blogIndex) => (
                             <CarouselItem key={blog.id}>
                                 <motion.div
-                                    className="grid min-h-[300px] grid-cols-1 gap-4 md:grid-cols-4"
+                                    className="grid min-h-[300px] grid-cols-1 md:grid-cols-4"
                                     variants={containerVariants}
                                     initial="hidden"
                                     animate={currentIndex === blogIndex ? 'visible' : 'hidden'}
                                 >
                                     {/* First image - hidden on mobile for better text readability */}
-                                    <motion.div className="hidden overflow-hidden rounded-lg md:col-span-1 md:block" variants={itemVariants}>
+                                    <motion.div className="hidden overflow-hidden md:col-span-1 md:block" variants={itemVariants}>
                                         {blog.images && blog.images.length > 0 ? (
                                             <img src={blog.images[0].image} alt={blog.title} className="h-full w-full object-cover" loading="lazy" />
                                         ) : (
@@ -73,7 +73,7 @@ export default function BlogSection() {
                                     </motion.div>
 
                                     {/* Mobile-only primary image */}
-                                    <motion.div className="col-span-1 overflow-hidden rounded-lg md:hidden" variants={itemVariants}>
+                                    <motion.div className="col-span-1 overflow-hidden md:hidden" variants={itemVariants}>
                                         {blog.images && blog.images.length > 0 ? (
                                             <img src={blog.images[0].image} alt={blog.title} className="h-64 w-full object-cover" loading="lazy" />
                                         ) : (
@@ -112,7 +112,7 @@ export default function BlogSection() {
                                     </motion.div>
 
                                     {/* Second image - hidden on mobile */}
-                                    <motion.div className="hidden overflow-hidden rounded-lg md:col-span-1 md:block" variants={itemVariants}>
+                                    <motion.div className="hidden overflow-hidden md:col-span-1 md:block" variants={itemVariants}>
                                         {blog.images && blog.images.length > 1 ? (
                                             <img
                                                 src={blog.images[1].image}
@@ -132,11 +132,7 @@ export default function BlogSection() {
                                     {/* Additional images - only shown on larger screens */}
                                     {blog?.images?.length === 6 &&
                                         [2, 3, 4, 5]?.map((i) => (
-                                            <motion.div
-                                                key={i}
-                                                className="hidden overflow-hidden rounded-lg md:col-span-1 md:block"
-                                                variants={itemVariants}
-                                            >
+                                            <motion.div key={i} className="hidden overflow-hidden md:col-span-1 md:block" variants={itemVariants}>
                                                 <img
                                                     src={blog.images[i].image}
                                                     alt={blog.title}

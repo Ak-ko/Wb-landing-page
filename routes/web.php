@@ -11,6 +11,7 @@ use App\Models\Blog;
 use App\Models\Brand;
 use App\Models\BrandingProject;
 use App\Models\BusinessProcess;
+use App\Models\Faq;
 use App\Models\Tag;
 use App\Models\Testimonial;
 use Illuminate\Support\Facades\Route;
@@ -29,6 +30,8 @@ Route::get('/', function () {
 
     $blogs = Blog::latest()->published()->with(['tags', 'images'])->take(6)->get();
 
+    $faqs = Faq::published()->get();
+
     return Inertia::render('home/home-page', [
         'brands' => $brands,
         'testimonials' => $testimonials,
@@ -36,6 +39,7 @@ Route::get('/', function () {
         'brandingProjects' =>  $brandingProjects,
         'brandingProjectTags' => $brandingProjectTags,
         'blogs' => $blogs,
+        'faqs' => $faqs,
         'page' => 'home'
     ]);
 })->name('home');
@@ -67,6 +71,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Faq
     Route::resource('/admin/faqs', FaqController::class);
 });
+
+Route::post('/faq/send-email', [FaqController::class, 'sendFaqEmail'])->name('faq.send-email');
 
 require __DIR__ . "/auth.php";
 require __DIR__ . "/settings.php";
