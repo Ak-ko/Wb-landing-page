@@ -4,6 +4,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\BrandingProjectController;
 use App\Http\Controllers\BusinessProcessController;
+use App\Http\Controllers\FaqController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\TestimonialController;
 use App\Models\Blog;
@@ -62,6 +63,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Tags
     Route::resource('/admin/tags', TagController::class);
+
+    // Faq
+    Route::resource('/admin/faqs', FaqController::class);
 });
 
 require __DIR__ . "/auth.php";

@@ -56,14 +56,15 @@ export default function BlogSection() {
                         {blogs.map((blog, blogIndex) => (
                             <CarouselItem key={blog.id}>
                                 <motion.div
-                                    className="grid min-h-[300px] grid-cols-4 gap-4"
+                                    className="grid min-h-[300px] grid-cols-1 gap-4 md:grid-cols-4"
                                     variants={containerVariants}
                                     initial="hidden"
                                     animate={currentIndex === blogIndex ? 'visible' : 'hidden'}
                                 >
-                                    <motion.div className="col-span-1 overflow-hidden rounded-lg" variants={itemVariants}>
+                                    {/* First image - hidden on mobile for better text readability */}
+                                    <motion.div className="hidden overflow-hidden rounded-lg md:col-span-1 md:block" variants={itemVariants}>
                                         {blog.images && blog.images.length > 0 ? (
-                                            <img src={blog.images[0].image} alt={blog.title} className="h-full w-full object-cover" />
+                                            <img src={blog.images[0].image} alt={blog.title} className="h-full w-full object-cover" loading="lazy" />
                                         ) : (
                                             <div className="flex h-full w-full items-center justify-center bg-gray-100">
                                                 <span className="text-gray-400">No image</span>
@@ -71,17 +72,29 @@ export default function BlogSection() {
                                         )}
                                     </motion.div>
 
+                                    {/* Mobile-only primary image */}
+                                    <motion.div className="col-span-1 overflow-hidden rounded-lg md:hidden" variants={itemVariants}>
+                                        {blog.images && blog.images.length > 0 ? (
+                                            <img src={blog.images[0].image} alt={blog.title} className="h-64 w-full object-cover" loading="lazy" />
+                                        ) : (
+                                            <div className="flex h-64 w-full items-center justify-center bg-gray-100">
+                                                <span className="text-gray-400">No image</span>
+                                            </div>
+                                        )}
+                                    </motion.div>
+
+                                    {/* Content section - full width on mobile, 2 columns on desktop */}
                                     <motion.div
                                         style={{
                                             backgroundColor: blog.color,
                                             color: isLightColor(blog.color) ? 'black' : 'white',
                                         }}
-                                        className={cn('col-span-2 flex flex-col justify-center p-6 text-center')}
+                                        className={cn('col-span-1 flex flex-col justify-center p-4 text-center md:col-span-2 md:p-6')}
                                         variants={itemVariants}
                                     >
-                                        <h3 className="mb-4 text-2xl font-bold">{blog.title}</h3>
-                                        <p className="line-clamp-4">{blog.description}</p>
-                                        <div className="mt-4 flex flex-wrap justify-center gap-2">
+                                        <h3 className="mb-3 text-xl font-bold md:mb-4 md:text-2xl">{blog.title}</h3>
+                                        <p className="line-clamp-3 text-sm md:line-clamp-4 md:text-base">{blog.description}</p>
+                                        <div className="mt-3 flex flex-wrap justify-center gap-2 md:mt-4">
                                             {blog.tags &&
                                                 blog.tags.map((tag) => (
                                                     <span
@@ -90,7 +103,7 @@ export default function BlogSection() {
                                                             color: isLightColor(tag.color) ? 'black' : 'white',
                                                         }}
                                                         key={tag.id}
-                                                        className="rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-700"
+                                                        className="rounded-full bg-gray-100 px-2 py-0.5 text-xs md:px-3 md:py-1 md:text-sm"
                                                     >
                                                         {tag.name}
                                                     </span>
@@ -98,21 +111,38 @@ export default function BlogSection() {
                                         </div>
                                     </motion.div>
 
-                                    <motion.div className="col-span-1 overflow-hidden rounded-lg" variants={itemVariants}>
+                                    {/* Second image - hidden on mobile */}
+                                    <motion.div className="hidden overflow-hidden rounded-lg md:col-span-1 md:block" variants={itemVariants}>
                                         {blog.images && blog.images.length > 1 ? (
-                                            <img src={blog.images[1].image} alt={`${blog.title} secondary`} className="h-full w-full object-cover" />
+                                            <img
+                                                src={blog.images[1].image}
+                                                alt={`${blog.title} secondary`}
+                                                className="h-full w-full object-cover"
+                                                loading="lazy"
+                                            />
                                         ) : blog.images && blog.images.length > 0 ? (
-                                            <img src={blog.images[0].image} alt={blog.title} className="h-full w-full object-cover" />
+                                            <img src={blog.images[0].image} alt={blog.title} className="h-full w-full object-cover" loading="lazy" />
                                         ) : (
                                             <div className="flex h-full w-full items-center justify-center bg-gray-100">
                                                 <span className="text-gray-400">No image</span>
                                             </div>
                                         )}
                                     </motion.div>
+
+                                    {/* Additional images - only shown on larger screens */}
                                     {blog?.images?.length === 6 &&
                                         [2, 3, 4, 5]?.map((i) => (
-                                            <motion.div className="col-span-1 overflow-hidden rounded-lg" variants={itemVariants}>
-                                                <img src={blog.images[i].image} alt={blog.title} className="h-full w-full object-cover" />
+                                            <motion.div
+                                                key={i}
+                                                className="hidden overflow-hidden rounded-lg md:col-span-1 md:block"
+                                                variants={itemVariants}
+                                            >
+                                                <img
+                                                    src={blog.images[i].image}
+                                                    alt={blog.title}
+                                                    className="h-full w-full object-cover"
+                                                    loading="lazy"
+                                                />
                                             </motion.div>
                                         ))}
                                 </motion.div>
@@ -126,21 +156,21 @@ export default function BlogSection() {
                                     backgroundColor: blogs[currentIndex]?.color,
                                     color: isLightColor(blogs[currentIndex]?.color) ? 'black' : 'white',
                                 }}
-                                className="left-2"
+                                className="left-0 md:left-2"
                             />
                             <CarouselNext
                                 style={{
                                     backgroundColor: blogs[currentIndex]?.color,
                                     color: isLightColor(blogs[currentIndex]?.color) ? 'black' : 'white',
                                 }}
-                                className="right-2"
+                                className="right-0 md:right-2"
                             />
                         </>
                     )}
                 </Carousel>
 
                 {blogs?.length > 1 && (
-                    <div className="mt-6 flex justify-center gap-2">
+                    <div className="mt-4 flex justify-center gap-1 md:mt-6 md:gap-2">
                         {blogs.map((_, index) => (
                             <button
                                 key={index}
@@ -149,8 +179,8 @@ export default function BlogSection() {
                                     backgroundColor: blogs[index]?.color,
                                 }}
                                 className={cn(
-                                    'h-2 w-2 rounded-full transition-all',
-                                    currentIndex === index ? 'bg-primary w-4' : 'bg-gray-300 hover:bg-gray-400',
+                                    'h-1.5 rounded-full transition-all md:h-2',
+                                    currentIndex === index ? 'w-3 md:w-4' : 'w-1.5 bg-gray-300 hover:bg-gray-400 md:w-2',
                                 )}
                                 aria-label={`Go to slide ${index + 1}`}
                             />

@@ -127,6 +127,14 @@ export type BlogT = {
     tags: TagT[];
 } & TimestampsT;
 
+export type FaqT = {
+    id: number;
+    question: string;
+    answer: string;
+    color: string;
+    is_published: boolean;
+} & TimestampsT;
+
 interface CommonPaginationT<T> {
     data: T[];
     current_page: number;
