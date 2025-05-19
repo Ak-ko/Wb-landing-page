@@ -4,6 +4,7 @@ import BookACallSection from '@/components/app/book-a-call-section';
 import BrandSection from '@/components/app/brand-section';
 import BrandingProjectSection from '@/components/app/branding-project-section';
 import BusinessProcessSection from '@/components/app/business-process-section';
+import ContactUsSection from '@/components/app/contact-us-section';
 import FaqSection from '@/components/app/faq-section';
 import HarmonyOfTheDesignSection from '@/components/app/harmony-of-the-design-section';
 import HeroSection from '@/components/app/hero-section';
@@ -41,6 +42,8 @@ export default function HomePage() {
             <FaqSection />
 
             <BookACallSection />
+
+            <ContactUsSection />
         </LandingLayout>
     );
 }

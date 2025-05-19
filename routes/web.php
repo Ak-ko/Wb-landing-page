@@ -4,6 +4,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\BrandingProjectController;
 use App\Http\Controllers\BusinessProcessController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\TestimonialController;
@@ -72,7 +73,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('/admin/faqs', FaqController::class);
 });
 
+// faq
 Route::post('/faq/send-email', [FaqController::class, 'sendFaqEmail'])->name('faq.send-email');
+
+// contact us
+Route::post('/contact/send', [ContactController::class, 'sendMessage'])->name('contact.send');
 
 require __DIR__ . "/auth.php";
 require __DIR__ . "/settings.php";
