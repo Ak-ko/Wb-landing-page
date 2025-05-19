@@ -202,6 +202,10 @@
         scrollbar-width: none;
     }
 
+    .primary_btn {
+        @apply font-inter cursor-pointer rounded-xl bg-black px-8 py-4 font-bold text-white uppercase transition-all duration-500 hover:bg-[#E63829] hover:text-white active:bg-[#E63829];
+    }
+
     @keyframes why-us-img-bounce {
         0%,
         100% {

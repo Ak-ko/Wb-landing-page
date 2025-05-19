@@ -53,10 +53,7 @@ export default function WhyUsSection() {
             </div>
 
             <div className="my-11 flex justify-center">
-                <Link
-                    href="/"
-                    className="font-inter cursor-pointer rounded-xl bg-black px-8 py-4 font-bold text-white uppercase transition-all duration-500 hover:bg-[#E63829] hover:text-white active:bg-[#E63829]"
-                >
+                <Link href="/" className="primary_btn">
                     See More About Us
                 </Link>
             </div>
