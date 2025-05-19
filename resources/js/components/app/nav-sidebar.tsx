@@ -1,7 +1,10 @@
 import useScroll from '@/hooks/use-scroll';
 import useNavStore from '@/store/useNavStore';
+import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronsRight } from 'lucide-react';
+import CharacterWithTiltRightStyle from './icons/characters/navbar-section/character-with-titlt-right-style';
 import Logo from './icons/logo';
+import TypewriterText from './type-write-text';
 
 type LinksT = {
     label: string;
@@ -56,7 +59,7 @@ export default function NavSidebar() {
                 </div>
             </div>
 
-            <div className="hidden h-full w-full items-center sm:flex">
+            <div className="relative hidden h-full w-full items-center sm:flex">
                 <div className="w-full -translate-y-[50%] text-white">
                     {links?.map((link: LinksT) => (
                         <div
@@ -67,6 +70,31 @@ export default function NavSidebar() {
                             {link.label}
                         </div>
                     ))}
+                </div>
+
+                <div>
+                    <AnimatePresence>
+                        {isToggle && (
+                            <motion.div
+                                className="absolute right-[120px] bottom-[200px] z-10"
+                                initial={{ scale: 0 }}
+                                animate={{ scale: 1 }}
+                                exit={{ scale: 0, opacity: 0 }}
+                                transition={{ delay: 0.1, duration: 0.3, type: 'spring' }}
+                            >
+                                <div className="relative max-w-[180px] rounded-xl bg-white p-4 text-black">
+                                    <div className="font-medium">
+                                        <TypewriterText text={'မုန့်စိန်လား 🙂'} />
+                                    </div>
+                                    <div className="absolute -right-2 bottom-4 h-4 w-4 rotate-45 transform bg-white"></div>
+                                </div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+
+                    <div className="absolute bottom-10 md:-right-[20%] lg:-right-[15%]">
+                        <CharacterWithTiltRightStyle />
+                    </div>
                 </div>
             </div>
 
