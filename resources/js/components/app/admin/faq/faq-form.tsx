@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -30,21 +27,6 @@ export default function FaqForm({ faq, onSuccess }: FaqFormProps) {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-
-        const validationErrors: Record<string, string> = {};
-        if (!data.question.trim()) {
-            validationErrors.question = 'The question field is required';
-        }
-        if (!data.answer.trim()) {
-            validationErrors.answer = 'The answer field is required';
-        }
-
-        if (Object.keys(validationErrors).length > 0) {
-            for (const [key, value] of Object.entries(validationErrors)) {
-                setData(key as any, data[key as keyof typeof data]);
-            }
-            return;
-        }
 
         if (faq) {
             put(route('faqs.update', faq.id), {

@@ -1,5 +1,6 @@
 import { cn } from '@/lib/utils';
 import { FaqT } from '@/types';
+import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 
@@ -36,13 +37,21 @@ function FaqAccordionItem({ faq, isOpen, onClick }: FaqAccordionItemProps) {
                         style={{ color: faq.color || '#3b82f6' }}
                     />
                 </div>
-
-                {isOpen && (
-                    <div className="pr-4 pb-4">
-                        <div className="prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: faq.answer }} />
-                    </div>
-                )}
             </div>
+
+            <AnimatePresence initial={false}>
+                {isOpen && (
+                    <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.25, ease: 'easeInOut' }}
+                        className="overflow-hidden pr-4"
+                    >
+                        <div className="prose prose-sm max-w-none px-8 pb-4" dangerouslySetInnerHTML={{ __html: faq.answer }} />
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 }
@@ -55,7 +64,7 @@ export default function FaqAccordion({ faqs }: FaqAccordionProps) {
     };
 
     return (
-        <div className={`w-full max-w-3xl`}>
+        <div className={`w-full max-w-3xl space-y-3`}>
             {faqs.map((faq, index) => (
                 <FaqAccordionItem key={faq.id} faq={faq} isOpen={openIndex === index} onClick={() => handleToggle(index)} />
             ))}
