@@ -13,8 +13,8 @@ export default function OurPhilosophySection() {
             <div className="app-container">
                 <SectionHeader header="Our Philosophy" />
 
-                <div className="flex gap-3 py-11">
-                    <div className="flex basis-[40%] flex-col gap-3">
+                <div className="flex flex-col items-center gap-3 py-11 lg:flex-row lg:items-stretch">
+                    <div className="flex flex-col gap-3 lg:basis-[40%]">
                         <div className="h-full">
                             <PhilosophyCard
                                 title="Mission"
@@ -29,14 +29,14 @@ export default function OurPhilosophySection() {
                         </div>
 
                         <div className="h-full">
-                            <div className="flex">
+                            <div className="flex flex-col items-center lg:flex-row lg:items-start">
                                 <PhilosophyOrangeCharacter />
                                 <PhilosophyBlueCharacter className="translate-y-[calc(100%-230px)]" />
                             </div>
                         </div>
                     </div>
 
-                    <div className="basis-[60%]">
+                    <div className="lg:basis-[60%]">
                         <PhilosophyCard
                             containerClassName="h-full"
                             title="Core values"
