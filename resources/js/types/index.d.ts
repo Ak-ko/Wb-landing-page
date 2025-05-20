@@ -135,6 +135,14 @@ export type FaqT = {
     is_published: boolean;
 } & TimestampsT;
 
+export type CompanyPolicyT = {
+    id: number;
+    mission: string;
+    vision: string;
+    core_values: string;
+    terms_and_conditions: string;
+} & TimestampsT;
+
 interface CommonPaginationT<T> {
     data: T[];
     current_page: number;

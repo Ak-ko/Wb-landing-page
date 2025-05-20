@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BarChart2, Briefcase, Building, LayoutDashboard, MessageCircleQuestion, Settings, Tag, Users } from 'lucide-react';
+import { BarChart2, Briefcase, Building, LayoutDashboard, MessageCircleQuestion, Settings, SquareChartGantt, Tag, Users } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -70,6 +70,11 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Settings',
         items: [
+            {
+                title: 'Company Policies',
+                href: '/admin/policies',
+                icon: SquareChartGantt,
+            },
             {
                 title: 'Profile Settings',
                 href: '/settings/profile',

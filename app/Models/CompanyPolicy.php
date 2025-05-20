@@ -15,5 +15,6 @@ class CompanyPolicy extends Model
         'vision',
         'core_values',
         'terms_and_conditions',
+        'user_id',
     ];
 }

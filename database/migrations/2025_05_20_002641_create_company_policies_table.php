@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('company_policies', function (Blueprint $table) {
             $table->id();
             $table->text('mission')->nullable();
-            $table->text('vission')->nullable();
+            $table->text('vision')->nullable();
             $table->longText('core_values')->nullable();
             $table->longText('terms_and_conditions')->nullable();
+            $table->integer('user_id')->nullable();
             $table->timestamps();
         });
     }

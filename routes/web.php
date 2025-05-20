@@ -4,6 +4,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\BrandingProjectController;
 use App\Http\Controllers\BusinessProcessController;
+use App\Http\Controllers\CompanyPolicyController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\TagController;
@@ -12,6 +13,7 @@ use App\Models\Blog;
 use App\Models\Brand;
 use App\Models\BrandingProject;
 use App\Models\BusinessProcess;
+use App\Models\CompanyPolicy;
 use App\Models\Faq;
 use App\Models\Tag;
 use App\Models\Testimonial;
@@ -71,10 +73,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Faq
     Route::resource('/admin/faqs', FaqController::class);
+
+    // Policy
+    Route::resource('/admin/policies', CompanyPolicyController::class)->only(['index']);
+    Route::post('/admin/policies', [CompanyPolicyController::class, 'updatePolicy'])->name('policies.update');
 });
 
 Route::get('/about-us', function () {
-    return Inertia::render('about-us/about-us-page');
+    $policy = CompanyPolicy::first();
+
+    return Inertia::render('about-us/about-us-page', [
+        'policy' => $policy,
+    ]);
 })->name('about-us-page');
 
 

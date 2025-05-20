@@ -35,6 +35,7 @@
     --color-crayola-blue: var(--crayola-blue);
     --color-chillie-red: var(--chillie-red);
     --color-primary-orange: var(--primary-orange);
+    --color-secondary-orange: var(--secondary-orange);
 
     --color-secondary-pink: var(--secondary-pink);
 
@@ -114,6 +115,7 @@
     --popover-foreground: oklch(0.145 0 0);
     --primary: oklch(0.205 0 0);
     --primary-orange: #e63829;
+    --secondary-orange: #ff5a01;
     --primary-foreground: oklch(1 0 0);
     --secondary-pink: #ff1466;
     --secondary: oklch(0.97 0 0);
