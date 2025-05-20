@@ -53,7 +53,7 @@ export default function WhyUsSection() {
             </div>
 
             <div className="my-11 flex justify-center">
-                <Link href="/" className="primary_btn">
+                <Link href={route('about-us-page')} className="primary_btn">
                     See More About Us
                 </Link>
             </div>

@@ -1,4 +1,5 @@
 import LandingFooter from '@/components/app/landing-footer';
+import Navbar from '@/components/app/nav';
 import Toast from '@/components/common/toast';
 import { usePage } from '@inertiajs/react';
 import React from 'react';
@@ -11,6 +12,7 @@ export default function LandingLayout({ children }: PropsT) {
     const { flash } = usePage().props;
     return (
         <section>
+            <Navbar />
             {children}
             <Toast flash={flash} />
             <LandingFooter />

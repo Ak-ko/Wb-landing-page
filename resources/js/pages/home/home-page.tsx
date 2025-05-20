@@ -8,7 +8,6 @@ import ContactUsSection from '@/components/app/contact-us-section';
 import FaqSection from '@/components/app/faq-section';
 import HarmonyOfTheDesignSection from '@/components/app/harmony-of-the-design-section';
 import HeroSection from '@/components/app/hero-section';
-import Navbar from '@/components/app/nav';
 import TestimonialSection from '@/components/app/testimonial-section';
 import WhyUsSection from '@/components/app/why-us-section';
 import LandingLayout from '@/layouts/landing-layout';
@@ -18,8 +17,6 @@ export default function HomePage() {
     return (
         <LandingLayout>
             <Head title="Home" />
-
-            <Navbar />
 
             <HeroSection />
 

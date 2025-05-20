@@ -73,6 +73,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('/admin/faqs', FaqController::class);
 });
 
+Route::get('/about-us', function () {
+    return Inertia::render('about-us/about-us-page');
+})->name('about-us-page');
+
+
 // faq
 Route::post('/faq/send-email', [FaqController::class, 'sendFaqEmail'])->name('faq.send-email');
 
