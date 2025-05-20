@@ -8,6 +8,7 @@ use App\Http\Controllers\CompanyPolicyController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\TeamMemberController;
 use App\Http\Controllers\TestimonialController;
 use App\Models\Blog;
 use App\Models\Brand;
@@ -77,6 +78,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Policy
     Route::resource('/admin/policies', CompanyPolicyController::class)->only(['index']);
     Route::post('/admin/policies', [CompanyPolicyController::class, 'updatePolicy'])->name('policies.update');
+
+    // team member
+    Route::resource('/admin/team-members', TeamMemberController::class);
+    Route::patch('/admin/team-members/{teamMember}/toggle-active', [TeamMemberController::class, 'toggleActive'])->name('team-members.toggle-active');
 });
 
 Route::get('/about-us', function () {

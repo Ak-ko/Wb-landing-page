@@ -58,6 +58,16 @@ const mainNavItems: NavItem[] = [
         ],
     },
     {
+        title: 'Team Management',
+        items: [
+            {
+                title: 'Team Members',
+                href: '/admin/team-members',
+                icon: Users,
+            },
+        ],
+    },
+    {
         title: 'Faq Management',
         items: [
             {

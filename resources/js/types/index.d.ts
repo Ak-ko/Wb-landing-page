@@ -143,6 +143,19 @@ export type CompanyPolicyT = {
     terms_and_conditions: string;
 } & TimestampsT;
 
+export type TeamMemberT = {
+    id: number;
+    name: string;
+    designation: string;
+    mascot_image: string;
+    email?: string;
+    phone?: string;
+    social_links?: string;
+    image?: string;
+    color?: string;
+    is_active: boolean;
+} & TimestampsT;
+
 interface CommonPaginationT<T> {
     data: T[];
     current_page: number;
