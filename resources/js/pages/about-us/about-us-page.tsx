@@ -1,5 +1,7 @@
 import AboutUsHeader from '@/components/app/about-us-header';
 import AboutUsIntroSection from '@/components/app/about-us-intro-section';
+import BlogSection from '@/components/app/blog-section';
+import ContactUsSection from '@/components/app/contact-us-section';
 import OurPhilosophySection from '@/components/app/our-philosophy-section';
 import LandingLayout from '@/layouts/landing-layout';
 import { Head } from '@inertiajs/react';
@@ -14,6 +16,10 @@ export default function AboutUsPage() {
             <AboutUsIntroSection />
 
             <OurPhilosophySection />
+
+            <BlogSection />
+
+            <ContactUsSection />
         </LandingLayout>
     );
 }

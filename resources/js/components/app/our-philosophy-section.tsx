@@ -1,5 +1,7 @@
 import { CompanyPolicyT } from '@/types';
 import { usePage } from '@inertiajs/react';
+import PhilosophyBlueCharacter from './icons/characters/about-us-page/philosophy-section/blue-character';
+import PhilosophyOrangeCharacter from './icons/characters/about-us-page/philosophy-section/orange-character';
 import PhilosophyCard from './philosophy-card';
 import SectionHeader from './section-header';
 
@@ -25,10 +27,22 @@ export default function OurPhilosophySection() {
                         <div className="h-full">
                             <PhilosophyCard containerClassName="h-full" title="Vision" titleClassName="text-crayola-blue" content={policy?.vision} />
                         </div>
+
+                        <div className="h-full">
+                            <div className="flex">
+                                <PhilosophyOrangeCharacter />
+                                <PhilosophyBlueCharacter className="translate-y-[calc(100%-230px)]" />
+                            </div>
+                        </div>
                     </div>
 
                     <div className="basis-[60%]">
-                        <PhilosophyCard title="Core values" titleClassName="text-secondary-pink" content={policy?.core_values} />
+                        <PhilosophyCard
+                            containerClassName="h-full"
+                            title="Core values"
+                            titleClassName="text-secondary-pink"
+                            content={policy?.core_values}
+                        />
                     </div>
                 </div>
             </div>
