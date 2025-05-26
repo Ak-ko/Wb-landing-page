@@ -153,6 +153,7 @@ export type TeamMemberT = {
     social_links?: string;
     image?: string;
     color?: string;
+    bio?: string;
     is_active: boolean;
 } & TimestampsT;
 

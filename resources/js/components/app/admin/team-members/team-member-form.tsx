@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import { useImageColor } from '@/hooks/use-image-color'; // Assuming this hook exists
 import { TeamMemberT } from '@/types'; // Assuming TeamMemberT type
 import { MinusCircle, PlusCircle } from 'lucide-react'; // Assuming lucide-react is installed
@@ -38,6 +39,7 @@ export default function TeamMemberForm({ teamMember, onSuccess }: TeamMemberForm
         phone: teamMember?.phone || '',
         social_links: formattedInitialSocialLinks.length > 0 ? formattedInitialSocialLinks : [{ platform: '', url: '' }], // Initialize with at least one empty link
         image: teamMember?.image || '',
+        bio: teamMember?.bio || '',
         color: teamMember?.color || '#000000',
         is_active: teamMember?.is_active ?? true,
     });
@@ -158,6 +160,14 @@ export default function TeamMemberForm({ teamMember, onSuccess }: TeamMemberForm
                     onChange={(e) => setData('designation', e.target.value)}
                 />
                 {errors.designation && <p className="text-sm text-red-500">{errors.designation}</p>}
+            </div>
+
+            <div className="space-y-2">
+                <label htmlFor="bio" className="block text-sm font-medium">
+                    Bio
+                </label>
+                <Textarea id="bio" placeholder="Enter Bio for this member..." value={data.bio} onChange={(e) => setData('bio', e.target.value)} />
+                {errors.bio && <p className="text-sm text-red-500">{errors.bio}</p>}
             </div>
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">

@@ -17,6 +17,7 @@ use App\Models\BusinessProcess;
 use App\Models\CompanyPolicy;
 use App\Models\Faq;
 use App\Models\Tag;
+use App\Models\TeamMember;
 use App\Models\Testimonial;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -86,9 +87,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 Route::get('/about-us', function () {
     $policy = CompanyPolicy::first();
+    $teamMembers = TeamMember::active()->latest()->get();
 
     return Inertia::render('about-us/about-us-page', [
         'policy' => $policy,
+        'teamMembers' => $teamMembers
     ]);
 })->name('about-us-page');
 

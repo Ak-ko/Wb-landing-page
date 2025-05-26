@@ -45,6 +45,7 @@ class TeamMemberController extends Controller
             'image' => 'nullable|string',
             'color' => 'nullable|string|max:20',
             'is_active' => 'boolean',
+            'bio' => 'nullable|string|max:255',
         ]);
 
         TeamMember::create($validated);
@@ -72,6 +73,7 @@ class TeamMemberController extends Controller
             'image' => 'nullable|string',
             'color' => 'nullable|string|max:20',
             'is_active' => 'boolean',
+            'bio' => 'nullable|string|max:255',
         ]);
 
         $teamMember->update($validated);

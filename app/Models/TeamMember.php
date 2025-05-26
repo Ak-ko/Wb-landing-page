@@ -21,13 +21,19 @@ class TeamMember extends Model
         'social_links',
         'image',
         'color',
-        'is_active'
+        'is_active',
+        'bio'
     ];
 
     protected $casts = [
         'social_links' => 'array',
         'is_active' => 'boolean'
     ];
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
 
     /**
      * Get the image attribute with full URL.
