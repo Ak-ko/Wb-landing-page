@@ -64,7 +64,13 @@ export default function AboutUsIntroContent({
     };
 
     return (
-        <div className={cn('flex items-stretch justify-between gap-8', isReversed && 'flex-row-reverse', containerClassName)}>
+        <div
+            className={cn(
+                'flex flex-col justify-between gap-8 lg:flex-row lg:items-stretch',
+                isReversed && 'lg:flex-row-reverse',
+                containerClassName,
+            )}
+        >
             <motion.div variants={contentVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }}>
                 <motion.div className={`mb-2 flex ${isReversed ? 'justify-end' : 'justify-start'}`} variants={itemVariants}>
                     {isReversed ? (
