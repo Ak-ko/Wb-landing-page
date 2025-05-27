@@ -5,18 +5,11 @@ import ActivePing from './active-ping';
 import HeroSectionBtn from './hero-section-btn';
 import CharacterRedWithSpring from './icons/characters/hero-section/character-red-with-spring';
 import CharacterWithCoffee from './icons/characters/hero-section/character-with-coffee';
-import GlassesIcon from './icons/glasses';
 
 export default function HeroSection() {
     const [showPasswordPrompt, setShowPasswordPrompt] = useState(false);
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-
-    const handleGlassesDoubleClick = () => {
-        setShowPasswordPrompt(true);
-        setPassword('');
-        setError('');
-    };
 
     const handlePasswordSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -37,7 +30,6 @@ export default function HeroSection() {
     return (
         <div className="py-16">
             <div className="flex flex-col items-center">
-                <GlassesIcon className="mb-3 block cursor-not-allowed select-none" width={60} onDoubleClick={handleGlassesDoubleClick} />
                 <h1 className="hero-section-header-text-size max-w-[360px] text-center font-extrabold uppercase sm:font-bold md:max-w-2xl xl:max-w-3xl">
                     creating brands <span className="text-secondary-pink">You can be proud of</span>
                 </h1>

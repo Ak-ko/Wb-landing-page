@@ -16,7 +16,7 @@ export default function BookACallSection() {
 
                         <div className="my-11 flex justify-center">
                             <a href="https://calendar.app.google/djDkfyfmis1NPxQb7" target="_blank" className="primary_btn">
-                                Book A Call
+                                Book An Appointment
                             </a>
                         </div>
                     </div>

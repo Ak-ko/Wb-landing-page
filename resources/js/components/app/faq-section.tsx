@@ -8,7 +8,7 @@ import { usePage } from '@inertiajs/react';
 export default function FaqSection() {
     const { faqs } = usePage<{ faqs: FaqT[] }>().props;
     return (
-        <section className="py-16">
+        <section id="faqSection" className="py-16">
             <div className="app-container">
                 <SectionHeader header="Commonly Asked Questions" containerClass="!justify-start !items-start" headerClass="!text-start" />
 
