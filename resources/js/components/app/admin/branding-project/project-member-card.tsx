@@ -66,12 +66,12 @@ export default function ProjectMember({ member }: PropsT) {
                             </div>
                         )}
 
-                        <div className="col-span-2">
-                            <hr className="my-4" />
-                            <h2 className="mb-2 text-sm font-normal">Social Links</h2>
-                            <div className="space-y-1">
-                                {socialLinkObj &&
-                                    Object.keys(socialLinkObj).map((key) => (
+                        {Object.entries(socialLinkObj)?.length > 0 && (
+                            <div className="col-span-2">
+                                <hr className="my-4" />
+                                <h2 className="mb-2 text-sm font-normal">Social Links</h2>
+                                <div className="space-y-1">
+                                    {Object.keys(socialLinkObj).map((key) => (
                                         <p key={key} className="flex items-center gap-2 text-sm font-bold">
                                             <a
                                                 href={socialLinkObj[key]}
@@ -84,8 +84,9 @@ export default function ProjectMember({ member }: PropsT) {
                                             </a>
                                         </p>
                                     ))}
+                                </div>
                             </div>
-                        </div>
+                        )}
                     </div>
                 </div>
             </DialogContent>
