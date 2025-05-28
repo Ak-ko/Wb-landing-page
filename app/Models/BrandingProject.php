@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -19,16 +20,18 @@ class BrandingProject extends Model
         'client_email',
         'client_phone',
         'service_fees',
-        'service_start_date',
-        'service_end_date',
+        'industry_type',
+        'year',
+        'project_keywords',
+        'project_scopes',
+        'project_link',
+        'is_published'
     ];
 
     protected $casts = [
-        'service_start_date' => 'date',
-        'service_end_date' => 'date',
         'service_fees' => 'decimal:2',
+        'is_published' => 'boolean'
     ];
-
 
     public function tags(): MorphToMany
     {
@@ -43,5 +46,18 @@ class BrandingProject extends Model
     public function primaryImage()
     {
         return $this->hasMany(BrandingProjectImage::class)->where('is_primary', true)->first();
+    }
+
+    public function members(): BelongsToMany
+    {
+        return $this
+            ->belongsToMany(TeamMember::class, 'branding_project_members')
+            ->withPivot('is_lead');
+    }
+
+
+    public function scopePublished($query)
+    {
+        return $query->where('is_published', true);
     }
 }

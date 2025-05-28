@@ -103,10 +103,23 @@ export type BrandingProjectT = {
     client_email: string;
     client_phone: string;
     service_fees: number | null;
-    service_start_date: string | null;
-    service_end_date: string | null;
+    year: string | null;
+    industry_type: string | null;
+    project_keywords: string | null;
+    project_scopes: string | null;
+    project_link: string | null;
+    is_published: boolean;
     tags: TagT[];
     images: BrandingProjectImageT[];
+    members: TeamMemberT[];
+} & TimestampsT;
+
+export type BrandingProjectMemberT = {
+    id: number;
+    branding_project_id: number | null;
+    team_member_id: number;
+    is_lead: boolean;
+    team_member?: TeamMemberT;
 } & TimestampsT;
 
 export type BlogImage = {
@@ -155,6 +168,7 @@ export type TeamMemberT = {
     color?: string;
     bio?: string;
     is_active: boolean;
+    pivot: BrandingProjectMemberT;
 } & TimestampsT;
 
 interface CommonPaginationT<T> {

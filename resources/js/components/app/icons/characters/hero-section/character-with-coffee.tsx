@@ -3,7 +3,7 @@ import { SVGProps } from 'react';
 const CharacterWithCoffee = (props: SVGProps<SVGSVGElement>) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width={186} height={240} fill="none" {...props}>
         <path
-            fill="#1274EF"
+            fill={props?.fill || '#1274EF'}
             d="M78.109 183.301v59.188l.016 14.201c0 2.905-2.344 5.263-5.241 5.267L32.39 262c-1.118 0-1.972-.967-1.886-2.083 1.039-13.808 12.446-22.325 26.46-22.506v-54.106h21.14l.004-.004ZM89.38 183.301v59.188l-.015 14.201c0 2.905 2.344 5.263 5.241 5.267L135.1 262c1.118 0 1.972-.967 1.886-2.083-1.039-13.808-12.446-22.325-26.46-22.506v-54.106h-21.14l-.004-.004Z"
         />
         <path
@@ -15,7 +15,7 @@ const CharacterWithCoffee = (props: SVGProps<SVGSVGElement>) => (
         />
         <path stroke="#000" strokeLinecap="round" strokeMiterlimit={10} strokeWidth={3} d="M178.045 196.452s4.288 1.006 2.72-8.82" />
         <path
-            fill="#1274EF"
+            fill={props?.fill || '#1274EF'}
             d="M130.516 46.062H36.974c-9.742 0-17.64 7.919-17.64 17.687V180.49c0 9.768 7.898 17.687 17.64 17.687h93.542c9.742 0 17.639-7.919 17.639-17.687V63.749c0-9.769-7.897-17.687-17.639-17.687Z"
         />
         <path

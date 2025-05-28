@@ -1,6 +1,7 @@
 import { Head, router } from '@inertiajs/react';
-import { ArrowLeft, Calendar, Coins, Edit, Mail, Phone, User } from 'lucide-react';
+import { ArrowLeft, Calendar, Coins, Edit, Link, Mail, Phone, User } from 'lucide-react';
 
+import ProjectMember from '@/components/app/admin/branding-project/project-member-card';
 import DashboardTitle from '@/components/app/dashboard-title';
 import ProjectImageCarousel from '@/components/app/project-image-carousel';
 import { Badge } from '@/components/ui/badge';
@@ -8,7 +9,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import AppLayout from '@/layouts/app-layout';
-import { formatCurrency } from '@/lib/currency';
 import { BrandingProjectT, BreadcrumbItem } from '@/types';
 
 interface ShowBrandingProjectProps {
@@ -26,11 +26,6 @@ export default function ShowBrandingProject({ brandingProject }: ShowBrandingPro
             href: `/admin/branding-projects/${brandingProject.id}`,
         },
     ];
-
-    const formatDate = (dateString: string | null) => {
-        if (!dateString) return 'N/A';
-        return new Date(dateString).toLocaleDateString();
-    };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -55,36 +50,80 @@ export default function ShowBrandingProject({ brandingProject }: ShowBrandingPro
                 </div>
 
                 <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-                    <Card className="overflow-hidden transition-shadow duration-300 hover:shadow-md lg:col-span-2">
+                    <Card className="overflow-hidden px-6 pb-6 transition-shadow duration-300 hover:shadow-md lg:col-span-2">
                         <CardContent className="p-0">
                             {brandingProject.images && brandingProject.images.length > 0 && (
                                 <div className="h-48 w-full overflow-hidden sm:h-64 md:h-80">
                                     <img
-                                        src={`/storage/${brandingProject.images.find((img) => img.is_primary)?.image || brandingProject.images[0].image}`}
+                                        src={`${brandingProject.images.find((img) => img.is_primary)?.image || brandingProject.images[0].image}`}
                                         alt={brandingProject.title}
-                                        className="h-full w-full object-cover"
+                                        className="h-full w-full rounded-lg object-cover"
                                     />
                                 </div>
                             )}
                             <div className="p-6">
                                 <h3 className="mb-4 text-2xl font-semibold text-gray-800">Project Details</h3>
 
-                                {brandingProject.description && (
+                                <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+                                    {brandingProject.description && (
+                                        <div className="mb-6">
+                                            <h4 className="mb-2 text-lg font-medium text-gray-700">Description</h4>
+                                            <p className="leading-relaxed text-gray-600">{brandingProject.description}</p>
+                                        </div>
+                                    )}
+
                                     <div className="mb-6">
-                                        <h4 className="mb-2 text-lg font-medium text-gray-700">Description</h4>
-                                        <p className="leading-relaxed text-gray-600">{brandingProject.description}</p>
+                                        <h4 className="mb-2 text-lg font-medium text-gray-700">Industry</h4>
+                                        <p className="leading-relaxed text-gray-600">{brandingProject.industry_type}</p>
                                     </div>
-                                )}
+
+                                    <div className="mb-6">
+                                        <h4 className="mb-2 text-lg font-medium text-gray-700">Project Scope</h4>
+                                        <p className="leading-relaxed text-gray-600">{brandingProject.project_scopes}</p>
+                                    </div>
+
+                                    <div className="mb-6">
+                                        <h4 className="mb-2 text-lg font-medium text-gray-700">Project Keyword</h4>
+                                        <p className="leading-relaxed text-gray-600">{brandingProject.project_keywords}</p>
+                                    </div>
+
+                                    <div className="mb-6">
+                                        <h4 className="mb-2 text-lg font-medium text-gray-700">Project Link</h4>
+                                        <p
+                                            onClick={() => {
+                                                window.open(brandingProject.project_link as string, '_blank');
+                                            }}
+                                            className="flex cursor-pointer items-center gap-2 leading-relaxed text-gray-600 hover:underline"
+                                        >
+                                            <Link className="size-3" />
+                                            {brandingProject.project_link}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <hr className="my-6 border-dotted" />
+
+                                <div>
+                                    <h3 className="mb-4 text-2xl font-semibold text-gray-800">Members Details</h3>
+
+                                    <div className="mb-6">
+                                        <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+                                            {brandingProject?.members &&
+                                                brandingProject?.members?.map((m) => <ProjectMember key={m.id} member={m} />)}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr className="my-6 border-dotted" />
 
                                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                     <div>
-                                        <h4 className="mb-3 text-lg font-medium text-gray-700">Client Information</h4>
+                                        <h4 className="mb-4 text-2xl font-semibold text-gray-800">Client Information</h4>
                                         <div className="space-y-2">
                                             <div className="flex items-center gap-2 text-gray-600">
                                                 <User className="text-primary h-4 w-4" />
                                                 <span className="font-medium">{brandingProject.client_company}</span>
                                             </div>
-
                                             {brandingProject.client_name && (
                                                 <div className="flex items-center gap-2 text-gray-600">
                                                     <User className="text-primary h-4 w-4" />
@@ -121,8 +160,7 @@ export default function ShowBrandingProject({ brandingProject }: ShowBrandingPro
                                             <div className="flex items-center gap-2 text-gray-600">
                                                 <Calendar className="text-primary h-4 w-4" />
                                                 <span>
-                                                    <span className="font-medium">Period:</span> {formatDate(brandingProject.service_start_date)} -{' '}
-                                                    {formatDate(brandingProject.service_end_date)}
+                                                    <span className="font-medium">Year:</span> {brandingProject.year}
                                                 </span>
                                             </div>
 
@@ -130,7 +168,7 @@ export default function ShowBrandingProject({ brandingProject }: ShowBrandingPro
                                                 <div className="flex items-center gap-2 text-gray-600">
                                                     <Coins className="text-primary h-4 w-4" />
                                                     <span>
-                                                        <span className="font-medium">Fees:</span> {formatCurrency(brandingProject.service_fees)}
+                                                        <span className="font-medium">Fees:</span> {brandingProject.service_fees}
                                                     </span>
                                                 </div>
                                             )}
@@ -155,7 +193,7 @@ export default function ShowBrandingProject({ brandingProject }: ShowBrandingPro
                     </Card>
 
                     <Card className="transition-shadow duration-300 hover:shadow-md">
-                        <CardContent className="p-6">
+                        <CardContent className="px-6 pb-6">
                             <h3 className="mb-4 text-xl font-semibold text-gray-800">Project Gallery</h3>
 
                             <ProjectImageCarousel images={brandingProject.images} projectTitle={brandingProject.title} />

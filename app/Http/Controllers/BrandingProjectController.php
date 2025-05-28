@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\BrandingProject;
 use App\Models\BrandingProjectImage;
+use App\Models\BrandingProjectMember;
 use App\Models\Tag;
+use App\Models\TeamMember;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -40,9 +42,11 @@ class BrandingProjectController extends Controller
     public function create()
     {
         $tags = Tag::all();
+        $teamMembers = TeamMember::all();
 
         return Inertia::render('admin/branding-projects/create', [
             'tags' => $tags,
+            'teamMembers' => $teamMembers,
         ]);
     }
 
@@ -55,14 +59,20 @@ class BrandingProjectController extends Controller
             'client_name' => 'nullable|string|max:255',
             'client_email' => 'nullable|email|max:255',
             'client_phone' => 'nullable|string|max:255',
-            'service_fees' => 'nullable|numeric',
-            'service_start_date' => 'nullable|date',
-            'service_end_date' => 'nullable|date|after_or_equal:service_start_date',
+            'service_fees' => 'required|numeric',
+            'year' => 'required|numeric',
+            'project_keywords' => 'required|string',
+            'industry_type' => 'required|string',
+            'project_scopes' => 'required|string',
+            'project_link' => 'required|string',
+            'is_published' => 'required|boolean',
             'tags' => 'required|array',
             'tags.*' => 'exists:tags,id',
             'images' => 'required|array',
-            'images.*' => 'required', // Changed from 'image|max:5120' to handle both files and strings
+            'images.*' => 'required',
             'primary_image_index' => 'nullable|integer',
+            'project_members' => 'required|array',
+            'project_members.*' => 'required',
         ]);
 
         $brandingProject = BrandingProject::create([
@@ -73,8 +83,12 @@ class BrandingProjectController extends Controller
             'client_email' => $validated['client_email'] ?? null,
             'client_phone' => $validated['client_phone'] ?? null,
             'service_fees' => $validated['service_fees'] ?? null,
-            'service_start_date' => $validated['service_start_date'] ?? null,
-            'service_end_date' => $validated['service_end_date'] ?? null,
+            'year' => $validated['year'],
+            'project_keywords' => $validated['project_keywords'],
+            'project_scopes' => $validated['project_scopes'],
+            'project_link' => $validated['project_link'],
+            'industry_type' => $validated['industry_type'],
+            'is_published' => $validated['is_published'],
         ]);
 
         if (isset($validated['tags'])) {
@@ -98,13 +112,23 @@ class BrandingProjectController extends Controller
             }
         }
 
+        if (isset($validated['project_members'])) {
+            foreach ($validated['project_members'] as $member) {
+                BrandingProjectMember::create([
+                    'branding_project_id' => $brandingProject->id,
+                    'team_member_id' => $member['team_member_id'],
+                    'is_lead' => $member['is_lead'] ?? false,
+                ]);
+            }
+        }
+
         return redirect()->route('branding-projects.index')
             ->with('success', 'Branding project created successfully.');
     }
 
     public function show(BrandingProject $brandingProject)
     {
-        $brandingProject->load(['tags', 'images']);
+        $brandingProject->load(['tags', 'images', 'members']);
 
         return Inertia::render('admin/branding-projects/show', [
             'brandingProject' => $brandingProject,
@@ -113,12 +137,13 @@ class BrandingProjectController extends Controller
 
     public function edit(BrandingProject $brandingProject)
     {
-
         $tags = Tag::all();
+        $teamMembers = TeamMember::all();
 
         return Inertia::render('admin/branding-projects/edit', [
-            'brandingProject' => $brandingProject->load(['tags', 'images']),
+            'brandingProject' => $brandingProject->load(['tags', 'images', 'members']),
             'tags' => $tags,
+            'teamMembers' => $teamMembers
         ]);
     }
 
@@ -132,16 +157,22 @@ class BrandingProjectController extends Controller
             'client_email' => 'nullable|email|max:255',
             'client_phone' => 'nullable|string|max:255',
             'service_fees' => 'nullable|numeric',
-            'service_start_date' => 'nullable|date',
-            'service_end_date' => 'nullable|date|after_or_equal:service_start_date',
+            'year' => 'required|numeric',
+            'project_keywords' => 'required|string',
+            'project_scopes' => 'required|string',
+            'project_link' => 'required|string',
+            'industry_type' => 'required|string',
+            'is_published' => 'required|boolean',
             'tags' => 'required|array',
             'tags.*' => 'exists:tags,id',
             'images' => 'nullable|array',
-            'images.*' => 'required', // Changed from 'image|max:5120' to handle both files and strings
+            'images.*' => 'required',
             'primary_image_id' => 'nullable|integer',
             'primary_image_index' => 'nullable|integer',
             'removed_images' => 'nullable|array',
             'removed_images.*' => 'exists:branding_project_images,id',
+            'project_members' => 'required|array',
+            'project_members.*' => 'required',
         ]);
 
         $brandingProject->update([
@@ -152,8 +183,12 @@ class BrandingProjectController extends Controller
             'client_email' => $validated['client_email'] ?? null,
             'client_phone' => $validated['client_phone'] ?? null,
             'service_fees' => $validated['service_fees'] ?? null,
-            'service_start_date' => $validated['service_start_date'] ?? null,
-            'service_end_date' => $validated['service_end_date'] ?? null,
+            'industry_type' => $validated['industry_type'],
+            'project_keywords' => $validated['project_keywords'],
+            'project_scopes' => $validated['project_scopes'],
+            'project_link' => $validated['project_link'],
+            'is_published' => $validated['is_published'],
+            'year' => $validated['year'],
         ]);
 
         if (isset($validated['tags'])) {
@@ -196,13 +231,24 @@ class BrandingProjectController extends Controller
             }
         }
 
-        // Update primary image if needed
         if ($request->has('primary_image_id') && $request->input('primary_image_index') === null) {
             $brandingProject->images()->update(['is_primary' => false]);
 
             BrandingProjectImage::where('id', $request->input('primary_image_id'))
                 ->where('branding_project_id', $brandingProject->id)
                 ->update(['is_primary' => true]);
+        }
+
+        if (isset($validated['project_members'])) {
+            $brandingProject->members()->detach();
+
+            foreach ($validated['project_members'] as $member) {
+                BrandingProjectMember::create([
+                    'branding_project_id' => $brandingProject->id,
+                    'team_member_id' => $member['team_member_id'],
+                    'is_lead' => $member['is_lead'] ?? false,
+                ]);
+            }
         }
 
         return redirect()->route('branding-projects.index')

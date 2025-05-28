@@ -4,7 +4,7 @@ import { Link } from '@inertiajs/react';
 import { Menu } from 'lucide-react';
 import { RefObject, useRef } from 'react';
 import { useOnClickOutside } from 'usehooks-ts';
-import Logo from './icons/logo';
+import LogoWithTagLines from './icons/logo-with-tag-line';
 import NavSidebar from './nav-sidebar';
 
 export default function Navbar() {
@@ -26,26 +26,17 @@ export default function Navbar() {
 
     return (
         <header className="min-h-[50px]">
-            <nav className="app-container flex items-center justify-between border-b py-4">
-                <Link className="font-inter text-xl font-bold" href="/">
-                    WALKING BRANDS
+            <nav className="app-container flex items-center justify-between">
+                <Link href="/" className="transition-transform duration-500 hover:-translate-y-1">
+                    <LogoWithTagLines className="w-[250px] md:w-[300px] lg:w-[400px]" />
                 </Link>
-                <div
-                    onClick={() => {
-                        if (isMobile) {
-                            handleToggleNav();
-                        }
-                    }}
-                >
-                    <Logo className="size-[60px] sm:-translate-x-[70%]" />
-                </div>
                 <button
                     ref={navToggleBtn}
                     onClick={handleToggleNav}
-                    className="hover:bg-secondary-pink active:bg-secondary-pink text-md hidden cursor-pointer items-center gap-2 rounded-full bg-black px-3 py-1 text-white select-none sm:flex"
+                    className="hover:text-secondary-pink active:text-secondary-pink text-md cursor-pointer items-center gap-2 rounded-full px-3 py-1 text-black select-none sm:flex"
                 >
                     <Menu size={20} />
-                    <span>MENU</span>
+                    <span className="hidden font-bold md:block">MENU</span>
                 </button>
             </nav>
 

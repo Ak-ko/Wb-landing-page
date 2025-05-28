@@ -192,7 +192,7 @@ export default function BusinessProcessSection() {
     const transitionStyles = getTransitionStyles();
 
     return (
-        <section ref={sectionRef} className="relative bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-950">
+        <section ref={sectionRef} id="work" className="relative bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-950">
             {/* Background decorative elements */}
             <div className="pointer-events-none absolute inset-0 overflow-hidden opacity-10">
                 <div className="bg-primary/20 absolute -top-24 -left-24 h-96 w-96 rounded-full blur-3xl"></div>
