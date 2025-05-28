@@ -1,6 +1,7 @@
 import { Head, router } from '@inertiajs/react';
 import { ArrowLeft, Calendar, Coins, Edit, Link, Mail, Phone, User } from 'lucide-react';
 
+import ProjectMember from '@/components/app/admin/branding-project/project-member-card';
 import DashboardTitle from '@/components/app/dashboard-title';
 import ProjectImageCarousel from '@/components/app/project-image-carousel';
 import { Badge } from '@/components/ui/badge';
@@ -99,9 +100,25 @@ export default function ShowBrandingProject({ brandingProject }: ShowBrandingPro
                                         </p>
                                     </div>
                                 </div>
+
+                                <hr className="my-6 border-dotted" />
+
+                                <div>
+                                    <h3 className="mb-4 text-2xl font-semibold text-gray-800">Members Details</h3>
+
+                                    <div className="mb-6">
+                                        <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+                                            {brandingProject?.members &&
+                                                brandingProject?.members?.map((m) => <ProjectMember key={m.id} member={m} />)}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr className="my-6 border-dotted" />
+
                                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                     <div>
-                                        <h4 className="mb-3 text-lg font-medium text-gray-700">Client Information</h4>
+                                        <h4 className="mb-4 text-2xl font-semibold text-gray-800">Client Information</h4>
                                         <div className="space-y-2">
                                             <div className="flex items-center gap-2 text-gray-600">
                                                 <User className="text-primary h-4 w-4" />

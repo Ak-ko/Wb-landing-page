@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -47,10 +48,13 @@ class BrandingProject extends Model
         return $this->hasMany(BrandingProjectImage::class)->where('is_primary', true)->first();
     }
 
-    public function members(): HasMany
+    public function members(): BelongsToMany
     {
-        return $this->hasMany(BrandingProjectMember::class);
+        return $this
+            ->belongsToMany(TeamMember::class, 'branding_project_members')
+            ->withPivot('is_lead');
     }
+
 
     public function scopePublished($query)
     {

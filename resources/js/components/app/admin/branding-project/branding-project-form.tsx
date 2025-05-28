@@ -7,9 +7,11 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
-import { BrandingProjectT, TagT } from '@/types';
-import { useForm } from '@inertiajs/react';
+import { BrandingProjectMemberT, BrandingProjectT, TagT, TeamMemberT } from '@/types';
+import { useForm, usePage } from '@inertiajs/react';
 import { useState } from 'react';
+import Select, { MultiValue } from 'react-select';
+import ProjectLeadCard from '../../project-lead-card';
 import BrandingProjectImageGallery from './branding-project-image-gallery';
 
 interface BrandingProjectFormProps {
@@ -21,6 +23,7 @@ interface BrandingProjectFormProps {
 
 export default function BrandingProjectForm({ brandingProject, tags, onSuccess, onSubmit }: BrandingProjectFormProps) {
     const [selectedTags, setSelectedTags] = useState<number[]>(brandingProject?.tags.map((tag) => tag.id) || []);
+    const { teamMembers } = usePage<{ teamMembers: TeamMemberT[] }>().props;
 
     const { data, setData, post, put, processing, errors, reset } = useForm({
         title: brandingProject?.title || '',
@@ -41,6 +44,12 @@ export default function BrandingProjectForm({ brandingProject, tags, onSuccess, 
         removed_images: [] as number[],
         primary_image_id: brandingProject?.images.find((img) => img.is_primary)?.id || null,
         primary_image_index: null as number | null,
+        project_members:
+            brandingProject?.members.map((value) => ({
+                branding_project_id: brandingProject?.id || null,
+                team_member_id: value.id,
+                is_lead: !!value?.pivot?.is_lead,
+            })) || ([] as BrandingProjectMemberT[] | null),
     });
 
     const [existingImages, setExistingImages] = useState(
@@ -50,6 +59,8 @@ export default function BrandingProjectForm({ brandingProject, tags, onSuccess, 
             is_primary: img.is_primary,
         })) || [],
     );
+
+    const [selectedTeamMembers, setSelectedTeamMembers] = useState<TeamMemberT[]>(brandingProject?.members || []);
 
     const [newImages, setNewImages] = useState<{ file: string | File; url: string; is_primary: boolean }[]>([]);
 
@@ -108,11 +119,9 @@ export default function BrandingProjectForm({ brandingProject, tags, onSuccess, 
     const handleRemoveExistingImage = (imageId: number) => {
         const isRemovingPrimary = existingImages.find((img) => img.id === imageId)?.is_primary || false;
 
-        // Remove the image from state
         setExistingImages((prev) => prev.filter((img) => img.id !== imageId));
         setData('removed_images', [...data.removed_images, imageId]);
 
-        // If we're removing the primary image, set a new one if available
         if (isRemovingPrimary) {
             const nextImage = existingImages.find((img) => img.id !== imageId);
             if (nextImage) {
@@ -129,14 +138,12 @@ export default function BrandingProjectForm({ brandingProject, tags, onSuccess, 
     const handleRemoveNewImage = (index: number) => {
         const isRemovingPrimary = newImages[index]?.is_primary || false;
 
-        // Remove the image from state
         setNewImages((prev) => prev.filter((_, i) => i !== index));
         setData(
             'images',
             data.images.filter((_, i) => i !== index),
         );
 
-        // If we're removing the primary image, set a new one if available
         if (isRemovingPrimary) {
             if (newImages.length > 1) {
                 const newPrimaryIndex = index === 0 ? 1 : 0;
@@ -148,6 +155,30 @@ export default function BrandingProjectForm({ brandingProject, tags, onSuccess, 
                 setData('primary_image_index', null);
             }
         }
+    };
+
+    const handleChangeProjectMembers = (values: MultiValue<TeamMemberT>) => {
+        const valuesArr = values.map((value) => ({
+            branding_project_id: brandingProject?.id || null,
+            team_member_id: value.id,
+            is_lead: !!value?.pivot?.is_lead || false,
+        }));
+
+        setData('project_members', valuesArr as BrandingProjectMemberT[]);
+
+        setSelectedTeamMembers(values as TeamMemberT[]);
+    };
+
+    const handleLeadChange = (selectedTeamMember: TeamMemberT, checked: boolean) => {
+        // @ts-expect-error @ts-ignore
+        const updatedMembers = data?.project_members?.map((member: BrandingProjectMemberT) => {
+            if (member?.team_member_id === selectedTeamMember?.id) {
+                return { ...member, is_lead: checked };
+            }
+            return member;
+        });
+
+        setData('project_members', updatedMembers as BrandingProjectMemberT[]);
     };
 
     const handleSetPrimaryImage = (imageId: number | string) => {
@@ -293,6 +324,33 @@ export default function BrandingProjectForm({ brandingProject, tags, onSuccess, 
                             onChange={(e) => setData('project_link', e.target.value)}
                         />
                         {errors.project_link && <p className="text-sm text-red-500">{errors.project_link}</p>}
+                    </div>
+
+                    <div className="col-span-2 space-y-2">
+                        <label htmlFor="project_members" className="block text-sm font-medium">
+                            Project Members<span className="text-red-500">*</span>
+                        </label>
+                        <Select
+                            className="rounded-2xl border-0 shadow-xs"
+                            options={teamMembers}
+                            value={selectedTeamMembers}
+                            isMulti
+                            getOptionValue={(o) => o.id?.toString()}
+                            getOptionLabel={(o) => o.name}
+                            onChange={(values) => {
+                                handleChangeProjectMembers(values);
+                            }}
+                        />
+                        {errors.project_members && <p className="text-sm text-red-500">{errors.project_members}</p>}
+                    </div>
+
+                    <div className="col-span-2 space-y-2">
+                        <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+                            {selectedTeamMembers?.map((selectedTeamMember: TeamMemberT) => (
+                                <ProjectLeadCard key={selectedTeamMember?.id} selectedTeamMember={selectedTeamMember} onChange={handleLeadChange} />
+                            ))}
+                        </div>
+                        {selectedTeamMembers?.length === 0 && <div className="text-sm text-gray-500">No Project Members Chosen Yet !</div>}
                     </div>
                 </div>
             </fieldset>

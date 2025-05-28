@@ -111,12 +111,12 @@ export type BrandingProjectT = {
     is_published: boolean;
     tags: TagT[];
     images: BrandingProjectImageT[];
-    members: BrandingProjectMemberT[];
+    members: TeamMemberT[];
 } & TimestampsT;
 
 export type BrandingProjectMemberT = {
     id: number;
-    branding_project_id: number;
+    branding_project_id: number | null;
     team_member_id: number;
     is_lead: boolean;
     team_member?: TeamMemberT;
@@ -168,6 +168,7 @@ export type TeamMemberT = {
     color?: string;
     bio?: string;
     is_active: boolean;
+    pivot: BrandingProjectMemberT;
 } & TimestampsT;
 
 interface CommonPaginationT<T> {
