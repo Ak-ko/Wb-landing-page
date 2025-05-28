@@ -42,7 +42,7 @@ export default function ProjectImageCarousel({ images, projectTitle, className }
                             <div className="p-1">
                                 <div className="overflow-hidden rounded-lg shadow-md transition-all hover:shadow-lg">
                                     <img
-                                        src={`/storage/${image.image}`}
+                                        src={`${image.image}`}
                                         alt={`${projectTitle} - Image ${index + 1}`}
                                         className="aspect-video h-auto w-full object-cover"
                                     />

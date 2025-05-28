@@ -101,14 +101,14 @@ export function DataTable<TData, TValue>({
 
     return (
         <div className={className}>
-            <div className="rounded-lg border shadow-sm">
+            <div className="border shadow-sm">
                 <Table>
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => (
                                     <TableHead
-                                        className="bg-primary/10 text-primary px-4 py-2 text-center font-bold break-words whitespace-normal"
+                                        className="bg-primary/90 px-4 py-2 text-center font-bold break-words whitespace-normal text-white"
                                         key={header.id}
                                     >
                                         {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}

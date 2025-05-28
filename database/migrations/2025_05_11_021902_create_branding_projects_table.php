@@ -19,9 +19,14 @@ return new class extends Migration
             $table->string('client_name')->nullable();
             $table->string('client_email')->nullable();
             $table->string('client_phone')->nullable();
+            $table->string("industry_type")->nullable();
             $table->decimal('service_fees', 10, 2)->nullable();
-            $table->date('service_start_date')->nullable();
-            $table->date('service_end_date')->nullable();
+            $table->integer("year")->nullable();
+            $table->text("project_keywords")->nullable();
+            $table->text("project_scopes")->nullable();
+            $table->string('project_link')->nullable();
+            $table->boolean("is_published")->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

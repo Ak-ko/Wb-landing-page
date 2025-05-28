@@ -1,16 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
 import { Input } from '@/components/ui/input';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import { BrandingProjectT, TagT } from '@/types';
 import { useForm } from '@inertiajs/react';
-import { format } from 'date-fns';
-import { CalendarIcon } from 'lucide-react';
 import { useState } from 'react';
 import BrandingProjectImageGallery from './branding-project-image-gallery';
 
@@ -24,7 +22,7 @@ interface BrandingProjectFormProps {
 export default function BrandingProjectForm({ brandingProject, tags, onSuccess, onSubmit }: BrandingProjectFormProps) {
     const [selectedTags, setSelectedTags] = useState<number[]>(brandingProject?.tags.map((tag) => tag.id) || []);
 
-    const { data, setData, post, put, processing, errors, reset, setError } = useForm({
+    const { data, setData, post, put, processing, errors, reset } = useForm({
         title: brandingProject?.title || '',
         description: brandingProject?.description || '',
         client_company: brandingProject?.client_company || '',
@@ -32,9 +30,13 @@ export default function BrandingProjectForm({ brandingProject, tags, onSuccess, 
         client_email: brandingProject?.client_email || '',
         client_phone: brandingProject?.client_phone || '',
         service_fees: brandingProject?.service_fees || '',
-        service_start_date: brandingProject?.service_start_date || '',
-        service_end_date: brandingProject?.service_end_date || '',
+        year: brandingProject?.year || '',
+        industry_type: brandingProject?.industry_type || '',
+        project_keywords: brandingProject?.project_keywords || '',
+        project_scopes: brandingProject?.project_scopes || '',
+        project_link: brandingProject?.project_link || '',
         tags: brandingProject?.tags.map((tag) => tag.id) || [],
+        is_published: brandingProject?.is_published || (true as boolean),
         images: [] as File[],
         removed_images: [] as number[],
         primary_image_id: brandingProject?.images.find((img) => img.is_primary)?.id || null,
@@ -51,10 +53,8 @@ export default function BrandingProjectForm({ brandingProject, tags, onSuccess, 
 
     const [newImages, setNewImages] = useState<{ file: string | File; url: string; is_primary: boolean }[]>([]);
 
-    // Helper function to update primary image status
     const updatePrimaryImageStatus = (isPrimary: boolean, targetId?: number | null, isNew = false) => {
         if (isPrimary) {
-            // Reset primary status on existing images
             setExistingImages((prev) =>
                 prev.map((img) => ({
                     ...img,
@@ -62,7 +62,6 @@ export default function BrandingProjectForm({ brandingProject, tags, onSuccess, 
                 })),
             );
 
-            // Reset primary status on new images
             setNewImages((prev) =>
                 prev.map((img, i) => ({
                     ...img,
@@ -70,7 +69,6 @@ export default function BrandingProjectForm({ brandingProject, tags, onSuccess, 
                 })),
             );
 
-            // Update form data
             if (!isNew && targetId !== null) {
                 // @ts-expect-error @ts-ignore
                 setData('primary_image_id', targetId);
@@ -90,46 +88,21 @@ export default function BrandingProjectForm({ brandingProject, tags, onSuccess, 
     };
 
     const handleImageUpload = (file: File | string, isPrimary = false) => {
-        // If it's a string (path from chunked upload), handle it differently
-        if (typeof file === 'string') {
-            // Create a new image entry with the path
-            const newImage = {
-                file,
-                url: `/storage/${file}`,
-                is_primary: isPrimary,
-            };
+        const newImage = {
+            file,
+            url: `/storage/${file}`,
+            is_primary: isPrimary,
+        };
 
-            const newIndex = newImages.length;
-            setNewImages((prev) => [...prev, newImage]);
+        const newIndex = newImages.length;
+        setNewImages((prev) => [...prev, newImage]);
 
-            if (isPrimary) {
-                updatePrimaryImageStatus(true, newIndex, true);
-            }
-
-            // @ts-expect-error @ts-ignore
-            setData('images', [...data.images, file]);
-        } else {
-            // Handle File object
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const newImage = {
-                    file,
-                    url: e.target?.result as string,
-                    is_primary: isPrimary,
-                };
-
-                const newIndex = newImages.length;
-                setNewImages((prev) => [...prev, newImage]);
-
-                // Update primary image status if needed
-                if (isPrimary) {
-                    updatePrimaryImageStatus(true, newIndex, true);
-                }
-            };
-            reader.readAsDataURL(file);
-
-            setData('images', [...data.images, file]);
+        if (isPrimary) {
+            updatePrimaryImageStatus(true, newIndex, true);
         }
+
+        // @ts-expect-error @ts-ignore
+        setData('images', [...data.images, file]);
     };
 
     const handleRemoveExistingImage = (imageId: number) => {
@@ -189,79 +162,16 @@ export default function BrandingProjectForm({ brandingProject, tags, onSuccess, 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        // Validate required fields
-        const validationErrors: Record<string, string> = {};
-        if (!data.title.trim()) {
-            validationErrors.title = 'Project title is required';
-        }
-
-        if (!data.client_company.trim()) {
-            validationErrors.client_company = 'Client company is required';
-        }
-
-        if (existingImages.length === 0 && newImages.length === 0) {
-            validationErrors.images = 'At least one project image is required';
-        }
-
-        if (data.tags.length === 0) {
-            validationErrors.tags = 'At least one tag must be selected';
-        }
-
-        if (Object.keys(validationErrors).length > 0) {
-            for (const [key, value] of Object.entries(validationErrors)) {
-                setError(key as keyof typeof data, value);
-            }
-            return;
-        }
-
-        const formData = new FormData();
-
-        Object.entries(data).forEach(([key, value]) => {
-            if (key === 'images') {
-                (value as Array<File | string>).forEach((file) => {
-                    formData.append('images[]', file);
-                });
-            } else if (key === 'tags') {
-                (value as number[]).forEach((tagId) => {
-                    formData.append('tags[]', tagId.toString());
-                });
-            } else if (key === 'removed_images') {
-                (value as number[]).forEach((imageId) => {
-                    formData.append('removed_images[]', imageId.toString());
-                });
-            } else if (value !== null && value !== undefined) {
-                formData.append(key, value.toString());
-            }
-        });
-
-        // If a new image is set as primary, add the primary_image_index
-        const primaryNewImage = newImages.findIndex((img) => img.is_primary);
-        if (primaryNewImage !== -1) {
-            formData.append('primary_image_index', primaryNewImage.toString());
-        }
-
         const url = brandingProject ? route('branding-projects.update', brandingProject.id) : route('branding-projects.store');
 
-        if (onSubmit) {
-            onSubmit(formData);
-            return;
-        }
-
         if (brandingProject) {
-            formData.append('_method', 'PUT');
-            post(url, {
-                // @ts-expect-error @ts-ignore
-                data: formData,
-                forceFormData: true,
+            put(url, {
                 onSuccess: () => {
                     onSuccess();
                 },
             });
         } else {
             post(url, {
-                // @ts-expect-error @ts-ignore
-                data: formData,
-                forceFormData: true,
                 onSuccess: () => {
                     reset();
                     onSuccess();
@@ -282,144 +192,165 @@ export default function BrandingProjectForm({ brandingProject, tags, onSuccess, 
 
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="space-y-2">
-                <label htmlFor="title" className="block text-sm font-medium">
-                    Project Title <span className="text-red-500">*</span>
-                </label>
-                <Input id="title" placeholder="Enter project title" value={data.title} onChange={(e) => setData('title', e.target.value)} />
-                {errors.title && <p className="text-sm text-red-500">{errors.title}</p>}
-            </div>
+            <fieldset className="rounded-xl border p-5">
+                <legend className="font-bold">Project Information</legend>
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                    <div className="space-y-2">
+                        <label htmlFor="title" className="block text-sm font-medium">
+                            Project Title <span className="text-red-500">*</span>
+                        </label>
+                        <Input id="title" placeholder="Enter project title" value={data.title} onChange={(e) => setData('title', e.target.value)} />
+                        {errors.title && <p className="text-sm text-red-500">{errors.title}</p>}
+                    </div>
 
-            <div className="space-y-2">
-                <label htmlFor="description" className="block text-sm font-medium">
-                    Description
-                </label>
-                <Textarea
-                    id="description"
-                    placeholder="Enter project description"
-                    value={data.description}
-                    onChange={(e) => setData('description', e.target.value)}
-                    rows={3}
-                />
-                {errors.description && <p className="text-sm text-red-500">{errors.description}</p>}
-            </div>
+                    <div className="space-y-2">
+                        <label htmlFor="project_keywords" className="block text-sm font-medium">
+                            Project Keywords<span className="text-red-500">*</span>
+                        </label>
+                        <Input
+                            id="project_keywords"
+                            type="text"
+                            placeholder="Enter Project Keywords"
+                            value={data.project_keywords}
+                            onChange={(e) => setData('project_keywords', e.target.value)}
+                        />
+                        {errors.project_keywords && <p className="text-sm text-red-500">{errors.project_keywords}</p>}
+                    </div>
 
-            <div className="space-y-2">
-                <label htmlFor="client_company" className="block text-sm font-medium">
-                    Client Company<span className="text-red-500">*</span>
-                </label>
-                <Input
-                    id="client_company"
-                    placeholder="Enter client company name"
-                    value={data.client_company}
-                    onChange={(e) => setData('client_company', e.target.value)}
-                />
-                {errors.client_company && <p className="text-sm text-red-500">{errors.client_company}</p>}
-            </div>
+                    <div className="space-y-2">
+                        <label htmlFor="year" className="block text-sm font-medium">
+                            Year<span className="text-red-500">*</span>
+                        </label>
+                        <Input id="year" type="number" placeholder="Enter year" value={data.year} onChange={(e) => setData('year', e.target.value)} />
+                        {errors.year && <p className="text-sm text-red-500">{errors.year}</p>}
+                    </div>
 
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                <div className="space-y-2">
-                    <label htmlFor="client_name" className="block text-sm font-medium">
-                        Client Name
-                    </label>
-                    <Input
-                        id="client_name"
-                        placeholder="Enter client name"
-                        value={data.client_name}
-                        onChange={(e) => setData('client_name', e.target.value)}
-                    />
-                    {errors.client_name && <p className="text-sm text-red-500">{errors.client_name}</p>}
-                </div>
-                <div className="space-y-2">
-                    <label htmlFor="client_email" className="block text-sm font-medium">
-                        Client Email
-                    </label>
-                    <Input
-                        id="client_email"
-                        type="email"
-                        placeholder="Enter client email"
-                        value={data.client_email}
-                        onChange={(e) => setData('client_email', e.target.value)}
-                    />
-                    {errors.client_email && <p className="text-sm text-red-500">{errors.client_email}</p>}
-                </div>
-                <div className="space-y-2">
-                    <label htmlFor="client_phone" className="block text-sm font-medium">
-                        Client Phone
-                    </label>
-                    <Input
-                        id="client_phone"
-                        placeholder="Enter client phone"
-                        value={data.client_phone}
-                        onChange={(e) => setData('client_phone', e.target.value)}
-                    />
-                    {errors.client_phone && <p className="text-sm text-red-500">{errors.client_phone}</p>}
-                </div>
-            </div>
+                    <div className="space-y-2">
+                        <label htmlFor="industry_type" className="block text-sm font-medium">
+                            Industry<span className="text-red-500">*</span>
+                        </label>
+                        <Input
+                            id="industry_type"
+                            type="text"
+                            placeholder="Enter Industry"
+                            value={data.industry_type}
+                            onChange={(e) => setData('industry_type', e.target.value)}
+                        />
+                        {errors.industry_type && <p className="text-sm text-red-500">{errors.industry_type}</p>}
+                    </div>
 
-            <div className="space-y-2">
-                <label htmlFor="service_fees" className="block text-sm font-medium">
-                    Service Fees
-                </label>
-                <Input
-                    id="service_fees"
-                    type="number"
-                    step="0.01"
-                    placeholder="Enter service fees"
-                    value={data.service_fees}
-                    onChange={(e) => setData('service_fees', e.target.value)}
-                />
-                {errors.service_fees && <p className="text-sm text-red-500">{errors.service_fees}</p>}
-            </div>
+                    <div className="space-y-2">
+                        <label htmlFor="project_scopes" className="block text-sm font-medium">
+                            Project Scopes<span className="text-red-500">*</span>
+                        </label>
+                        <Textarea
+                            id="project_scopes"
+                            placeholder="Enter Project Scopes"
+                            value={data.project_scopes}
+                            onChange={(e) => setData('project_scopes', e.target.value)}
+                        />
+                        {errors.project_scopes && <p className="text-sm text-red-500">{errors.project_scopes}</p>}
+                    </div>
 
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <div className="space-y-2">
-                    <label className="block text-sm font-medium">Service Start Date</label>
-                    <Popover>
-                        <PopoverTrigger asChild>
-                            <Button
-                                variant="outline"
-                                className={cn('w-full justify-start text-left font-normal', !data.service_start_date && 'text-muted-foreground')}
-                            >
-                                <CalendarIcon className="mr-2 h-4 w-4" />
-                                {data.service_start_date ? format(new Date(data.service_start_date), 'PPP') : <span>Pick a date</span>}
-                            </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0">
-                            <Calendar
-                                mode="single"
-                                selected={data.service_start_date ? new Date(data.service_start_date) : undefined}
-                                onSelect={(date: any) => setData('service_start_date', date ? date.toISOString() : '')}
-                                initialFocus
-                            />
-                        </PopoverContent>
-                    </Popover>
-                    {errors.service_start_date && <p className="text-sm text-red-500">{errors.service_start_date}</p>}
+                    <div className="space-y-2">
+                        <label htmlFor="description" className="block text-sm font-medium">
+                            Description
+                        </label>
+                        <Textarea
+                            id="description"
+                            placeholder="Enter project description"
+                            value={data.description}
+                            onChange={(e) => setData('description', e.target.value)}
+                            rows={3}
+                        />
+                        {errors.description && <p className="text-sm text-red-500">{errors.description}</p>}
+                    </div>
+
+                    <div className="space-y-2">
+                        <label htmlFor="service_fees" className="block text-sm font-medium">
+                            Service Fees<span className="text-red-500">*</span>
+                        </label>
+                        <Input
+                            id="service_fees"
+                            type="number"
+                            step="0.01"
+                            placeholder="Enter service fees"
+                            value={data.service_fees}
+                            onChange={(e) => setData('service_fees', e.target.value)}
+                        />
+                        {errors.service_fees && <p className="text-sm text-red-500">{errors.service_fees}</p>}
+                    </div>
+
+                    <div className="space-y-2">
+                        <label htmlFor="project_link" className="block text-sm font-medium">
+                            Behance Link<span className="text-red-500">*</span>
+                        </label>
+                        <Input
+                            id="project_link"
+                            type="text"
+                            placeholder="Enter Link"
+                            value={data.project_link}
+                            onChange={(e) => setData('project_link', e.target.value)}
+                        />
+                        {errors.project_link && <p className="text-sm text-red-500">{errors.project_link}</p>}
+                    </div>
                 </div>
-                <div className="space-y-2">
-                    <label className="block text-sm font-medium">Service End Date</label>
-                    <Popover>
-                        <PopoverTrigger asChild>
-                            <Button
-                                variant="outline"
-                                className={cn('w-full justify-start text-left font-normal', !data.service_end_date && 'text-muted-foreground')}
-                            >
-                                <CalendarIcon className="mr-2 h-4 w-4" />
-                                {data.service_end_date ? format(new Date(data.service_end_date), 'PPP') : <span>Pick a date</span>}
-                            </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0">
-                            <Calendar
-                                mode="single"
-                                selected={data.service_end_date ? new Date(data.service_end_date) : undefined}
-                                onSelect={(date: any) => setData('service_end_date', date ? date.toISOString() : '')}
-                                initialFocus
-                            />
-                        </PopoverContent>
-                    </Popover>
-                    {errors.service_end_date && <p className="text-sm text-red-500">{errors.service_end_date}</p>}
+            </fieldset>
+
+            <fieldset className="rounded-xl border p-5">
+                <legend className="font-bold">Client Information</legend>
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                    <div className="space-y-2">
+                        <label htmlFor="client_company" className="block text-sm font-medium">
+                            Company<span className="text-red-500">*</span>
+                        </label>
+                        <Input
+                            id="client_company"
+                            placeholder="Enter client company name"
+                            value={data.client_company}
+                            onChange={(e) => setData('client_company', e.target.value)}
+                        />
+                        {errors.client_company && <p className="text-sm text-red-500">{errors.client_company}</p>}
+                    </div>
+                    <div className="space-y-2">
+                        <label htmlFor="client_name" className="block text-sm font-medium">
+                            Name
+                        </label>
+                        <Input
+                            id="client_name"
+                            placeholder="Enter client name"
+                            value={data.client_name}
+                            onChange={(e) => setData('client_name', e.target.value)}
+                        />
+                        {errors.client_name && <p className="text-sm text-red-500">{errors.client_name}</p>}
+                    </div>
+                    <div className="space-y-2">
+                        <label htmlFor="client_email" className="block text-sm font-medium">
+                            Email
+                        </label>
+                        <Input
+                            id="client_email"
+                            type="email"
+                            placeholder="Enter client email"
+                            value={data.client_email}
+                            onChange={(e) => setData('client_email', e.target.value)}
+                        />
+                        {errors.client_email && <p className="text-sm text-red-500">{errors.client_email}</p>}
+                    </div>
+                    <div className="space-y-2">
+                        <label htmlFor="client_phone" className="block text-sm font-medium">
+                            Phone
+                        </label>
+                        <Input
+                            id="client_phone"
+                            placeholder="Enter client phone"
+                            value={data.client_phone}
+                            onChange={(e) => setData('client_phone', e.target.value)}
+                        />
+                        {errors.client_phone && <p className="text-sm text-red-500">{errors.client_phone}</p>}
+                    </div>
                 </div>
-            </div>
+            </fieldset>
 
             <div className="space-y-2">
                 <label className="block text-sm font-medium">
@@ -465,6 +396,18 @@ export default function BrandingProjectForm({ brandingProject, tags, onSuccess, 
                     {errors.tags && <p className="text-sm text-red-500">{errors.tags}</p>}
                 </div>
             )}
+
+            <div className="flex items-center space-x-2">
+                <Switch
+                    id="is_published"
+                    checked={data.is_published}
+                    onCheckedChange={(checked) => {
+                        setData('is_published', checked);
+                    }}
+                />
+                <Label htmlFor="is_published">Published</Label>
+                {errors.is_published && <p className="text-sm text-red-500">{errors.is_published}</p>}
+            </div>
             <div className="flex justify-end space-x-2">
                 <Button type="button" variant="outline" onClick={() => window.history.back()}>
                     Cancel

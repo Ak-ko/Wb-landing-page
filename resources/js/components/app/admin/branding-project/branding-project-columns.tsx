@@ -37,6 +37,22 @@ export const createBrandingProjectColumns = ({ handleDeleteClick }: BrandingProj
         header: 'Client',
     },
     {
+        accessorKey: 'industry_type',
+        header: 'Industry',
+    },
+    {
+        accessorKey: 'year',
+        header: 'Year',
+        cell: ({ row }) => {
+            if (!row.original.year) return <span>-</span>;
+            return <span>{row.original.year}</span>;
+        },
+    },
+    {
+        accessorKey: 'project_scopes',
+        header: 'Project Scope',
+    },
+    {
         accessorKey: 'tags',
         header: 'Tags',
         cell: ({ row }) => (
@@ -48,22 +64,6 @@ export const createBrandingProjectColumns = ({ handleDeleteClick }: BrandingProj
                 ))}
             </div>
         ),
-    },
-    {
-        accessorKey: 'service_start_date',
-        header: 'Start Date',
-        cell: ({ row }) => {
-            if (!row.original.service_start_date) return <span>-</span>;
-            return <span>{new Date(row.original.service_start_date).toLocaleDateString()}</span>;
-        },
-    },
-    {
-        accessorKey: 'service_end_date',
-        header: 'End Date',
-        cell: ({ row }) => {
-            if (!row.original.service_end_date) return <span>-</span>;
-            return <span>{new Date(row.original.service_end_date).toLocaleDateString()}</span>;
-        },
     },
     {
         id: 'actions',

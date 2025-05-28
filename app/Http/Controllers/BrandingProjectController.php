@@ -55,13 +55,17 @@ class BrandingProjectController extends Controller
             'client_name' => 'nullable|string|max:255',
             'client_email' => 'nullable|email|max:255',
             'client_phone' => 'nullable|string|max:255',
-            'service_fees' => 'nullable|numeric',
-            'service_start_date' => 'nullable|date',
-            'service_end_date' => 'nullable|date|after_or_equal:service_start_date',
+            'service_fees' => 'required|numeric',
+            'year' => 'required|numeric',
+            'project_keywords' => 'required|string',
+            'industry_type' => 'required|string',
+            'project_scopes' => 'required|string',
+            'project_link' => 'required|string',
+            'is_published' => 'required|boolean',
             'tags' => 'required|array',
             'tags.*' => 'exists:tags,id',
             'images' => 'required|array',
-            'images.*' => 'required', // Changed from 'image|max:5120' to handle both files and strings
+            'images.*' => 'required',
             'primary_image_index' => 'nullable|integer',
         ]);
 
@@ -73,8 +77,12 @@ class BrandingProjectController extends Controller
             'client_email' => $validated['client_email'] ?? null,
             'client_phone' => $validated['client_phone'] ?? null,
             'service_fees' => $validated['service_fees'] ?? null,
-            'service_start_date' => $validated['service_start_date'] ?? null,
-            'service_end_date' => $validated['service_end_date'] ?? null,
+            'year' => $validated['year'],
+            'project_keywords' => $validated['project_keywords'],
+            'project_scopes' => $validated['project_scopes'],
+            'project_link' => $validated['project_link'],
+            'industry_type' => $validated['industry_type'],
+            'is_published' => $validated['is_published'],
         ]);
 
         if (isset($validated['tags'])) {
@@ -132,12 +140,16 @@ class BrandingProjectController extends Controller
             'client_email' => 'nullable|email|max:255',
             'client_phone' => 'nullable|string|max:255',
             'service_fees' => 'nullable|numeric',
-            'service_start_date' => 'nullable|date',
-            'service_end_date' => 'nullable|date|after_or_equal:service_start_date',
+            'year' => 'required|numeric',
+            'project_keywords' => 'required|string',
+            'project_scopes' => 'required|string',
+            'project_link' => 'required|string',
+            'industry_type' => 'required|string',
+            'is_published' => 'required|boolean',
             'tags' => 'required|array',
             'tags.*' => 'exists:tags,id',
             'images' => 'nullable|array',
-            'images.*' => 'required', // Changed from 'image|max:5120' to handle both files and strings
+            'images.*' => 'required',
             'primary_image_id' => 'nullable|integer',
             'primary_image_index' => 'nullable|integer',
             'removed_images' => 'nullable|array',
@@ -152,8 +164,12 @@ class BrandingProjectController extends Controller
             'client_email' => $validated['client_email'] ?? null,
             'client_phone' => $validated['client_phone'] ?? null,
             'service_fees' => $validated['service_fees'] ?? null,
-            'service_start_date' => $validated['service_start_date'] ?? null,
-            'service_end_date' => $validated['service_end_date'] ?? null,
+            'industry_type' => $validated['industry_type'],
+            'project_keywords' => $validated['project_keywords'],
+            'project_scopes' => $validated['project_scopes'],
+            'project_link' => $validated['project_link'],
+            'is_published' => $validated['is_published'],
+            'year' => $validated['year'],
         ]);
 
         if (isset($validated['tags'])) {

@@ -28,7 +28,7 @@ export default function Navbar() {
         <header className="min-h-[50px]">
             <nav className="app-container flex items-center justify-between">
                 <Link href="/" className="transition-transform duration-500 hover:-translate-y-1">
-                    <LogoWithTagLines />
+                    <LogoWithTagLines className="w-[250px] md:w-[300px] lg:w-[400px]" />
                 </Link>
                 <button
                     ref={navToggleBtn}

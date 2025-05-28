@@ -106,7 +106,7 @@ export default function BrandingProjects({
             <div className="relative aspect-video bg-gray-100">
                 {brandingProject.images && brandingProject.images.length > 0 ? (
                     <img
-                        src={`/storage/${brandingProject.images.find((img) => img.is_primary)?.image || brandingProject.images[0].image}`}
+                        src={`${brandingProject.images.find((img) => img.is_primary)?.image || brandingProject.images[0].image}`}
                         alt={brandingProject.title}
                         className="h-[150px] w-full object-cover"
                     />
@@ -118,8 +118,10 @@ export default function BrandingProjects({
             </div>
             <CardContent className="p-4">
                 <h3 className="text-lg font-medium">{brandingProject.title}</h3>
-                <p className="text-sm text-gray-500">Client: {brandingProject.client_company}</p>
-                <p className="text-sm text-gray-500">Added on {new Date(brandingProject.created_at).toLocaleDateString()}</p>
+                <p className="text-sm text-gray-500">{brandingProject.client_company}</p>
+                {brandingProject.industry_type && <p className="mt-2 text-sm text-gray-600">{brandingProject.industry_type}</p>}
+                {brandingProject.year && <p className="mt-2 text-sm text-gray-600">{brandingProject.year}</p>}
+                {brandingProject.project_scopes && <p className="mt-2 text-sm text-gray-600">{brandingProject.project_scopes}</p>}
                 {brandingProject.description && <p className="mt-2 line-clamp-2 text-sm text-gray-600">{brandingProject.description}</p>}
                 {brandingProject.tags && brandingProject.tags.length > 0 && (
                     <div className="mt-2 flex flex-wrap gap-1">

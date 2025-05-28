@@ -19,16 +19,18 @@ class BrandingProject extends Model
         'client_email',
         'client_phone',
         'service_fees',
-        'service_start_date',
-        'service_end_date',
+        'industry_type',
+        'year',
+        'project_keywords',
+        'project_scopes',
+        'project_link',
+        'is_published'
     ];
 
     protected $casts = [
-        'service_start_date' => 'date',
-        'service_end_date' => 'date',
         'service_fees' => 'decimal:2',
+        'is_published' => 'boolean'
     ];
-
 
     public function tags(): MorphToMany
     {
@@ -43,5 +45,15 @@ class BrandingProject extends Model
     public function primaryImage()
     {
         return $this->hasMany(BrandingProjectImage::class)->where('is_primary', true)->first();
+    }
+
+    public function members(): HasMany
+    {
+        return $this->hasMany(BrandingProjectMember::class);
+    }
+
+    public function scopePublished($query)
+    {
+        return $query->where('is_published', true);
     }
 }
