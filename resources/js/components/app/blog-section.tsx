@@ -130,7 +130,7 @@ export default function BlogSection() {
                                     </motion.div>
 
                                     {/* Additional images - only shown on larger screens */}
-                                    {blog?.images?.length === 6 &&
+                                    {blog?.images?.length >= 6 &&
                                         [2, 3, 4, 5]?.map((i) => (
                                             <motion.div key={i} className="hidden overflow-hidden md:col-span-1 md:block" variants={itemVariants}>
                                                 <img

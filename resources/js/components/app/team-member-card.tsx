@@ -28,7 +28,7 @@ export default function TeamMemberCard({ teamMember, varient = 'expanded' }: Pro
                             'invisible h-full w-full max-w-[250px] -translate-y-[100px] scale-0 space-y-2 object-cover pb-5 text-center opacity-0 transition-all duration-500 group-hover:visible group-hover:translate-y-[20px] group-hover:scale-[1] group-hover:opacity-100'
                         }
                     >
-                        <h1 className="text-3xl font-bold">{teamMember?.name}</h1>
+                        <h1 className="text-3xl font-bold uppercase">{teamMember?.name}</h1>
                         <p className="text-lg font-semibold uppercase">{teamMember?.designation}</p>
                     </div>
                 )}
@@ -56,7 +56,7 @@ export default function TeamMemberCard({ teamMember, varient = 'expanded' }: Pro
                         }}
                         className="space-y-2 pb-5 text-center lg:text-start"
                     >
-                        <h1 className="text-3xl font-bold">{teamMember?.name}</h1>
+                        <h1 className="text-3xl font-bold uppercase">{teamMember?.name}</h1>
                         <p className="text-lg font-semibold uppercase">{teamMember?.designation}</p>
                         {teamMember?.bio && <p className="line-clamp-[6] text-sm">{teamMember?.bio}</p>}
                     </div>

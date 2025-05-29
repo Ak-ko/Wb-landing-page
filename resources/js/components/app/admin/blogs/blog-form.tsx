@@ -28,13 +28,14 @@ export default function BlogForm({ blog, tags, onSuccess }: BlogFormProps) {
         })) || [],
     );
 
-    const { data, setData, post, put, processing, errors, reset, setError } = useForm({
+    const { data, setData, post, put, processing, errors, reset, transform } = useForm({
         title: blog?.title || '',
         description: blog?.description || '',
         is_published: blog?.is_published ?? true,
         tags: blog?.tags.map((tag) => tag.id) || [],
         color: blog?.color || '#3b82f6',
         images: blog?.images?.map((blogImage) => blogImage?.image) || ([] as string[]),
+        new_images: [],
         removed_images: [] as number[],
         primary_image_id: blog?.images.find((img) => img.is_primary)?.id || null,
         primary_image_index: null as number | null,
@@ -100,11 +101,9 @@ export default function BlogForm({ blog, tags, onSuccess }: BlogFormProps) {
     const handleRemoveExistingImage = (imageId: number) => {
         const isRemovingPrimary = existingImages.find((img) => img.id === imageId)?.is_primary || false;
 
-        // Remove the image from state
         setExistingImages((prev) => prev.filter((img) => img.id !== imageId));
         setData('removed_images', [...data.removed_images, imageId]);
 
-        // If we're removing the primary image, set a new one if available
         if (isRemovingPrimary) {
             const nextImage = existingImages.find((img) => img.id !== imageId);
             if (nextImage) {
@@ -121,14 +120,12 @@ export default function BlogForm({ blog, tags, onSuccess }: BlogFormProps) {
     const handleRemoveNewImage = (index: number) => {
         const isRemovingPrimary = newImages[index]?.is_primary || false;
 
-        // Remove the image from state
         setNewImages((prev) => prev.filter((_, i) => i !== index));
         setData(
             'images',
             data.images.filter((_, i) => i !== index),
         );
 
-        // If we're removing the primary image, set a new one if available
         if (isRemovingPrimary) {
             if (newImages.length > 1) {
                 const newPrimaryIndex = index === 0 ? 1 : 0;
@@ -154,27 +151,12 @@ export default function BlogForm({ blog, tags, onSuccess }: BlogFormProps) {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        const validationErrors: Record<string, string> = {};
-        if (!data.title.trim()) {
-            validationErrors.title = 'Blog title is required';
-        }
-
-        if (existingImages.length === 0 && newImages.length === 0) {
-            validationErrors.images = 'At least one blog image is required';
-        }
-
-        if (data.tags.length === 0) {
-            validationErrors.tags = 'At least one tag must be selected';
-        }
-
-        if (Object.keys(validationErrors).length > 0) {
-            for (const [key, value] of Object.entries(validationErrors)) {
-                setError(key as keyof typeof data, value);
-            }
-            return;
-        }
-
         const url = blog ? route('blogs.update', blog.id) : route('blogs.store');
+
+        transform((data) => ({
+            ...data,
+            new_images: newImages,
+        }));
 
         if (blog) {
             put(url, {

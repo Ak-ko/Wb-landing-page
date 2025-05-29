@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Blog;
 use App\Models\BlogImage;
 use App\Models\Tag;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -139,6 +140,7 @@ class BlogController extends Controller
             'tags.*' => 'exists:tags,id',
             'images' => 'nullable|array|min:2',
             'images.*' => 'required',
+            'new_images' => 'nullable|array',
             'primary_image_id' => 'nullable|integer',
             'primary_image_index' => 'nullable|integer',
             'removed_images' => 'nullable|array',
@@ -153,14 +155,12 @@ class BlogController extends Controller
             'is_published' => $validated['is_published'] ?? $blog->is_published,
         ]);
 
-        // Handle tags
         if (isset($validated['tags'])) {
             $blog->tags()->sync($validated['tags']);
         } else {
             $blog->tags()->detach();
         }
 
-        // Handle removed images
         if (isset($validated['removed_images'])) {
             $imagesToDelete = BlogImage::whereIn('id', $validated['removed_images'])
                 ->where('blog_id', $blog->id)
@@ -171,33 +171,40 @@ class BlogController extends Controller
             }
         }
 
-        // Reset primary status for all images
         BlogImage::where('blog_id', $blog->id)->update(['is_primary' => false]);
 
-        // Update primary image if needed
         if ($request->has('primary_image_id') && $request->input('primary_image_index') === null) {
             BlogImage::where('id', $request->input('primary_image_id'))
                 ->where('blog_id', $blog->id)
                 ->update(['is_primary' => true]);
         }
 
-        // Handle new images
+        $existingImagesCount = $blog->images()->count();
+
         if (isset($validated['images']) && is_array($validated['images'])) {
-            $existingImagesCount = $blog->images()->count();
-            $primaryIndex = $request->input('primary_image_index');
+            $primaryId = $request->input('primary_image_id', 0);
 
             foreach ($validated['images'] as $index => $image) {
-                if (is_string($image)) {
-                    $path = $image;
-                } else {
-                    $path = $image->store('blogs', 'public');
-                }
+                $dbImagePath = Str::after($image, "/storage/");
+                $blogImage = BlogImage::where('image', $dbImagePath)->first();
 
+                if ($blogImage) {
+                    $blogImage->update([
+                        'blog_id' => $blog->id,
+                        'order' => $existingImagesCount + $index,
+                        'is_primary' => $primaryId == $blogImage->id,
+                    ]);
+                }
+            }
+        }
+
+        if (isset($validated['new_images']) && is_array($validated['new_images'])) {
+            foreach ($validated['new_images'] as $index => $image) {
                 BlogImage::create([
                     'blog_id' => $blog->id,
-                    'image' => $path,
-                    'is_primary' => $primaryIndex !== null && $index == $primaryIndex,
+                    'image' => $image['file'],
                     'order' => $existingImagesCount + $index,
+                    'is_primary' => $image['is_primary'],
                 ]);
             }
         }

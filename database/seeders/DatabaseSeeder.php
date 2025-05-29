@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\CompanyPolicy;
+use App\Models\Tag;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -23,6 +24,11 @@ class DatabaseSeeder extends Seeder
 
         CompanyPolicy::factory()->create([
             'user_id' => User::first()->id,
+        ]);
+
+        Tag::factory()->create([
+            'name' => 'Laravel',
+            'color' => '#f7df1e'
         ]);
     }
 }
