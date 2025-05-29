@@ -3,6 +3,7 @@
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\BrandingProjectController;
+use App\Http\Controllers\BusinessPackagesController;
 use App\Http\Controllers\BusinessProcessController;
 use App\Http\Controllers\CompanyPolicyController;
 use App\Http\Controllers\ContactController;
@@ -83,6 +84,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // team member
     Route::resource('/admin/team-members', TeamMemberController::class);
     Route::patch('/admin/team-members/{teamMember}/toggle-active', [TeamMemberController::class, 'toggleActive'])->name('team-members.toggle-active');
+
+    // Business Packages
+    Route::resource('/admin/business-packages', BusinessPackagesController::class);
 });
 
 Route::get('/about-us', function () {

@@ -171,6 +171,24 @@ export type TeamMemberT = {
     pivot: BrandingProjectMemberT;
 } & TimestampsT;
 
+export type BusinessPackageT = {
+    id: number;
+    name: string;
+    description: string | null;
+    price_text: string | null;
+    price: number | null;
+    currency: string | null;
+    duration: string | null;
+    revision_remarks: string | null;
+    business_package_items: BusinessPackageItemT[];
+} & TimestampsT;
+
+export type BusinessPackageItemT = {
+    id: number;
+    name: string;
+    business_package_id: number;
+} & TimestampsT;
+
 interface CommonPaginationT<T> {
     data: T[];
     current_page: number;

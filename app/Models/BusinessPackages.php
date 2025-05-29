@@ -22,4 +22,9 @@ class BusinessPackages extends Model
     protected $casts = [
         'price' => 'double'
     ];
+
+    public function businessPackageItems()
+    {
+        return $this->belongsToMany(BusinessPackageItems::class, 'pivot_business_package_items', 'business_package_id', 'business_package_item_id', 'id', 'id');
+    }
 }

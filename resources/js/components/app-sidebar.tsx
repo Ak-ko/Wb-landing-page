@@ -68,6 +68,16 @@ const mainNavItems: NavItem[] = [
         ],
     },
     {
+        title: 'Package Management',
+        items: [
+            {
+                title: 'Business Packages',
+                href: '/admin/business-packages',
+                icon: MessageCircleQuestion,
+            },
+        ],
+    },
+    {
         title: 'Faq Management',
         items: [
             {

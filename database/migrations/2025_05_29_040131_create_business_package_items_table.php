@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('brand_guideline_element_items', function (Blueprint $table) {
+        Schema::create('business_package_items', function (Blueprint $table) {
             $table->id();
-            $table->string('title')->nullable();
-            $table->unsignedBigInteger('brand_guideline_element_id');
-            $table->integer('order')->nullable();
-            $table->boolean('is_active')->default(true);
+            $table->string('name')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('brand_guideline_element_items');
+        Schema::dropIfExists('business_package_items');
     }
 };
