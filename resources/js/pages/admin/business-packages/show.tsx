@@ -1,9 +1,11 @@
 import { Head, Link } from '@inertiajs/react';
 
+import ColorTag from '@/components/app/color-tag';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem, BusinessPackageT } from '@/types';
-import { ArrowLeft, Calendar, Check, CircleDollarSign, Edit, NotepadTextDashed, Package, SquareStack, StickyNote } from 'lucide-react';
+import { ArrowLeft, Calendar, Check, CircleDollarSign, Edit, NotepadTextDashed, Package, PaintBucket, SquareStack, StickyNote } from 'lucide-react';
 
 interface ShowBusinessPackageProps {
     businessPackage: BusinessPackageT;
@@ -33,7 +35,10 @@ export default function ShowBusinessPackage({ businessPackage }: ShowBusinessPac
                                 <ArrowLeft className="h-4 w-4" />
                             </Button>
                         </Link>
-                        <h1 className="text-2xl font-bold">{businessPackage?.name}</h1>
+                        <h1 className="flex flex-col gap-2 text-2xl font-bold md:flex-row md:items-center">
+                            <span>{businessPackage?.name}</span>
+                            {!!businessPackage?.is_recommended && <Badge>Recommanded</Badge>}
+                        </h1>
                     </div>
                     <Link href={route('business-packages.edit', businessPackage?.id)}>
                         <Button>
@@ -71,6 +76,13 @@ export default function ShowBusinessPackage({ businessPackage }: ShowBusinessPac
                                     <span className="text-sm font-semibold text-gray-500">Duration</span>
                                 </div>
                                 <p>{businessPackage?.duration}</p>
+                            </div>
+                            <div className="space-y-2">
+                                <div className="flex items-center gap-1">
+                                    <PaintBucket className="size-3.5" />
+                                    <span className="text-sm font-semibold text-gray-500">Color</span>
+                                </div>
+                                <ColorTag color={businessPackage?.color} />
                             </div>
                             <div className="space-y-2">
                                 <div className="flex items-center gap-1">

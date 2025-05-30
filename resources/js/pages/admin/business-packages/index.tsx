@@ -18,6 +18,7 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import useFilter from '@/hooks/use-filter';
@@ -102,28 +103,23 @@ export default function BusinessPackages({
     });
 
     const renderBusinessPackageCard = (businessPackage: BusinessPackageT) => (
-        <Card key={businessPackage.id} className="min-h-[200px] max-w-[300px] overflow-hidden pt-0">
+        <Card
+            onClick={() => {
+                router.get(route('business-packages.show', businessPackage.id));
+            }}
+            key={businessPackage.id}
+            className="relative min-h-[200px] max-w-[300px] cursor-pointer overflow-hidden pt-0"
+        >
+            {businessPackage?.is_recommended && <Badge className="absolute top-2 right-2 text-xs">Recommended</Badge>}
+
             <CardContent className="p-4">
                 <h3 className="text-lg font-medium">{businessPackage.name}</h3>
-                {businessPackage.price && businessPackage.currency && (
+                {businessPackage.price_text && businessPackage.currency && (
                     <p className="text-sm text-gray-500">
-                        {businessPackage.price_text} {businessPackage.currency} {businessPackage.price.toLocaleString()}
+                        {businessPackage.price_text} {businessPackage.currency}
                     </p>
                 )}
                 {businessPackage.description && <p className="mt-2 line-clamp-2 text-sm text-gray-600">{businessPackage.description}</p>}
-                {businessPackage.business_package_items && businessPackage.business_package_items.length > 0 && (
-                    <div className="mt-4">
-                        <h4 className="text-sm font-medium">Package Items:</h4>
-                        <ul className="mt-1 list-inside list-disc text-sm text-gray-600">
-                            {businessPackage.business_package_items.slice(0, 3).map((item) => (
-                                <li key={item.id}>{item.name}</li>
-                            ))}
-                            {businessPackage.business_package_items.length > 3 && (
-                                <li>+ {businessPackage.business_package_items.length - 3} more items</li>
-                            )}
-                        </ul>
-                    </div>
-                )}
             </CardContent>
             <CardFooter className="flex justify-center p-4 pt-0 lg:justify-end">
                 <Link href={route('business-packages.edit', businessPackage.id)}>

@@ -16,11 +16,14 @@ class BusinessPackages extends Model
         'price',
         'currency',
         'duration',
-        'revision_remarks'
+        'color',
+        'revision_remarks',
+        'is_recommended'
     ];
 
     protected $casts = [
-        'price' => 'double'
+        'price' => 'double',
+        'is_recommended' => 'boolean',
     ];
 
     public function businessPackageItems()

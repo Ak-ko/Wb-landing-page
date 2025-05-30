@@ -19,7 +19,9 @@ return new class extends Migration
             $table->double('price')->nullable();
             $table->string('currency')->nullable()->default("USD");
             $table->string("duration")->nullable();
+            $table->string('color')->nullable();
             $table->string('revision_remarks')->nullable();
+            $table->boolean('is_recommended')->default(false);
             $table->softDeletes();
             $table->timestamps();
         });

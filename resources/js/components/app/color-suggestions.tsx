@@ -10,53 +10,26 @@ interface ColorSuggestionsProps {
 export default function ColorSuggestions({ onColorSelect }: ColorSuggestionsProps) {
     const [isOpen, setIsOpen] = useState(false);
 
-    // Predefined color suggestions
     const colorSuggestions = [
-        // Blues
-        '#1E40AF',
-        '#3B82F6',
-        '#93C5FD',
-        '#DBEAFE',
-        // Greens
-        '#15803D',
-        '#22C55E',
-        '#86EFAC',
-        '#DCFCE7',
-        // Reds
-        '#B91C1C',
-        '#EF4444',
-        '#FCA5A5',
-        '#FEE2E2',
-        // Yellows
-        '#A16207',
-        '#EAB308',
-        '#FDE047',
-        '#FEF9C3',
-        // Purples
-        '#7E22CE',
-        '#A855F7',
-        '#D8B4FE',
-        '#F3E8FF',
-        // Pinks
-        '#BE185D',
-        '#EC4899',
-        '#F9A8D4',
-        '#FCE7F3',
-        // Oranges
-        '#C2410C',
-        '#F97316',
-        '#FDBA74',
-        '#FFF7ED',
-        // Teals
-        '#0F766E',
-        '#14B8A6',
-        '#5EEAD4',
-        '#CCFBF1',
-        // Grays
-        '#1F2937',
-        '#6B7280',
-        '#D1D5DB',
-        '#F9FAFB',
+        '#E53726', // Chillie Red
+        '#1274EF', // Crayola Blue
+        '#FF1466', // Folly
+        '#00B250', // Pigment Green
+        '#00A899', // Persian Green
+        '#FEC901', // Jonquil
+        '#F1621D', // Pantone Orange
+        '#8914FF', // Electric Violet
+        '#FE7CE5', // Web Violet
+        '#780303', // Barn Red
+        '#656565', // Dim Gray
+        '#F5F5F5', // White Smoke
+        '#E53726', // Chillie Red
+        '#3E8FF3', // Chefchaouen Blue
+        '#0BDA68', // Malachite
+        '#0BDCC9', // Turquoise
+        '#9E3CFF', // Veronica
+        '#A01515', // Penn Red
+        '#2E2E2E', // Jet
     ];
 
     const handleColorSelect = (color: string) => {

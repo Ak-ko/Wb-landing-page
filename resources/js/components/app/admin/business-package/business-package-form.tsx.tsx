@@ -1,10 +1,13 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
+import { cn } from '@/lib/utils';
 import { BusinessPackageT } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { Plus, Trash2 } from 'lucide-react';
+import ColorSuggestions from '../../color-suggestions';
 
 interface BusinessPackageFormProps {
     businessPackage?: BusinessPackageT;
@@ -20,6 +23,8 @@ export default function BusinessPackageForm({ businessPackage, onSuccess }: Busi
         duration: businessPackage?.duration || '',
         revision_remarks: businessPackage?.revision_remarks || '',
         items: businessPackage?.business_package_items?.map((item) => ({ name: item.name })) || [],
+        color: businessPackage?.color || '',
+        is_recommended: businessPackage?.is_recommended || false,
     });
 
     const addItem = () => {
@@ -36,6 +41,10 @@ export default function BusinessPackageForm({ businessPackage, onSuccess }: Busi
         const updatedItems = [...data.items];
         updatedItems[index].name = name;
         setData('items', updatedItems);
+    };
+
+    const handleColorSelect = (color: string) => {
+        setData('color', color);
     };
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -128,6 +137,45 @@ export default function BusinessPackageForm({ businessPackage, onSuccess }: Busi
                             rows={2}
                         />
                         {errors.revision_remarks && <p className="text-sm text-red-500">{errors.revision_remarks}</p>}
+                    </div>
+
+                    <div className="col-span-2 space-y-2">
+                        <label htmlFor="color" className="block text-sm font-medium">
+                            Package Color<span className="text-red-500">*</span>
+                        </label>
+                        <div className="flex items-center gap-3">
+                            <Input
+                                id="color"
+                                type="color"
+                                value={data.color}
+                                onChange={(e) => setData('color', e.target.value)}
+                                className="h-10 w-20"
+                            />
+                            <Input
+                                type="text"
+                                value={data.color}
+                                onChange={(e) => setData('color', e.target.value)}
+                                placeholder="#HEX color"
+                                className="flex-1"
+                            />
+                            <ColorSuggestions onColorSelect={handleColorSelect} />
+                        </div>
+                        <p className="text-xs text-gray-500">Choose a color or select from suggestions</p>
+                        {errors.color && <p className="text-sm text-red-500">{errors.color}</p>}
+                    </div>
+                    <div className="col-span-2 flex items-center space-x-2">
+                        <Switch
+                            id="is_published"
+                            checked={data.is_recommended}
+                            onCheckedChange={(checked) => {
+                                setData('is_recommended', checked);
+                            }}
+                        />
+                        <Label htmlFor="is_published" className={cn(data?.is_recommended && 'text-green-500', 'block text-sm font-medium')}>
+                            {data?.is_recommended ? 'Recommended' : 'Not Recommanded'}
+                            <span className="text-red-500">*</span>
+                        </Label>
+                        {errors.is_recommended && <p className="text-sm text-red-500">{errors.is_recommended}</p>}
                     </div>
                 </div>
             </fieldset>

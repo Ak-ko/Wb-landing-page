@@ -34,9 +34,11 @@ class BusinessPackagesController extends Controller
             'price_text' => 'required|string',
             'currency' => 'required|string|max:3',
             'revision_remarks' => 'required|string',
+            'color' => 'required|string',
             'items' => 'required|array|min:2',
             'duration' => 'required|string|max:255',
             'items.*.name' => 'required|string|max:255',
+            'is_recommended' => 'required|boolean'
         ], [
             'items.*.name.required' => 'Item name is required.',
         ]);
@@ -69,9 +71,11 @@ class BusinessPackagesController extends Controller
             'price_text' => 'nullable|string',
             'currency' => 'nullable|string|max:3',
             'revision_remarks' => 'nullable|string',
+            'color' => 'required|string',
             'items' => 'required|array|min:2',
             'duration' => 'required|string|max:255',
             'items.*.name' => 'required|string|max:255',
+            'is_recommended' => 'required|boolean'
         ], [
             'items.*.name.required' => 'Item name is required.',
         ]);

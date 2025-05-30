@@ -2,7 +2,8 @@ import { Button } from '@/components/ui/button';
 import { BusinessPackageT } from '@/types';
 import { Link } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
-import { Edit, Eye, Trash2 } from 'lucide-react';
+import { Check, Edit, Eye, Trash2, X } from 'lucide-react';
+import ColorTag from '../../color-tag';
 
 type BusinessPackageActionsProps = {
     handleDeleteClick: (id: number) => void;
@@ -21,21 +22,33 @@ export const createBusinessPackageColumns = ({ handleDeleteClick }: BusinessPack
         },
     },
     {
-        accessorKey: 'price_text',
-        header: 'Price Text',
+        header: 'Price',
         cell: ({ row }) => {
-            return <span>{row.original.price_text || '-'}</span>;
+            if (!row.original.price_text) return <span>-</span>;
+            return (
+                <span>
+                    {row.original.price_text.toLocaleString()} {row.original.currency}
+                </span>
+            );
         },
     },
     {
-        accessorKey: 'price',
-        header: 'Price',
+        header: 'Color',
         cell: ({ row }) => {
-            if (!row.original.price) return <span>-</span>;
             return (
-                <span>
-                    {row.original.currency} {row.original.price.toLocaleString()}
-                </span>
+                <div className="flex items-center justify-center">
+                    <ColorTag color={row.original.color} />
+                </div>
+            );
+        },
+    },
+    {
+        header: 'Recommanded ?',
+        cell: ({ row }) => {
+            return (
+                <div className="flex items-center justify-center">
+                    {row.original.is_recommended ? <Check className="text-green-500" /> : <X className="text-red-500" />}
+                </div>
             );
         },
     },

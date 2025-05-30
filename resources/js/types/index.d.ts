@@ -180,6 +180,8 @@ export type BusinessPackageT = {
     currency: string | null;
     duration: string | null;
     revision_remarks: string | null;
+    color: string;
+    is_recommended: boolean;
     business_package_items: BusinessPackageItemT[];
 } & TimestampsT;
 
