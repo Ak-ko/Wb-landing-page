@@ -59,8 +59,10 @@ class BusinessPackageAddonController extends Controller
         ]);
     }
 
-    public function update(Request $request, BusinessPackageAddon $businessPackageAddon)
+    public function update(Request $request, $id)
     {
+        $businessPackageAddon = BusinessPackageAddon::findOrFail($id);
+
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:business_package_addons,name,' . $businessPackageAddon->id,
             'price_text' => 'required|string',

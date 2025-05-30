@@ -18,7 +18,7 @@ export default function BusinessPackageAddonForm({ businessPackageAddon, onSucce
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        const url = businessPackageAddon ? route('add-ons-packages.update', businessPackageAddon.id) : route('add-on-packages.store');
+        const url = businessPackageAddon ? route('add-on-packages.update', businessPackageAddon.id) : route('add-on-packages.store');
 
         if (businessPackageAddon) {
             put(url, {
