@@ -53,7 +53,7 @@ class BusinessPackagesController extends Controller
 
     public function show(BusinessPackages $businessPackage)
     {
-        return Inertia::render('admin/business-packages/show', ['package' => $businessPackage]);
+        return Inertia::render('admin/business-packages/show', ['businessPackage' => $businessPackage->load('businessPackageItems')]);
     }
 
     public function edit(BusinessPackages $businessPackage)
