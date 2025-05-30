@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('price_text')->nullable();
             $table->double('price', 8, 2)->nullable();
             $table->string('currency')->nullable()->default('USD');
-            $table->string('revision_remarks')->nullable();
             $table->timestamps();
         });
     }

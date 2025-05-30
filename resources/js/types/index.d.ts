@@ -185,6 +185,15 @@ export type BusinessPackageT = {
     business_package_items: BusinessPackageItemT[];
 } & TimestampsT;
 
+export type BusinessPackageAddonT = {
+    id: number;
+    name: string;
+    price_text: string;
+    price: number | null;
+    currency: string;
+    revision_remarks: string | null;
+} & TimestampsT;
+
 export type BusinessPackageItemT = {
     id: number;
     name: string;

@@ -3,6 +3,7 @@
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\BrandingProjectController;
+use App\Http\Controllers\BusinessPackageAddonController;
 use App\Http\Controllers\BusinessPackagesController;
 use App\Http\Controllers\BusinessProcessController;
 use App\Http\Controllers\CompanyPolicyController;
@@ -14,6 +15,7 @@ use App\Http\Controllers\TestimonialController;
 use App\Models\Blog;
 use App\Models\Brand;
 use App\Models\BrandingProject;
+use App\Models\BusinessPackageAddon;
 use App\Models\BusinessProcess;
 use App\Models\CompanyPolicy;
 use App\Models\Faq;
@@ -87,6 +89,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Business Packages
     Route::resource('/admin/business-packages', BusinessPackagesController::class);
+
+    // Add-on Packages
+    Route::resource('/admin/add-on-packages', BusinessPackageAddonController::class);
 });
 
 Route::get('/about-us', function () {

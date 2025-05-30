@@ -14,7 +14,6 @@ class BusinessPackageAddon extends Model
         'price_text',
         'price',
         'currency',
-        'revision_remarks'
     ];
 
     protected $casts = [
