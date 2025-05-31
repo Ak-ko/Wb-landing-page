@@ -95,7 +95,7 @@ export default function HeroSection() {
                             Design Packages
                         </>
                     }
-                    href="/"
+                    href={route('business-plan-page')}
                 />
                 <HeroSectionBtn
                     className="hover:bg-chillie-red active:bg-chillie-red hover:shadow-chillie-red/50 hover:shadow-lg"

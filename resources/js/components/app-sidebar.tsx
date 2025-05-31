@@ -4,7 +4,19 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BarChart2, Briefcase, Building, LayoutDashboard, MessageCircleQuestion, Settings, SquareChartGantt, Tag, Users } from 'lucide-react';
+import {
+    BarChart2,
+    Briefcase,
+    Building,
+    LayoutDashboard,
+    MessageCircleQuestion,
+    Package,
+    PackagePlus,
+    Settings,
+    SquareChartGantt,
+    Tag,
+    Users,
+} from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -64,6 +76,21 @@ const mainNavItems: NavItem[] = [
                 title: 'Team Members',
                 href: '/admin/team-members',
                 icon: Users,
+            },
+        ],
+    },
+    {
+        title: 'Package Management',
+        items: [
+            {
+                title: 'Business Packages',
+                href: '/admin/business-packages',
+                icon: Package,
+            },
+            {
+                title: 'Addons',
+                href: '/admin/add-on-packages',
+                icon: PackagePlus,
             },
         ],
     },

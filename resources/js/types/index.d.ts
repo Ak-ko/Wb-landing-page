@@ -171,6 +171,44 @@ export type TeamMemberT = {
     pivot: BrandingProjectMemberT;
 } & TimestampsT;
 
+export type BusinessPackageT = {
+    id: number;
+    name: string;
+    description: string | null;
+    price_text: string | null;
+    price: number | null;
+    currency: string | null;
+    duration: string | null;
+    revision_remarks: string | null;
+    color: string;
+    is_recommended: boolean;
+    business_package_items: BusinessPackageItemT[];
+} & WithModifiedBusienessPackageItemsT &
+    TimestampsT;
+
+export type WithModifiedBusienessPackageItemsT = {
+    all_items: {
+        id: number;
+        name: string;
+        is_included: boolean;
+    }[];
+};
+
+export type BusinessPackageAddonT = {
+    id: number;
+    name: string;
+    price_text: string;
+    price: number | null;
+    currency: string;
+    revision_remarks: string | null;
+} & TimestampsT;
+
+export type BusinessPackageItemT = {
+    id: number;
+    name: string;
+    business_package_id: number;
+} & TimestampsT;
+
 interface CommonPaginationT<T> {
     data: T[];
     current_page: number;

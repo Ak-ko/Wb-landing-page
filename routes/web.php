@@ -3,6 +3,8 @@
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\BrandingProjectController;
+use App\Http\Controllers\BusinessPackageAddonController;
+use App\Http\Controllers\BusinessPackagesController;
 use App\Http\Controllers\BusinessProcessController;
 use App\Http\Controllers\CompanyPolicyController;
 use App\Http\Controllers\ContactController;
@@ -13,6 +15,9 @@ use App\Http\Controllers\TestimonialController;
 use App\Models\Blog;
 use App\Models\Brand;
 use App\Models\BrandingProject;
+use App\Models\BusinessPackageAddon;
+use App\Models\BusinessPackageItems;
+use App\Models\BusinessPackages;
 use App\Models\BusinessProcess;
 use App\Models\CompanyPolicy;
 use App\Models\Faq;
@@ -83,7 +88,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // team member
     Route::resource('/admin/team-members', TeamMemberController::class);
     Route::patch('/admin/team-members/{teamMember}/toggle-active', [TeamMemberController::class, 'toggleActive'])->name('team-members.toggle-active');
+
+    // Business Packages
+    Route::resource('/admin/business-packages', BusinessPackagesController::class);
+
+    // Add-on Packages
+    Route::resource('/admin/add-on-packages', BusinessPackageAddonController::class);
 });
+
+// faq
+Route::post('/faq/send-email', [FaqController::class, 'sendFaqEmail'])->name('faq.send-email');
+
+// contact us
+Route::post('/contact/send', [ContactController::class, 'sendMessage'])->name('contact.send');
+
 
 Route::get('/about-us', function () {
     $policy = CompanyPolicy::first();
@@ -96,11 +114,29 @@ Route::get('/about-us', function () {
 })->name('about-us-page');
 
 
-// faq
-Route::post('/faq/send-email', [FaqController::class, 'sendFaqEmail'])->name('faq.send-email');
+Route::get('/business-plans', function () {
+    $policy = CompanyPolicy::first();
+    $businessPackages = BusinessPackages::with('businessPackageItems')->get();
+    $allItems = BusinessPackageItems::all();
+    $businessPackageAddons = BusinessPackageAddon::all();
 
-// contact us
-Route::post('/contact/send', [ContactController::class, 'sendMessage'])->name('contact.send');
+    $businessPackages = $businessPackages->map(function ($package) use ($allItems) {
+        $includedIds = $package->businessPackageItems->pluck('id')->toArray();
+
+        $package->all_items = $allItems->map(function ($item) use ($includedIds) {
+            return [
+                'id' => $item->id,
+                'name' => $item->name,
+                'is_included' => in_array($item->id, $includedIds),
+            ];
+        });
+
+        return $package;
+    });
+
+
+    return Inertia::render('business-plan/business-plan', compact('businessPackages', 'businessPackageAddons', 'policy'));
+})->name('business-plan-page');
 
 require __DIR__ . "/auth.php";
 require __DIR__ . "/settings.php";
