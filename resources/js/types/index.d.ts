@@ -183,7 +183,16 @@ export type BusinessPackageT = {
     color: string;
     is_recommended: boolean;
     business_package_items: BusinessPackageItemT[];
-} & TimestampsT;
+} & WithModifiedBusienessPackageItemsT &
+    TimestampsT;
+
+export type WithModifiedBusienessPackageItemsT = {
+    all_items: {
+        id: number;
+        name: string;
+        is_included: boolean;
+    }[];
+};
 
 export type BusinessPackageAddonT = {
     id: number;

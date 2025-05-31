@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\BusinessPackageAddon;
 use App\Models\CompanyPolicy;
 use App\Models\Tag;
 use App\Models\User;
@@ -30,5 +31,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Laravel',
             'color' => '#f7df1e'
         ]);
+
+        BusinessPackageAddon::factory(19)->create();
     }
 }

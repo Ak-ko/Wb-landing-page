@@ -17,7 +17,9 @@ class BusinessPackageAddonFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => fake()->name(),
+            'price_text' => fake()->randomNumber(2),
+            'currency' => 'USD'
         ];
     }
 }

@@ -1,0 +1,31 @@
+import { BusinessPackageAddonT } from '@/types';
+import { usePage } from '@inertiajs/react';
+import BusinessAddons from './business-addons';
+import SectionHeader from './section-header';
+
+export default function BusinessAddonOptions() {
+    const { businessPackageAddons } = usePage<{ businessPackageAddons: BusinessPackageAddonT[] }>().props;
+
+    if (!businessPackageAddons || businessPackageAddons?.length === 0) return null;
+
+    const firstHalfAddons = businessPackageAddons.slice(0, Math.ceil(businessPackageAddons.length / 2));
+    const secondHalfAddons = businessPackageAddons.slice(Math.ceil(businessPackageAddons.length / 2));
+
+    return (
+        <section className="py-16">
+            <div className="app-container space-y-5 sm:px-11">
+                <SectionHeader header="Add-On Options" />
+
+                <div className="grid grid-cols-1 gap-0.5 lg:grid-cols-2">
+                    <BusinessAddons businessPackageAddons={firstHalfAddons} />
+                    <div>
+                        <BusinessAddons businessPackageAddons={secondHalfAddons} />
+                        <div className="my-2 w-full rounded-2xl bg-gray-100 p-3 text-center font-bold text-black">
+                            <h1 className="uppercase">All designs have 2 rounds of revision.</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+}

@@ -1,5 +1,6 @@
 import useScroll from '@/hooks/use-scroll';
 import useNavStore from '@/store/useNavStore';
+import { Link } from '@inertiajs/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronsRight } from 'lucide-react';
 import CharacterWithTiltRightStyle from './icons/characters/navbar-section/character-with-titlt-right-style';
@@ -14,7 +15,7 @@ type LinksT = {
 const links: LinksT[] = [
     {
         label: 'About',
-        href: '#about',
+        href: route('about-us-page'),
     },
     {
         label: 'Work',
@@ -62,13 +63,13 @@ export default function NavSidebar() {
             <div className="relative hidden h-full w-full items-center sm:flex">
                 <div className="w-full -translate-y-[50%] text-white">
                     {links?.map((link: LinksT) => (
-                        <div
-                            onClick={() => scrollTo(link.href, 0, 400)}
+                        <Link
+                            href={link.href}
                             key={link.href}
                             className="font-inter flex min-h-[60px] w-full cursor-pointer items-center justify-center border-b border-b-white/25 font-bold text-white/50 uppercase transition-all duration-500 hover:text-white"
                         >
                             {link.label}
-                        </div>
+                        </Link>
                     ))}
                 </div>
 
