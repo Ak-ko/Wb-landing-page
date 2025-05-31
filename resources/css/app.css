@@ -221,6 +221,15 @@
             animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
         }
     }
+
+    @keyframes burning {
+        0% {
+            transform: translateY(0);
+        }
+        100% {
+            transform: translateY(-600px); /* fireSize + burnSize */
+        }
+    }
 }
 
 /* For MAC Air */
