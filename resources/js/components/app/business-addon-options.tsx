@@ -2,7 +2,6 @@ import { BusinessPackageAddonT } from '@/types';
 import { usePage } from '@inertiajs/react';
 import BusinessAddons from './business-addons';
 import SectionHeader from './section-header';
-import SeeArtServicesSection from './see-art-services';
 
 export default function BusinessAddonOptions() {
     const { businessPackageAddons } = usePage<{ businessPackageAddons: BusinessPackageAddonT[] }>().props;
@@ -27,7 +26,6 @@ export default function BusinessAddonOptions() {
                     </div>
                 </div>
             </div>
-            <SeeArtServicesSection />
         </section>
     );
 }

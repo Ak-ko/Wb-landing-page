@@ -115,6 +115,7 @@ Route::get('/about-us', function () {
 
 
 Route::get('/business-plans', function () {
+    $policy = CompanyPolicy::first();
     $businessPackages = BusinessPackages::with('businessPackageItems')->get();
     $allItems = BusinessPackageItems::all();
     $businessPackageAddons = BusinessPackageAddon::all();
@@ -134,7 +135,7 @@ Route::get('/business-plans', function () {
     });
 
 
-    return Inertia::render('business-plan/business-plan', compact('businessPackages', 'businessPackageAddons'));
+    return Inertia::render('business-plan/business-plan', compact('businessPackages', 'businessPackageAddons', 'policy'));
 })->name('business-plan-page');
 
 require __DIR__ . "/auth.php";

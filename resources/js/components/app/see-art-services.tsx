@@ -3,7 +3,7 @@ import { Link } from '@inertiajs/react';
 
 export default function SeeArtServicesSection() {
     return (
-        <section className="relative overflow-hidden py-[100px] lg:py-[259px]">
+        <section className="relative mx-auto max-w-[1800px] overflow-hidden py-[100px] lg:py-[259px]">
             <div className="app-container space-y-5 sm:px-11">
                 <div className="relative z-1 w-full space-y-6 lg:max-w-[520px]">
                     <h1 className="text-center text-[35px] leading-[1.2] font-bold sm:text-[40px] lg:text-start">
