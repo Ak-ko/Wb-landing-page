@@ -47,7 +47,7 @@ export default function OurExpertiseSection() {
                         </ul>
 
                         <div>
-                            <Link href="/" className={cn('primary_btn', 'flex justify-center px-8 py-5 md:inline-flex')}>
+                            <Link href="/" className={cn('primary_btn', 'flex justify-center px-8 py-5 hover:bg-[#1bb4cf] md:inline-flex')}>
                                 See Packages
                             </Link>
                         </div>

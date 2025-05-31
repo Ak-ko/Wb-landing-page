@@ -9,7 +9,7 @@ import { Head } from '@inertiajs/react';
 export default function BusinessPlanPage() {
     return (
         <LandingLayout>
-            <Head title="Home" />
+            <Head title="Business Plan" />
 
             <BusinessPlanHeader />
 

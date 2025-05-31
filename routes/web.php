@@ -138,5 +138,9 @@ Route::get('/business-plans', function () {
     return Inertia::render('business-plan/business-plan', compact('businessPackages', 'businessPackageAddons', 'policy'));
 })->name('business-plan-page');
 
+Route::get('/art-plans', function () {
+    return Inertia::render('art-plan/art-plan');
+});
+
 require __DIR__ . "/auth.php";
 require __DIR__ . "/settings.php";
