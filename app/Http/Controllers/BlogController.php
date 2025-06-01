@@ -250,7 +250,7 @@ class BlogController extends Controller
             });
         }
 
-        $blogs = $query->paginate(1)->withQueryString(); // TODO: change it back to 12
+        $blogs = $query->paginate(6)->withQueryString();
         $tags = Tag::whereHas('blogs')->get();
 
         return Inertia::render('blogs/blogs-page', [

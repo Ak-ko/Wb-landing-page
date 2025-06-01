@@ -11,7 +11,7 @@ export default function BlogCard({ blog }: BlogCardProps) {
     return (
         <Link
             href={route('blogs.detail', { blog: blog.id })}
-            className="group flex h-full flex-col overflow-hidden rounded-xl bg-white shadow transition-shadow duration-300 hover:shadow-lg"
+            className="group hover:ring-primary-orange flex h-full flex-col overflow-hidden rounded-xl bg-white shadow transition-all duration-500 hover:shadow-lg hover:ring-3"
         >
             <div className="overflow-hidden">
                 {primaryImage && (

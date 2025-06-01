@@ -1,4 +1,6 @@
-import { Search } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { AnimatePresence, motion } from 'framer-motion';
+import { ChevronDown, Search } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { useDebounceValue } from 'usehooks-ts';
 
@@ -18,8 +20,11 @@ interface BlogPageFiltersProps {
 
 export default function BlogPageFilters({ tags, selectedTag, search, onFilterChange, defaultFilters }: BlogPageFiltersProps) {
     const [searchValue, setSearchValue] = useState(search || '');
-    const [activeTag, setActiveTag] = useState<number | null>(selectedTag);
+    const [activeTag, setActiveTag] = useState<number | null>(selectedTag || null);
     const [debouncedSearch] = useDebounceValue(searchValue, 400);
+    const [activeSearchBar, setActiveSearchBar] = useState(false);
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const handleDropdownToggle = () => setDropdownOpen((open) => !open);
 
     useEffect(() => {
         onFilterChange({ ...defaultFilters, query: debouncedSearch, tag: activeTag });
@@ -30,15 +35,31 @@ export default function BlogPageFilters({ tags, selectedTag, search, onFilterCha
         setSearchValue(e.target.value);
     };
 
-    const handleTagClick = (tagId: number | null) => {
+    const handleDropdownSelect = (tagId: number | null) => {
         setActiveTag(tagId);
+        setDropdownOpen(false);
         onFilterChange({ ...defaultFilters, query: searchValue, tag: tagId });
     };
 
+    const handleClickSearchBar = () => {
+        setActiveSearchBar(true);
+    };
+
+    const handleBlurSearchBar = () => {
+        setActiveSearchBar(false);
+    };
+
     return (
-        <div className="mb-6 flex flex-col gap-4">
-            <div className="flex w-full items-center gap-2 rounded-2xl border px-5">
-                <Search className="size-5 text-gray-500" />
+        <div className="mb-6 flex gap-4">
+            <div
+                onClick={handleClickSearchBar}
+                onBlur={handleBlurSearchBar}
+                className={cn(
+                    'flex w-full grow items-center gap-2 rounded-2xl border px-5 transition-all duration-300',
+                    activeSearchBar ? 'ring-secondary-pink/30 ring-1' : 'ring-0',
+                )}
+            >
+                <Search className={cn('size-5 transition-all duration-300', activeSearchBar ? 'text-black' : 'text-gray-400')} />
                 <input
                     type="text"
                     placeholder="Search blogs..."
@@ -47,31 +68,52 @@ export default function BlogPageFilters({ tags, selectedTag, search, onFilterCha
                     className="w-full px-2 py-2 focus:outline-none"
                 />
             </div>
-            <div className="flex flex-wrap justify-center gap-2">
+            <div className="relative w-full max-w-[200px]">
                 <button
-                    className={`cursor-pointer rounded-full border px-3 py-1 ${activeTag === null ? 'bg-primary text-white' : 'bg-white text-gray-700'}`}
-                    onClick={() => handleTagClick(null)}
+                    type="button"
+                    className="flex w-full items-center justify-between rounded-2xl border bg-white px-4 py-2 font-semibold text-gray-700 shadow-sm transition-colors hover:bg-gray-50"
+                    onClick={handleDropdownToggle}
                 >
-                    All
+                    <span>{activeTag === null ? 'All' : tags.find((t) => t.id === activeTag)?.name || 'All'}</span>
+                    <ChevronDown className={`ml-2 h-4 w-4 transition-transform ${dropdownOpen ? 'rotate-180' : ''}`} />
                 </button>
-                {tags.map((tag) => (
-                    <button
-                        key={tag.id}
-                        className={`rounded-full border px-3 py-1 font-bold transition-colors ${
-                            activeTag === tag.id ? (tag.color ? '' : 'bg-primary text-white') + ' font-semibold' : 'bg-white text-gray-700'
-                        }`}
-                        style={
-                            activeTag === tag.id && tag.color
-                                ? { backgroundColor: tag.color, color: '#fff' }
-                                : tag.color
-                                  ? { borderColor: tag.color, color: tag.color, backgroundColor: tag?.color + '10' }
-                                  : {}
-                        }
-                        onClick={() => handleTagClick(tag.id)}
-                    >
-                        {tag.name}
-                    </button>
-                ))}
+                <AnimatePresence>
+                    {dropdownOpen && (
+                        <motion.ul
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            transition={{ duration: 0.2 }}
+                            className="absolute left-0 z-10 mt-2 w-full overflow-hidden rounded-2xl border bg-white"
+                        >
+                            <li>
+                                <button
+                                    className={`hover:bg-primary w-full px-4 py-2 text-left transition-colors hover:text-white ${activeTag === null ? 'bg-primary text-white' : ''}`}
+                                    onClick={() => handleDropdownSelect(null)}
+                                >
+                                    All
+                                </button>
+                            </li>
+                            {tags.map((tag) => (
+                                <li key={tag.id}>
+                                    <button
+                                        className={`hover:bg-primary w-full px-4 py-2 text-left font-bold transition-colors hover:text-white ${activeTag === tag.id ? (tag.color ? '' : 'bg-primary text-white') : ''}`}
+                                        style={
+                                            activeTag === tag.id && tag.color
+                                                ? { backgroundColor: tag.color, color: '#fff' }
+                                                : tag.color
+                                                  ? { borderColor: tag.color, color: tag.color, backgroundColor: tag.color + '10' }
+                                                  : {}
+                                        }
+                                        onClick={() => handleDropdownSelect(tag.id)}
+                                    >
+                                        {tag.name}
+                                    </button>
+                                </li>
+                            ))}
+                        </motion.ul>
+                    )}
+                </AnimatePresence>
             </div>
         </div>
     );
