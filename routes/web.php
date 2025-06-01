@@ -22,6 +22,7 @@ use App\Models\BusinessPackages;
 use App\Models\BusinessProcess;
 use App\Models\CompanyPolicy;
 use App\Models\Faq;
+use App\Models\MascortArt;
 use App\Models\Tag;
 use App\Models\TeamMember;
 use App\Models\Testimonial;
@@ -143,7 +144,9 @@ Route::get('/business-plans', function () {
 })->name('business-plan-page');
 
 Route::get('/art-plans', function () {
-    return Inertia::render('art-plan/art-plan');
+    $mascotArts = MascortArt::with('images')->latest()->get();
+
+    return Inertia::render('art-plan/art-plan', compact('mascotArts'));
 })->name('art-plan-page');
 
 require __DIR__ . "/auth.php";
