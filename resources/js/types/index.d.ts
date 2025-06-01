@@ -209,6 +209,18 @@ export type BusinessPackageItemT = {
     business_package_id: number;
 } & TimestampsT;
 
+export type MascortArtT = {
+    id: number;
+    title: string;
+    description: string;
+    images: {
+        id: number;
+        image: string;
+        is_primary: boolean;
+        is_mascot: boolean;
+    }[];
+} & TimestampsT;
+
 interface CommonPaginationT<T> {
     data: T[];
     current_page: number;

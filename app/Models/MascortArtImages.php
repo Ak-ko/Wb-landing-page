@@ -18,6 +18,11 @@ class MascortArtImages extends Model
         'is_mascot',
     ];
 
+    protected $casts = [
+        'is_primary' => "boolean",
+        'is_mascot' => 'boolean'
+    ];
+
     public function mascortArt()
     {
         return $this->belongsTo(MascortArt::class);

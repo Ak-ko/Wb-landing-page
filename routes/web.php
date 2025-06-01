@@ -9,6 +9,7 @@ use App\Http\Controllers\BusinessProcessController;
 use App\Http\Controllers\CompanyPolicyController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FaqController;
+use App\Http\Controllers\MascortArtController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\TeamMemberController;
 use App\Http\Controllers\TestimonialController;
@@ -94,6 +95,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Add-on Packages
     Route::resource('/admin/add-on-packages', BusinessPackageAddonController::class);
+
+    // Mascort Art
+    Route::resource('/admin/mascort-art', MascortArtController::class);
 });
 
 // faq

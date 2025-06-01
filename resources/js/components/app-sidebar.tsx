@@ -16,6 +16,7 @@ import {
     SquareChartGantt,
     Tag,
     Users,
+    VenetianMask,
 } from 'lucide-react';
 import AppLogo from './app-logo';
 
@@ -76,6 +77,16 @@ const mainNavItems: NavItem[] = [
                 title: 'Team Members',
                 href: '/admin/team-members',
                 icon: Users,
+            },
+        ],
+    },
+    {
+        title: 'Art Management',
+        items: [
+            {
+                title: 'Mascot Art',
+                href: '/admin/mascort-art',
+                icon: VenetianMask,
             },
         ],
     },
