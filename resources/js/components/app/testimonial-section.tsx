@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { scrollUpVarients } from '@/lib/animation-varients';
 import { TestimonialT } from '@/types';
 import { usePage } from '@inertiajs/react';

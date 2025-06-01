@@ -150,7 +150,6 @@ Route::get('/business-plans', function () {
         return $package;
     });
 
-
     return Inertia::render('business-plan/business-plan', compact('businessPackages', 'businessPackageAddons', 'policy'));
 })->name('business-plan-page');
 

@@ -18,12 +18,12 @@ const links: LinksT[] = [
         href: route('about-us-page'),
     },
     {
-        label: 'Work',
+        label: 'Branding Projects',
         href: '#work',
     },
     {
-        label: 'Services',
-        href: '#services',
+        label: 'Branding Packages',
+        href: route('business-plan-page'),
     },
     {
         label: 'Contact',

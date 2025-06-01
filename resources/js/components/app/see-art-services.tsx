@@ -16,7 +16,7 @@ export default function SeeArtServicesSection() {
                         <br /> creating captivating visual identities that leave a <br /> lasting impression.
                     </p>
                     <div className="text-center lg:text-start">
-                        <Link href="/" className={cn('primary_btn', 'flex justify-center px-8 py-3 md:inline-flex')}>
+                        <Link href={route('art-plan-page')} className={cn('primary_btn', 'flex justify-center px-8 py-3 md:inline-flex')}>
                             See Art Services
                         </Link>
                     </div>
