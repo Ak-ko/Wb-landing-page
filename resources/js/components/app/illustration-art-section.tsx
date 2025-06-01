@@ -3,7 +3,7 @@ import IllustrationArtPackagesSection from './illustration-art-packages-section'
 
 export default function IllustrationArtSection() {
     return (
-        <div className="my-20">
+        <div>
             <DynamicArtHeader
                 containerClass="flex flex-col items-end"
                 title={

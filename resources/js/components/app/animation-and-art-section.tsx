@@ -3,7 +3,7 @@ import DynamicArtHeader from './dynamic-art-header';
 
 export default function AnimationAndArtSection() {
     return (
-        <div className="my-20">
+        <div>
             <DynamicArtHeader
                 containerClass="flex flex-col items-end"
                 title={
