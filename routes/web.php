@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\ArtPackageType;
+use App\Http\Controllers\ArtPackageController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\BrandingProjectController;
@@ -99,6 +101,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Mascort Art
     Route::resource('/admin/mascort-art', MascortArtController::class);
+
+    // Art Packages
+    Route::resource('/admin/art-packages', ArtPackageController::class);
 });
 
 // faq

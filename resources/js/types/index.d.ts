@@ -221,6 +221,29 @@ export type MascortArtT = {
     }[];
 } & TimestampsT;
 
+export type ArtPackageT = {
+    id: number;
+    title: string;
+    description: string;
+    type: string;
+    color: string;
+    items: ArtPackageItemT[];
+    prices: ArtPackagePriceT[];
+} & TimestampsT;
+
+export type ArtPackageItemT = {
+    id: number;
+    item: string;
+    art_package_id: number;
+} & TimestampsT;
+
+export type ArtPackagePriceT = {
+    id: number;
+    price: number;
+    duration: string;
+    art_package_id: number;
+} & TimestampsT;
+
 interface CommonPaginationT<T> {
     data: T[];
     current_page: number;

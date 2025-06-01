@@ -91,7 +91,7 @@ const mainNavItems: NavItem[] = [
         ],
     },
     {
-        title: 'Package Management',
+        title: 'Business Package Management',
         items: [
             {
                 title: 'Business Packages',
@@ -102,6 +102,16 @@ const mainNavItems: NavItem[] = [
                 title: 'Addons',
                 href: '/admin/add-on-packages',
                 icon: PackagePlus,
+            },
+        ],
+    },
+    {
+        title: 'Art Package Management',
+        items: [
+            {
+                title: 'Art Packages',
+                href: '/admin/art-packages',
+                icon: Package,
             },
         ],
     },

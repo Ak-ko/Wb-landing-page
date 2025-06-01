@@ -33,7 +33,7 @@ export default function Navbar() {
                 <button
                     ref={navToggleBtn}
                     onClick={handleToggleNav}
-                    className="hover:text-secondary-pink active:text-secondary-pink text-md cursor-pointer items-center gap-2 rounded-full px-3 py-1 text-black select-none sm:flex"
+                    className="hover:text-secondary-pink active:text-secondary-pink cursor-pointer items-center gap-2 rounded-full px-3 py-1 text-lg text-black select-none sm:flex"
                 >
                     <Menu size={20} />
                     <span className="hidden font-bold md:block">MENU</span>
