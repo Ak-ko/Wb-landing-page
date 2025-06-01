@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Blog;
 use App\Models\BlogImage;
 use App\Models\Tag;
+use App\Traits\BlogTrait;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -12,6 +13,7 @@ use Inertia\Inertia;
 
 class BlogController extends Controller
 {
+    use BlogTrait;
     /**
      * Display a listing of the resource.
      */
@@ -227,5 +229,58 @@ class BlogController extends Controller
         $blog->delete();
 
         return redirect()->route('blogs.index')->with('success', 'Blog deleted successfully.');
+    }
+
+    public function blogList(Request $request)
+    {
+        $query = Blog::latest()->published()->with(['tags', 'images']);
+
+        if ($request->has('query') && $request->query('query') !== '') {
+            $searchQuery = $request->query('query');
+            $query->where(function ($q) use ($searchQuery) {
+                $q->where('title', 'like', "%{$searchQuery}%")
+                    ->orWhere('description', 'like', "%{$searchQuery}%");
+            });
+        }
+
+        if ($request->has('tag') && $request->query('tag') !== '') {
+            $tagId = $request->query('tag');
+            $query->whereHas('tags', function ($q) use ($tagId) {
+                $q->where('tags.id', $tagId);
+            });
+        }
+
+        $blogs = $query->paginate(1)->withQueryString(); // TODO: change it back to 12
+        $tags = Tag::whereHas('blogs')->get();
+
+        return Inertia::render('blogs/blogs-page', [
+            'blogs' => $blogs,
+            'tags' => $tags,
+            'filters' => $request->only(['query', 'tag', 'page']),
+        ]);
+    }
+
+    public function blogDetail(Blog $blog)
+    {
+        $blog->load('tags', 'images');
+
+        // Get related blogs based on tags
+        $relatedBlogs = Blog::published()
+            ->where('id', '!=', $blog->id)
+            ->whereHas('tags', function ($query) use ($blog) {
+                $query->whereIn('tags.id', $blog->tags->pluck('id'));
+            })
+            ->with(['tags', 'images'])
+            ->take(3)
+            ->get();
+
+        // Calculate reading time
+        $readingTime = $this->calculateReadingTime($blog->description);
+
+        return Inertia::render('blogs/blog-detail', [
+            'blog' => $blog,
+            'relatedBlogs' => $relatedBlogs,
+            'readingTime' => $readingTime,
+        ]);
     }
 }

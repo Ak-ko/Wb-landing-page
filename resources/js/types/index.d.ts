@@ -138,6 +138,7 @@ export type BlogT = {
     is_published: boolean;
     images: BlogImage[];
     tags: TagT[];
+    readingTime: number | null;
 } & TimestampsT;
 
 export type FaqT = {

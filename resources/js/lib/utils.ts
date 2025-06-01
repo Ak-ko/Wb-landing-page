@@ -16,3 +16,13 @@ export function getArrayDifferences<T>(array1: T[], array2: T[]) {
 
     return { newItems, removedItems };
 }
+
+export function calculateReadingTime(content: string): number {
+    if (!content) return 1;
+    const wordCount = content
+        .trim()
+        .replace(/<[^>]+>/g, '')
+        .split(/\s+/).length;
+    const minutes = Math.ceil(wordCount / 200);
+    return Math.max(1, minutes);
+}

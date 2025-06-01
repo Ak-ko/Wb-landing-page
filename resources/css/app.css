@@ -230,6 +230,15 @@
             transform: translateY(-600px); /* fireSize + burnSize */
         }
     }
+
+    .top__line__progress {
+        transform-origin: left;
+        background: linear-gradient(to left, var(--color-secondary-pink), var(--color-primary-orange), var(--color-secondary-orange));
+        height: 10px;
+        width: 100%;
+        transform: scaleX(0);
+        transition: background-color 0.3s;
+    }
 }
 
 /* For MAC Air */

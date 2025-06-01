@@ -174,5 +174,8 @@ Route::get('/art-plans', function () {
     return Inertia::render('art-plan/art-plan', compact('mascotArts', 'mascotArtPackages', 'illustrationArtPackages', 'comicArtPackages', 'animationAndMotionArtPackages', 'stickerArtPackages'));
 })->name('art-plan-page');
 
+Route::get('/blogs', [BlogController::class, 'blogList'])->name('blogs.list');
+Route::get('/blogs/{blog}', [BlogController::class, 'blogDetail'])->name('blogs.detail');
+
 require __DIR__ . "/auth.php";
 require __DIR__ . "/settings.php";
