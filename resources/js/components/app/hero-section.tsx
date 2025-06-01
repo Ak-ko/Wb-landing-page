@@ -111,7 +111,7 @@ export default function HeroSection() {
                             Art Packages
                         </>
                     }
-                    href="/"
+                    href={route('art-plan-page')}
                 />
                 <div className="hidden w-full md:block">
                     <CharacterRedWithSpring className="hero__right__mascot absolute w-[170px] md:right-[calc(100vw-92%)] md:-bottom-5 lg:-bottom-13 xl:right-[calc(100vw-80%)] 2xl:right-[calc(100vw-67%)]" />

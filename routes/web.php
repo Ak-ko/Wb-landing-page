@@ -144,7 +144,7 @@ Route::get('/business-plans', function () {
 
 Route::get('/art-plans', function () {
     return Inertia::render('art-plan/art-plan');
-});
+})->name('art-plan-page');
 
 require __DIR__ . "/auth.php";
 require __DIR__ . "/settings.php";

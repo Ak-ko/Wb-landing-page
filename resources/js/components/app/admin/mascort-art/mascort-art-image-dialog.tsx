@@ -86,6 +86,20 @@ export default function MascortArtImageDialog({
         }
     };
 
+    const handleSetPrimary = () => {
+        if (image?.id && onSetPrimary) {
+            onSetPrimary(image.id);
+            onClose();
+        }
+    };
+
+    const handleSetMascot = () => {
+        if (image?.id && onSetMascot) {
+            onSetMascot(image.id);
+            onClose();
+        }
+    };
+
     return (
         <Dialog open={open} onOpenChange={(open) => !open && handleCancel()}>
             <DialogContent className="sm:max-w-md">
@@ -142,12 +156,34 @@ export default function MascortArtImageDialog({
                             )}
                         </>
                     ) : (
-                        <div className="relative">
-                            <img src={image.url} alt="Mascot art image" className="max-h-64 max-w-full rounded-md object-contain" />
+                        <div className="relative w-full">
+                            <img src={image.url} alt="Mascot art image" className="max-h-64 w-full rounded-md object-contain" />
                             <div className="absolute top-2 right-2 flex flex-col gap-1">
                                 {image.is_primary && <span className="bg-primary rounded-full px-2 py-1 text-xs text-white">Primary</span>}
-                                {image.is_mascot && <span className="bg-secondary rounded-full px-2 py-1 text-xs text-white">Mascot</span>}
+                                {image.is_mascot && <span className="bg-secondary-pink rounded-full px-2 py-1 text-xs text-white">Mascot</span>}
                             </div>
+                            {isEditing && (
+                                <div className="mt-4 flex flex-col gap-2">
+                                    <Button
+                                        type="button"
+                                        variant={image.is_primary ? 'secondary' : 'outline'}
+                                        onClick={handleSetPrimary}
+                                        className="w-full"
+                                        disabled={image.is_primary}
+                                    >
+                                        {image.is_primary ? 'Primary Image' : 'Set as Primary'}
+                                    </Button>
+                                    <Button
+                                        type="button"
+                                        variant={image.is_mascot ? 'secondary' : 'outline'}
+                                        onClick={handleSetMascot}
+                                        className="w-full"
+                                        disabled={image.is_mascot}
+                                    >
+                                        {image.is_mascot ? 'Mascot Image' : 'Set as Mascot'}
+                                    </Button>
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>
@@ -164,26 +200,12 @@ export default function MascortArtImageDialog({
                             </Button>
                         </>
                     ) : image?.id && isEditing ? (
-                        <>
-                            <div>
-                                <Button type="button" variant="destructive" onClick={handleDeleteImage} disabled={isDeleting}>
-                                    <Trash2 className="mr-2 h-4 w-4" />
-                                    {isDeleting ? 'Deleting...' : 'Delete'}
-                                </Button>
-                            </div>
-                            <div className="flex space-x-2">
-                                {!image.is_primary && (
-                                    <Button type="button" variant="outline" onClick={() => onSetPrimary && onSetPrimary(image.id!)}>
-                                        Set as Primary
-                                    </Button>
-                                )}
-                                {!image.is_mascot && (
-                                    <Button type="button" variant="outline" onClick={() => onSetMascot && onSetMascot(image.id!)}>
-                                        Set as Mascot
-                                    </Button>
-                                )}
-                            </div>
-                        </>
+                        <div className="w-full">
+                            <Button type="button" variant="destructive" onClick={handleDeleteImage} disabled={isDeleting} className="w-full">
+                                <Trash2 className="mr-2 h-4 w-4" />
+                                {isDeleting ? 'Deleting...' : 'Delete Image'}
+                            </Button>
+                        </div>
                     ) : null}
                 </DialogFooter>
             </DialogContent>
