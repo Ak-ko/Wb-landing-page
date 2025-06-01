@@ -38,6 +38,7 @@ export default function ArtPackages({
     packages: CommonPaginationT<ArtPackageT>;
     filters: {
         query: string;
+        type: string;
     };
 }) {
     const [viewMode, setViewMode] = useState<ViewMode>('table');
@@ -49,6 +50,7 @@ export default function ArtPackages({
         pageSize: packages?.per_page,
         pageIndex: packages?.current_page,
         query: filters.query || '',
+        type: filters.type || 'all',
     });
 
     // Use the filter hook
@@ -57,14 +59,20 @@ export default function ArtPackages({
             perPage: filterStates.pageSize,
             page: filterStates.pageIndex,
             query: filterStates.query,
+            type: filterStates.type,
         },
         route('art-packages.index'),
         false,
     );
 
     const handleSearch = (query: string) => {
-        setFilterStates((prev) => ({ ...prev, query }));
+        setFilterStates((prev) => ({ ...prev, query, pageIndex: 1 }));
         setIsFilter(true);
+    };
+
+    const handleSelectType = (type: string) => {
+        setIsFilter(true);
+        setFilterStates((prev) => ({ ...prev, type, pageIndex: 1 }));
     };
 
     const onPaginationChange = (page: number) => {
@@ -72,6 +80,15 @@ export default function ArtPackages({
         setFilterStates((prev) => ({
             ...prev,
             pageIndex: page,
+        }));
+    };
+
+    const onSelectChange = (pageSize: number) => {
+        setIsFilter(true);
+        setFilterStates((prev) => ({
+            ...prev,
+            pageIndex: 1,
+            pageSize: pageSize,
         }));
     };
 
@@ -112,7 +129,7 @@ export default function ArtPackages({
                 <div>
                     <div className="p-6">
                         <div className="flex items-center justify-between">
-                            <ArtPackageFilters onSearch={handleSearch} defaultQuery={filters.query} />
+                            <ArtPackageFilters onSearch={handleSearch} onSelectType={handleSelectType} defaultQuery={filters.query} />
                             <ViewToggle viewMode={viewMode} onChange={setViewMode} />
                         </div>
                     </div>
@@ -122,11 +139,12 @@ export default function ArtPackages({
                             columns={columns}
                             data={packages.data}
                             pagingData={{
-                                pageIndex: packages.current_page - 1,
+                                pageIndex: packages.current_page,
                                 pageSize: packages.per_page,
                                 total: packages.total,
                             }}
                             onPaginationChange={onPaginationChange}
+                            onSelectChange={onSelectChange}
                         />
                     ) : (
                         <>

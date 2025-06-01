@@ -11,14 +11,28 @@ class ArtPackageController extends Controller
 {
     public function index(Request $request)
     {
+        $filters = $request->only(['query', 'type']);
+
         $packages = ArtPackage::query()
             ->with(['items', 'prices'])
+            ->when($filters['query'] ?? null, function ($query, $search) {
+                $query->where('title', 'like', "%{$search}%");
+            })
+            ->when($filters['type'] ?? null, function ($query, $type) {
+                $query->where('type', $type);
+            })
             ->paginate($request->input('perPage', 10))
             ->withQueryString();
 
+        $types = collect(ArtPackageType::cases())->map(fn($case) => [
+            'name' => ucwords($case->name),
+            'value' => $case->value,
+        ]);
+
         return Inertia::render('admin/art-packages/index', [
             'packages' => $packages,
-            'filters' => $request->only(['query']),
+            'types' => $types,
+            'filters' => $request->only(['query', 'type']),
         ]);
     }
 
