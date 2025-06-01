@@ -87,12 +87,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('/admin/faqs', FaqController::class);
 
     // Policy
-    Route::resource('/admin/policies', CompanyPolicyController::class)->only(['index']);
-    Route::post('/admin/policies', [CompanyPolicyController::class, 'updatePolicy'])->name('policies.update');
+    Route::resource('/admin/policies', CompanyPolicyController::class)
+        ->only(['index']);
+    Route::post('/admin/policies', [CompanyPolicyController::class, 'updatePolicy'])
+        ->name('policies.update');
 
     // team member
     Route::resource('/admin/team-members', TeamMemberController::class);
-    Route::patch('/admin/team-members/{teamMember}/toggle-active', [TeamMemberController::class, 'toggleActive'])->name('team-members.toggle-active');
+    Route::patch('/admin/team-members/{teamMember}/toggle-active', [TeamMemberController::class, 'toggleActive'])
+        ->name('team-members.toggle-active');
 
     // Business Packages
     Route::resource('/admin/business-packages', BusinessPackagesController::class);
@@ -108,10 +111,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 // faq
-Route::post('/faq/send-email', [FaqController::class, 'sendFaqEmail'])->name('faq.send-email');
+Route::post('/faq/send-email', [FaqController::class, 'sendFaqEmail'])
+    ->name('faq.send-email');
 
 // contact us
-Route::post('/contact/send', [ContactController::class, 'sendMessage'])->name('contact.send');
+Route::post('/contact/send', [ContactController::class, 'sendMessage'])
+    ->name('contact.send');
 
 
 Route::get('/about-us', function () {

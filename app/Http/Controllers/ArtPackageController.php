@@ -21,7 +21,7 @@ class ArtPackageController extends Controller
             ->when($filters['type'] ?? null, function ($query, $type) {
                 $query->where('type', $type);
             })
-            ->paginate($request->input('perPage', 10))
+            ->paginate($request->input('perPage', 5))
             ->withQueryString();
 
         $types = collect(ArtPackageType::cases())->map(fn($case) => [
