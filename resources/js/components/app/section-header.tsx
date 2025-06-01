@@ -1,7 +1,8 @@
 import { cn } from '@/lib/utils';
+import React from 'react';
 
 interface PropsT {
-    header: string;
+    header: string | React.ReactNode;
     description?: string;
     headerClass?: string;
     descriptionClass?: string;

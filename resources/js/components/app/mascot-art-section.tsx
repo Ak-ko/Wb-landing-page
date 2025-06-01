@@ -1,4 +1,5 @@
 import DynamicArtHeader from './dynamic-art-header';
+import MascotArtPackagesSection from './mascot-art-packages-section';
 import MascotCarouselSection from './mascot-carousel-section';
 
 export default function MascotArtSection() {
@@ -17,6 +18,8 @@ export default function MascotArtSection() {
             />
 
             <MascotCarouselSection />
+
+            <MascotArtPackagesSection />
         </div>
     );
 }

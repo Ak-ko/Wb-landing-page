@@ -15,6 +15,7 @@ use App\Http\Controllers\MascortArtController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\TeamMemberController;
 use App\Http\Controllers\TestimonialController;
+use App\Models\ArtPackage;
 use App\Models\Blog;
 use App\Models\Brand;
 use App\Models\BrandingProject;
@@ -150,8 +151,23 @@ Route::get('/business-plans', function () {
 
 Route::get('/art-plans', function () {
     $mascotArts = MascortArt::with('images')->latest()->get();
+    $mascotArtPackages = ArtPackage::where('type', ArtPackageType::Mascot)
+        ->with('items', 'prices')
+        ->get();
+    $illustrationArtPackages = ArtPackage::where('type', ArtPackageType::Illustration)
+        ->with('items', 'prices')
+        ->get();
+    $comicArtPackages = ArtPackage::where('type', ArtPackageType::Comic)
+        ->with('items', 'prices')
+        ->get();
+    $animationAndMotionArtPackages = ArtPackage::where('type', ArtPackageType::AnimationAndMotion)
+        ->with('items', 'prices')
+        ->get();
+    $stickerArtPackages = ArtPackage::where('type', ArtPackageType::Sticker)
+        ->with('items', 'prices')
+        ->get();
 
-    return Inertia::render('art-plan/art-plan', compact('mascotArts'));
+    return Inertia::render('art-plan/art-plan', compact('mascotArts', 'mascotArtPackages', 'illustrationArtPackages', 'comicArtPackages', 'animationAndMotionArtPackages', 'stickerArtPackages'));
 })->name('art-plan-page');
 
 require __DIR__ . "/auth.php";

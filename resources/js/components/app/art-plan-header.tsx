@@ -1,5 +1,4 @@
 import ArtPlanHeaderSection from './art-plan-header-section';
-import MascotArtSection from './mascot-art-section';
 
 export default function ArtPlanHeader() {
     return (
@@ -7,7 +6,6 @@ export default function ArtPlanHeader() {
             <div className="app-container">
                 <ArtPlanHeaderSection />
             </div>
-            <MascotArtSection />
         </section>
     );
 }
