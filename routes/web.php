@@ -26,6 +26,8 @@ use App\Models\BusinessPackages;
 use App\Models\BusinessProcess;
 use App\Models\CompanyPolicy;
 use App\Models\Faq;
+use App\Models\IllustrationArt;
+use App\Models\IllustrationArtImages;
 use App\Models\MascortArt;
 use App\Models\Tag;
 use App\Models\TeamMember;
@@ -174,8 +176,17 @@ Route::get('/art-plans', function () {
     $stickerArtPackages = ArtPackage::where('type', ArtPackageType::Sticker)
         ->with('items', 'prices')
         ->get();
+    $illustrationArtImages = IllustrationArtImages::latest()->get();
 
-    return Inertia::render('art-plan/art-plan', compact('mascotArts', 'mascotArtPackages', 'illustrationArtPackages', 'comicArtPackages', 'animationAndMotionArtPackages', 'stickerArtPackages'));
+    return Inertia::render('art-plan/art-plan', compact(
+        'mascotArts',
+        'mascotArtPackages',
+        'illustrationArtPackages',
+        'comicArtPackages',
+        'animationAndMotionArtPackages',
+        'stickerArtPackages',
+        'illustrationArtImages'
+    ));
 })->name('art-plan-page');
 
 Route::get('/blogs', [BlogController::class, 'blogList'])->name('blogs.list');
