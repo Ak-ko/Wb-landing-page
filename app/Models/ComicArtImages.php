@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class ComicArtImages extends Model
 {
     /** @use HasFactory<\Database\Factories\ComicArtImagesFactory> */
-    use HasFactory, HasImage, SoftDeletes;
+    use HasFactory, HasImage;
 
     protected $fillable = ['image', 'comic_art_id'];
 

@@ -25,6 +25,7 @@ use App\Models\BusinessPackageAddon;
 use App\Models\BusinessPackageItems;
 use App\Models\BusinessPackages;
 use App\Models\BusinessProcess;
+use App\Models\ComicArtImages;
 use App\Models\CompanyPolicy;
 use App\Models\Faq;
 use App\Models\IllustrationArt;
@@ -181,6 +182,7 @@ Route::get('/art-plans', function () {
         ->with('items', 'prices')
         ->get();
     $illustrationArtImages = IllustrationArtImages::latest()->get();
+    $comicArtImages = ComicArtImages::latest()->get();
 
     return Inertia::render('art-plan/art-plan', compact(
         'mascotArts',
@@ -189,7 +191,8 @@ Route::get('/art-plans', function () {
         'comicArtPackages',
         'animationAndMotionArtPackages',
         'stickerArtPackages',
-        'illustrationArtImages'
+        'illustrationArtImages',
+        'comicArtImages'
     ));
 })->name('art-plan-page');
 
