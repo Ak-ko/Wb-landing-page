@@ -4,7 +4,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { ComicArtT } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { useState } from 'react';
-import IllustrationImageGallery from './comic-art-image-gallery';
+import ComicImageGallery from './comic-art-image-gallery';
 
 interface ComicArtFormProps {
     comicArt?: ComicArtT;
@@ -115,7 +115,7 @@ export default function ComicArtForm({ comicArt }: ComicArtFormProps) {
                 <label className="block text-sm font-medium">
                     Comic Arts <span className="text-red-500">*</span>
                 </label>
-                <IllustrationImageGallery
+                <ComicImageGallery
                     images={allImages}
                     onImageUpload={handleImageUpload}
                     onImageDelete={(imageId: number | string) => {
@@ -136,7 +136,7 @@ export default function ComicArtForm({ comicArt }: ComicArtFormProps) {
                     Cancel
                 </Button>
                 <Button type="submit" disabled={processing}>
-                    {comicArt ? 'Update Illustration' : 'Create Illustration'}
+                    {comicArt ? 'Update Comic' : 'Create Comic'}
                 </Button>
             </div>
         </form>

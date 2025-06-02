@@ -39,7 +39,7 @@ interface ComicArtIndexProps {
     tags: TagT[];
 }
 
-export default function IllustrationArtIndex({ comicArts, filters }: ComicArtIndexProps) {
+export default function ComicArtIndex({ comicArts, filters }: ComicArtIndexProps) {
     const [viewMode, setViewMode] = useState<ViewMode>('table');
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
     const [comicToDelete, setcomicToDelete] = useState<number | null>(null);
@@ -105,7 +105,7 @@ export default function IllustrationArtIndex({ comicArts, filters }: ComicArtInd
         return (
             <Card
                 onClick={() => {
-                    router.get(route('illustration-art.show', comicArt.id));
+                    router.get(route('comic-art.show', comicArt.id));
                 }}
                 key={comicArt.id}
                 className="min-h-[200px] max-w-[300px] cursor-pointer overflow-hidden pt-0 shadow"
@@ -122,7 +122,7 @@ export default function IllustrationArtIndex({ comicArts, filters }: ComicArtInd
                 </CardContent>
                 <CardFooter className="flex justify-center p-4 pt-0 lg:justify-end">
                     <Button variant="ghost" size="sm" asChild>
-                        <Link href={route('illustration-art.edit', comicArt.id)}>
+                        <Link href={route('comic-art.edit', comicArt.id)}>
                             <Edit className="h-4 w-4" />
                             Edit
                         </Link>
