@@ -8,6 +8,7 @@ use App\Http\Controllers\BrandingProjectController;
 use App\Http\Controllers\BusinessPackageAddonController;
 use App\Http\Controllers\BusinessPackagesController;
 use App\Http\Controllers\BusinessProcessController;
+use App\Http\Controllers\ComicArtController;
 use App\Http\Controllers\CompanyPolicyController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FaqController;
@@ -114,6 +115,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Illustration Art
     Route::resource('/admin/illustration-art', IllustrationArtController::class);
+
+    // Comic Art
+    Route::resource('/admin/comic-art', ComicArtController::class);
 });
 
 // faq

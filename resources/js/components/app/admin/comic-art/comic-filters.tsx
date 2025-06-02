@@ -3,12 +3,12 @@ import { useDebounce } from '@uidotdev/usehooks';
 import { Search } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-interface IllustrationArtFiltersProps {
+interface ComicFilterProps {
     onSearch: (query: string) => void;
     defaultQuery?: string;
 }
 
-export default function IllustrationArtFilters({ onSearch, defaultQuery = '' }: IllustrationArtFiltersProps) {
+export default function ComicArtFilters({ onSearch, defaultQuery = '' }: ComicFilterProps) {
     const [searchQuery, setSearchQuery] = useState(defaultQuery);
 
     const debounceQuery = useDebounce(searchQuery, 500);
@@ -26,7 +26,7 @@ export default function IllustrationArtFilters({ onSearch, defaultQuery = '' }: 
                 </div>
                 <Input
                     type="text"
-                    placeholder="Search illustration arts..."
+                    placeholder="Search comic arts..."
                     className="w-full py-2 pr-4 pl-9"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}

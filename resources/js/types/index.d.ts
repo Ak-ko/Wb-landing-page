@@ -258,6 +258,19 @@ export type IllustrationArtImageT = {
     is_primary: boolean;
 } & TimestampsT;
 
+export type ComicArtT = {
+    id: number;
+    title: string;
+    description: string | null;
+    images: ComicArtImageT[];
+} & TimestampsT;
+
+export type ComicArtImageT = {
+    id: number;
+    image: string;
+    is_primary: boolean;
+} & TimestampsT;
+
 interface CommonPaginationT<T> {
     data: T[];
     current_page: number;
