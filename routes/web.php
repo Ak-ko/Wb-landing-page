@@ -11,6 +11,7 @@ use App\Http\Controllers\BusinessProcessController;
 use App\Http\Controllers\CompanyPolicyController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FaqController;
+use App\Http\Controllers\IllustrationArtController;
 use App\Http\Controllers\MascortArtController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\TeamMemberController;
@@ -108,6 +109,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Art Packages
     Route::resource('/admin/art-packages', ArtPackageController::class);
+
+    // Illustration Art
+    Route::resource('/admin/illustration-art', IllustrationArtController::class);
 });
 
 // faq

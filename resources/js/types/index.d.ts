@@ -245,6 +245,19 @@ export type ArtPackagePriceT = {
     art_package_id: number;
 } & TimestampsT;
 
+export type IllustrationArtT = {
+    id: number;
+    title: string;
+    description: string | null;
+    images: IllustrationArtImageT[];
+} & TimestampsT;
+
+export type IllustrationArtImageT = {
+    id: number;
+    image: string;
+    is_primary: boolean;
+} & TimestampsT;
+
 interface CommonPaginationT<T> {
     data: T[];
     current_page: number;
