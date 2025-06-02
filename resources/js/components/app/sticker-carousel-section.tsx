@@ -1,12 +1,31 @@
+import { Carousel, CarouselApi, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { StickerArtImageT } from '@/types';
 import { usePage } from '@inertiajs/react';
 import { X } from 'lucide-react';
-import { useState } from 'react';
-import Marquee from 'react-fast-marquee';
+import { useEffect, useState } from 'react';
 import { Dialog, DialogClose, DialogContent, DialogHeader, DialogOverlay, DialogTitle } from '../ui/dialog';
 
 export default function StickerCarouselSection() {
     const { stickerArtImages } = usePage<{ stickerArtImages: StickerArtImageT[] }>().props;
+    const [api, setApi] = useState<CarouselApi>();
+    const [current, setCurrent] = useState(0);
+    const [count, setCount] = useState(0);
+
+    useEffect(() => {
+        if (!api) {
+            return;
+        }
+
+        setCount(api.scrollSnapList().length);
+        setCurrent(api.selectedScrollSnap() + 1);
+
+        api.on('select', () => {
+            setCurrent(api.selectedScrollSnap() + 1);
+        });
+    }, [api]);
+
+    console.log(current, count);
+
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [selectedImage, setSelectedImage] = useState<number | null>(null);
 
@@ -24,18 +43,30 @@ export default function StickerCarouselSection() {
 
     return (
         <div className="py-8">
-            <Marquee pauseOnClick pauseOnHover gradient={false} speed={50} direction="left" className="overflow-hidden">
-                {stickerArtImages.map((image, index) => (
-                    <div key={`sticker-${index}`} className="mx-2 my-2 overflow-hidden">
-                        <img
-                            onClick={() => handleOpenDialog(image.id)}
-                            className="w-[800px] cursor-pointer rounded object-cover object-center transition-transform duration-500 hover:scale-[1.2]"
-                            src={image.image}
-                            alt={`sticker-${index}`}
-                        />
-                    </div>
-                ))}
-            </Marquee>
+            <Carousel
+                opts={{
+                    align: 'start',
+                }}
+                setApi={setApi}
+                className="app-container"
+            >
+                <CarouselContent>
+                    {stickerArtImages.map((image, index) => (
+                        <CarouselItem key={index} className="w-full md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
+                            <div key={`sticker-${index}`} className="mx-2 my-2 overflow-hidden">
+                                <img
+                                    onClick={() => handleOpenDialog(image.id)}
+                                    className="cursor-pointer rounded object-cover object-center transition-transform duration-500 hover:scale-[1.2]"
+                                    src={image.image}
+                                    alt={`sticker-${index}`}
+                                />
+                            </div>
+                        </CarouselItem>
+                    ))}
+                </CarouselContent>
+                <CarouselPrevious className="hidden transition-transform duration-500 hover:scale-[1.2] md:flex" />
+                <CarouselNext className="hidden transition-transform duration-500 hover:scale-[1.2] md:flex" />
+            </Carousel>
 
             <Dialog open={isDialogOpen} onOpenChange={handleCloseDialog}>
                 <DialogOverlay className="fixed inset-0 z-50 bg-transparent backdrop-blur-sm" />
