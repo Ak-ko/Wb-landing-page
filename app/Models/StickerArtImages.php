@@ -5,14 +5,13 @@ namespace App\Models;
 use App\Traits\HasImage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-class IllustrationArtImages extends Model
+class StickerArtImages extends Model
 {
+    /** @use HasFactory<\Database\Factories\StickerArtImagesFactory> */
     use HasFactory, HasImage;
 
-    protected $fillable = ['image', 'illustration_art_id'];
-
+    protected $fillable = ['image', 'sticker_art_id'];
 
     /**
      * Get the image attribute with full URL.
@@ -32,8 +31,8 @@ class IllustrationArtImages extends Model
     /**
      * Get the illustration art that owns the image.
      */
-    public function illustrationArt()
+    public function stickerArt()
     {
-        return $this->belongsTo(IllustrationArt::class, 'illustration_art_id');
+        return $this->belongsTo(StickerArt::class, 'sticker_art_id');
     }
 }

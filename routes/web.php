@@ -14,6 +14,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\IllustrationArtController;
 use App\Http\Controllers\MascortArtController;
+use App\Http\Controllers\StickerArtController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\TeamMemberController;
 use App\Http\Controllers\TestimonialController;
@@ -31,6 +32,7 @@ use App\Models\Faq;
 use App\Models\IllustrationArt;
 use App\Models\IllustrationArtImages;
 use App\Models\MascortArt;
+use App\Models\StickerArtImages;
 use App\Models\Tag;
 use App\Models\TeamMember;
 use App\Models\Testimonial;
@@ -119,6 +121,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Comic Art
     Route::resource('/admin/comic-art', ComicArtController::class);
+
+    // Sticker Art
+    Route::resource('/admin/sticker-art', StickerArtController::class);
 });
 
 // faq
@@ -183,6 +188,7 @@ Route::get('/art-plans', function () {
         ->get();
     $illustrationArtImages = IllustrationArtImages::latest()->get();
     $comicArtImages = ComicArtImages::latest()->get();
+    $stickerArtImages = StickerArtImages::latest()->get();
 
     return Inertia::render('art-plan/art-plan', compact(
         'mascotArts',
@@ -192,7 +198,8 @@ Route::get('/art-plans', function () {
         'animationAndMotionArtPackages',
         'stickerArtPackages',
         'illustrationArtImages',
-        'comicArtImages'
+        'comicArtImages',
+        'stickerArtImages'
     ));
 })->name('art-plan-page');
 

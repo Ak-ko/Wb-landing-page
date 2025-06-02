@@ -271,6 +271,19 @@ export type ComicArtImageT = {
     is_primary: boolean;
 } & TimestampsT;
 
+export type StickerArtT = {
+    id: number;
+    title: string;
+    description: string | null;
+    images: ComicArtImageT[];
+} & TimestampsT;
+
+export type StickerArtImageT = {
+    id: number;
+    image: string;
+    is_primary: boolean;
+} & TimestampsT;
+
 interface CommonPaginationT<T> {
     data: T[];
     current_page: number;

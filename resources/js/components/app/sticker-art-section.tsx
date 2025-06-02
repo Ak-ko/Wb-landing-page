@@ -1,5 +1,6 @@
 import DynamicArtHeader from './dynamic-art-header';
 import StickerArtPackages from './sticker-art-packages';
+import StickerCarouselSection from './sticker-carousel-section';
 
 export default function StickerArtSection() {
     return (
@@ -15,6 +16,8 @@ export default function StickerArtSection() {
                 description={`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.`}
                 descriptionClass="md:text-start  text-center"
             />
+
+            <StickerCarouselSection />
 
             <StickerArtPackages />
         </div>
