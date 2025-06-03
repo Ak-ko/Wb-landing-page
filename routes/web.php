@@ -19,6 +19,7 @@ use App\Http\Controllers\StickerArtController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\TeamMemberController;
 use App\Http\Controllers\TestimonialController;
+use App\Models\AnimationAndMotionImage;
 use App\Models\ArtPackage;
 use App\Models\Blog;
 use App\Models\Brand;
@@ -193,6 +194,7 @@ Route::get('/art-plans', function () {
     $illustrationArtImages = IllustrationArtImages::latest()->get();
     $comicArtImages = ComicArtImages::latest()->get();
     $stickerArtImages = StickerArtImages::latest()->get();
+    $animationAndMotionsVideos = AnimationAndMotionImage::latest()->get();
 
     return Inertia::render('art-plan/art-plan', compact(
         'mascotArts',
@@ -203,7 +205,8 @@ Route::get('/art-plans', function () {
         'stickerArtPackages',
         'illustrationArtImages',
         'comicArtImages',
-        'stickerArtImages'
+        'stickerArtImages',
+        'animationAndMotionsVideos'
     ));
 })->name('art-plan-page');
 

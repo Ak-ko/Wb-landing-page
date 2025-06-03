@@ -39,6 +39,9 @@ export default function ComicCarouselSection() {
 
             <Dialog open={isDialogOpen} onOpenChange={handleCloseDialog}>
                 <DialogOverlay className="fixed inset-0 z-50 bg-transparent backdrop-blur-sm" />
+                <DialogHeader>
+                    <DialogTitle className="sr-only">Illustration Art</DialogTitle>
+                </DialogHeader>
                 <DialogContent className="z-50 max-w-3xl overflow-hidden rounded-2xl border-0 bg-transparent p-0 shadow-none" showCloseBtn={false}>
                     <DialogClose asChild>
                         <button
@@ -48,9 +51,7 @@ export default function ComicCarouselSection() {
                             <X className="h-5 w-5" />
                         </button>
                     </DialogClose>
-                    <DialogHeader>
-                        <DialogTitle className="sr-only">Illustration Art</DialogTitle>
-                    </DialogHeader>
+
                     {selectedImage && (
                         <img
                             className="h-full w-full rounded object-cover object-center"
