@@ -6,6 +6,7 @@ use App\Http\Controllers\ArtPackageController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\BrandingProjectController;
+use App\Http\Controllers\BusinessBrandGuidelineController;
 use App\Http\Controllers\BusinessPackageAddonController;
 use App\Http\Controllers\BusinessPackagesController;
 use App\Http\Controllers\BusinessProcessController;
@@ -24,6 +25,7 @@ use App\Models\ArtPackage;
 use App\Models\Blog;
 use App\Models\Brand;
 use App\Models\BrandingProject;
+use App\Models\BusinessBrandGuideline;
 use App\Models\BusinessPackageAddon;
 use App\Models\BusinessPackageItems;
 use App\Models\BusinessPackages;
@@ -108,6 +110,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Business Packages
     Route::resource('/admin/business-packages', BusinessPackagesController::class);
+
+    // Art and Motion Art
+    Route::resource('/admin/business-brand-guidelines', BusinessBrandGuidelineController::class);
 
     // Add-on Packages
     Route::resource('/admin/add-on-packages', BusinessPackageAddonController::class);

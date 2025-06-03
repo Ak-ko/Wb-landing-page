@@ -296,6 +296,33 @@ export type AnimationAndMotionImageT = {
     image: string;
     is_primary: boolean;
 } & TimestampsT;
+export type BrandGuidelineElementItemT = {
+    id: number;
+    brand_guideline_element_id: number;
+    title: string;
+    order: number | null;
+    created_at: string;
+    updated_at: string;
+};
+
+export type BrandGuidelineElementT = {
+    id: number;
+    business_brand_guideline_id: number;
+    title: string;
+    order: number | null;
+    items: BrandGuidelineElementItemT[];
+    created_at: string;
+    updated_at: string;
+};
+
+export type BusinessBrandGuidelineT = {
+    id: number;
+    title: string;
+    description: string | null;
+    elements: BrandGuidelineElementT[];
+    created_at: string;
+    updated_at: string;
+};
 
 interface CommonPaginationT<T> {
     data: T[];

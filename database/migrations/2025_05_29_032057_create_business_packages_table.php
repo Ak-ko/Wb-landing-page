@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('color')->nullable();
             $table->string('revision_remarks')->nullable();
             $table->boolean('is_recommended')->default(false);
+            $table->unsignedBigInteger('business_brand_guideline_id')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

@@ -127,6 +127,11 @@ const mainNavItems: NavItem[] = [
                 href: '/admin/add-on-packages',
                 icon: PackagePlus,
             },
+            {
+                title: 'Brand Guidelines',
+                href: '/admin/business-brand-guidelines',
+                icon: PackagePlus,
+            },
         ],
     },
     {
