@@ -17,6 +17,6 @@ class BusinessBrandGuideline extends Model
 
     public function elements()
     {
-        return $this->hasMany(PivotBusinessBrandGuidelineElement::class);
+        return $this->hasMany(BrandGuidelineElement::class);
     }
 }

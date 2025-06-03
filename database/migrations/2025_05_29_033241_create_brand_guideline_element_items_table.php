@@ -15,8 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title')->nullable();
             $table->unsignedBigInteger('brand_guideline_element_id');
-            $table->integer('order')->nullable();
-            $table->boolean('is_active')->default(true);
+            $table->float('order')->nullable();
             $table->timestamps();
         });
     }

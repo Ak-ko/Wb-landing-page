@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('brand_guideline_elements', function (Blueprint $table) {
             $table->id();
             $table->string("title")->nullable();
-            $table->integer('order')->nullable();
+            $table->float('order')->nullable();
+            $table->unsignedBigInteger('business_brand_guideline_id');
             $table->softDeletes();
             $table->timestamps();
         });

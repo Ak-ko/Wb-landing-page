@@ -10,6 +10,8 @@ class BrandGuidelineElementItem extends Model
     use HasFactory;
 
     protected $fillable = [
+        'title',
+        'order',
         'brand_guideline_element_id'
     ];
 

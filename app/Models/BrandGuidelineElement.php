@@ -12,8 +12,14 @@ class BrandGuidelineElement extends Model
 
     protected $fillable = [
         'title',
-        'order'
+        'order',
+        'business_brand_guideline_id'
     ];
+
+    public function businessBrandGuideline()
+    {
+        return $this->belongsTo(BusinessBrandGuideline::class);
+    }
 
     public function items()
     {
