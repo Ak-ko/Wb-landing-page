@@ -22,6 +22,7 @@ interface ImageUploaderProps {
     helperText?: string;
     uploadUrl?: string;
     cancelUrl?: string;
+    labelText?: 'Image' | 'Video';
     onUploadStateChange?: (state: UploadState) => void;
 }
 
@@ -36,6 +37,7 @@ export default function ImageUploader({
     placeholderText = 'Click to upload or drag and drop',
     helperText = 'SVG, PNG, JPG or GIF (max. 300 MB)',
     uploadUrl = route('api.image.upload'),
+    labelText = 'Image',
     cancelUrl = route('api.image.upload.cancel'),
     onUploadStateChange,
 }: ImageUploaderProps) {
@@ -308,7 +310,7 @@ export default function ImageUploader({
 
     return (
         <div className="space-y-2">
-            <label className="block text-sm font-medium">Image</label>
+            <label className="block text-sm font-medium">{labelText || 'Image'}</label>
 
             {imagePreview ? (
                 <div className={`relative ${aspectRatio} w-full overflow-hidden rounded-md bg-gray-100 shadow-md transition-all hover:shadow-lg`}>

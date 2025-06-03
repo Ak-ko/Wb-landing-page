@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\ArtPackageType;
+use App\Http\Controllers\AnimationAndMotionController;
 use App\Http\Controllers\ArtPackageController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\BrandController;
@@ -124,6 +125,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Sticker Art
     Route::resource('/admin/sticker-art', StickerArtController::class);
+
+    // Art and Motion Art
+    Route::resource('/admin/animation-and-motion', AnimationAndMotionController::class);
 });
 
 // faq

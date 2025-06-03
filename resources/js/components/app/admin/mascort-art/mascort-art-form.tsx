@@ -137,7 +137,6 @@ export default function MascortArtForm({ mascortArt, onSuccess }: MascortArtForm
             setData('mascot_image_id', null);
         }
     };
-    console.log(data);
 
     return (
         <form onSubmit={handleSubmit} className="space-y-8">

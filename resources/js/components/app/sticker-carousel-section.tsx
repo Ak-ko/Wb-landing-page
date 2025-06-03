@@ -1,30 +1,12 @@
-import { Carousel, CarouselApi, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { StickerArtImageT } from '@/types';
 import { usePage } from '@inertiajs/react';
 import { X } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Dialog, DialogClose, DialogContent, DialogHeader, DialogOverlay, DialogTitle } from '../ui/dialog';
 
 export default function StickerCarouselSection() {
     const { stickerArtImages } = usePage<{ stickerArtImages: StickerArtImageT[] }>().props;
-    const [api, setApi] = useState<CarouselApi>();
-    const [current, setCurrent] = useState(0);
-    const [count, setCount] = useState(0);
-
-    useEffect(() => {
-        if (!api) {
-            return;
-        }
-
-        setCount(api.scrollSnapList().length);
-        setCurrent(api.selectedScrollSnap() + 1);
-
-        api.on('select', () => {
-            setCurrent(api.selectedScrollSnap() + 1);
-        });
-    }, [api]);
-
-    console.log(current, count);
 
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [selectedImage, setSelectedImage] = useState<number | null>(null);
@@ -47,7 +29,6 @@ export default function StickerCarouselSection() {
                 opts={{
                     align: 'start',
                 }}
-                setApi={setApi}
                 className="app-container"
             >
                 <CarouselContent>

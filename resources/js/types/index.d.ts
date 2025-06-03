@@ -284,6 +284,19 @@ export type StickerArtImageT = {
     is_primary: boolean;
 } & TimestampsT;
 
+export type AnimationAndMotionT = {
+    id: number;
+    title: string;
+    description: string | null;
+    images: AnimationAndMotionImageT[];
+} & TimestampsT;
+
+export type AnimationAndMotionImageT = {
+    id: number;
+    image: string;
+    is_primary: boolean;
+} & TimestampsT;
+
 interface CommonPaginationT<T> {
     data: T[];
     current_page: number;
