@@ -55,8 +55,8 @@ export default function BlogPageFilters({ tags, selectedTag, search, onFilterCha
                 onClick={handleClickSearchBar}
                 onBlur={handleBlurSearchBar}
                 className={cn(
-                    'flex w-full grow items-center gap-2 rounded-2xl border px-5 transition-all duration-300',
-                    activeSearchBar ? 'ring-secondary-pink/30 ring-1' : 'ring-0',
+                    'flex w-full grow items-center gap-2 rounded-2xl border px-5 shadow transition-all duration-300',
+                    activeSearchBar ? 'ring-1 ring-black' : 'ring-0',
                 )}
             >
                 <Search className={cn('size-5 transition-all duration-300', activeSearchBar ? 'text-black' : 'text-gray-400')} />

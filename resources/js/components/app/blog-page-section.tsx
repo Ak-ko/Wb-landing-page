@@ -33,7 +33,7 @@ export default function BlogPageSection() {
     };
 
     return (
-        <div className="py-10">
+        <div>
             <div className="app-container p-5 md:p-9">
                 <BlogPageFilters
                     tags={tags}
@@ -44,6 +44,7 @@ export default function BlogPageSection() {
                 />
                 <AnimatePresence mode="wait">
                     <motion.div
+                        className="my-16"
                         key={`${filters?.query}-${filters?.tag}-${filters?.page}`}
                         initial={{ opacity: 0, y: 5 }}
                         animate={{ opacity: 1, y: 0 }}

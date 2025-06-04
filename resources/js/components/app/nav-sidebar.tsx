@@ -31,6 +31,11 @@ const links: LinksT[] = [
         externalLink: false,
     },
     {
+        label: 'Blogs',
+        href: route('blogs.list'),
+        externalLink: false,
+    },
+    {
         label: 'Contact',
         href: MESSENGER,
         externalLink: true,

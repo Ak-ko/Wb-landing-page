@@ -13,7 +13,7 @@ import TypewriterText from './type-write-text';
 export default function ContactUsSection() {
     return (
         <section className="py-16">
-            <div className="app-container">
+            <div className="app-container overflow-hidden">
                 <CommonBodyAnimation>
                     <div className="flex flex-col items-center gap-11 lg:flex-row lg:items-stretch lg:justify-between lg:gap-0">
                         <motion.div initial={{ x: -100 }} whileInView={{ x: 0 }} className="flex flex-col justify-between">

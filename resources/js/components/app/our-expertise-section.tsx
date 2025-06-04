@@ -26,7 +26,7 @@ export default function OurExpertiseSection() {
 
     return (
         <section className="py-16">
-            <div className="app-container">
+            <div className="app-container overflow-hidden">
                 <SectionHeader header="Our Expertise" />
 
                 <CommonBodyAnimation>
