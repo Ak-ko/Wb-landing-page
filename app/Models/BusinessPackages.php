@@ -18,7 +18,8 @@ class BusinessPackages extends Model
         'duration',
         'color',
         'revision_remarks',
-        'is_recommended'
+        'is_recommended',
+        'business_brand_guideline_id',
     ];
 
     protected $casts = [
@@ -29,5 +30,10 @@ class BusinessPackages extends Model
     public function businessPackageItems()
     {
         return $this->belongsToMany(BusinessPackageItems::class, 'pivot_business_package_items', 'business_package_id', 'business_package_item_id', 'id', 'id');
+    }
+
+    public function brandGuideline()
+    {
+        return $this->belongsTo(BusinessBrandGuideline::class, 'business_brand_guideline_id', 'id');
     }
 }

@@ -4,9 +4,10 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
-import { BusinessPackageT } from '@/types';
-import { useForm } from '@inertiajs/react';
+import { BusinessBrandGuidelineT, BusinessPackageT } from '@/types';
+import { useForm, usePage } from '@inertiajs/react';
 import { Plus, Trash2 } from 'lucide-react';
+import Select from 'react-select';
 import ColorSuggestions from '../../color-suggestions';
 
 interface BusinessPackageFormProps {
@@ -15,6 +16,7 @@ interface BusinessPackageFormProps {
 }
 
 export default function BusinessPackageForm({ businessPackage, onSuccess }: BusinessPackageFormProps) {
+    const { businessBrandGuidelines } = usePage<{ businessBrandGuidelines: BusinessBrandGuidelineT[] }>().props;
     const { data, setData, post, put, processing, errors, reset } = useForm({
         name: businessPackage?.name || '',
         description: businessPackage?.description || '',
@@ -25,6 +27,7 @@ export default function BusinessPackageForm({ businessPackage, onSuccess }: Busi
         items: businessPackage?.business_package_items?.map((item) => ({ name: item.name })) || [],
         color: businessPackage?.color || '',
         is_recommended: businessPackage?.is_recommended || false,
+        business_brand_guideline_id: businessBrandGuidelines?.filter((g) => g?.id === businessPackage?.brand_guideline?.id)[0]?.id || null,
     });
 
     const addItem = () => {
@@ -176,6 +179,25 @@ export default function BusinessPackageForm({ businessPackage, onSuccess }: Busi
                             <span className="text-red-500">*</span>
                         </Label>
                         {errors.is_recommended && <p className="text-sm text-red-500">{errors.is_recommended}</p>}
+                    </div>
+
+                    <div>
+                        <Label htmlFor="type">
+                            Brand Guideline <span className="text-red-500">*</span>
+                        </Label>
+                        <Select
+                            id="business_brand_guideline_id"
+                            options={businessBrandGuidelines}
+                            getOptionLabel={(o) => o.title}
+                            getOptionValue={(o) => o.id?.toString()}
+                            value={businessBrandGuidelines?.filter((option) => option.id === data.business_brand_guideline_id) || null}
+                            onChange={(option) => setData('business_brand_guideline_id', option ? option?.id : null)}
+                            classNamePrefix="react-select"
+                            className="rounded-2xl border-0 shadow-xs"
+                            placeholder="Select a brand guideline"
+                            isClearable
+                        />
+                        {errors.business_brand_guideline_id && <p className="mt-1 text-sm text-red-500">{errors.business_brand_guideline_id}</p>}
                     </div>
                 </div>
             </fieldset>

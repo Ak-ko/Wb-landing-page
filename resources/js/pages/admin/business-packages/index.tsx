@@ -39,6 +39,7 @@ export default function BusinessPackages({
     packages: CommonPaginationT<BusinessPackageT>;
     filters: {
         query: string;
+        guideline_id: number | null;
     };
 }) {
     const [viewMode, setViewMode] = useState<ViewMode>('table');
@@ -50,6 +51,7 @@ export default function BusinessPackages({
         pageSize: packages?.per_page,
         pageIndex: packages?.current_page,
         query: filters.query || '',
+        guideline_id: filters?.guideline_id || null,
     });
 
     // Use the filter hook
@@ -58,13 +60,19 @@ export default function BusinessPackages({
             perPage: filterStates.pageSize,
             page: filterStates.pageIndex,
             query: filterStates.query,
+            guideline_id: filterStates.guideline_id,
         },
         route('business-packages.index'),
         false,
     );
 
     const handleSearch = (query: string) => {
-        setFilterStates((prev) => ({ ...prev, query }));
+        setFilterStates((prev) => ({ ...prev, query, pageIndex: 1 }));
+        setIsFilter(true);
+    };
+
+    const handleFilter = (guideline: number) => {
+        setFilterStates((prev) => ({ ...prev, guideline_id: guideline, pageIndex: 1 }));
         setIsFilter(true);
     };
 
@@ -145,7 +153,12 @@ export default function BusinessPackages({
                     <DashboardTitle title="Business Packages" description="Manage your business packages" />
 
                     <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between md:gap-2">
-                        <BusinessPackageFilters onSearch={handleSearch} defaultQuery={filters.query || ''} />
+                        <BusinessPackageFilters
+                            onSearch={handleSearch}
+                            onFilter={handleFilter}
+                            defaultGuideline={filters?.guideline_id || null}
+                            defaultQuery={filters.query || ''}
+                        />
 
                         <div className="flex items-center justify-between gap-2">
                             <ViewToggle viewMode={viewMode} onChange={setViewMode} />

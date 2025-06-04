@@ -19,4 +19,9 @@ class BusinessBrandGuideline extends Model
     {
         return $this->hasMany(BrandGuidelineElement::class);
     }
+
+    public function businessPackages()
+    {
+        return $this->hasMany(BusinessPackages::class);
+    }
 }

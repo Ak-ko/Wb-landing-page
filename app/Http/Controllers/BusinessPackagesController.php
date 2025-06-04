@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BusinessBrandGuideline;
 use App\Models\BusinessPackages;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -11,19 +12,30 @@ class BusinessPackagesController extends Controller
     public function index(Request $request)
     {
         $packages = BusinessPackages::query()
-            ->with('businessPackageItems:id')
+            ->with('businessPackageItems:id', 'brandGuideline')
+            ->when($request->input('query'), function ($query, $queryString) {
+                $query->where('name', 'like', '%' . $queryString . '%');
+            })
+            ->when($request->input('guideline_id'), function ($query, $guidelineId) {
+                $query->where('business_brand_guideline_id', $guidelineId);
+            })
             ->paginate($request->input('perPage', 10))
             ->withQueryString();
 
+        $businessBrandGuidelines = BusinessBrandGuideline::all();
+
         return Inertia::render('admin/business-packages/index', [
             'packages' => $packages,
-            'filters' => $request->only(['query']),
+            'filters' => $request->only(['query', 'guideline_id']),
+            'businessBrandGuidelines' => $businessBrandGuidelines
         ]);
     }
 
     public function create()
     {
-        return Inertia::render('admin/business-packages/create');
+        return Inertia::render('admin/business-packages/create', [
+            'businessBrandGuidelines' => BusinessBrandGuideline::all(),
+        ]);
     }
 
     public function store(Request $request)
@@ -38,7 +50,8 @@ class BusinessPackagesController extends Controller
             'items' => 'required|array|min:2',
             'duration' => 'required|string|max:255',
             'items.*.name' => 'required|string|max:255',
-            'is_recommended' => 'required|boolean'
+            'is_recommended' => 'required|boolean',
+            'business_brand_guideline_id' => 'nullable|integer|exists:business_brand_guidelines,id',
         ], [
             'items.*.name.required' => 'Item name is required.',
         ]);
@@ -55,12 +68,15 @@ class BusinessPackagesController extends Controller
 
     public function show(BusinessPackages $businessPackage)
     {
-        return Inertia::render('admin/business-packages/show', ['businessPackage' => $businessPackage->load('businessPackageItems')]);
+        return Inertia::render('admin/business-packages/show', ['businessPackage' => $businessPackage->load('businessPackageItems', 'brandGuideline')]);
     }
 
     public function edit(BusinessPackages $businessPackage)
     {
-        return Inertia::render('admin/business-packages/edit', ['package' => $businessPackage->load('businessPackageItems')]);
+        return Inertia::render('admin/business-packages/edit', [
+            'package' => $businessPackage->load('businessPackageItems', 'brandGuideline'),
+            'businessBrandGuidelines' => BusinessBrandGuideline::all(),
+        ]);
     }
 
     public function update(Request $request, BusinessPackages $businessPackage)
@@ -75,7 +91,8 @@ class BusinessPackagesController extends Controller
             'items' => 'required|array|min:2',
             'duration' => 'required|string|max:255',
             'items.*.name' => 'required|string|max:255',
-            'is_recommended' => 'required|boolean'
+            'is_recommended' => 'required|boolean',
+            'business_brand_guideline_id' => 'nullable|integer|exists:business_brand_guidelines,id',
         ], [
             'items.*.name.required' => 'Item name is required.',
         ]);

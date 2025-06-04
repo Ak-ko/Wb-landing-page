@@ -22,6 +22,18 @@ export const createBusinessPackageColumns = ({ handleDeleteClick }: BusinessPack
         },
     },
     {
+        accessorKey: 'brand_guideline',
+        header: () => (
+            <h1>
+                Brand
+                <br /> Guideline
+            </h1>
+        ),
+        cell: ({ row }) => {
+            return <span className="line-clamp-2">{row.original.brand_guideline.title || '-'}</span>;
+        },
+    },
+    {
         header: 'Price',
         cell: ({ row }) => {
             if (!row.original.price_text) return <span>-</span>;

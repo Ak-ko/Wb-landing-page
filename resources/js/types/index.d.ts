@@ -184,6 +184,8 @@ export type BusinessPackageT = {
     color: string;
     is_recommended: boolean;
     business_package_items: BusinessPackageItemT[];
+    brand_guideline: BusinessBrandGuidelineT;
+    business_brand_guideline_id: number;
 } & WithModifiedBusienessPackageItemsT &
     TimestampsT;
 
