@@ -1,4 +1,5 @@
 import { Link } from '@inertiajs/react';
+import CommonBodyAnimation from './common-body-animation';
 import SectionHeader from './section-header';
 import WhyUsCard from './why-us-card';
 
@@ -44,19 +45,21 @@ export default function WhyUsSection() {
                 description="It has always been our reason for existence to help people achieve their goals while doing what we love."
             />
 
-            <div className="app-container py-11">
-                <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-                    {whyUsCards.map((card, index) => (
-                        <WhyUsCard key={index} {...card} />
-                    ))}
+            <CommonBodyAnimation>
+                <div className="app-container py-11">
+                    <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+                        {whyUsCards.map((card, index) => (
+                            <WhyUsCard key={index} {...card} />
+                        ))}
+                    </div>
                 </div>
-            </div>
 
-            <div className="my-11 flex justify-center">
-                <Link href={route('about-us-page')} className="primary_btn">
-                    See More About Us
-                </Link>
-            </div>
+                <div className="my-11 flex justify-center">
+                    <Link href={route('about-us-page')} className="primary_btn">
+                        See More About Us
+                    </Link>
+                </div>
+            </CommonBodyAnimation>
         </section>
     );
 }

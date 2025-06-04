@@ -1,4 +1,5 @@
 import { isLightColor } from '@/lib/colors';
+import { MESSENGER } from '@/lib/social-links';
 import { ArtPackageT } from '@/types';
 import { Check, ChevronRight } from 'lucide-react';
 
@@ -47,9 +48,13 @@ export default function DynamicArtPackageCard({ artPackage }: PropsT) {
             </ul>
 
             <div className="mx-5 mt-6 text-center">
-                <button className="block w-full cursor-pointer rounded-lg bg-black px-8 py-4 font-bold text-white transition-all duration-500 hover:-translate-y-1">
+                <a
+                    href={MESSENGER}
+                    target="_blank"
+                    className="block w-full cursor-pointer rounded-lg bg-black px-8 py-4 font-bold text-white transition-all duration-500 hover:-translate-y-1"
+                >
                     Get This Package
-                </button>
+                </a>
             </div>
         </div>
     );

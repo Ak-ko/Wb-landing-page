@@ -1,4 +1,5 @@
 import { isLightColor } from '@/lib/colors';
+import { MESSENGER } from '@/lib/social-links';
 import { cn } from '@/lib/utils';
 import { BusinessPackageT } from '@/types';
 import { usePage } from '@inertiajs/react';
@@ -81,9 +82,13 @@ export default function BusinessPlanSection() {
                                 </div>
                             </div>
                             <div className="flex flex-col items-center justify-between gap-5 p-8 uppercase md:flex-row md:gap-0">
-                                <button className="cursor-pointer rounded-lg bg-white px-8 py-3 font-bold text-black uppercase transition-all duration-500 hover:shadow-lg hover:shadow-white/80">
+                                <a
+                                    href={MESSENGER}
+                                    target="_blank"
+                                    className="cursor-pointer rounded-lg bg-white px-8 py-3 font-bold text-black uppercase transition-all duration-500 hover:shadow-lg hover:shadow-white/80"
+                                >
                                     Get This Package
-                                </button>
+                                </a>
                                 <button
                                     onClick={() => {
                                         setBrandGuidelineActive(true);
@@ -127,9 +132,13 @@ export default function BusinessPlanSection() {
                                 ))}
                             </ul>
                             <div className="flex flex-col items-center justify-between gap-5 p-8 uppercase md:flex-row md:gap-0">
-                                <button className="cursor-pointer rounded-lg bg-white px-8 py-3 font-bold text-black uppercase transition-all duration-500 hover:shadow-lg hover:shadow-white/80">
+                                <a
+                                    href={MESSENGER}
+                                    target="_blank"
+                                    className="cursor-pointer rounded-lg bg-white px-8 py-3 font-bold text-black uppercase transition-all duration-500 hover:shadow-lg hover:shadow-white/80"
+                                >
                                     Get This Package
-                                </button>
+                                </a>
                                 <button
                                     onClick={() => {
                                         setBrandGuidelineActive(false);

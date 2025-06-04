@@ -1,5 +1,6 @@
 import { ADMIN_PAGE_ENTER_CODE } from '@/lib/env';
 import { router } from '@inertiajs/react';
+import { motion } from 'framer-motion';
 import { useState } from 'react';
 import ActivePing from './active-ping';
 import HeroSectionBtn from './hero-section-btn';
@@ -29,14 +30,20 @@ export default function HeroSection() {
 
     return (
         <div className="py-16">
-            <div className="flex flex-col items-center">
+            <motion.div
+                animate={{ scale: 1 }}
+                initial={{ scale: 0 }}
+                transition={{ duration: 0.8, type: 'ease' }}
+                whileInView={{ opacity: 1 }}
+                className="flex flex-col items-center"
+            >
                 <h1 className="hero-section-header-text-size max-w-[360px] text-center font-extrabold uppercase sm:font-bold md:max-w-2xl xl:max-w-3xl">
                     creating brands <span className="text-secondary-pink">You can be proud of</span>
                 </h1>
                 <p className="mt-3 max-w-[300px] text-center text-xl font-semibold tracking-wide uppercase sm:max-w-full">
                     a branding agency with a vision
                 </p>
-            </div>
+            </motion.div>
 
             {/* Password prompt modal */}
             {showPasswordPrompt && (
@@ -80,41 +87,48 @@ export default function HeroSection() {
 
             <div className="relative flex flex-col items-center justify-center gap-5 pt-7 lg:flex-row">
                 <div className="hidden w-full md:block">
-                    <CharacterWithCoffee className="hero__left__mascot absolute w-[120px] md:bottom-0 md:left-[calc(100vw-86%)] lg:-bottom-8 xl:left-[calc(100vw-76%)] 2xl:left-[calc(100vw-65%)]" />
+                    <CharacterWithCoffee className="hero__left__mascot absolute w-[120px] md:bottom-0 lg:-bottom-8 xl:left-[calc(100vw-76%)] 2xl:left-[calc(100vw-65%)]" />
                 </div>
-                <HeroSectionBtn
-                    className="hover:bg-crayola-blue hover:shadow-crayola-blue/50 active:bg-crayola-blue hover:shadow-lg"
-                    initialChildren={
-                        <>
-                            Make It Work with the <br /> power of design
-                        </>
-                    }
-                    hoverChildren={
-                        <>
-                            Explore Our <br />
-                            Design Packages
-                        </>
-                    }
-                    href={route('business-plan-page')}
-                />
-                <HeroSectionBtn
-                    className="hover:bg-chillie-red active:bg-chillie-red hover:shadow-chillie-red/50 hover:shadow-lg"
-                    initialChildren={
-                        <>
-                            make it shine with the <br />
-                            power of art
-                        </>
-                    }
-                    hoverChildren={
-                        <>
-                            Explore Our <br />
-                            Art Packages
-                        </>
-                    }
-                    href={route('art-plan-page')}
-                />
+                <motion.div
+                    className="relative flex w-full flex-col items-center justify-center gap-5 xl:flex-row"
+                    animate={{ y: 0, opacity: 1 }}
+                    initial={{ y: 100, opacity: 0 }}
+                    transition={{ duration: 0.8, type: 'ease' }}
+                >
+                    <HeroSectionBtn
+                        className="hover:bg-crayola-blue hover:shadow-crayola-blue/50 active:bg-crayola-blue hover:shadow-lg"
+                        initialChildren={
+                            <>
+                                Make It Work with the <br /> power of design
+                            </>
+                        }
+                        hoverChildren={
+                            <>
+                                Explore Our <br />
+                                Design Packages
+                            </>
+                        }
+                        href={route('business-plan-page')}
+                    />
+                    <HeroSectionBtn
+                        className="hover:bg-chillie-red active:bg-chillie-red hover:shadow-chillie-red/50 hover:shadow-lg"
+                        initialChildren={
+                            <>
+                                make it shine with the <br />
+                                power of art
+                            </>
+                        }
+                        hoverChildren={
+                            <>
+                                Explore Our <br />
+                                Art Packages
+                            </>
+                        }
+                        href={route('art-plan-page')}
+                    />
+                </motion.div>
                 <div className="hidden w-full md:block">
-                    <CharacterRedWithSpring className="hero__right__mascot absolute w-[170px] md:right-[calc(100vw-92%)] md:-bottom-5 lg:-bottom-13 xl:right-[calc(100vw-80%)] 2xl:right-[calc(100vw-67%)]" />
+                    <CharacterRedWithSpring className="hero__right__mascot absolute w-[170px] md:-bottom-5 lg:-bottom-13 2xl:left-[calc(100vw-40%)]" />
                 </div>
             </div>
 

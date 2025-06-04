@@ -1,4 +1,5 @@
 import useScroll from '@/hooks/use-scroll';
+import { MESSENGER } from '@/lib/social-links';
 import useNavStore from '@/store/useNavStore';
 import { Link } from '@inertiajs/react';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -10,24 +11,29 @@ import TypewriterText from './type-write-text';
 type LinksT = {
     label: string;
     href: string;
+    externalLink: boolean;
 };
 
 const links: LinksT[] = [
     {
         label: 'About',
         href: route('about-us-page'),
+        externalLink: false,
     },
     {
         label: 'Branding Projects',
-        href: '#work',
+        href: route('business-plan-page'),
+        externalLink: false,
     },
     {
         label: 'Branding Packages',
         href: route('business-plan-page'),
+        externalLink: false,
     },
     {
         label: 'Contact',
-        href: '#contact',
+        href: MESSENGER,
+        externalLink: true,
     },
 ];
 
@@ -62,15 +68,26 @@ export default function NavSidebar() {
 
             <div className="relative hidden h-full w-full items-center sm:flex">
                 <div className="w-full -translate-y-[50%] text-white">
-                    {links?.map((link: LinksT) => (
-                        <Link
-                            href={link.href}
-                            key={link.href}
-                            className="font-inter flex min-h-[60px] w-full cursor-pointer items-center justify-center border-b border-b-white/25 font-bold text-white/50 uppercase transition-all duration-500 hover:text-white"
-                        >
-                            {link.label}
-                        </Link>
-                    ))}
+                    {links?.map((link: LinksT, indx: number) =>
+                        link?.externalLink ? (
+                            <a
+                                href={link.href}
+                                key={indx}
+                                target="_blank"
+                                className="font-inter flex min-h-[60px] w-full cursor-pointer items-center justify-center border-b border-b-white/25 font-bold text-white/50 uppercase transition-all duration-500 hover:text-white"
+                            >
+                                {link.label}
+                            </a>
+                        ) : (
+                            <Link
+                                href={link.href}
+                                key={indx}
+                                className="font-inter flex min-h-[60px] w-full cursor-pointer items-center justify-center border-b border-b-white/25 font-bold text-white/50 uppercase transition-all duration-500 hover:text-white"
+                            >
+                                {link.label}
+                            </Link>
+                        ),
+                    )}
                 </div>
 
                 <div>
@@ -101,10 +118,10 @@ export default function NavSidebar() {
 
             <div className="h-full">
                 <div className="flex h-[75%] flex-col justify-around overflow-y-auto py-11">
-                    {links?.map((link: LinksT) => (
+                    {links?.map((link: LinksT, indx: number) => (
                         <div
                             onClick={() => scrollTo(link.href, 0, 400)}
-                            key={link.href}
+                            key={indx}
                             className="flex min-h-[60px] w-full cursor-pointer items-center justify-center text-lg font-bold text-white/50 uppercase transition-all duration-500 hover:text-white active:text-white"
                         >
                             {link.label}
