@@ -3,6 +3,7 @@ import { MESSENGER } from '@/lib/social-links';
 import { cn } from '@/lib/utils';
 import { BusinessPackageT } from '@/types';
 import { usePage } from '@inertiajs/react';
+import { motion } from 'framer-motion';
 import { Check, ChevronsLeft, ChevronsRight } from 'lucide-react';
 import { useState } from 'react';
 
@@ -17,16 +18,21 @@ export default function BusinessPlanSection() {
         <section className="py-16">
             <div className="app-container space-y-5 sm:px-11">
                 {businessPackages?.map((b) => (
-                    <div className="relative w-full overflow-hidden rounded-xl">
+                    <motion.div
+                        animate={{ opacity: 1, y: 0 }}
+                        initial={{ opacity: 0, y: 100 }}
+                        transition={{ duration: 0.5, delay: 0.2 }}
+                        key={b?.id}
+                        className="relative w-full overflow-hidden rounded-xl"
+                    >
                         <div
-                            key={b?.id}
                             className={cn(
                                 'w-full bg-black text-white transition-all duration-500',
                                 !brandGuidelineActive ? 'translate-x-0' : '-translate-x-full',
                             )}
                         >
                             <div className="space-y-1.5 p-8">
-                                <h1
+                                <div
                                     className="flex items-center gap-3 text-center text-3xl font-bold uppercase md:text-start"
                                     style={{ color: b?.color }}
                                 >
@@ -42,7 +48,7 @@ export default function BusinessPlanSection() {
                                             Recommanded
                                         </h1>
                                     )}
-                                </h1>
+                                </div>
                                 <p className="text-center uppercase md:text-start">{b?.description}</p>
                             </div>
                             <ul className="grid grid-cols-1 gap-3 p-8 md:grid-cols-2">
@@ -122,7 +128,7 @@ export default function BusinessPlanSection() {
 
                                         <ul className="my-2 ml-5">
                                             {i?.items?.map((j) => (
-                                                <li className="flex items-center gap-2 uppercase">
+                                                <li key={j?.id} className="flex items-center gap-2 uppercase">
                                                     <span>{j?.order}.</span>
                                                     <span>{j?.title}</span>
                                                 </li>
@@ -149,7 +155,7 @@ export default function BusinessPlanSection() {
                                 </button>
                             </div>
                         </div>
-                    </div>
+                    </motion.div>
                 ))}
             </div>
         </section>

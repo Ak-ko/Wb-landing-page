@@ -1,4 +1,4 @@
-import { calculateReadingTime } from '@/lib/utils';
+import { calculateReadingTime, cn } from '@/lib/utils';
 import { BlogT } from '@/types';
 import { Link } from '@inertiajs/react';
 
@@ -8,10 +8,13 @@ interface BlogCardProps {
 
 export default function BlogCard({ blog }: BlogCardProps) {
     const primaryImage = blog.images.find((img) => img.is_primary) || blog.images[0];
+
     return (
         <Link
             href={route('blogs.detail', { blog: blog.id })}
-            className="group hover:ring-primary-orange flex h-full flex-col overflow-hidden rounded-xl bg-white shadow transition-all duration-500 hover:shadow-lg hover:ring-3"
+            className={cn(
+                'group hover:ring-secondary-pink/50 flex h-full flex-col overflow-hidden rounded-xl bg-white shadow transition-all duration-500 hover:shadow-lg hover:ring-4',
+            )}
         >
             <div className="overflow-hidden">
                 {primaryImage && (

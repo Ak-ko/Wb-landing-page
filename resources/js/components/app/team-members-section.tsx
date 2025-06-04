@@ -1,6 +1,7 @@
 import { TeamMemberT } from '@/types';
 import { usePage } from '@inertiajs/react';
 
+import CommonBodyAnimation from './common-body-animation';
 import SectionHeader from './section-header';
 import TeamMemberCard from './team-member-card';
 
@@ -21,11 +22,14 @@ export default function TeamMembersSection() {
                     {topTeamMembers?.map((t, x) => <TeamMemberCard key={x} teamMember={t} />)}
                 </div>
             </div>
-            {bottomTeamMembers?.length > 0 && (
-                <div className="grid grid-cols-1 py-20 md:grid-cols-5 lg:grid-cols-6">
-                    {bottomTeamMembers?.map((t, x) => <TeamMemberCard key={x} teamMember={t} varient="compact" />)}
-                </div>
-            )}
+
+            <CommonBodyAnimation>
+                {bottomTeamMembers?.length > 0 && (
+                    <div className="grid grid-cols-1 py-20 md:grid-cols-5 lg:grid-cols-6">
+                        {bottomTeamMembers?.map((t, x) => <TeamMemberCard key={x} teamMember={t} varient="compact" />)}
+                    </div>
+                )}
+            </CommonBodyAnimation>
         </section>
     );
 }

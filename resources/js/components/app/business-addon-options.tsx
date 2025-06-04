@@ -1,5 +1,7 @@
 import { BusinessPackageAddonT } from '@/types';
 import { usePage } from '@inertiajs/react';
+import { motion } from 'framer-motion';
+
 import BusinessAddons from './business-addons';
 import SectionHeader from './section-header';
 
@@ -20,9 +22,14 @@ export default function BusinessAddonOptions() {
                     <BusinessAddons businessPackageAddons={firstHalfAddons} />
                     <div>
                         <BusinessAddons businessPackageAddons={secondHalfAddons} />
-                        <div className="my-2 w-full rounded-2xl bg-gray-100 p-3 text-center font-bold text-black">
+                        <motion.div
+                            whileInView={{ scaleX: 1 }}
+                            initial={{ scaleX: 0 }}
+                            transition={{ duration: 0.5, delay: 1, ease: 'easeInOut' }}
+                            className="my-2 w-full origin-left rounded-2xl bg-gray-100 p-3 text-center font-bold text-black"
+                        >
                             <h1 className="uppercase">All designs have 2 rounds of revision.</h1>
-                        </div>
+                        </motion.div>
                     </div>
                 </div>
             </div>

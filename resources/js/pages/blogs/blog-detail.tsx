@@ -14,10 +14,12 @@ interface BlogDetailProps {
 
 export default function BlogDetail({ blog, relatedBlogs, readingTime }: BlogDetailProps) {
     const { topBarClass } = useTopScrollAnimation();
+
     return (
         <LandingLayout>
             <Head title={blog.title} />
             <div className={`${topBarClass} fixed top-0 left-0 z-[5] h-[5px] w-full origin-left`} />
+
             <div className="py-5">
                 <div className="app-container mx-auto max-w-3xl">
                     <div className="mb-4 flex items-center gap-2 text-sm text-gray-500">
@@ -56,7 +58,7 @@ export default function BlogDetail({ blog, relatedBlogs, readingTime }: BlogDeta
                                 <CarouselContent>
                                     {blog.images.map((image) => (
                                         <CarouselItem key={image.id}>
-                                            <img src={image.image} alt={blog.title} className="h-72 w-full rounded-xl object-cover" />
+                                            <img src={image.image} alt={blog.title} className="mx-auto max-w-[500px] rounded-xl object-cover" />
                                         </CarouselItem>
                                     ))}
                                 </CarouselContent>

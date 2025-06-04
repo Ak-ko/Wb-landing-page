@@ -1,6 +1,7 @@
 import { BEHANCE, FACEBOOK, LINKEDIN } from '@/lib/social-links';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Mail, Phone } from 'lucide-react';
+
 import CommonBodyAnimation from './common-body-animation';
 import ContactUsForm from './contact-us-form';
 import CharacterWithTiltingStyle from './icons/characters/contact-us-section/character-with-tilting-style';
@@ -15,7 +16,7 @@ export default function ContactUsSection() {
             <div className="app-container">
                 <CommonBodyAnimation>
                     <div className="flex flex-col items-center gap-11 lg:flex-row lg:items-stretch lg:justify-between lg:gap-0">
-                        <div className="flex flex-col justify-between">
+                        <motion.div initial={{ x: -100 }} whileInView={{ x: 0 }} className="flex flex-col justify-between">
                             <div className="max-w-[380px] space-y-1 text-center lg:text-start">
                                 <h1 className="text-[40px] font-bold uppercase">Contact Us</h1>
                                 <p>Let's connect! We're eager to hear from you and address any concerns.</p>
@@ -68,8 +69,10 @@ export default function ContactUsSection() {
                                     </AnimatePresence>
                                 </div>
                             </div>
-                        </div>
-                        <ContactUsForm />
+                        </motion.div>
+                        <motion.div initial={{ x: 100 }} whileInView={{ x: 0 }} className="w-full max-w-[500px]">
+                            <ContactUsForm />
+                        </motion.div>
                     </div>
                 </CommonBodyAnimation>
             </div>

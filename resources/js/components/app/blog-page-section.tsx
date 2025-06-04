@@ -33,8 +33,8 @@ export default function BlogPageSection() {
     };
 
     return (
-        <div className="py-16">
-            <div className="app-container hover:shadow-primary-orange/20 rounded-2xl border p-5 shadow-inner md:p-9">
+        <div className="py-10">
+            <div className="app-container p-5 md:p-9">
                 <BlogPageFilters
                     tags={tags}
                     search={filters?.query || ''}
@@ -56,7 +56,7 @@ export default function BlogPageSection() {
                             <div className="mt-2 flex flex-col items-center gap-4 text-center text-gray-500">
                                 <NotFoundLottie />
                                 <p className="text-center text-lg">
-                                    No blogs found with <strong className="text-black">{filters?.query}</strong>.
+                                    {filters?.query ? 'No blogs found with' : 'No Blogs'} <strong className="text-black">{filters?.query}</strong>.
                                 </p>
                             </div>
                         )}
