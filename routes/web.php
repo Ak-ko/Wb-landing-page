@@ -218,5 +218,8 @@ Route::get('/art-plans', function () {
 Route::get('/blogs', [BlogController::class, 'blogList'])->name('blogs.list');
 Route::get('/blogs/{blog}', [BlogController::class, 'blogDetail'])->name('blogs.detail');
 
+Route::get('/branding-projects', [BrandingProjectController::class, 'projectsList'])->name('branding-projects.list');
+Route::get('/branding-projects/{project}', [BrandingProjectController::class, 'projectDetail'])->name('branding-projects.detail');
+
 require __DIR__ . "/auth.php";
 require __DIR__ . "/settings.php";

@@ -267,4 +267,55 @@ class BrandingProjectController extends Controller
         return redirect()->route('branding-projects.index')
             ->with('success', 'Branding project deleted successfully.');
     }
+
+    public function projectsList(Request $request)
+    {
+        $query = BrandingProject::with(['tags', 'images', 'members'])
+            ->published()
+            ->latest();
+
+        if ($request->has('query') && $request->query('query') !== '') {
+            $searchQuery = $request->query('query');
+            $query->where(function ($q) use ($searchQuery) {
+                $q->where('title', 'like', "%{$searchQuery}%")
+                    ->orWhere('client_company', 'like', "%{$searchQuery}%")
+                    ->orWhere('description', 'like', "%{$searchQuery}%");
+            });
+        }
+
+        if ($request->has('tag')) {
+            $query->whereHas('tags', function ($q) use ($request) {
+                $q->where('tags.id', $request->tag);
+            });
+        }
+
+        $projects = $query->paginate(12)->withQueryString();
+        $tags = Tag::whereHas('brandingProjects')->get();
+
+        return Inertia::render('branding-projects/branding-projects-page', [
+            'projects' => $projects,
+            'tags' => $tags,
+            'filters' => $request->only(['query', 'tag']),
+        ]);
+    }
+
+    public function projectDetail(BrandingProject $project)
+    {
+        $project->load(['tags', 'images', 'members']);
+
+        $relatedProjects = BrandingProject::with(['tags', 'images'])
+            ->published()
+            ->where('id', '!=', $project->id)
+            ->whereHas('tags', function ($query) use ($project) {
+                $query->whereIn('tags.id', $project->tags->pluck('id'));
+            })
+            ->latest()
+            ->take(3)
+            ->get();
+
+        return Inertia::render('branding-projects/branding-project-detail', [
+            'project' => $project,
+            'relatedProjects' => $relatedProjects,
+        ]);
+    }
 }
