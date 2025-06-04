@@ -158,7 +158,7 @@ Route::get('/about-us', function () {
 
 Route::get('/business-plans', function () {
     $policy = CompanyPolicy::first();
-    $businessPackages = BusinessPackages::with('businessPackageItems')->get();
+    $businessPackages = BusinessPackages::with('businessPackageItems', 'brandGuideline.elements.items')->get();
     $allItems = BusinessPackageItems::all();
     $businessPackageAddons = BusinessPackageAddon::all();
 
