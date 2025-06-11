@@ -22,7 +22,7 @@ const links: LinksT[] = [
     },
     {
         label: 'Branding Projects',
-        href: route('business-plan-page'),
+        href: route('branding-projects.list'),
         externalLink: false,
     },
     {
