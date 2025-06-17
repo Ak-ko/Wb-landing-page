@@ -5,7 +5,7 @@ import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import { BusinessBrandGuidelineT, BusinessPackageT } from '@/types';
-import { useForm, usePage } from '@inertiajs/react';
+import { Link, useForm, usePage } from '@inertiajs/react';
 import { Plus, Trash2 } from 'lucide-react';
 import Select from 'react-select';
 import ColorSuggestions from '../../color-suggestions';
@@ -181,23 +181,32 @@ export default function BusinessPackageForm({ businessPackage, onSuccess }: Busi
                         {errors.is_recommended && <p className="text-sm text-red-500">{errors.is_recommended}</p>}
                     </div>
 
-                    <div>
-                        <Label htmlFor="type">
-                            Brand Guideline <span className="text-red-500">*</span>
-                        </Label>
-                        <Select
-                            id="business_brand_guideline_id"
-                            options={businessBrandGuidelines}
-                            getOptionLabel={(o) => o.title}
-                            getOptionValue={(o) => o.id?.toString()}
-                            value={businessBrandGuidelines?.filter((option) => option.id === data.business_brand_guideline_id) || null}
-                            onChange={(option) => setData('business_brand_guideline_id', option ? option?.id : null)}
-                            classNamePrefix="react-select"
-                            className="rounded-2xl border-0 shadow-xs"
-                            placeholder="Select a brand guideline"
-                            isClearable
-                        />
-                        {errors.business_brand_guideline_id && <p className="mt-1 text-sm text-red-500">{errors.business_brand_guideline_id}</p>}
+                    <div className="flex items-center gap-2">
+                        <div>
+                            <Label htmlFor="type">
+                                Brand Guideline <span className="text-red-500">*</span>
+                            </Label>
+                            <Select
+                                id="business_brand_guideline_id"
+                                options={businessBrandGuidelines}
+                                getOptionLabel={(o) => o.title}
+                                getOptionValue={(o) => o.id?.toString()}
+                                value={businessBrandGuidelines?.filter((option) => option.id === data.business_brand_guideline_id) || null}
+                                onChange={(option) => setData('business_brand_guideline_id', option ? option?.id : null)}
+                                classNamePrefix="react-select"
+                                className="rounded-2xl border-0 shadow-xs"
+                                placeholder="Select a brand guideline"
+                                isClearable
+                            />
+                            {errors.business_brand_guideline_id && <p className="mt-1 text-sm text-red-500">{errors.business_brand_guideline_id}</p>}
+                        </div>
+                        <Link
+                            className="mt-5 flex items-center gap-1 text-xs font-semibold hover:underline"
+                            href={route('business-brand-guidelines.create')}
+                        >
+                            <Plus size={14} />
+                            Create Brand Guideline
+                        </Link>
                     </div>
                 </div>
             </fieldset>
