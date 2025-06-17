@@ -33,6 +33,18 @@ class BrandingProject extends Model
         'is_published' => 'boolean'
     ];
 
+    protected $appends = ['team_size', 'status'];
+
+    public function getTeamSizeAttribute()
+    {
+        return $this->members->count();
+    }
+
+    public function getStatusAttribute()
+    {
+        return $this->is_published ? 'Published' : 'Draft';
+    }
+
     public function tags(): MorphToMany
     {
         return $this->morphToMany(Tag::class, 'taggable');

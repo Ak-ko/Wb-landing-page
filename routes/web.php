@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\ArtPackageType;
+use Carbon\Carbon;
 use App\Http\Controllers\AnimationAndMotionController;
 use App\Http\Controllers\ArtPackageController;
 use App\Http\Controllers\BlogController;
@@ -73,7 +74,51 @@ Route::get('/', function () {
 // Dashboard Routes
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/admin/dashboard', function () {
-        return Inertia::render('admin/dashboard');
+        $totalProjects = BrandingProject::count();
+        $totalBlogs = Blog::count();
+        $totalTeamMembers = TeamMember::count();
+        $totalPackages = BusinessPackages::count();
+    
+        $monthlyProjects = BrandingProject::whereYear('created_at', now()->year)
+            ->get()
+            ->groupBy(function ($project) {
+                return $project->created_at->format('M');
+            })
+            ->map(function ($projects, $month) {
+                return [
+                    'month' => $month,
+                    'count' => $projects->count()
+                ];
+            })
+            ->values();
+    
+        $recentProjects = BrandingProject::latest()
+            ->with(['members'])
+            ->take(5)
+            ->get()
+            ->map(function ($project) {
+                return [
+                    'id' => $project->id,
+                    'title' => $project->title,
+                    'client_company' => $project->client_company,
+                    'service_fees' => $project->service_fees,
+                    'team_size' => $project->team_size,
+                    'status' => $project->status,
+                    'members' => $project->members,
+                    'created_at' => $project->created_at->format('M d, Y')
+                ];
+            });
+
+        return Inertia::render('admin/dashboard', [
+            'stats' => [
+                'totalProjects' => $totalProjects,
+                'totalBlogs' => $totalBlogs,
+                'totalTeamMembers' => $totalTeamMembers,
+                'totalPackages' => $totalPackages,
+            ],
+            'monthlyProjectStats' => $monthlyProjects,
+            'recentProjects' => $recentProjects
+        ]); 
     })->name('dashboard');
 
     // Brands routes
