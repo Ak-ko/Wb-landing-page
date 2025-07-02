@@ -1,9 +1,12 @@
+import BehanceIcon from '@/components/app/icons/social-links/benance-icon';
+import ImageModal from '@/components/app/image-modal';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import useTopScrollAnimation from '@/hooks/use-top-scroll-animation';
 import LandingLayout from '@/layouts/landing-layout';
 import { BrandingProjectT } from '@/types';
 import { Head, Link } from '@inertiajs/react';
-import { Building2, Calendar, Globe } from 'lucide-react';
+import { Building2, Calendar, Crown } from 'lucide-react';
+import { useState } from 'react';
 
 interface BrandingProjectDetailProps {
     project: BrandingProjectT;
@@ -12,6 +15,8 @@ interface BrandingProjectDetailProps {
 
 export default function BrandingProjectDetail({ project, relatedProjects }: BrandingProjectDetailProps) {
     const { topBarClass } = useTopScrollAnimation();
+    const [modalOpen, setModalOpen] = useState(false);
+    const [modalIndex, setModalIndex] = useState(0);
 
     return (
         <LandingLayout>
@@ -40,9 +45,14 @@ export default function BrandingProjectDetail({ project, relatedProjects }: Bran
                                     <span>{project.year}</span>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <Globe size={20} />
-                                    <a href={project.project_link as string} target="_blank" rel="noopener noreferrer" className="hover:text-white">
-                                        View Live Project
+                                    <BehanceIcon fill="#d0d4db" className="mt-1 size-[25px]" />
+                                    <a
+                                        href={project.project_link as string}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="hover:text-white hover:underline"
+                                    >
+                                        View on Behance
                                     </a>
                                 </div>
                             </div>
@@ -58,9 +68,17 @@ export default function BrandingProjectDetail({ project, relatedProjects }: Bran
                             <div className="mb-12 overflow-hidden rounded-xl bg-white p-6 shadow-lg">
                                 <Carousel className="w-full">
                                     <CarouselContent>
-                                        {project.images.map((image) => (
+                                        {project.images.map((image, idx) => (
                                             <CarouselItem key={image.id}>
-                                                <img src={image.image} alt={project.title} className="w-full rounded-lg object-cover" />
+                                                <img
+                                                    src={image.image}
+                                                    alt={project.title}
+                                                    className="w-full cursor-pointer rounded-lg object-cover shadow-md transition-transform duration-200 hover:scale-105"
+                                                    onClick={() => {
+                                                        setModalOpen(true);
+                                                        setModalIndex(idx);
+                                                    }}
+                                                />
                                             </CarouselItem>
                                         ))}
                                     </CarouselContent>
@@ -71,6 +89,8 @@ export default function BrandingProjectDetail({ project, relatedProjects }: Bran
                                         </>
                                     )}
                                 </Carousel>
+                                {/* Modal for full image view */}
+                                <ImageModal images={project.images} open={modalOpen} initialIndex={modalIndex} onClose={() => setModalOpen(false)} />
                             </div>
 
                             {/* Project Description */}
@@ -120,19 +140,29 @@ export default function BrandingProjectDetail({ project, relatedProjects }: Bran
                                 <h3 className="mb-4 text-xl font-bold">Team Members</h3>
                                 <div className="space-y-4">
                                     {project.members.map((member) => (
-                                        <div key={member.id} className="flex items-center gap-4">
+                                        <div key={member.id} className="relative flex items-center gap-4 rounded-lg bg-gray-50 p-3">
                                             {member.image && (
-                                                <img src={member.image} alt={member.name} className="h-10 w-10 rounded-full object-cover" />
+                                                <img
+                                                    src={member.image}
+                                                    alt={member.name}
+                                                    className="border-primary/30 h-10 w-10 rounded-full border-2 object-cover"
+                                                />
                                             )}
                                             <div>
-                                                <p className="font-medium text-gray-900">{member.name}</p>
+                                                <p className="flex items-center gap-2 font-medium text-gray-900">
+                                                    {member.name}
+                                                    {member.pivot?.is_lead && (
+                                                        <span
+                                                            className="ml-2 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold shadow-sm"
+                                                            style={{ backgroundColor: 'var(--primary)', color: 'var(--primary-foreground)' }}
+                                                        >
+                                                            <Crown size={16} className="text-white" />
+                                                            Leader
+                                                        </span>
+                                                    )}
+                                                </p>
                                                 <p className="text-sm text-gray-500">{member.designation}</p>
                                             </div>
-                                            {/* {member && (
-                                                <span className="bg-primary/10 text-primary ml-auto rounded-full px-3 py-1 text-xs font-medium">
-                                                    Lead
-                                                </span>
-                                            )} */}
                                         </div>
                                     ))}
                                 </div>

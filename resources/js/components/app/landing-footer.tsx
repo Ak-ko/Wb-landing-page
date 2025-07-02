@@ -4,10 +4,8 @@ export default function LandingFooter() {
     return (
         <div>
             <Marquee gradient={false} speed={50} direction="left" className="overflow-hidden">
-                <img src="/assets/footer-mascot.png" className="h-[240px]" />
-                <img src="/assets/footer-mascot.png" className="h-[240px]" />
-                <img src="/assets/footer-mascot.png" className="h-[240px]" />
-                <img src="/assets/footer-mascot.png" className="h-[240px]" />
+                <img src="/assets/footer-mascot.png" className="h-[100px]" />
+                <img src="/assets/footer-mascot.png" className="h-[100px]" />
             </Marquee>
         </div>
     );

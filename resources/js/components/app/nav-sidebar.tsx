@@ -16,17 +16,17 @@ type LinksT = {
 
 const links: LinksT[] = [
     {
-        label: 'About',
+        label: 'About Us',
         href: route('about-us-page'),
         externalLink: false,
     },
     {
-        label: 'Branding Projects',
+        label: 'Our Works',
         href: route('branding-projects.list'),
         externalLink: false,
     },
     {
-        label: 'Branding Packages',
+        label: 'Our Expertise',
         href: route('business-plan-page'),
         externalLink: false,
     },
@@ -107,7 +107,7 @@ export default function NavSidebar() {
                             >
                                 <div className="relative max-w-[180px] rounded-xl bg-white p-4 text-black">
                                     <div className="font-medium">
-                                        <TypewriterText text={'Yo ! 😎'} />
+                                        <TypewriterText text={'Welcome to Walking Brands !'} />
                                     </div>
                                     <div className="absolute -right-2 bottom-4 h-4 w-4 rotate-45 transform bg-white"></div>
                                 </div>

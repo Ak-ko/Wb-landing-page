@@ -16,7 +16,7 @@ export default function BrandingProjectSection() {
         <section id="branding-projects" className="app-container py-20">
             <SectionHeader
                 header="Brandings made with passion"
-                description="We're committed to persisting in our mission of assisting countless more brands in the future — it's a promise we solemnly uphold."
+                description="We're committed to persisting in our mission of assisting countless more brands in the future. It's a promise we solemnly uphold."
                 descriptionClass="sm:!max-w-[700px]"
             />
             <CommonBodyAnimation>
@@ -34,7 +34,7 @@ export default function BrandingProjectSection() {
                 </div>
                 {brandingProjects.length > 0 && (
                     <div className="mt-10 flex justify-center">
-                        <Link href="/" className="primary_btn">
+                        <Link href={route('branding-projects.list')} className="primary_btn">
                             See More Works
                         </Link>
                     </div>
