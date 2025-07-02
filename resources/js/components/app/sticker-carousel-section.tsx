@@ -28,7 +28,7 @@ export default function StickerCarouselSection() {
                 <CarouselContent>
                     {stickerArtImages.map((image, index) => (
                         <CarouselItem key={index} className="w-full md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
-                            <div key={`sticker-${index}`} className="mx-2 my-2 overflow-hidden">
+                            <div key={`sticker-${index}`} className="mx-2 my-2 overflow-hidden rounded-lg">
                                 <img
                                     onClick={() => handleOpenModal(index)}
                                     className="cursor-pointer rounded object-cover object-center transition-transform duration-500 hover:scale-[1.2]"

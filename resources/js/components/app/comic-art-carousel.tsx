@@ -20,7 +20,7 @@ export default function ComicCarouselSection() {
         <div className="py-8">
             <Marquee pauseOnClick pauseOnHover gradient={false} speed={50} direction="left" className="overflow-hidden">
                 {comicArtImages.map((image, index) => (
-                    <div key={`illustration-${index}`} className="mx-2 my-2 overflow-hidden">
+                    <div key={`illustration-${index}`} className="mx-2 my-2 overflow-hidden rounded-lg">
                         <img
                             onClick={() => handleOpenModal(index)}
                             className="h-[450px] w-[800px] cursor-pointer rounded object-cover object-center transition-transform duration-500 hover:scale-[1.2]"
