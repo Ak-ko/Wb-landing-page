@@ -78,7 +78,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         $totalBlogs = Blog::count();
         $totalTeamMembers = TeamMember::count();
         $totalPackages = BusinessPackages::count();
-    
+
         $monthlyProjects = BrandingProject::whereYear('created_at', now()->year)
             ->get()
             ->groupBy(function ($project) {
@@ -91,7 +91,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 ];
             })
             ->values();
-    
+
         $recentProjects = BrandingProject::latest()
             ->with(['members'])
             ->take(5)
@@ -118,7 +118,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ],
             'monthlyProjectStats' => $monthlyProjects,
             'recentProjects' => $recentProjects
-        ]); 
+        ]);
     })->name('dashboard');
 
     // Brands routes
@@ -189,6 +189,9 @@ Route::post('/faq/send-email', [FaqController::class, 'sendFaqEmail'])
 Route::post('/contact/send', [ContactController::class, 'sendMessage'])
     ->name('contact.send');
 
+Route::get('/contact-us', function () {
+    return Inertia::render('contact-us/contact-us-page');
+})->name('contact-us-page');
 
 Route::get('/about-us', function () {
     $policy = CompanyPolicy::first();

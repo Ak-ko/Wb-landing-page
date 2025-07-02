@@ -1,16 +1,15 @@
-import { BrandingProjectImageT } from '@/types';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 
-export default function ImageModal({
+export default function ImageModal<ImgT extends { id: number; image: string }>({
     images,
     open,
     initialIndex,
     onClose,
 }: {
-    images: BrandingProjectImageT[];
+    images: ImgT[];
     open: boolean;
     initialIndex: number;
     onClose: () => void;

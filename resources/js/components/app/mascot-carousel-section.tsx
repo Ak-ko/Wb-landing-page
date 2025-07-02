@@ -4,11 +4,14 @@ import { usePage } from '@inertiajs/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useCallback, useState } from 'react';
+import ImageModal from './image-modal';
 
 export default function MascotCarouselSection() {
     const { mascotArts } = usePage<{ mascotArts: MascortArtT[] }>().props;
     const [currentIndex, setCurrentIndex] = useState(0);
     const [direction, setDirection] = useState(0);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalIndex, setModalIndex] = useState(0);
 
     const slideVariants = {
         enter: (direction: number) => ({
@@ -52,43 +55,40 @@ export default function MascotCarouselSection() {
         [mascotArts.length],
     );
 
-    // useEffect(() => {
-    //     const timer = setInterval(() => {
-    //         paginate(1);
-    //     }, 10000);
-    //     return () => clearInterval(timer);
-    // }, [paginate]);
-
     if (!mascotArts || mascotArts?.length === 0) return null;
 
     const currentMascotArt = mascotArts[currentIndex];
+    // Only non-mascot images for modal
+    const nonMascotImages = currentMascotArt.images.filter((img) => !img.is_mascot);
 
     return (
         <div className="relative py-16">
-            <div className="absolute top-1/2 right-4 left-4 z-20 flex -translate-y-1/2 justify-between">
-                <motion.button
-                    onClick={() => paginate(-1)}
-                    className="flex h-10 w-10 items-center justify-center rounded-full bg-black text-white shadow-lg md:h-12 md:w-12"
-                    variants={navButtonVariants}
-                    initial="initial"
-                    whileHover="hover"
-                    whileTap="tap"
-                    aria-label="Previous slide"
-                >
-                    <ChevronLeft size={24} />
-                </motion.button>
-                <motion.button
-                    onClick={() => paginate(1)}
-                    className="flex h-10 w-10 items-center justify-center rounded-full bg-black text-white shadow-lg md:h-12 md:w-12"
-                    variants={navButtonVariants}
-                    initial="initial"
-                    whileHover="hover"
-                    whileTap="tap"
-                    aria-label="Next slide"
-                >
-                    <ChevronRight size={24} />
-                </motion.button>
-            </div>
+            {mascotArts.length > 1 && (
+                <div className="absolute top-1/2 right-4 left-4 z-20 flex -translate-y-1/2 justify-between">
+                    <motion.button
+                        onClick={() => paginate(-1)}
+                        className="flex h-10 w-10 items-center justify-center rounded-full bg-black text-white shadow-lg md:h-12 md:w-12"
+                        variants={navButtonVariants}
+                        initial="initial"
+                        whileHover="hover"
+                        whileTap="tap"
+                        aria-label="Previous slide"
+                    >
+                        <ChevronLeft size={24} />
+                    </motion.button>
+                    <motion.button
+                        onClick={() => paginate(1)}
+                        className="flex h-10 w-10 items-center justify-center rounded-full bg-black text-white shadow-lg md:h-12 md:w-12"
+                        variants={navButtonVariants}
+                        initial="initial"
+                        whileHover="hover"
+                        whileTap="tap"
+                        aria-label="Next slide"
+                    >
+                        <ChevronRight size={24} />
+                    </motion.button>
+                </div>
+            )}
 
             <AnimatePresence initial={false} custom={direction} mode="wait">
                 <motion.div
@@ -126,7 +126,7 @@ export default function MascotCarouselSection() {
                             <p className="leading-[1.7]">{currentMascotArt?.description}</p>
                         </motion.div>
                         <div className="grid w-full grid-cols-1 gap-5 py-11 lg:grid-cols-4">
-                            {currentMascotArt?.images?.map((image) =>
+                            {currentMascotArt?.images?.map((image, idx) =>
                                 !image?.is_mascot ? (
                                     <motion.img
                                         key={image.id}
@@ -140,6 +140,10 @@ export default function MascotCarouselSection() {
                                         animate={{ opacity: 1, scale: 1 }}
                                         transition={{ duration: 0.5 }}
                                         whileHover={{ scale: 1.03 }}
+                                        onClick={() => {
+                                            setModalIndex(idx);
+                                            setIsModalOpen(true);
+                                        }}
                                     />
                                 ) : (
                                     <motion.img
@@ -159,22 +163,25 @@ export default function MascotCarouselSection() {
             </AnimatePresence>
 
             {/* Pagination Bars */}
-            <div className="mt-8 flex items-center justify-center gap-2">
-                {mascotArts.map((_, index) => (
-                    <motion.button
-                        key={index}
-                        onClick={() => {
-                            const direction = index > currentIndex ? 1 : -1;
-                            setDirection(direction);
-                            setCurrentIndex(index);
-                        }}
-                        className={cn('h-[3px] w-12 transition-all duration-300', currentIndex === index ? 'bg-black' : 'bg-gray-300')}
-                        aria-label={`Go to slide ${index + 1}`}
-                        whileHover={{ scaleY: 1.5 }}
-                        whileTap={{ scale: 0.95 }}
-                    />
-                ))}
-            </div>
+            {mascotArts.length > 1 && (
+                <div className="mt-8 flex items-center justify-center gap-2">
+                    {mascotArts.map((_, index) => (
+                        <motion.button
+                            key={index}
+                            onClick={() => {
+                                const direction = index > currentIndex ? 1 : -1;
+                                setDirection(direction);
+                                setCurrentIndex(index);
+                            }}
+                            className={cn('h-[3px] w-12 transition-all duration-300', currentIndex === index ? 'bg-black' : 'bg-gray-300')}
+                            aria-label={`Go to slide ${index + 1}`}
+                            whileHover={{ scaleY: 1.5 }}
+                            whileTap={{ scale: 0.95 }}
+                        />
+                    ))}
+                </div>
+            )}
+            <ImageModal images={nonMascotImages} open={isModalOpen} initialIndex={modalIndex} onClose={() => setIsModalOpen(false)} />
         </div>
     );
 }

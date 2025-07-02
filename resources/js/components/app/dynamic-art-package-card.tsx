@@ -16,15 +16,17 @@ export default function DynamicArtPackageCard({ artPackage }: PropsT) {
 
     return (
         <div
-            className={`rounded-2xl p-7 transition-all duration-500 hover:shadow-xl hover:ring-4 hover:ring-black`}
-            style={{ backgroundColor: artPackage?.color, color: textColor }}
+            className={`rounded-2xl bg-black p-7 transition-all duration-500 hover:shadow-xl hover:ring-4 hover:ring-black`}
+            style={{ color: textColor }}
         >
-            <h1 className="text-3xl font-bold uppercase">{artPackage?.title}</h1>
+            <h1 className="text-3xl font-bold uppercase" style={{ color: artPackage?.color }}>
+                {artPackage?.title}
+            </h1>
             <ul className="my-5 space-y-3">
                 {artPackage?.items &&
                     artPackage?.items?.map((i) => (
                         <li key={i?.id} className="flex items-center gap-1 text-sm">
-                            <Check className="size-3.5 stroke-3" style={{ color: textColor }} />
+                            <Check className="size-3.5 stroke-3" style={{ color: artPackage?.color }} />
                             <span>{i?.item}</span>
                         </li>
                     ))}
@@ -51,7 +53,8 @@ export default function DynamicArtPackageCard({ artPackage }: PropsT) {
                 <a
                     href={MESSENGER}
                     target="_blank"
-                    className="block w-full cursor-pointer rounded-lg bg-black px-8 py-4 font-bold text-white transition-all duration-500 hover:-translate-y-1"
+                    className="block w-full cursor-pointer rounded-lg px-8 py-4 font-bold transition-all duration-500 hover:-translate-y-1"
+                    style={{ backgroundColor: artPackage?.color, color: textColor }}
                 >
                     Get This Package
                 </a>

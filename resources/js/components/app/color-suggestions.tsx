@@ -10,7 +10,8 @@ interface ColorSuggestionsProps {
 export default function ColorSuggestions({ onColorSelect }: ColorSuggestionsProps) {
     const [isOpen, setIsOpen] = useState(false);
 
-    const colorSuggestions = [
+    // Split color suggestions into two groups
+    const whiteBgColors = [
         '#E53726', // Chillie Red
         '#1274EF', // Crayola Blue
         '#FF1466', // Folly
@@ -23,6 +24,8 @@ export default function ColorSuggestions({ onColorSelect }: ColorSuggestionsProp
         '#780303', // Barn Red
         '#656565', // Dim Gray
         '#F5F5F5', // White Smoke
+    ];
+    const blackBgColors = [
         '#E53726', // Chillie Red
         '#3E8FF3', // Chefchaouen Blue
         '#0BDA68', // Malachite
@@ -44,21 +47,41 @@ export default function ColorSuggestions({ onColorSelect }: ColorSuggestionsProp
                     <Palette className="h-4 w-4" />
                 </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
+            <DialogContent className="border-0 !p-0 outline-0 sm:max-w-[425px]">
+                <DialogHeader className="p-5">
                     <DialogTitle>Suggested Colors</DialogTitle>
                 </DialogHeader>
-                <div className="grid grid-cols-5 gap-2 p-4">
-                    {colorSuggestions.map((color) => (
-                        <button
-                            key={color}
-                            className="h-10 w-10 rounded-md border border-gray-200 transition-transform hover:scale-110 focus:ring-2 focus:ring-gray-400 focus:outline-none"
-                            style={{ backgroundColor: color }}
-                            onClick={() => handleColorSelect(color)}
-                            title={color}
-                            type="button"
-                        />
-                    ))}
+                {/* White BG Colors */}
+                <div className="mb-4 rounded-lg p-5" style={{ background: '#fff' }}>
+                    <div className="mb-5 text-sm font-semibold text-gray-700">For White Background</div>
+                    <div className="grid grid-cols-5 gap-2">
+                        {whiteBgColors.map((color) => (
+                            <button
+                                key={color}
+                                className="h-10 w-10 rounded-md border border-gray-200 transition-transform hover:scale-110 focus:ring-2 focus:ring-gray-400 focus:outline-none"
+                                style={{ backgroundColor: color }}
+                                onClick={() => handleColorSelect(color)}
+                                title={color}
+                                type="button"
+                            />
+                        ))}
+                    </div>
+                </div>
+                {/* Black BG Colors */}
+                <div className="rounded-lg rounded-t-none p-5 pb-8" style={{ background: '#111' }}>
+                    <div className="mb-5 text-sm font-semibold text-gray-200">For Black Background</div>
+                    <div className="grid grid-cols-5 gap-2">
+                        {blackBgColors.map((color) => (
+                            <button
+                                key={color}
+                                className="h-10 w-10 rounded-md border border-gray-700 transition-transform hover:scale-110 focus:ring-2 focus:ring-gray-400 focus:outline-none"
+                                style={{ backgroundColor: color }}
+                                onClick={() => handleColorSelect(color)}
+                                title={color}
+                                type="button"
+                            />
+                        ))}
+                    </div>
                 </div>
             </DialogContent>
         </Dialog>

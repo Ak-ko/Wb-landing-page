@@ -10,11 +10,6 @@ interface TagColumnActions {
 
 export const createTagColumns = ({ handleEdit, handleDeleteClick }: TagColumnActions): ColumnDef<TagT>[] => [
     {
-        accessorKey: 'id',
-        header: 'ID',
-        cell: ({ row }) => <div className="text-center">{row.getValue('id')}</div>,
-    },
-    {
         accessorKey: 'name',
         header: 'Name',
     },
@@ -22,9 +17,8 @@ export const createTagColumns = ({ handleEdit, handleDeleteClick }: TagColumnAct
         accessorKey: 'color',
         header: 'Color',
         cell: ({ row }) => (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center justify-center gap-2">
                 <div className="h-5 w-5 rounded-full" style={{ backgroundColor: row.getValue('color') }} />
-                <span>{row.getValue('color')}</span>
             </div>
         ),
     },
@@ -40,7 +34,7 @@ export const createTagColumns = ({ handleEdit, handleDeleteClick }: TagColumnAct
             const tag = row.original;
 
             return (
-                <div className="flex justify-end gap-2">
+                <div className="flex justify-center gap-2">
                     <Button variant="ghost" size="sm" onClick={() => handleEdit(tag)}>
                         <Edit className="h-4 w-4" />
                     </Button>

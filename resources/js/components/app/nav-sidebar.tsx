@@ -1,5 +1,4 @@
 import useScroll from '@/hooks/use-scroll';
-import { MESSENGER } from '@/lib/social-links';
 import useNavStore from '@/store/useNavStore';
 import { Link } from '@inertiajs/react';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -37,8 +36,8 @@ const links: LinksT[] = [
     },
     {
         label: 'Contact',
-        href: MESSENGER,
-        externalLink: true,
+        href: route('contact-us-page'),
+        externalLink: false,
     },
 ];
 

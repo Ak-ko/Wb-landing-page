@@ -1,14 +1,13 @@
-import { BEHANCE, FACEBOOK, LINKEDIN } from '@/lib/social-links';
-import { AnimatePresence, motion } from 'framer-motion';
+import { BEHANCE, FACEBOOK, LINKEDIN, MESSENGER } from '@/lib/social-links';
+import { motion } from 'framer-motion';
 import { Mail, Phone } from 'lucide-react';
 
 import CommonBodyAnimation from './common-body-animation';
 import ContactUsForm from './contact-us-form';
-import CharacterWithTiltingStyle from './icons/characters/contact-us-section/character-with-tilting-style';
 import BehanceIcon from './icons/social-links/benance-icon';
 import FacebookIcon from './icons/social-links/facebook-icon';
 import LinkedinIcon from './icons/social-links/linkedin-icon';
-import TypewriterText from './type-write-text';
+import MessengerIcon from './icons/social-links/messenger-icon';
 
 export default function ContactUsSection() {
     return (
@@ -35,12 +34,21 @@ export default function ContactUsSection() {
                                 </div>
                                 <div className="relative flex justify-center lg:inline-flex">
                                     <div className="flex w-full flex-col justify-end gap-3">
-                                        <a
-                                            className="bg-crayola-blue hover:bg-crayola-blue/80 flex items-center gap-2 rounded-xl px-8 py-4 text-white transition-all duration-500"
-                                            href="mailto:info@walkingbrands.co"
-                                        >
-                                            <Mail /> <span>info@walkingbrands.co</span>
-                                        </a>
+                                        <div className="flex flex-col gap-2 xl:flex-row">
+                                            <a
+                                                className="bg-crayola-blue hover:bg-crayola-blue/80 flex items-center gap-2 rounded-xl px-8 py-4 text-white transition-all duration-500"
+                                                href={MESSENGER}
+                                                target="_blank"
+                                            >
+                                                <MessengerIcon className="size-[25px]" fill="white" /> <span>Page Messenger</span>
+                                            </a>
+                                            <a
+                                                className="bg-primary hover:bg-primary/80 flex items-center gap-2 rounded-xl px-8 py-4 text-white transition-all duration-500"
+                                                href="mailto:info@walkingbrands.co"
+                                            >
+                                                <Mail /> <span>info@walkingbrands.co</span>
+                                            </a>
+                                        </div>
                                         <a
                                             className="bg-secondary-pink hover:bg-secondary-pink/80 flex items-center gap-2 rounded-xl px-8 py-4 text-white transition-all duration-500"
                                             href="tel:+959422273300"
@@ -48,12 +56,12 @@ export default function ContactUsSection() {
                                             <Phone /> <span>09 422 273 300</span>
                                         </a>
                                     </div>
-                                    <div className="absolute -right-[53%] -bottom-[35%] hidden lg:block">
+                                    {/* <div className="absolute -right-[33%] -bottom-[35%] hidden xl:block">
                                         <CharacterWithTiltingStyle />
                                     </div>
                                     <AnimatePresence>
                                         <motion.div
-                                            className="absolute -top-8 -right-[85%] hidden lg:block"
+                                            className="absolute -top-8 -right-[44%] hidden xl:block"
                                             initial={{ scale: 0 }}
                                             animate={{ scale: 1 }}
                                             exit={{ scale: 0, opacity: 0 }}
@@ -62,11 +70,11 @@ export default function ContactUsSection() {
                                             <div className="relative max-w-[180px] rounded-xl bg-black p-4 text-white">
                                                 <div className="absolute bottom-4 -left-2 h-4 w-4 rotate-45 transform bg-black"></div>
                                                 <div className="font-medium">
-                                                    <TypewriterText text={'Contact Us 😎'} />
+                                                    <TypewriterText text={'Start Here'} />
                                                 </div>
                                             </div>
                                         </motion.div>
-                                    </AnimatePresence>
+                                    </AnimatePresence> */}
                                 </div>
                             </div>
                         </motion.div>
