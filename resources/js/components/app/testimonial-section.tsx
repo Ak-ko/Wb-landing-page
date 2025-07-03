@@ -63,7 +63,7 @@ export default function TestimonialSection() {
 
     return (
         <>
-            <section id="testimonials" className="app-container flex flex-col items-center py-28 lg:flex-row lg:items-start lg:justify-between">
+            <section id="testimonials" className="app-container flex flex-col items-center py-32 lg:flex-row lg:items-start lg:justify-between">
                 <SectionHeader
                     containerClass="lg:block "
                     headerClass="lg:text-start lg:max-w-sm"
@@ -155,7 +155,7 @@ export default function TestimonialSection() {
                                         boxShadow: `0 4px 20px rgba(0, 0, 0, 0.05), 0 0 0 1px ${selectedTestimonial.color_tag || '#6366f1'}20`,
                                     }}
                                 >
-                                    <p className="text-base leading-relaxed">{selectedTestimonial.description}</p>
+                                    <p className="text-base leading-relaxed font-light">{selectedTestimonial.description}</p>
                                 </div>
                             </div>
                         </div>

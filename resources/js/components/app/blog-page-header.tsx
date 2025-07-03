@@ -2,7 +2,7 @@ import SectionHeader from './section-header';
 
 export default function BlogPageHeader() {
     return (
-        <div className="py-10">
+        <div className="py-16">
             <div className="app-container">
                 <SectionHeader
                     header={

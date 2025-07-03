@@ -71,7 +71,7 @@ export default function BlogDetail({ blog, relatedBlogs, readingTime }: BlogDeta
                             </Carousel>
                         </div>
                     )}
-                    <div className="prose prose-lg mb-12 max-w-none" dangerouslySetInnerHTML={{ __html: blog.description || '' }} />
+                    <div className="prose prose-lg mb-12 max-w-none font-light" dangerouslySetInnerHTML={{ __html: blog.description || '' }} />
                     {relatedBlogs.length > 0 && (
                         <div className="mt-12">
                             <h2 className="mb-6 text-2xl font-bold">Related Blogs</h2>

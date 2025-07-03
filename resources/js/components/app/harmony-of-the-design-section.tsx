@@ -57,7 +57,7 @@ const images = {
 
 export default function HarmonyOfTheDesignSection() {
     return (
-        <section id="harmony-of-the-designs-section" className="py-28">
+        <section id="harmony-of-the-designs-section" className="py-32">
             <SectionHeader
                 header="The Harmony of Design and Art"
                 description="At Walking Brands, we believe that design and art are two sides of the same coin. The fusion of these two disciplines allows us to create visually stunning and meaningful brand identities that resonate deeply with our clients and their audiences."

@@ -96,11 +96,14 @@ export default function BrandingProjectDetail({ project, relatedProjects }: Bran
                             {/* Project Description */}
                             <div className="rounded-xl bg-white p-8 shadow-lg">
                                 <h2 className="mb-6 text-2xl font-bold">Project Overview</h2>
-                                <div className="prose prose-lg max-w-none" dangerouslySetInnerHTML={{ __html: project.description as string }} />
+                                <div
+                                    className="prose prose-lg max-w-none font-light"
+                                    dangerouslySetInnerHTML={{ __html: project.description as string }}
+                                />
 
                                 <div className="mt-8">
                                     <h3 className="mb-4 text-xl font-bold">Project Scope</h3>
-                                    <div className="prose prose-lg max-w-none">
+                                    <div className="prose prose-lg max-w-none font-light">
                                         {project?.project_scopes?.split('\n').map((scope, index) => (
                                             <p key={index} className="flex items-start gap-2">
                                                 <span className="bg-primary mt-2 h-2 w-2 rounded-full" />

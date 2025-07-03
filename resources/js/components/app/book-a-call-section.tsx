@@ -2,7 +2,7 @@ import CommonBodyAnimation from './common-body-animation';
 
 export default function BookACallSection() {
     return (
-        <section className="py-16">
+        <section className="py-32">
             <div className="app-container">
                 <div className="flex items-center justify-center">
                     <CommonBodyAnimation>

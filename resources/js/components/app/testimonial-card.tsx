@@ -40,7 +40,7 @@ export default function TestimonialCard({ testimonial, containerClass, onClick }
                 </div>
                 <CloseQuote color={textColor} width={50} />
             </div>
-            <p className="line-clamp-5 text-sm leading-[2]">{testimonial.description}</p>
+            <p className="line-clamp-5 text-sm leading-[2] font-light">{testimonial.description}</p>
         </div>
     );
 }

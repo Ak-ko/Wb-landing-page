@@ -11,7 +11,7 @@ export default function MascotArtPackagesSection() {
     if (!mascotArtPackages || mascotArtPackages?.length === 0) return null;
 
     return (
-        <section className="bg-[#F5F5F5] py-16">
+        <section className="bg-[#F5F5F5] py-32">
             <div className="app-container">
                 <SectionHeader
                     header={

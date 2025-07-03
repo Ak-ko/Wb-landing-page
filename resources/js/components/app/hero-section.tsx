@@ -134,7 +134,7 @@ export default function HeroSection() {
 
             <div className="my-8 flex items-center justify-center gap-1.5">
                 <ActivePing />
-                <span className="text-sm sm:text-lg">Available Now</span>
+                <span className="text-sm font-light sm:text-lg">Available Now</span>
             </div>
         </div>
     );

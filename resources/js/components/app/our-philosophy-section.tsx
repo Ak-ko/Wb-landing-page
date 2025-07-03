@@ -11,7 +11,7 @@ export default function OurPhilosophySection() {
 
     return (
         Object.values(policy)?.every((v) => v) && (
-            <section className="py-16">
+            <section className="py-32">
                 <div className="app-container">
                     <SectionHeader header="Our Philosophy" />
 

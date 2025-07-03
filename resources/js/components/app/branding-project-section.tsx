@@ -13,7 +13,7 @@ export default function BrandingProjectSection() {
     }
 
     return (
-        <section id="branding-projects" className="app-container py-20">
+        <section id="branding-projects" className="app-container py-32">
             <SectionHeader
                 header="Brandings made with passion"
                 description="We're committed to persisting in our mission of assisting countless more brands in the future. It's a promise we solemnly uphold."

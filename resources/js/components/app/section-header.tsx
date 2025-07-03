@@ -19,7 +19,7 @@ export default function SectionHeader({ header, headerClass, descriptionClass, d
             className={cn('flex flex-col items-center justify-center gap-5 px-3 lg:px-0', containerClass)}
         >
             <h1 className={cn('text-center text-[40px] font-extrabold uppercase sm:text-[50px]', headerClass)}>{header}</h1>
-            <p className={cn('text-md font-inter max-w-[350px] text-center font-medium sm:max-w-[550px] sm:text-lg', descriptionClass)}>
+            <p className={cn('text-md font-inter max-w-[350px] text-center font-normal sm:max-w-[550px] sm:text-lg', descriptionClass)}>
                 {description}
             </p>
         </motion.div>

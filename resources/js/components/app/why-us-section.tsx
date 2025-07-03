@@ -39,7 +39,7 @@ const whyUsCards = [
 
 export default function WhyUsSection() {
     return (
-        <section className="about-sections py-28" id="about">
+        <section className="about-sections py-32" id="about">
             <SectionHeader
                 header="Why Us?"
                 description="It has always been our reason for existence to help people achieve their goals while doing what we love."

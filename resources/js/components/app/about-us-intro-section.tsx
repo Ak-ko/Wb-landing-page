@@ -24,9 +24,9 @@ export default function AboutUsIntroSection() {
     };
 
     return (
-        <motion.section className="py-16" variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }}>
+        <motion.section className="py-32" variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }}>
             <div className="app-container">
-                <motion.div className="mb-[100px]" variants={contentBlockVariants}>
+                <motion.div className="mb-32" variants={contentBlockVariants}>
                     <AboutUsIntroContent
                         title={
                             <>

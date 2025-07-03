@@ -25,7 +25,7 @@ export default function OurExpertiseSection() {
     const { scrollTo } = useScroll();
 
     return (
-        <section className="py-16">
+        <section className="py-32">
             <div className="app-container overflow-hidden">
                 <SectionHeader header="Our Expertise" />
 

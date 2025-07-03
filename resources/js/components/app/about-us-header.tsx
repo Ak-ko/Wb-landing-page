@@ -11,8 +11,8 @@ export default function AboutUsHeader() {
                     descriptionClass="text-secondary-pink font-bold !text-[40px]  sm:!text-[50px] uppercase -mt-5"
                 />
                 <CommonBodyAnimation>
-                    <p className="mx-auto mt-5 max-w-[800px] text-center font-medium">
-                        We are the Walking Brands; a dynamic team of experienced young professionals fueled by creativity and a passion for design
+                    <p className="text-md mx-auto mt-5 max-w-[800px] text-center font-medium sm:text-lg">
+                        We are the Walking Brands: a dynamic team of experienced young professionals fueled by creativity and a passion for design
                         that bring a fresh perspective to the table.
                     </p>
                 </CommonBodyAnimation>

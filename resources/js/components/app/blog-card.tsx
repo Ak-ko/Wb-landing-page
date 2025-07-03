@@ -41,7 +41,7 @@ export default function BlogCard({ blog }: BlogCardProps) {
                     )}
                 </div>
                 <h3 className="mb-1 line-clamp-2 text-lg font-semibold">{blog.title}</h3>
-                <p className="mb-2 line-clamp-3 text-sm text-gray-500">{blog.description?.replace(/<[^>]+>/g, '').slice(0, 120)}...</p>
+                <p className="mb-2 line-clamp-3 text-sm font-light text-gray-500">{blog.description?.replace(/<[^>]+>/g, '').slice(0, 120)}...</p>
                 <div className="mt-auto flex items-center gap-2 text-xs text-gray-400">
                     <span>{new Date(blog.created_at).toLocaleDateString()}</span>
                     <span>·</span>

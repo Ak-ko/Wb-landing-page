@@ -66,7 +66,7 @@ export default function BrandSection() {
     if (!brands || brands.length === 0) return null;
 
     return (
-        <section className="about-sections py-28" id="brands">
+        <section className="about-sections py-32" id="brands">
             <SectionHeader
                 header="Trusted by many"
                 description="Since embarking on our journey, we've aided numerous brands in reaching their objectives and it has been a source of great pride for us."

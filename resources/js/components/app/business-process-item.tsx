@@ -29,13 +29,13 @@ export default function BusinessProcessItem({ businessProcess }: BusinessProcess
                 {/* Step circle - First on mobile */}
                 <div className="order-1 flex justify-center md:order-2">
                     <motion.div
-                        className="relative flex h-[120px] w-[120px] items-center justify-center md:h-[200px] md:w-[200px]"
+                        className="relative flex h-[120px] w-[120px] items-center justify-center md:h-[170px] md:w-[170px]"
                         initial={{ rotate: -5, scale: 0.9 }}
                         animate={{ rotate: 0, scale: 1 }}
                         transition={{ duration: 0.8, delay: 0.1 }}
                     >
                         <div className="bg-primary/5 absolute inset-0 scale-110 transform animate-pulse rounded-full"></div>
-                        <WalkingProcess color={businessProcess?.color_tag} />
+                        <WalkingProcess className="size-[150px]" color={businessProcess?.color_tag} />
                         <div
                             className={cn(
                                 'absolute inset-0 flex translate-y-[-15%] flex-col items-center justify-center',
@@ -43,7 +43,7 @@ export default function BusinessProcessItem({ businessProcess }: BusinessProcess
                             )}
                         >
                             <motion.h1
-                                className="text-xl font-bold md:text-3xl"
+                                className="text-xl font-bold md:text-2xl"
                                 initial={{ y: -10, opacity: 0 }}
                                 animate={{ y: 0, opacity: 1 }}
                                 transition={{ duration: 0.4, delay: 0.2 }}
@@ -51,7 +51,7 @@ export default function BusinessProcessItem({ businessProcess }: BusinessProcess
                                 STEP
                             </motion.h1>
                             <motion.h1
-                                className="text-xl font-bold md:text-4xl"
+                                className="text-xl font-bold md:text-3xl"
                                 initial={{ y: 10, opacity: 0 }}
                                 animate={{ y: 0, opacity: 1 }}
                                 transition={{ duration: 0.4, delay: 0.3 }}
@@ -78,9 +78,8 @@ export default function BusinessProcessItem({ businessProcess }: BusinessProcess
                     >
                         <h1 className="relative mb-2 inline-block text-2xl font-bold text-black uppercase md:mb-4 md:text-3xl dark:text-white">
                             {businessProcess?.title}
-                            <span className="bg-primary/30 absolute -bottom-1 left-0 h-1 w-full rounded-full"></span>
                         </h1>
-                        <p className="text-sm leading-[1.6] text-black md:text-base dark:text-white">{businessProcess?.description}</p>
+                        <p className="text-sm leading-[1.6] font-light text-black md:text-base dark:text-white">{businessProcess?.description}</p>
                     </motion.div>
                 </div>
 
@@ -93,7 +92,7 @@ export default function BusinessProcessItem({ businessProcess }: BusinessProcess
                 >
                     {businessProcess?.image && (
                         <motion.div
-                            className="relative w-full max-w-[200px] md:max-w-[300px]"
+                            className="relative w-full max-w-[200px] md:max-w-[400px]"
                             initial={{ scale: 0.95, opacity: 0.8 }}
                             animate={{ scale: 1, opacity: 1 }}
                             transition={{ duration: 0.8, delay: 0.1 }}

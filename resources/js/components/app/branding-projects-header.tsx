@@ -2,7 +2,7 @@ import SectionHeader from '@/components/app/section-header';
 
 export default function BrandingProjectsHeader() {
     return (
-        <div className="py-10">
+        <div className="py-16">
             <div className="app-container">
                 <SectionHeader
                     header={

@@ -27,7 +27,7 @@ export default function DynamicArtHeader({
     containerClass,
 }: PropsT) {
     return (
-        <div className={cn('bg-black p-10 sm:p-22', containerClass)}>
+        <div className={cn('bg-black px-10 py-15 sm:px-22 sm:py-32', containerClass)}>
             <motion.div
                 initial={initialAnimationProperty}
                 whileInView={{ x: 0, opacity: 1 }}

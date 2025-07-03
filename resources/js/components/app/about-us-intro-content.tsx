@@ -86,7 +86,7 @@ export default function AboutUsIntroContent({
                     {title}
                 </motion.h1>
                 <motion.p
-                    className={cn('leading-[1.5] font-medium tracking-wide', isReversed && 'text-end', descriptionClassName)}
+                    className={cn('leading-[1.5] font-light tracking-wide', isReversed && 'text-end', descriptionClassName)}
                     variants={itemVariants}
                 >
                     {description}

@@ -14,7 +14,7 @@ export default function TeamMembersSection() {
     const bottomTeamMembers = teamMembers?.slice(4);
 
     return (
-        <section className="py-16">
+        <section className="py-32">
             <div className="app-container">
                 <SectionHeader header="Meet the walking gang" />
 

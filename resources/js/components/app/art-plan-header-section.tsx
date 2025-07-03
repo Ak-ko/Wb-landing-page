@@ -4,7 +4,7 @@ import CommonHeaderAnimation from './common-header-animation';
 export default function ArtPlanHeaderSection() {
     return (
         <CommonHeaderAnimation>
-            <div>
+            <div className="py-11">
                 <div className={cn('flex flex-col items-center justify-center gap-5 px-3 lg:px-0')}>
                     <h1 className={cn('text-center text-[40px] font-extrabold uppercase sm:text-[50px]')}>
                         With the power of <span className="text-primary-orange">Art</span>

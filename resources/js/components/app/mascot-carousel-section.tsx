@@ -62,7 +62,7 @@ export default function MascotCarouselSection() {
     const nonMascotImages = currentMascotArt.images.filter((img) => !img.is_mascot);
 
     return (
-        <div className="relative py-16">
+        <div className="relative py-32">
             {mascotArts.length > 1 && (
                 <div className="absolute top-1/2 right-4 left-4 z-20 flex -translate-y-1/2 justify-between">
                     <motion.button

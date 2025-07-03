@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
-
+@import './fonts.css';
 @import 'tailwindcss';
 
 @plugin 'tailwindcss-animate';
@@ -233,7 +232,7 @@
 
     .top__line__progress {
         transform-origin: left;
-        background: linear-gradient(to left, var(--color-secondary-pink), var(--color-primary-orange), var(--color-secondary-orange));
+        background: linear-gradient(to left, var(--color-secondary-pink));
         height: 10px;
         width: 100%;
         transform: scaleX(0);

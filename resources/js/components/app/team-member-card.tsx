@@ -58,7 +58,7 @@ export default function TeamMemberCard({ teamMember, varient = 'expanded' }: Pro
                     >
                         <h1 className="text-3xl font-bold uppercase">{teamMember?.name}</h1>
                         <p className="text-lg font-semibold uppercase">{teamMember?.designation}</p>
-                        {teamMember?.bio && <p className="line-clamp-[6] text-sm">{teamMember?.bio}</p>}
+                        {teamMember?.bio && <p className="line-clamp-[6] text-sm font-light">{teamMember?.bio}</p>}
                     </div>
                 )}
             </div>

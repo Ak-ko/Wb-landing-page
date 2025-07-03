@@ -28,7 +28,7 @@ export default function FaqUserForm() {
             <div className="flex flex-col items-center justify-center gap-2">
                 <CharacterWithTwoFingers className="w-[180px]" />
                 <h1 className="text-center text-xl font-bold">Any Questions ?</h1>
-                <p className="text-center text-sm text-gray-500">You can ask anything you want to know about Feedback.</p>
+                <p className="text-center text-sm font-light text-gray-500">You can ask anything you want to know about Feedback.</p>
             </div>
             <form onSubmit={handleSubmit} className="my-5 space-y-2">
                 <div>

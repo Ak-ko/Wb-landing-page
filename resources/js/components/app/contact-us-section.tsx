@@ -11,14 +11,14 @@ import MessengerIcon from './icons/social-links/messenger-icon';
 
 export default function ContactUsSection() {
     return (
-        <section className="py-16">
+        <section className="py-32">
             <div className="app-container overflow-hidden">
                 <CommonBodyAnimation>
                     <div className="flex flex-col items-center gap-11 lg:flex-row lg:items-stretch lg:justify-between lg:gap-0">
                         <motion.div initial={{ x: -100 }} whileInView={{ x: 0 }} className="flex flex-col justify-between">
                             <div className="max-w-[380px] space-y-1 text-center lg:text-start">
                                 <h1 className="text-[40px] font-bold uppercase">Contact Us</h1>
-                                <p>Let's connect! We're eager to hear from you and address any concerns.</p>
+                                <p className="font-normal">Let's connect! We're eager to hear from you and address any concerns.</p>
                             </div>
                             <div className="mt-11 lg:mt-0">
                                 <div className="-ml-4 flex items-center justify-center gap-1 lg:justify-start">
