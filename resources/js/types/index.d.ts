@@ -172,6 +172,13 @@ export type TeamMemberT = {
     pivot: BrandingProjectMemberT;
 } & TimestampsT;
 
+export type BusinessPackageDurationT = {
+    id: number;
+    duration: string;
+    duration_remarks: string | null;
+    business_package_id: number;
+} & TimestampsT;
+
 export type BusinessPackageT = {
     id: number;
     name: string;
@@ -179,11 +186,14 @@ export type BusinessPackageT = {
     price_text: string | null;
     price: number | null;
     currency: string | null;
-    duration: string | null;
-    revision_remarks: string | null;
     color: string;
     is_recommended: boolean;
+    is_discount: boolean;
+    discount_price_text: string | null;
+    discount_description: string | null;
+    discount_end_date: string | null;
     business_package_items: BusinessPackageItemT[];
+    durations: BusinessPackageDurationT[];
     brand_guideline: BusinessBrandGuidelineT;
     business_brand_guideline_id: number;
 } & WithModifiedBusienessPackageItemsT &
@@ -209,6 +219,7 @@ export type BusinessPackageAddonT = {
 export type BusinessPackageItemT = {
     id: number;
     name: string;
+    is_included: boolean;
     business_package_id: number;
 } & TimestampsT;
 
@@ -322,6 +333,34 @@ export type BusinessBrandGuidelineT = {
     title: string;
     description: string | null;
     elements: BrandGuidelineElementT[];
+    created_at: string;
+    updated_at: string;
+};
+
+export type BrandStrategyElementItemT = {
+    id: number;
+    brand_strategy_element_id: number;
+    title: string;
+    order: number | null;
+    created_at: string;
+    updated_at: string;
+};
+
+export type BrandStrategyElementT = {
+    id: number;
+    brand_strategy_id: number;
+    title: string;
+    order: number | null;
+    items: BrandStrategyElementItemT[];
+    created_at: string;
+    updated_at: string;
+};
+
+export type BrandStrategyT = {
+    id: number;
+    title: string;
+    description: string | null;
+    elements: BrandStrategyElementT[];
     created_at: string;
     updated_at: string;
 };

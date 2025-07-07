@@ -27,7 +27,7 @@ import { BreadcrumbItem, BusinessPackageT, CommonPaginationT } from '@/types';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Business Packages',
+        title: 'Branding Packages',
         href: '/admin/business-packages',
     },
 ];
@@ -40,6 +40,7 @@ export default function BusinessPackages({
     filters: {
         query: string;
         guideline_id: number | null;
+        brand_strategy_id?: number | null;
     };
 }) {
     const [viewMode, setViewMode] = useState<ViewMode>('table');
@@ -52,6 +53,7 @@ export default function BusinessPackages({
         pageIndex: packages?.current_page,
         query: filters.query || '',
         guideline_id: filters?.guideline_id || null,
+        brand_strategy_id: filters?.brand_strategy_id || null,
     });
 
     // Use the filter hook
@@ -61,6 +63,7 @@ export default function BusinessPackages({
             page: filterStates.pageIndex,
             query: filterStates.query,
             guideline_id: filterStates.guideline_id,
+            brand_strategy_id: filterStates.brand_strategy_id,
         },
         route('business-packages.index'),
         false,
@@ -119,13 +122,24 @@ export default function BusinessPackages({
             className="relative min-h-[200px] max-w-[300px] cursor-pointer overflow-hidden pt-0"
         >
             {businessPackage?.is_recommended && <Badge className="absolute top-2 right-2 text-xs">Recommended</Badge>}
+            {businessPackage?.is_discount && (
+                <Badge className="absolute top-2 left-2 text-xs" variant="destructive">
+                    Discount
+                </Badge>
+            )}
 
             <CardContent className="p-4">
                 <h3 className="text-lg font-medium">{businessPackage.name}</h3>
                 {businessPackage.price_text && businessPackage.currency && (
-                    <p className="text-sm text-gray-500">
-                        {businessPackage.price_text} {businessPackage.currency}
-                    </p>
+                    <div className="space-y-1">
+                        <p className="text-sm text-gray-500">
+                            {businessPackage.price_text} {businessPackage.currency}
+                        </p>
+                        {businessPackage.price && <p className="text-xs text-gray-400">${businessPackage.price}</p>}
+                        {businessPackage.is_discount && businessPackage.discount_price_text && (
+                            <p className="text-xs font-medium text-red-600">{businessPackage.discount_price_text}</p>
+                        )}
+                    </div>
                 )}
                 {businessPackage.description && <p className="mt-2 line-clamp-2 text-sm text-gray-600">{businessPackage.description}</p>}
             </CardContent>
@@ -146,11 +160,11 @@ export default function BusinessPackages({
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Business Packages" />
+            <Head title="Branding Packages" />
 
             <div className="space-y-4 p-4">
                 <div className="flex flex-col justify-between gap-2 md:flex-row md:items-center">
-                    <DashboardTitle title="Business Packages" description="Manage your business packages" />
+                    <DashboardTitle title="Branding Packages" description="Manage your branding packages" />
 
                     <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between md:gap-2">
                         <BusinessPackageFilters
@@ -165,7 +179,7 @@ export default function BusinessPackages({
 
                             <Button onClick={() => router.get(route('business-packages.create'))}>
                                 <Plus className="mr-2 h-4 w-4" />
-                                Add Business Package
+                                Add Branding Package
                             </Button>
                         </div>
                     </div>
@@ -204,7 +218,7 @@ export default function BusinessPackages({
                     <AlertDialogHeader>
                         <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                         <AlertDialogDescription>
-                            This action cannot be undone. This will permanently delete the business package and remove it from our servers.
+                            This action cannot be undone. This will permanently delete the branding package and remove it from our servers.
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>

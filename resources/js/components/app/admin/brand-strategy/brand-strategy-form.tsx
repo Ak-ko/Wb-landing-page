@@ -1,21 +1,38 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// This file is adapted from business-brand-guideline-form.tsx for BrandStrategy
+// You will need to adjust imports and types as needed for your project structure.
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { BusinessBrandGuidelineT } from '@/types';
+import { BrandStrategyT } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { Plus, Trash2 } from 'lucide-react';
 
-interface Props {
-    guideline?: BusinessBrandGuidelineT;
+interface BrandStrategyElementForm {
+    id?: number;
+    title: string;
+    order: number | null;
+    items: BrandStrategyElementItemForm[];
+}
+
+interface BrandStrategyElementItemForm {
+    id?: number;
+    title: string;
+    order: number | null;
+}
+
+interface BrandStrategyFormProps {
+    strategy?: BrandStrategyT;
     onSuccess: () => void;
 }
 
-export default function BusinessBrandGuidelineForm({ guideline, onSuccess }: Props) {
+export default function BrandStrategyForm({ strategy, onSuccess }: BrandStrategyFormProps) {
     const { data, setData, post, put, processing, errors, reset } = useForm({
-        title: guideline?.title || '',
-        description: guideline?.description || '',
+        title: strategy?.title || '',
+        description: strategy?.description || '',
         elements:
-            guideline?.elements?.map((el) => ({
+            strategy?.elements?.map((el) => ({
                 id: el.id,
                 title: el.title,
                 order: el.order,
@@ -26,10 +43,9 @@ export default function BusinessBrandGuidelineForm({ guideline, onSuccess }: Pro
                         order: item.order,
                     })) || [],
             })) || [],
-    });
+    } as any);
 
     const addElement = () => {
-        // @ts-expect-error @ts-ignore
         setData('elements', [...data.elements, { title: '', order: null, items: [] }]);
     };
     const removeElement = (idx: number) => {
@@ -39,7 +55,6 @@ export default function BusinessBrandGuidelineForm({ guideline, onSuccess }: Pro
     };
     const addItem = (elementIdx: number) => {
         const updated = [...data.elements];
-        // @ts-expect-error @ts-ignore
         updated[elementIdx].items.push({ title: '', order: null });
         setData('elements', updated);
     };
@@ -50,8 +65,8 @@ export default function BusinessBrandGuidelineForm({ guideline, onSuccess }: Pro
     };
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        const url = guideline ? route('business-brand-guidelines.update', guideline.id) : route('business-brand-guidelines.store');
-        if (guideline) {
+        const url = strategy ? route('brand-strategies.update', strategy.id) : route('brand-strategies.store');
+        if (strategy) {
             put(url, { onSuccess });
         } else {
             post(url, {
@@ -65,7 +80,7 @@ export default function BusinessBrandGuidelineForm({ guideline, onSuccess }: Pro
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
             <fieldset className="rounded-xl border p-5">
-                <legend className="font-bold">Guideline Information</legend>
+                <legend className="font-bold">Strategy Information</legend>
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <div className="space-y-2">
                         <label htmlFor="title" className="block text-sm font-medium">
@@ -85,7 +100,7 @@ export default function BusinessBrandGuidelineForm({ guideline, onSuccess }: Pro
             </fieldset>
             <fieldset className="rounded-xl border p-5">
                 <legend className="font-bold">Subtitles</legend>
-                {data.elements.map((element, idx) => (
+                {data.elements.map((element: BrandStrategyElementForm, idx: number) => (
                     <div key={idx} className="mb-4 rounded-lg border p-4">
                         <div className="flex items-center gap-2">
                             <Input
@@ -119,34 +134,32 @@ export default function BusinessBrandGuidelineForm({ guideline, onSuccess }: Pro
                                     <Plus className="h-4 w-4" /> Add Item
                                 </Button>
                             </div>
-                            {element.items.map((item, itemIdx) => (
-                                <>
-                                    <div key={itemIdx} className="mt-2 flex items-center gap-2">
-                                        <Input
-                                            placeholder="Item Title"
-                                            value={item.title}
-                                            onChange={(e) => {
-                                                const updated = [...data.elements];
-                                                updated[idx].items[itemIdx].title = e.target.value;
-                                                setData('elements', updated);
-                                            }}
-                                        />
-                                        <Input
-                                            type="number"
-                                            placeholder="Order"
-                                            value={item.order ?? ''}
-                                            onChange={(e) => {
-                                                const updated = [...data.elements];
-                                                updated[idx].items[itemIdx].order = e.target.value ? Number(e.target.value) : null;
-                                                setData('elements', updated);
-                                            }}
-                                            className="w-24"
-                                        />
-                                        <Button type="button" variant="ghost" size="icon" onClick={() => removeItem(idx, itemIdx)}>
-                                            <Trash2 className="h-4 w-4" />
-                                        </Button>
-                                    </div>
-                                </>
+                            {element.items.map((item: BrandStrategyElementItemForm, itemIdx: number) => (
+                                <div key={itemIdx} className="mt-2 flex items-center gap-2">
+                                    <Input
+                                        placeholder="Item Title"
+                                        value={item.title}
+                                        onChange={(e) => {
+                                            const updated = [...data.elements];
+                                            updated[idx].items[itemIdx].title = e.target.value;
+                                            setData('elements', updated);
+                                        }}
+                                    />
+                                    <Input
+                                        type="number"
+                                        placeholder="Order"
+                                        value={item.order ?? ''}
+                                        onChange={(e) => {
+                                            const updated = [...data.elements];
+                                            updated[idx].items[itemIdx].order = e.target.value ? Number(e.target.value) : null;
+                                            setData('elements', updated);
+                                        }}
+                                        className="w-24"
+                                    />
+                                    <Button type="button" variant="ghost" size="icon" onClick={() => removeItem(idx, itemIdx)}>
+                                        <Trash2 className="h-4 w-4" />
+                                    </Button>
+                                </div>
                             ))}
                         </div>
                     </div>
@@ -157,7 +170,7 @@ export default function BusinessBrandGuidelineForm({ guideline, onSuccess }: Pro
             </fieldset>
             {errors.elements && <p className="text-sm text-red-500">{errors.elements}</p>}
             <Button type="submit" disabled={processing}>
-                {guideline ? 'Update Guideline' : 'Create Guideline'}
+                {strategy ? 'Update Strategy' : 'Create Strategy'}
             </Button>
         </form>
     );

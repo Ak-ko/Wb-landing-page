@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('business_package_items', function (Blueprint $table) {
+        Schema::create('pivot_brand_strategy_elements', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
-            $table->boolean('is_included')->default(false);
-            $table->string('detail_link')->nullable();
+            $table->unsignedBigInteger('brand_strategy_id')->nullable();
+            $table->unsignedBigInteger('brand_strategy_element_id')->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('business_package_items');
+        Schema::dropIfExists('pivot_brand_strategy_elements');
     }
 };

@@ -18,11 +18,14 @@ return new class extends Migration
             $table->string('price_text')->nullable();
             $table->double('price')->nullable();
             $table->string('currency')->nullable()->default("USD");
-            $table->string("duration")->nullable();
             $table->string('color')->nullable();
-            $table->string('revision_remarks')->nullable();
             $table->boolean('is_recommended')->default(false);
+            $table->boolean('is_discount')->default(false);
+            $table->string('discount_price_text')->nullable(); // store the money here
+            $table->string('discount_description')->nullable();
+            $table->dateTime('discount_end_date')->nullable();
             $table->unsignedBigInteger('business_brand_guideline_id')->nullable();
+            $table->unsignedBigInteger('brand_strategy_id')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

@@ -10,7 +10,13 @@ class BusinessPackageItems extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name'
+        'name',
+        'is_included',
+        'detail_link',
+    ];
+
+    protected $casts = [
+        'is_included' => 'boolean',
     ];
 
     public function businessPackage()

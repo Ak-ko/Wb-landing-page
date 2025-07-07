@@ -15,7 +15,7 @@ interface EditBusinessPackageProps {
 export default function EditBusinessPackage({ package: businessPackage }: EditBusinessPackageProps) {
     const breadcrumbs: BreadcrumbItem[] = [
         {
-            title: 'Business Packages',
+            title: 'Branding Packages',
             href: '/admin/business-packages',
         },
         {
@@ -30,11 +30,11 @@ export default function EditBusinessPackage({ package: businessPackage }: EditBu
 
             <div className="space-y-4 p-4">
                 <div className="flex items-center justify-between">
-                    <DashboardTitle title={`Edit ${businessPackage.name}`} description="Update this business package's information" />
+                    <DashboardTitle title={`Edit ${businessPackage.name}`} description="Update this branding package's information" />
 
                     <Button variant="outline" onClick={() => router.get('/admin/business-packages')}>
                         <ArrowLeft className="mr-2 h-4 w-4" />
-                        Back to Business Packages
+                        Back to Branding Packages
                     </Button>
                 </div>
 

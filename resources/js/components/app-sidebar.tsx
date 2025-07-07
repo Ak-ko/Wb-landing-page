@@ -115,21 +115,26 @@ const mainNavItems: NavItem[] = [
         ],
     },
     {
-        title: 'Business Package Management',
+        title: 'Branding Package Management',
         items: [
             {
-                title: 'Business Packages',
+                title: 'Branding Packages',
                 href: '/admin/business-packages',
                 icon: Package,
             },
             {
-                title: 'Addons',
-                href: '/admin/add-on-packages',
+                title: 'Brand Guidelines',
+                href: '/admin/business-brand-guidelines',
                 icon: PackagePlus,
             },
             {
-                title: 'Brand Guidelines',
-                href: '/admin/business-brand-guidelines',
+                title: 'Brand Strategies',
+                href: '/admin/brand-strategies',
+                icon: PackagePlus,
+            },
+            {
+                title: 'Addons',
+                href: '/admin/add-on-packages',
                 icon: PackagePlus,
             },
         ],

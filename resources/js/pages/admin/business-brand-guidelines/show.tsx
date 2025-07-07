@@ -40,7 +40,7 @@ export default function ShowBusinessBrandGuideline({ guideline }: ShowProps) {
                     <div className="mb-2 text-lg font-semibold">{guideline.title}</div>
                     <div className="text-muted-foreground mb-4">{guideline.description}</div>
                     <div>
-                        <h3 className="mb-2 font-semibold">Elements</h3>
+                        <h3 className="mb-2 font-semibold">Subtitles</h3>
                         {guideline.elements?.length ? (
                             <ul className="space-y-2">
                                 {guideline.elements.map((element) => (
@@ -62,7 +62,7 @@ export default function ShowBusinessBrandGuideline({ guideline }: ShowProps) {
                                 ))}
                             </ul>
                         ) : (
-                            <div className="text-muted-foreground">No elements.</div>
+                            <div className="text-muted-foreground">No subtitles.</div>
                         )}
                     </div>
                 </div>

@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { BusinessPackageT } from '@/types';
 import { Link } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
-import { Check, Edit, Eye, Trash2, X } from 'lucide-react';
+import { Check, Edit, Eye, Tag, Trash2, X } from 'lucide-react';
 import ColorTag from '../../color-tag';
 
 type BusinessPackageActionsProps = {
@@ -38,9 +38,15 @@ export const createBusinessPackageColumns = ({ handleDeleteClick }: BusinessPack
         cell: ({ row }) => {
             if (!row.original.price_text) return <span>-</span>;
             return (
-                <span>
-                    {row.original.price_text.toLocaleString()} {row.original.currency}
-                </span>
+                <div className="space-y-1">
+                    <span>
+                        {row.original.price_text} {row.original.currency}
+                    </span>
+                    {row.original.price && <div className="text-xs text-gray-500">${row.original.price}</div>}
+                    {row.original.is_discount && row.original.discount_price_text && (
+                        <div className="text-xs font-medium text-red-600">{row.original.discount_price_text}</div>
+                    )}
+                </div>
             );
         },
     },
@@ -55,13 +61,21 @@ export const createBusinessPackageColumns = ({ handleDeleteClick }: BusinessPack
         },
     },
     {
-        header: 'Recommanded ?',
+        header: 'Status',
         cell: ({ row }) => {
             return (
-                <div className="flex items-center justify-center">
-                    {row.original.is_recommended ? <Check className="text-green-500" /> : <X className="text-red-500" />}
+                <div className="flex items-center justify-center gap-1">
+                    {row.original.is_recommended && <Check className="text-green-500" />}
+                    {row.original.is_discount && <Tag className="text-red-500" />}
+                    {!row.original.is_recommended && !row.original.is_discount && <X className="text-gray-400" />}
                 </div>
             );
+        },
+    },
+    {
+        header: 'Durations',
+        cell: ({ row }) => {
+            return <span>{row.original.durations?.length || 0} duration(s)</span>;
         },
     },
     {

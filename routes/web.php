@@ -179,6 +179,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Art and Motion Art
     Route::resource('/admin/animation-and-motion', AnimationAndMotionController::class);
+
+    // Brand Strategies
+    Route::resource('/admin/brand-strategies', \App\Http\Controllers\BrandStrategyController::class);
 });
 
 // faq
