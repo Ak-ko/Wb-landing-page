@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { isLightColor } from '@/lib/colors';
 import { MESSENGER } from '@/lib/social-links';
 import { cn } from '@/lib/utils';
