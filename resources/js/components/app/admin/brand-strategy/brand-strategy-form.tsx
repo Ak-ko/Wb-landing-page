@@ -104,6 +104,17 @@ export default function BrandStrategyForm({ strategy, onSuccess }: BrandStrategy
                     <div key={idx} className="mb-4 rounded-lg border p-4">
                         <div className="flex items-center gap-2">
                             <Input
+                                type="number"
+                                placeholder="eg: 1"
+                                value={element.order ?? ''}
+                                onChange={(e) => {
+                                    const updated = [...data.elements];
+                                    updated[idx].order = e.target.value ? Number(e.target.value) : null;
+                                    setData('elements', updated);
+                                }}
+                                containerClassName="w-24"
+                            />
+                            <Input
                                 placeholder="Subtitle"
                                 value={element.title}
                                 onChange={(e) => {
@@ -112,22 +123,11 @@ export default function BrandStrategyForm({ strategy, onSuccess }: BrandStrategy
                                     setData('elements', updated);
                                 }}
                             />
-                            <Input
-                                type="number"
-                                placeholder="Order"
-                                value={element.order ?? ''}
-                                onChange={(e) => {
-                                    const updated = [...data.elements];
-                                    updated[idx].order = e.target.value ? Number(e.target.value) : null;
-                                    setData('elements', updated);
-                                }}
-                                className="w-24"
-                            />
                             <Button type="button" variant="ghost" size="icon" onClick={() => removeElement(idx)}>
                                 <Trash2 className="h-4 w-4" />
                             </Button>
                         </div>
-                        <div className="mt-2 ml-6">
+                        <div className="my-5 ml-6">
                             <div className="flex items-center justify-between">
                                 <span className="font-semibold">Items</span>
                                 <Button type="button" size="sm" onClick={() => addItem(idx)}>
@@ -137,6 +137,17 @@ export default function BrandStrategyForm({ strategy, onSuccess }: BrandStrategy
                             {element.items.map((item: BrandStrategyElementItemForm, itemIdx: number) => (
                                 <div key={itemIdx} className="mt-2 flex items-center gap-2">
                                     <Input
+                                        type="number"
+                                        placeholder="eg: 1.1"
+                                        value={item.order ?? ''}
+                                        onChange={(e) => {
+                                            const updated = [...data.elements];
+                                            updated[idx].items[itemIdx].order = e.target.value ? Number(e.target.value) : null;
+                                            setData('elements', updated);
+                                        }}
+                                        containerClassName="w-24"
+                                    />
+                                    <Input
                                         placeholder="Item Title"
                                         value={item.title}
                                         onChange={(e) => {
@@ -144,17 +155,7 @@ export default function BrandStrategyForm({ strategy, onSuccess }: BrandStrategy
                                             updated[idx].items[itemIdx].title = e.target.value;
                                             setData('elements', updated);
                                         }}
-                                    />
-                                    <Input
-                                        type="number"
-                                        placeholder="Order"
-                                        value={item.order ?? ''}
-                                        onChange={(e) => {
-                                            const updated = [...data.elements];
-                                            updated[idx].items[itemIdx].order = e.target.value ? Number(e.target.value) : null;
-                                            setData('elements', updated);
-                                        }}
-                                        className="w-24"
+                                        className="w-full"
                                     />
                                     <Button type="button" variant="ghost" size="icon" onClick={() => removeItem(idx, itemIdx)}>
                                         <Trash2 className="h-4 w-4" />

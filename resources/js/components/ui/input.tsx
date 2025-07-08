@@ -5,9 +5,10 @@ import { cn } from "@/lib/utils"
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   showPasswordToggle?: boolean
+  containerClassName?: string
 }
 
-function Input({ className, type, showPasswordToggle = false, ...props }: InputProps) {
+function Input({ className, containerClassName, type, showPasswordToggle = false, ...props }: InputProps) {
   const [showPassword, setShowPassword] = React.useState(false)
   
   const togglePasswordVisibility = () => {
@@ -17,7 +18,7 @@ function Input({ className, type, showPasswordToggle = false, ...props }: InputP
   const inputType = showPassword ? "text" : type
   
   return (
-    <div className="relative w-full">
+    <div className={cn("relative w-full", containerClassName)}>
       <input
         type={showPasswordToggle ? inputType : type}
         data-slot="input"

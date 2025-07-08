@@ -85,6 +85,41 @@ const mainNavItems: NavItem[] = [
         ],
     },
     {
+        title: 'Branding Package Management',
+        items: [
+            {
+                title: 'Branding Packages',
+                href: '/admin/business-packages',
+                icon: Package,
+            },
+            {
+                title: 'Brand Strategies',
+                href: '/admin/brand-strategies',
+                icon: PackagePlus,
+            },
+            {
+                title: 'Brand Guidelines',
+                href: '/admin/business-brand-guidelines',
+                icon: PackagePlus,
+            },
+            {
+                title: 'Addons',
+                href: '/admin/add-on-packages',
+                icon: PackagePlus,
+            },
+        ],
+    },
+    {
+        title: 'Art Package Management',
+        items: [
+            {
+                title: 'Art Packages',
+                href: '/admin/art-packages',
+                icon: Package,
+            },
+        ],
+    },
+    {
         title: 'Art Management',
         items: [
             {
@@ -111,41 +146,6 @@ const mainNavItems: NavItem[] = [
                 title: 'Animation and Motion Art',
                 href: '/admin/animation-and-motion',
                 icon: Clapperboard,
-            },
-        ],
-    },
-    {
-        title: 'Branding Package Management',
-        items: [
-            {
-                title: 'Branding Packages',
-                href: '/admin/business-packages',
-                icon: Package,
-            },
-            {
-                title: 'Brand Guidelines',
-                href: '/admin/business-brand-guidelines',
-                icon: PackagePlus,
-            },
-            {
-                title: 'Brand Strategies',
-                href: '/admin/brand-strategies',
-                icon: PackagePlus,
-            },
-            {
-                title: 'Addons',
-                href: '/admin/add-on-packages',
-                icon: PackagePlus,
-            },
-        ],
-    },
-    {
-        title: 'Art Package Management',
-        items: [
-            {
-                title: 'Art Packages',
-                href: '/admin/art-packages',
-                icon: Package,
             },
         ],
     },

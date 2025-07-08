@@ -49,7 +49,7 @@ export default function BusinessPackageForm({ businessPackage, onSuccess }: Busi
                 is_included: item.is_included ?? true,
                 detail_link: 'detail_link' in item ? ((item as Record<string, unknown>).detail_link as string) || '' : '',
             })) || [],
-        color: businessPackage?.color || '',
+        color: businessPackage?.color || '#000000',
         is_recommended: businessPackage?.is_recommended || false,
         is_discount: businessPackage?.is_discount || false,
         discount_price_text: businessPackage?.is_discount ? businessPackage?.discount_price_text || '' : '',
@@ -347,6 +347,13 @@ export default function BusinessPackageForm({ businessPackage, onSuccess }: Busi
                                     Duration {index + 1}
                                 </Label>
                                 <Input
+                                    placeholder="eg: Normal Project Duration"
+                                    value={duration.duration_remarks || ''}
+                                    onChange={(e) => updateDuration(index, 'duration_remarks', e.target.value)}
+                                />
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <Input
                                     id={`duration-${index}`}
                                     placeholder="e.g. 2 weeks"
                                     value={duration.duration}
@@ -355,13 +362,6 @@ export default function BusinessPackageForm({ businessPackage, onSuccess }: Busi
                                 {errorMap[`durations.${index}.duration`] && (
                                     <p className="text-sm text-red-500">{errorMap[`durations.${index}.duration`]}</p>
                                 )}
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <Input
-                                    placeholder="Remarks (optional)"
-                                    value={duration.duration_remarks || ''}
-                                    onChange={(e) => updateDuration(index, 'duration_remarks', e.target.value)}
-                                />
                                 <Button type="button" variant="ghost" size="icon" onClick={() => removeDuration(index)}>
                                     <Trash2 className="h-4 w-4 text-red-500" />
                                 </Button>
