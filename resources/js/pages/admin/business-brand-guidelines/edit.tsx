@@ -30,7 +30,7 @@ export default function EditBusinessBrandGuideline({ guideline }: EditProps) {
                 </div>
                 <Card>
                     <CardContent className="pt-6">
-                        <BusinessBrandGuidelineForm guideline={guideline} onSuccess={() => router.visit('/admin/business-brand-guidelines')} />
+                        <BusinessBrandGuidelineForm guideline={guideline} />
                     </CardContent>
                 </Card>
             </div>

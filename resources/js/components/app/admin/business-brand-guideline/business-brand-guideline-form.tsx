@@ -7,10 +7,9 @@ import { Plus, Trash2 } from 'lucide-react';
 
 interface Props {
     guideline?: BusinessBrandGuidelineT;
-    onSuccess: () => void;
 }
 
-export default function BusinessBrandGuidelineForm({ guideline, onSuccess }: Props) {
+export default function BusinessBrandGuidelineForm({ guideline }: Props) {
     const { data, setData, post, put, processing, errors, reset } = useForm({
         title: guideline?.title || '',
         description: guideline?.description || '',
@@ -52,12 +51,11 @@ export default function BusinessBrandGuidelineForm({ guideline, onSuccess }: Pro
         e.preventDefault();
         const url = guideline ? route('business-brand-guidelines.update', guideline.id) : route('business-brand-guidelines.store');
         if (guideline) {
-            put(url, { onSuccess });
+            put(url);
         } else {
             post(url, {
                 onSuccess: () => {
                     reset();
-                    onSuccess();
                 },
             });
         }

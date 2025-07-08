@@ -26,7 +26,7 @@ export default function CreateBusinessBrandGuideline() {
                 </div>
                 <Card>
                     <CardContent className="pt-6">
-                        <BusinessBrandGuidelineForm onSuccess={() => router.visit('/admin/business-brand-guidelines')} />
+                        <BusinessBrandGuidelineForm />
                     </CardContent>
                 </Card>
             </div>
