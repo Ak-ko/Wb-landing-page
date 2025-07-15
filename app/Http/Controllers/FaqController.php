@@ -129,7 +129,7 @@ class FaqController extends Controller
 
         $adminEmail = config('app.admin_email');
 
-        Mail::to($adminEmail)->send(new FaqAskedMail($cleanData, $subject));
+        Mail::to([$adminEmail, $cleanData['email']])->send(new FaqAskedMail($cleanData, $subject));
 
         return back()->with('success', 'Email sent successfully!');
     }

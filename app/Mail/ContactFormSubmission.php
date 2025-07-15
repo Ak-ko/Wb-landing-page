@@ -28,7 +28,7 @@ class ContactFormSubmission extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.contacts.ubmission',
+            view: 'emails.contacts.submission',
             with: ['data' => $this->data],
         );
     }

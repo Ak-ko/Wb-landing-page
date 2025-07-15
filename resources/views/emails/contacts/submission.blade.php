@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>FAQ Notification</title>
+    <title>Contact Form Submission</title>
     <style>
         body {
             font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
@@ -23,7 +23,7 @@
         }
 
         .header {
-            background: linear-gradient(135deg, #1274ef 0%, #4F46E5 100%);
+            background: linear-gradient(135deg, #E63829 0%, #ff5a01 100%);
             color: #fff;
             padding: 32px 32px 24px 32px;
             text-align: center;
@@ -65,65 +65,49 @@
             z-index: 1;
         }
 
-        .meta {
-            margin: 24px 32px 0 32px;
-            color: #6B7280;
-            font-size: 0.95em;
-            text-align: center;
+        .content {
+            padding: 32px;
+        }
+
+        .field {
+            margin-bottom: 24px;
             background: #f8fafc;
-            padding: 16px;
+            padding: 20px;
             border-radius: 12px;
-            border: 1px solid #e2e8f0;
-        }
-
-        .meta strong {
-            color: #374151;
-        }
-
-        .faq-box {
-            border-left: 4px solid {{ $data['color'] ?? '#1274ef' }};
-            padding: 24px;
-            margin: 24px 32px 32px 32px;
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-            border-radius: 12px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid #1274ef;
             transition: all 0.3s ease;
         }
 
-        .faq-box:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        .field:hover {
+            background: #f1f5f9;
+            transform: translateX(4px);
         }
 
-        .question {
+        .label {
             font-weight: 600;
-            font-size: 1.1em;
-            margin-bottom: 8px;
             color: #1e293b;
-            line-height: 1.5;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .question::before {
-            content: '❓';
-            margin-right: 8px;
-            font-size: 1.2em;
-        }
-
-        .answer {
-            color: #374151;
-            font-size: 1em;
+        .value {
+            color: #334155;
             line-height: 1.6;
-            background: white;
-            padding: 16px;
-            border-radius: 8px;
-            border: 1px solid #e2e8f0;
-            margin-top: 12px;
+            font-size: 1.05em;
         }
 
-        .answer::before {
-            content: '💡';
-            margin-right: 8px;
-            font-size: 1.1em;
+        .message-field {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-left-color: #ff1466;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
         }
 
         .footer {
@@ -135,26 +119,25 @@
         }
 
         .footer a {
-            color: #1274ef;
+            color: #ff5a01;
             text-decoration: none;
             font-weight: 600;
             transition: color 0.3s ease;
         }
 
         .footer a:hover {
-            color: #4F46E5;
+            color: #E63829;
         }
 
-        .status-badge {
+        .badge {
             display: inline-block;
-            background: {{ $data['color'] ?? '#1274ef' }};
+            background: #1274ef;
             color: white;
-            padding: 6px 16px;
+            padding: 4px 12px;
             border-radius: 20px;
             font-size: 0.8em;
             font-weight: 600;
-            margin-left: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-left: 8px;
         }
 
         @media (max-width: 600px) {
@@ -162,19 +145,16 @@
                 margin: 20px 10px;
             }
 
-            .header,
-            .meta,
-            .faq-box {
-                margin-left: 20px;
-                margin-right: 20px;
+            .content {
+                padding: 24px 20px;
             }
 
-            .faq-box {
-                padding: 20px;
+            .contact-info {
+                grid-template-columns: 1fr;
             }
 
-            .meta {
-                margin-top: 20px;
+            .field {
+                padding: 16px;
             }
         }
     </style>
@@ -184,21 +164,33 @@
     <div class="container">
         <div class="header">
             <img src="{{ asset('assets/logo.png') }}" alt="Logo" class="logo">
-            <div class="title">New FAQ Question Received</div>
-            <div class="subtitle">A visitor has asked a question on your website</div>
+            <div class="title">New Contact Form Submission</div>
+            <div class="subtitle">You have received a new message from your website</div>
         </div>
-        <div class="meta">
-            <strong>From:</strong> {{ $data['email'] ?? 'Anonymous' }}
-            <span class="status-badge">New Question</span>
-        </div>
-        <div class="faq-box">
-            <div class="question">{{ $data['question'] }}</div>
-            @if(isset($data['answer']) && $data['answer'])
-                <div class="answer">{{ $data['answer'] }}</div>
-            @endif
+        <div class="content">
+            <div class="contact-info">
+                <div class="field">
+                    <div class="label">Name</div>
+                    <div class="value">{{ $data['name'] }}</div>
+                </div>
+                <div class="field">
+                    <div class="label">Email</div>
+                    <div class="value">{{ $data['email'] }}</div>
+                </div>
+            </div>
+            
+            <div class="field">
+                <div class="label">Phone <span class="badge">Optional</span></div>
+                <div class="value">{{ $data['phone'] ?? 'Not provided' }}</div>
+            </div>
+            
+            <div class="field message-field">
+                <div class="label">Message</div>
+                <div class="value">{!! nl2br(e($data['message'])) !!}</div>
+            </div>
         </div>
         <div class="footer">
-            This message was sent from your website FAQ form &mdash;
+            This message was sent from your website contact form &mdash; 
             <a href="{{ url('/') }}">Visit Website</a>
         </div>
     </div>
