@@ -44,8 +44,10 @@ export default function BrandingProjectsSection() {
     return (
         <div className="min-h-screen py-12">
             <div className="app-container">
-                {/* @ts-expect-error @ts-ignore */}
-                <BrandingProjectsFilters tags={tags} currentFilters={localFilters} onFilterChange={handleFilterChange} />
+                {projects.data.length > 0 && (
+                    // @ts-expect-error @ts-ignore
+                    <BrandingProjectsFilters tags={tags} currentFilters={localFilters} onFilterChange={handleFilterChange} />
+                )}
 
                 <AnimatePresence mode="wait">
                     <motion.div

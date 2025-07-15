@@ -240,35 +240,45 @@
     }
 }
 
-/* For MAC Air */
-@media screen and (max-width: 1440px) {
+@media screen and (max-width: 2600px) {
     .hero__left__mascot {
-        left: calc(100vw - 79%) !important;
+        left: calc(100vw - 67%) !important;
     }
 
     .hero__right__mascot {
-        right: calc(100vw - 84%) !important;
+        right: calc(100vw - 70%) !important;
+    }
+}
+
+/* For MAC Air */
+@media screen and (max-width: 1800px) {
+    .hero__left__mascot {
+        left: calc(100vw - 75%) !important;
+    }
+
+    .hero__right__mascot {
+        right: calc(100vw - 80%) !important;
     }
 }
 
 /* For iPad Air */
 @media screen and (max-width: 1024px) {
     .hero__left__mascot {
-        left: calc(100vw - 86%) !important;
+        left: calc(100vw - 76%) !important;
     }
 
     .hero__right__mascot {
-        right: calc(100vw - 92%) !important;
+        right: calc(100vw - 81%) !important;
     }
 }
 
 /* For iPad Mini */
 @media screen and (max-width: 900px) {
     .hero__left__mascot {
-        left: calc(100vw - 79%) !important;
+        left: calc(100vw - 85%) !important;
     }
 
     .hero__right__mascot {
-        right: calc(100vw - 86%) !important;
+        right: calc(100vw - 90%) !important;
     }
 }

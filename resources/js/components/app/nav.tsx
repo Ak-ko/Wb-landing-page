@@ -25,10 +25,10 @@ export default function Navbar() {
     useOnClickOutside(navToggleBtn as RefObject<HTMLButtonElement>, handleNavClickoutside);
 
     return (
-        <header className="min-h-[50px]">
+        <header className="min-h-[40px]">
             <nav className="app-container flex items-center justify-between">
-                <Link href="/" className="transition-transform duration-500 hover:-translate-y-1">
-                    <LogoWithTagLines className="w-[250px] select-none md:w-[300px] lg:w-[400px]" />
+                <Link href="/" className="-ml-5 h-[100px] transition-transform duration-500 hover:-translate-y-1 sm:ml-0">
+                    <LogoWithTagLines className="h-[100px] w-[300px] object-cover select-none lg:w-[350px]" />
                 </Link>
                 <button
                     ref={navToggleBtn}

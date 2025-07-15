@@ -1,4 +1,4 @@
-import { BEHANCE, FACEBOOK, LINKEDIN, MESSENGER } from '@/lib/social-links';
+import { BEHANCE, EMAIL, FACEBOOK, LINKEDIN, MESSENGER, PHONE } from '@/lib/social-links';
 import { motion } from 'framer-motion';
 import { Mail, Phone } from 'lucide-react';
 
@@ -44,16 +44,16 @@ export default function ContactUsSection() {
                                             </a>
                                             <a
                                                 className="bg-primary hover:bg-primary/80 flex items-center gap-2 rounded-xl px-8 py-4 text-white transition-all duration-500"
-                                                href="mailto:info@walkingbrands.co"
+                                                href={`mailto:${EMAIL}`}
                                             >
-                                                <Mail /> <span>info@walkingbrands.co</span>
+                                                <Mail /> <span>{EMAIL}</span>
                                             </a>
                                         </div>
                                         <a
                                             className="bg-secondary-pink hover:bg-secondary-pink/80 flex items-center gap-2 rounded-xl px-8 py-4 text-white transition-all duration-500"
-                                            href="tel:+959422273300"
+                                            href={`tel:${PHONE}`}
                                         >
-                                            <Phone /> <span>09 422 273 300</span>
+                                            <Phone /> <span>+95(9) 882 881 902</span>
                                         </a>
                                     </div>
                                     {/* <div className="absolute -right-[33%] -bottom-[35%] hidden xl:block">

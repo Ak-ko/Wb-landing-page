@@ -55,7 +55,7 @@ export default function BlogPageFilters({ tags, selectedTag, search, onFilterCha
                 onClick={handleClickSearchBar}
                 onBlur={handleBlurSearchBar}
                 className={cn(
-                    'flex w-full grow items-center gap-2 rounded-2xl border px-5 shadow transition-all duration-300',
+                    'flex w-full grow items-center gap-2 rounded-full border px-5 py-2 shadow transition-all duration-300',
                     activeSearchBar ? 'ring-1 ring-black' : 'ring-0',
                 )}
             >
@@ -71,7 +71,7 @@ export default function BlogPageFilters({ tags, selectedTag, search, onFilterCha
             <div className="relative w-full max-w-[200px]">
                 <button
                     type="button"
-                    className="flex w-full items-center justify-between rounded-2xl border bg-white px-4 py-2 font-semibold text-gray-700 shadow-sm transition-colors hover:bg-gray-50"
+                    className="flex w-full items-center justify-between rounded-full border bg-white px-4 py-4 font-semibold text-gray-700 shadow-sm transition-colors hover:bg-gray-50"
                     onClick={handleDropdownToggle}
                 >
                     <span>{activeTag === null ? 'All' : tags.find((t) => t.id === activeTag)?.name || 'All'}</span>
@@ -84,7 +84,7 @@ export default function BlogPageFilters({ tags, selectedTag, search, onFilterCha
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -10 }}
                             transition={{ duration: 0.2 }}
-                            className="absolute left-0 z-10 mt-2 w-full overflow-hidden rounded-2xl border bg-white"
+                            className="absolute left-0 z-10 mt-2 w-full overflow-hidden rounded-full border bg-white"
                         >
                             <li>
                                 <button

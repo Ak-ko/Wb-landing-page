@@ -18,7 +18,7 @@ export default function BookACallSection() {
                             </p>
 
                             <div className="my-11 flex justify-center">
-                                <a href="https://calendar.app.google/djDkfyfmis1NPxQb7" target="_blank" className="primary_btn">
+                                <a href="https://calendly.com/walkingbrands-mm/45min" target="_blank" className="primary_btn">
                                     Book An Appointment
                                 </a>
                             </div>

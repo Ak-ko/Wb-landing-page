@@ -13,6 +13,7 @@ import { useImageColor } from '@/hooks/use-image-color'; // Assuming this hook e
 import { TeamMemberT } from '@/types'; // Assuming TeamMemberT type
 import { MinusCircle, PlusCircle } from 'lucide-react'; // Assuming lucide-react is installed
 import { useState } from 'react';
+import ColorSuggestions from '../../color-suggestions';
 
 interface TeamMemberFormProps {
     teamMember?: TeamMemberT;
@@ -95,6 +96,10 @@ export default function TeamMemberForm({ teamMember, onSuccess }: TeamMemberForm
     const removeSocialLink = (index: number) => {
         const newSocialLinks = data.social_links.filter((_, i) => i !== index);
         setData('social_links', newSocialLinks.length > 0 ? newSocialLinks : [{ platform: '', url: '' }]);
+    };
+
+    const handleColorSelect = (color: string) => {
+        setData('color', color);
     };
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -265,20 +270,17 @@ export default function TeamMemberForm({ teamMember, onSuccess }: TeamMemberForm
                     Color
                 </label>
                 <div className="flex items-center gap-3">
-                    <Input
-                        id="color"
-                        type="color"
-                        value={data.color}
-                        onChange={(e) => setData('color', e.target.value)}
-                        className="h-10 w-20 cursor-pointer"
-                    />
-                    <Input
-                        type="text"
-                        value={data.color}
-                        onChange={(e) => setData('color', e.target.value)}
-                        placeholder="#000000"
-                        className="w-full"
-                    />
+                    <div className="h-10 w-10 rounded-md border" style={{ backgroundColor: data.color }} />
+                    <div className="flex items-center gap-2">
+                        <Input
+                            type="text"
+                            value={data.color}
+                            onChange={(e) => setData('color', e.target.value)}
+                            placeholder="#000000"
+                            className="w-32"
+                        />
+                        <ColorSuggestions onColorSelect={handleColorSelect} />
+                    </div>
                 </div>
                 <p className="text-xs text-gray-500">
                     {isColorLoading && currentMascotImageUrl

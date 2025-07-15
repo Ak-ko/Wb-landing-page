@@ -30,12 +30,12 @@ const links: LinksT[] = [
         externalLink: false,
     },
     {
-        label: 'Blogs',
+        label: 'Our Blogs',
         href: route('blogs.list'),
         externalLink: false,
     },
     {
-        label: 'Contact',
+        label: 'Our Contact',
         href: route('contact-us-page'),
         externalLink: false,
     },
@@ -106,7 +106,7 @@ export default function NavSidebar() {
                             >
                                 <div className="relative max-w-[180px] rounded-xl bg-white p-4 text-black">
                                     <div className="font-medium">
-                                        <TypewriterText text={'Welcome to Walking Brands !'} />
+                                        <TypewriterText text={'Greetings, traveller.'} />
                                     </div>
                                     <div className="absolute -right-2 bottom-4 h-4 w-4 rotate-45 transform bg-white"></div>
                                 </div>

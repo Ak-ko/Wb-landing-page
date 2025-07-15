@@ -42,7 +42,7 @@ export default function StickerArtShow({ animationAndMotion }: AnimationAndMotio
                     <div className="md:col-span-2">
                         <div className="rounded-md border p-6">
                             <div className="mb-6">
-                                <h2 className="mb-2 text-lg font-semibold">Images</h2>
+                                <h2 className="mb-2 text-lg font-semibold">Videos</h2>
                                 <AnimationAndMotionImageGallery images={formattedImages} onImageUpload={() => {}} isEditing={false} />
                             </div>
 
@@ -55,7 +55,7 @@ export default function StickerArtShow({ animationAndMotion }: AnimationAndMotio
 
                     <div>
                         <div className="rounded-md border p-6">
-                            <h2 className="mb-4 text-lg font-semibold">Sticker Details</h2>
+                            <h2 className="mb-4 text-lg font-semibold">Animation and Motion Details</h2>
                             <div className="space-y-4">
                                 <div>
                                     <p className="text-sm text-gray-500">Created At</p>

@@ -1,12 +1,8 @@
 import FaqForm from '@/components/app/admin/faq/faq-form';
 import AppLayout from '@/layouts/app-layout';
-import { Head, router } from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
 
 export default function FaqCreate() {
-    const handleSuccess = () => {
-        router.visit(route('faqs.index'));
-    };
-
     return (
         <AppLayout>
             <Head title="Create FAQ" />
@@ -16,7 +12,7 @@ export default function FaqCreate() {
                 </div>
 
                 <div className="rounded-md border p-6">
-                    <FaqForm onSuccess={handleSuccess} />
+                    <FaqForm />
                 </div>
             </div>
         </AppLayout>

@@ -32,6 +32,7 @@ interface AllItem {
     id: number | string;
     name: string;
     is_included: boolean;
+    detail_link?: string;
 }
 
 const PANELS = [
@@ -110,7 +111,18 @@ function PackagePanelContent({
                             )}
                         >
                             <Check style={{ color }} />
-                            <span>{i?.name}</span>
+                            <div className="flex w-full items-start gap-0.5">
+                                <span className="w-[74%] text-wrap">{i?.name}</span>
+                                {i?.detail_link && (
+                                    <a
+                                        href={i?.detail_link}
+                                        target="_blank"
+                                        className="inline-block w-[30%] text-xs font-normal text-nowrap text-white capitalize underline"
+                                    >
+                                        See Detail
+                                    </a>
+                                )}
+                            </div>
                         </li>
                     ))}
                 </ul>
@@ -283,14 +295,17 @@ function PriceSection({
 // Mobile Card Component
 function BusinessPackageCard({ b, color, onClick }: { b: BusinessPackageT & { all_items?: AllItem[] }; color: string; onClick: () => void }) {
     return (
-        <div className="mb-6 rounded-2xl p-5" style={{ background: color }}>
-            <div className="mb-2 flex items-center justify-between">
+        <div className="relative mb-6 overflow-hidden rounded-2xl p-5" style={{ background: color }}>
+            <div>
+                <img src="/assets/logo.png" className="absolute top-1/2 right-[-15%] size-[150px] -translate-y-1/2 opacity-[15%]" />
+            </div>
+            <div className="relative z-[2] mb-2 flex items-center justify-between">
                 <div className="text-xl font-bold text-white uppercase">{b.name}</div>
                 {b.is_recommended && (
                     <span className="ml-2 rounded-full border border-white px-2 py-1 text-xs font-bold text-white uppercase">Recommended</span>
                 )}
             </div>
-            <ul className="mb-4 space-y-1">
+            <ul className="relative z-[2] mb-4 space-y-1">
                 {b.all_items?.slice(0, 4).map((i) => (
                     <li key={i.id} className="flex items-center text-sm text-white">
                         <Check style={{ color: 'white', width: 18, height: 18 }} />
@@ -298,7 +313,7 @@ function BusinessPackageCard({ b, color, onClick }: { b: BusinessPackageT & { al
                     </li>
                 ))}
             </ul>
-            <button className="mt-2 w-full rounded-full bg-black py-3 text-base font-bold text-white uppercase" onClick={onClick}>
+            <button className="relative z-[2] mt-2 w-full rounded-full bg-black py-3 text-base font-bold text-white uppercase" onClick={onClick}>
                 Explore Package
             </button>
         </div>
@@ -355,7 +370,18 @@ function MobileBusinessPackageDetail({
                                     )}
                                 >
                                     <Check style={{ color }} />
-                                    <span>{i.name}</span>
+                                    <div className="flex w-full items-start gap-0.5">
+                                        <span className="w-[74%] text-wrap">{i.name}</span>
+                                        {i?.detail_link && (
+                                            <a
+                                                href={i?.detail_link}
+                                                target="_blank"
+                                                className="inline-block w-[30%] text-sm font-normal text-nowrap text-white capitalize underline"
+                                            >
+                                                See Detail
+                                            </a>
+                                        )}
+                                    </div>
                                 </li>
                             ))}
                         </ul>

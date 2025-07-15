@@ -10,10 +10,9 @@ import RichTextEditor from '../rich-editor/rich-text-editor';
 
 interface FaqFormProps {
     faq?: FaqT;
-    onSuccess: () => void;
 }
 
-export default function FaqForm({ faq, onSuccess }: FaqFormProps) {
+export default function FaqForm({ faq }: FaqFormProps) {
     const { data, setData, post, put, processing, errors, reset } = useForm({
         question: faq?.question || '',
         answer: faq?.answer || '',
@@ -29,14 +28,11 @@ export default function FaqForm({ faq, onSuccess }: FaqFormProps) {
         e.preventDefault();
 
         if (faq) {
-            put(route('faqs.update', faq.id), {
-                onSuccess,
-            });
+            put(route('faqs.update', faq.id));
         } else {
             post(route('faqs.store'), {
                 onSuccess: () => {
                     reset();
-                    onSuccess();
                 },
             });
         }

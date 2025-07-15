@@ -7,7 +7,7 @@ export default function BlogPageHeader() {
                 <SectionHeader
                     header={
                         <>
-                            <span className="text-crayola-blue">Blog</span> & <span className="text-secondary-pink">Posts</span>
+                            Studio <span className="text-crayola-blue">Journal</span>
                         </>
                     }
                     description="Explore our blog for the latest insights, practical tips, and creative inspiration on branding, design, and digital strategy. Stay updated with trends, behind-the-scenes stories, and ideas that help your business grow."

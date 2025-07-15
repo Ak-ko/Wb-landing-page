@@ -313,7 +313,9 @@ export default function ImageUploader({
             <label className="block text-sm font-medium">{labelText || 'Image'}</label>
 
             {imagePreview ? (
-                <div className={`relative ${aspectRatio} w-full overflow-hidden rounded-md bg-gray-100 shadow-md transition-all hover:shadow-lg`}>
+                <div
+                    className={`relative ${aspectRatio} w-full min-w-[300px] overflow-hidden rounded-md bg-gray-100 shadow-md transition-all hover:shadow-lg`}
+                >
                     <motion.img
                         src={imagePreview}
                         alt="Image preview"

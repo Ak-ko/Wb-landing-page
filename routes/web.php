@@ -224,6 +224,7 @@ Route::get('/business-plans', function () {
                 'id' => $item->id,
                 'name' => $item->name,
                 'is_included' => $item->is_included,
+                'detail_link' => $item->detail_link,
             ];
         });
 

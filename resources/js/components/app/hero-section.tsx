@@ -85,7 +85,7 @@ export default function HeroSection() {
                 </div>
             )}
 
-            <div className="relative flex flex-col items-center justify-center gap-5 pt-7 lg:flex-row">
+            <div className="relative flex max-w-[2500px] flex-col items-center justify-center gap-5 pt-7 lg:flex-row">
                 <div className="hidden w-full md:block">
                     <CharacterWithCoffee className="hero__left__mascot absolute w-[120px] md:bottom-0 lg:-bottom-8 xl:left-[calc(100vw-76%)] 2xl:left-[calc(100vw-65%)]" />
                 </div>
@@ -128,7 +128,7 @@ export default function HeroSection() {
                     />
                 </motion.div>
                 <div className="hidden w-full md:block">
-                    <CharacterRedWithSpring className="hero__right__mascot absolute w-[170px] md:-bottom-5 lg:-bottom-13 2xl:left-[calc(100vw-40%)]" />
+                    <CharacterRedWithSpring className="hero__right__mascot absolute w-[170px] md:-bottom-5 lg:-bottom-13" />
                 </div>
             </div>
 
