@@ -5,6 +5,28 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <meta name="description" content="Walking Brands Design and Art Consultancy is a creative design studio based in Asia, offering branding, visual design, and art consultancy services. Explore our portfolio and creative process.">
+    <meta name="keywords" content="Walking Brands, Walking Brands Design and Art Consultancy, design studio Asia, branding, art consultancy, creative agency, graphic design">
+    <meta name="author" content="Walking Brands Design and Art Consultancy">
+
+    <meta property="og:title" content="Walking Brands Design and Art Consultancy | Design Studio in Asia">
+    <meta property="og:description" content="Explore the creative work of Walking Brands Design and Art Consultancy — a design studio based in Asia offering branding and art consultancy services.">
+    <meta property="og:image" content="/assets/logo.png">
+    <meta property="og:url" content="https://walkingbrands.co">
+    <meta property="og:type" content="website">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GRJP4SEMXS"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-GRJP4SEMXS');
+    </script>
+
+
+
     <script>
         // (function() {
         /*

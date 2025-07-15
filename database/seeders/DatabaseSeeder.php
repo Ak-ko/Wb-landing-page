@@ -21,17 +21,18 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'Admin User',
             'email' => 'admin@demo.com',
+            'password' => bcrypt(config('app.admin_password')),
         ]);
 
         CompanyPolicy::factory()->create([
             'user_id' => User::first()->id,
         ]);
 
-        Tag::factory()->create([
-            'name' => 'Laravel',
-            'color' => '#f7df1e'
-        ]);
+        // Tag::factory()->create([
+        //     'name' => 'Laravel',
+        //     'color' => '#f7df1e'
+        // ]);
 
-        BusinessPackageAddon::factory(19)->create();
+        // BusinessPackageAddon::factory(19)->create();
     }
 }
