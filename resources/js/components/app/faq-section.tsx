@@ -18,9 +18,9 @@ export default function FaqSection() {
     const displayedFaqs = hasMoreFaqs ? faqs.slice(0, INITIAL_FAQ_COUNT) : faqs;
 
     return (
-        <section id="faqSection" className="py-32">
+        <section id="faqSection" className="">
             <div className="app-container">
-                <SectionHeader header="Commonly Asked Questions" containerClass="!justify-start !items-start" headerClass="!text-start" />
+                <SectionHeader header="Commonly Asked Questions" containerClass="!justify-start !items-start" headerClass="!lg:text-start" />
 
                 <CommonBodyAnimation>
                     <div className="flex flex-col lg:flex-row">

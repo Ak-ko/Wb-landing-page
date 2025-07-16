@@ -32,7 +32,7 @@ export default function CreateBrandStrategy() {
                 </div>
                 <Card>
                     <CardContent className="p-6">
-                        <BrandStrategyForm onSuccess={() => router.get('/admin/brand-strategies')} />
+                        <BrandStrategyForm />
                     </CardContent>
                 </Card>
             </div>

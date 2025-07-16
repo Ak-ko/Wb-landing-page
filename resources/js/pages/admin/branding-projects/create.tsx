@@ -38,7 +38,6 @@ export default function CreateBrandingProject({ tags }: { tags: TagT[] }) {
                     <CardContent className="p-6">
                         <BrandingProjectForm
                             tags={tags}
-                            onSuccess={() => router.get('/admin/branding-projects')}
                             onSubmit={(formData) => {
                                 router.post(route('branding-projects.store'), formData, {
                                     forceFormData: true,

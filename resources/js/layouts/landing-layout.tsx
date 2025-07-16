@@ -11,8 +11,9 @@ interface PropsT {
 export default function LandingLayout({ children }: PropsT) {
     const { flash } = usePage().props;
     return (
-        <section>
+        <section className="overflow-hidden">
             <Navbar />
+            <div className="h-[100px]"></div>
             {children}
             <Toast flash={flash} />
             <LandingFooter />

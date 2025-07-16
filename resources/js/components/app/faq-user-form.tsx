@@ -54,7 +54,7 @@ export default function FaqUserForm() {
                     {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
                 </div>
 
-                <Button disabled={processing} className="w-full">
+                <Button disabled={processing} className="w-full py-6" size={'lg'}>
                     {processing && <Loader className="animate-spin" />}
                     Send Question
                 </Button>

@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// This file is adapted from business-brand-guideline-form.tsx for BrandStrategy
-// You will need to adjust imports and types as needed for your project structure.
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -24,10 +22,9 @@ interface BrandStrategyElementItemForm {
 
 interface BrandStrategyFormProps {
     strategy?: BrandStrategyT;
-    onSuccess: () => void;
 }
 
-export default function BrandStrategyForm({ strategy, onSuccess }: BrandStrategyFormProps) {
+export default function BrandStrategyForm({ strategy }: BrandStrategyFormProps) {
     const { data, setData, post, put, processing, errors, reset } = useForm({
         title: strategy?.title || '',
         description: strategy?.description || '',
@@ -67,12 +64,11 @@ export default function BrandStrategyForm({ strategy, onSuccess }: BrandStrategy
         e.preventDefault();
         const url = strategy ? route('brand-strategies.update', strategy.id) : route('brand-strategies.store');
         if (strategy) {
-            put(url, { onSuccess });
+            put(url);
         } else {
             post(url, {
                 onSuccess: () => {
                     reset();
-                    onSuccess();
                 },
             });
         }

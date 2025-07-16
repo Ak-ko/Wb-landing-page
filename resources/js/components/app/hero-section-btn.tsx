@@ -11,7 +11,7 @@ interface PropsT {
 
 export default function HeroSectionBtn({ href, initialChildren, initialColor = 'black', hoverChildren, className }: PropsT) {
     const buttonClass = cn(
-        'group relative min-h-[60px] w-full max-w-[240px] rounded-lg bg-black px-4 text-center text-[14.5px] text-black uppercase transition-all duration-500',
+        'group relative min-h-[60px] w-full max-w-[300px] rounded-lg bg-black px-4 text-center text-[14.5px] text-black uppercase transition-all duration-500 sm:max-w-[240px]',
         initialColor && `bg-${initialColor}`,
         className,
     );

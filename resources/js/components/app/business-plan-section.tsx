@@ -84,7 +84,7 @@ function PackagePanelContent({
     scrollbarStyle: string;
 }) {
     return (
-        <div className="mb-11">
+        <div className="mb-11 w-full">
             <div className="mb-11 flex flex-col items-center justify-center">
                 <div className="mb-3 flex items-center gap-3 text-center text-3xl font-bold uppercase" style={{ color }}>
                     <span>{b?.name}</span>
@@ -105,19 +105,19 @@ function PackagePanelContent({
                         <li
                             key={i?.id}
                             className={cn(
-                                'flex items-center space-x-1 self-start text-sm uppercase',
+                                'flex w-full items-center space-x-1 self-start text-sm uppercase',
                                 i?.is_included ? 'text-white' : 'text-white/50 line-through',
                                 idx < 4 ? 'font-bold' : 'font-normal',
                             )}
                         >
                             <Check style={{ color }} />
-                            <div className="flex w-full items-start gap-0.5">
-                                <span className="w-[74%] text-wrap">{i?.name}</span>
+                            <div className="mt-1 flex items-start gap-2">
+                                <span className="text-wrap">{i?.name}</span>
                                 {i?.detail_link && (
                                     <a
                                         href={i?.detail_link}
                                         target="_blank"
-                                        className="inline-block w-[30%] text-xs font-normal text-nowrap text-white capitalize underline"
+                                        className="inline-block text-xs font-normal text-nowrap text-white capitalize underline"
                                     >
                                         See Detail
                                     </a>
@@ -299,10 +299,10 @@ function BusinessPackageCard({ b, color, onClick }: { b: BusinessPackageT & { al
             <div>
                 <img src="/assets/logo.png" className="absolute top-1/2 right-[-15%] size-[150px] -translate-y-1/2 opacity-[15%]" />
             </div>
-            <div className="relative z-[2] mb-2 flex items-center justify-between">
-                <div className="text-xl font-bold text-white uppercase">{b.name}</div>
+            <div className="relative z-[2] mb-2 flex items-start justify-between">
+                <div className="inline-block max-w-[300px] text-2xl font-bold text-white uppercase">{b.name}</div>
                 {b.is_recommended && (
-                    <span className="ml-2 rounded-full border border-white px-2 py-1 text-xs font-bold text-white uppercase">Recommended</span>
+                    <span className="mt-1 ml-2 rounded-full border border-white px-2 py-1 text-xs font-bold text-white uppercase">Recommended</span>
                 )}
             </div>
             <ul className="relative z-[2] mb-4 space-y-1">
@@ -515,7 +515,7 @@ export default function BusinessPlanSection() {
     return (
         <>
             {/* Mobile version */}
-            <section className="block min-h-screen md:hidden">
+            <section className="block md:hidden">
                 <div className="px-3 pt-6 pb-10">
                     <AnimatePresence>
                         {mobileDetailIdx === null ? (

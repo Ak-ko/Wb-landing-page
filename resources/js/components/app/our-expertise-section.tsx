@@ -102,8 +102,8 @@ export default function OurExpertiseSection() {
                     </div>
                 </CommonBodyAnimation>
                 {/* HighlightText CTA */}
-                <p className="text-center text-2xl font-semibold md:text-3xl">
-                    Still don't know what to pick? <br />
+                <p className="my-32 text-center text-2xl font-semibold md:text-3xl">
+                    <span className="mb-2 block">Still don't know what to pick?</span>
                     <HighlightText onClick={() => scrollTo('#faqSection')} content="Read our Commonly Asked Questions!" />
                 </p>
             </div>

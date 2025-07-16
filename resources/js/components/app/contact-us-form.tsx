@@ -34,7 +34,7 @@ export default function ContactUsForm() {
                         onChange={(e: ChangeEvent<HTMLInputElement>) => {
                             setData('name', e.target.value);
                         }}
-                        className="bg-gray-100 py-5"
+                        className="bg-gray-100 py-6"
                         placeholder="Your name"
                     />
                     {errors.name && <p className="text-sm text-red-500">{errors.name}</p>}
@@ -46,7 +46,7 @@ export default function ContactUsForm() {
                         onChange={(e: ChangeEvent<HTMLInputElement>) => {
                             setData('email', e.target.value);
                         }}
-                        className="bg-gray-100 py-5"
+                        className="bg-gray-100 py-6"
                         placeholder="Your email"
                         type="email"
                     />
@@ -59,7 +59,7 @@ export default function ContactUsForm() {
                         onChange={(e: ChangeEvent<HTMLInputElement>) => {
                             setData('phone', e.target.value);
                         }}
-                        className="bg-gray-100 py-5"
+                        className="bg-gray-100 py-6"
                         placeholder="Your phone number"
                         type="tel"
                     />
@@ -78,7 +78,7 @@ export default function ContactUsForm() {
                     {errors.message && <p className="text-sm text-red-500">{errors.message}</p>}
                 </div>
 
-                <Button disabled={processing} className="w-full cursor-pointer" size={'lg'}>
+                <Button disabled={processing} className="w-full cursor-pointer !py-6" size={'lg'}>
                     {processing && <Loader className="mr-2 h-4 w-4 animate-spin" />}
                     Send Message
                 </Button>

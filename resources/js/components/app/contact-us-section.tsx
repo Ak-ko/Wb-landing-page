@@ -21,15 +21,15 @@ export default function ContactUsSection() {
                                 <p className="font-normal">Let's connect! We're eager to hear from you and address any concerns.</p>
                             </div>
                             <div className="mt-11 lg:mt-0">
-                                <div className="-ml-4 flex items-center justify-center gap-1 lg:justify-start">
+                                <div className="flex items-center justify-center gap-1 lg:justify-start">
                                     <a href={BEHANCE} target="_blank">
-                                        <BehanceIcon />
+                                        <BehanceIcon className="size-[40px]" />
                                     </a>
                                     <a href={LINKEDIN} target="_blank">
-                                        <LinkedinIcon />
+                                        <LinkedinIcon className="ml-3 size-[48px]" />
                                     </a>
                                     <a href={FACEBOOK} target="_blank">
-                                        <FacebookIcon />
+                                        <FacebookIcon className="size-[48px]" />
                                     </a>
                                 </div>
                                 <div className="relative flex justify-center lg:inline-flex">

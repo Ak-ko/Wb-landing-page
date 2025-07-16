@@ -44,7 +44,6 @@ export default function EditBrandingProject({ brandingProject, tags }: EditBrand
                         <BrandingProjectForm
                             tags={tags}
                             brandingProject={brandingProject}
-                            onSuccess={() => router.get('/admin/branding-projects')}
                             onSubmit={(formData) => {
                                 formData.append('_method', 'PUT');
                                 router.post(route('branding-projects.update', brandingProject.id), formData, {

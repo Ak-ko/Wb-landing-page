@@ -193,7 +193,7 @@
     }
 
     .app-container {
-        @apply container mx-auto px-5 xl:px-0;
+        @apply container mx-auto px-5 xl:px-8 2xl:px-11;
     }
 
     .hero-section-header-text-size {

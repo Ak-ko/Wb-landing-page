@@ -28,6 +28,7 @@ export default function AboutUsIntroSection() {
             <div className="app-container">
                 <motion.div className="mb-32" variants={contentBlockVariants}>
                     <AboutUsIntroContent
+                        titleClassName="text-center lg:text-start"
                         title={
                             <>
                                 We Love <br /> What We Do
@@ -35,7 +36,9 @@ export default function AboutUsIntroSection() {
                         }
                         description="They say if you love what you do, you'll never work a day in your life. At Walking Brands, our mission is clear: to help businesses
 succeed by providing top-notch creative solutions, while doing what we love."
+                        descriptionClassName="text-center lg:text-start mt-5 lg:mt-0"
                         image="/assets/about-us-1.jpg"
+                        imageClassName="w-full lg:w-auto"
                     />
                 </motion.div>
 
@@ -47,7 +50,9 @@ succeed by providing top-notch creative solutions, while doing what we love."
                                 Towards <br /> MUTUAL SUCCESS
                             </>
                         }
+                        titleClassName="text-center lg:text-right"
                         description="We work towards mutual success by thinking of your business as our own. We will always treat you as if you were our only client. Together, we will turn your brand vision into a reality."
+                        descriptionClassName="text-center lg:text-right mt-5 lg:mt-0"
                         image="/assets/about-us-2.jpg"
                     />
                 </motion.div>

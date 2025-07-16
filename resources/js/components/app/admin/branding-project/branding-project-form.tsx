@@ -17,11 +17,10 @@ import BrandingProjectImageGallery from './branding-project-image-gallery';
 interface BrandingProjectFormProps {
     brandingProject?: BrandingProjectT;
     tags: TagT[];
-    onSuccess: () => void;
     onSubmit?: (data: FormData) => void;
 }
 
-export default function BrandingProjectForm({ brandingProject, tags, onSuccess, onSubmit }: BrandingProjectFormProps) {
+export default function BrandingProjectForm({ brandingProject, tags, onSubmit }: BrandingProjectFormProps) {
     const [selectedTags, setSelectedTags] = useState<number[]>(brandingProject?.tags.map((tag) => tag.id) || []);
     const { teamMembers } = usePage<{ teamMembers: TeamMemberT[] }>().props;
 
@@ -196,18 +195,9 @@ export default function BrandingProjectForm({ brandingProject, tags, onSuccess, 
         const url = brandingProject ? route('branding-projects.update', brandingProject.id) : route('branding-projects.store');
 
         if (brandingProject) {
-            put(url, {
-                onSuccess: () => {
-                    onSuccess();
-                },
-            });
+            put(url);
         } else {
-            post(url, {
-                onSuccess: () => {
-                    reset();
-                    onSuccess();
-                },
-            });
+            post(url);
         }
     };
 

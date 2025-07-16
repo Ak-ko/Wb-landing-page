@@ -36,7 +36,7 @@ export default function EditBrandStrategy({ strategy }: EditBrandStrategyProps) 
                 </div>
                 <Card>
                     <CardContent className="p-6">
-                        <BrandStrategyForm strategy={strategy} onSuccess={() => router.get('/admin/brand-strategies')} />
+                        <BrandStrategyForm strategy={strategy} />
                     </CardContent>
                 </Card>
             </div>

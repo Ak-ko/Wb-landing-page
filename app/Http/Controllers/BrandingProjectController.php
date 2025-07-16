@@ -52,6 +52,10 @@ class BrandingProjectController extends Controller
 
     public function store(Request $request)
     {
+        if (empty($request->tags)) {
+            return back()->with('error', 'At least one tag must be selected.');
+        }
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -91,7 +95,7 @@ class BrandingProjectController extends Controller
             'is_published' => $validated['is_published'],
         ]);
 
-        if (isset($validated['tags'])) {
+        if (isset($validated['tags']) && !empty($validated['tags'])) {
             $brandingProject->tags()->attach($validated['tags']);
         }
 
@@ -149,6 +153,10 @@ class BrandingProjectController extends Controller
 
     public function update(Request $request, BrandingProject $brandingProject)
     {
+        if (empty($request->tags)) {
+            return back()->with('error', 'At least one tag must be selected.');
+        }
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -191,10 +199,8 @@ class BrandingProjectController extends Controller
             'year' => $validated['year'],
         ]);
 
-        if (isset($validated['tags'])) {
+        if (isset($validated['tags']) && !empty($validated['tags'])) {
             $brandingProject->tags()->sync($validated['tags']);
-        } else {
-            $brandingProject->tags()->detach();
         }
 
         if (isset($validated['removed_images'])) {

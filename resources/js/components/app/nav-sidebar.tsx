@@ -1,4 +1,3 @@
-import useScroll from '@/hooks/use-scroll';
 import useNavStore from '@/store/useNavStore';
 import { Link } from '@inertiajs/react';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -14,6 +13,11 @@ type LinksT = {
 };
 
 const links: LinksT[] = [
+    {
+        label: 'Home',
+        href: route('home'),
+        externalLink: false,
+    },
     {
         label: 'About Us',
         href: route('about-us-page'),
@@ -42,7 +46,6 @@ const links: LinksT[] = [
 ];
 
 export default function NavSidebar() {
-    const { scrollTo } = useScroll();
     const { isToggle, toggle } = useNavStore();
 
     const handleCloseNav = () => {
@@ -66,7 +69,7 @@ export default function NavSidebar() {
             <div className="mx-5 flex min-h-[92px] items-center justify-between border-b border-b-white/25 py-3 sm:hidden">
                 <div className="text-xl font-bold text-white">WALKING BRANDS</div>
                 <div onClick={handleCloseNav}>
-                    <Logo fill="#fff" className="size-[60px] text-white sm:-translate-x-[50%]" />
+                    <Logo fill="#fff" className="size-[50px] text-white sm:-translate-x-[50%]" />
                 </div>
             </div>
 
@@ -121,18 +124,29 @@ export default function NavSidebar() {
             </div>
 
             <div className="h-full">
-                <div className="flex h-[75%] flex-col justify-around overflow-y-auto py-11">
+                <div className="flex h-[68%] flex-col justify-around overflow-y-auto py-11">
                     {links?.map((link: LinksT, indx: number) => (
-                        <div
-                            onClick={() => scrollTo(link.href, 0, 400)}
-                            key={indx}
-                            className="flex min-h-[60px] w-full cursor-pointer items-center justify-center text-lg font-bold text-white/50 uppercase transition-all duration-500 hover:text-white active:text-white"
-                        >
-                            {link.label}
+                        <div key={indx}>
+                            {link?.externalLink ? (
+                                <a
+                                    href={link.href}
+                                    target="_blank"
+                                    className="flex min-h-[60px] w-full cursor-pointer items-center justify-center text-lg font-bold text-white/50 uppercase transition-all duration-500 hover:text-white active:text-white"
+                                >
+                                    {link.label}
+                                </a>
+                            ) : (
+                                <Link
+                                    href={link.href}
+                                    className="flex min-h-[60px] w-full cursor-pointer items-center justify-center text-lg font-bold text-white/50 uppercase transition-all duration-500 hover:text-white active:text-white"
+                                >
+                                    {link.label}
+                                </Link>
+                            )}
                         </div>
                     ))}
                 </div>
-                <div className="mx-5 flex h-[10%] items-center justify-center border-t border-t-white/25 text-white">
+                <div className="mx-5 flex h-[15%] items-center justify-center border-t border-t-white/25 text-white">
                     <button onClick={handleCloseNav} className="flex items-center justify-center gap-2">
                         <span className="font-inter text-lg uppercase">Go Back</span>
                         <ChevronsRight size={25} />

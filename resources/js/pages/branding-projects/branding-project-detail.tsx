@@ -1,6 +1,7 @@
 import BehanceIcon from '@/components/app/icons/social-links/benance-icon';
 import ImageModal from '@/components/app/image-modal';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import ThemedAccordion from '@/components/ui/themed-accordion';
 import useTopScrollAnimation from '@/hooks/use-top-scroll-animation';
 import LandingLayout from '@/layouts/landing-layout';
 import { BrandingProjectT } from '@/types';
@@ -17,6 +18,83 @@ export default function BrandingProjectDetail({ project, relatedProjects }: Bran
     const { topBarClass } = useTopScrollAnimation();
     const [modalOpen, setModalOpen] = useState(false);
     const [modalIndex, setModalIndex] = useState(0);
+
+    // Prepare accordion items
+    const accordionItems = [
+        {
+            id: 'project-details',
+            title: 'Project Details',
+            content: (
+                <div className="space-y-4">
+                    <div>
+                        <h4 className="text-sm font-medium text-gray-500">Industry</h4>
+                        <p className="text-gray-900">{project.industry_type}</p>
+                    </div>
+                    <div>
+                        <h4 className="text-sm font-medium text-gray-500">Keywords</h4>
+                        <div className="mt-2 flex flex-wrap gap-2">
+                            {project?.project_keywords?.split(',').map((keyword, index) => (
+                                <span key={index} className="rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-700">
+                                    {keyword.trim()}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            ),
+        },
+        {
+            id: 'team-members',
+            title: 'Team Members',
+            content: (
+                <div className="space-y-4">
+                    {project.members.map((member) => (
+                        <div key={member.id} className="relative flex items-center gap-4 rounded-lg bg-white p-3 shadow-sm">
+                            {member.image && (
+                                <img
+                                    src={member.image}
+                                    alt={member.name}
+                                    className="border-primary/30 h-10 w-10 rounded-full border-2 object-cover"
+                                />
+                            )}
+                            <div>
+                                <p className="flex items-center gap-2 font-medium text-gray-900">
+                                    {member.name}
+                                    {member.pivot?.is_lead && (
+                                        <span
+                                            className="ml-2 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold shadow-sm"
+                                            style={{ backgroundColor: 'var(--primary)', color: 'var(--primary-foreground)' }}
+                                        >
+                                            <Crown size={16} className="text-white" />
+                                            Leader
+                                        </span>
+                                    )}
+                                </p>
+                                <p className="text-sm text-gray-500">{member.designation}</p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            ),
+        },
+        {
+            id: 'technologies',
+            title: 'Technologies & Tools',
+            content: (
+                <div className="flex flex-wrap gap-2">
+                    {project.tags.map((tag) => (
+                        <span
+                            key={tag.id}
+                            className="rounded-full px-3 py-1 text-sm font-medium"
+                            style={{ backgroundColor: tag.color, color: '#fff' }}
+                        >
+                            {tag.name}
+                        </span>
+                    ))}
+                </div>
+            ),
+        },
+    ];
 
     return (
         <LandingLayout>
@@ -62,38 +140,36 @@ export default function BrandingProjectDetail({ project, relatedProjects }: Bran
 
                 <div className="app-container py-12">
                     <div className="grid gap-12 lg:grid-cols-3">
-                        {/* Main Content */}
                         <div className="lg:col-span-2">
-                            {/* Project Images */}
                             <div className="mb-12 overflow-hidden rounded-xl bg-white p-6 shadow-lg">
                                 <Carousel className="w-full">
                                     <CarouselContent>
                                         {project.images.map((image, idx) => (
                                             <CarouselItem key={image.id}>
-                                                <img
-                                                    src={image.image}
-                                                    alt={project.title}
-                                                    className="w-full cursor-pointer rounded-lg object-cover shadow-md transition-transform duration-200 hover:scale-105"
-                                                    onClick={() => {
-                                                        setModalOpen(true);
-                                                        setModalIndex(idx);
-                                                    }}
-                                                />
+                                                <div className="relative aspect-video overflow-hidden rounded-lg">
+                                                    <img
+                                                        src={image.image}
+                                                        alt={project.title}
+                                                        className="h-full w-full cursor-pointer object-cover transition-transform duration-200 hover:scale-105"
+                                                        onClick={() => {
+                                                            setModalOpen(true);
+                                                            setModalIndex(idx);
+                                                        }}
+                                                    />
+                                                </div>
                                             </CarouselItem>
                                         ))}
                                     </CarouselContent>
                                     {project.images.length > 1 && (
                                         <>
-                                            <CarouselPrevious />
-                                            <CarouselNext />
+                                            <CarouselPrevious className="left-4 h-10 w-10 bg-white/90 text-gray-900 shadow-lg hover:bg-white" />
+                                            <CarouselNext className="right-4 h-10 w-10 bg-white/90 text-gray-900 shadow-lg hover:bg-white" />
                                         </>
                                     )}
                                 </Carousel>
-                                {/* Modal for full image view */}
                                 <ImageModal images={project.images} open={modalOpen} initialIndex={modalIndex} onClose={() => setModalOpen(false)} />
                             </div>
 
-                            {/* Project Description */}
                             <div className="rounded-xl bg-white p-8 shadow-lg">
                                 <h2 className="mb-6 text-2xl font-bold">Project Overview</h2>
                                 <div
@@ -115,81 +191,11 @@ export default function BrandingProjectDetail({ project, relatedProjects }: Bran
                             </div>
                         </div>
 
-                        {/* Sidebar */}
                         <div className="space-y-6">
-                            {/* Project Info */}
-                            <div className="rounded-xl bg-white p-6 shadow-lg">
-                                <h3 className="mb-4 text-xl font-bold">Project Details</h3>
-                                <div className="space-y-4">
-                                    <div>
-                                        <h4 className="text-sm font-medium text-gray-500">Industry</h4>
-                                        <p className="text-gray-900">{project.industry_type}</p>
-                                    </div>
-                                    <div>
-                                        <h4 className="text-sm font-medium text-gray-500">Keywords</h4>
-                                        <div className="mt-2 flex flex-wrap gap-2">
-                                            {project?.project_keywords?.split(',').map((keyword, index) => (
-                                                <span key={index} className="rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-700">
-                                                    {keyword.trim()}
-                                                </span>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Team Members */}
-                            <div className="rounded-xl bg-white p-6 shadow-lg">
-                                <h3 className="mb-4 text-xl font-bold">Team Members</h3>
-                                <div className="space-y-4">
-                                    {project.members.map((member) => (
-                                        <div key={member.id} className="relative flex items-center gap-4 rounded-lg bg-gray-50 p-3">
-                                            {member.image && (
-                                                <img
-                                                    src={member.image}
-                                                    alt={member.name}
-                                                    className="border-primary/30 h-10 w-10 rounded-full border-2 object-cover"
-                                                />
-                                            )}
-                                            <div>
-                                                <p className="flex items-center gap-2 font-medium text-gray-900">
-                                                    {member.name}
-                                                    {member.pivot?.is_lead && (
-                                                        <span
-                                                            className="ml-2 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold shadow-sm"
-                                                            style={{ backgroundColor: 'var(--primary)', color: 'var(--primary-foreground)' }}
-                                                        >
-                                                            <Crown size={16} className="text-white" />
-                                                            Leader
-                                                        </span>
-                                                    )}
-                                                </p>
-                                                <p className="text-sm text-gray-500">{member.designation}</p>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* Tags */}
-                            <div className="rounded-xl bg-white p-6 shadow-lg">
-                                <h3 className="mb-4 text-xl font-bold">Technologies & Tools</h3>
-                                <div className="flex flex-wrap gap-2">
-                                    {project.tags.map((tag) => (
-                                        <span
-                                            key={tag.id}
-                                            className="rounded-full px-3 py-1 text-sm font-medium"
-                                            style={{ backgroundColor: tag.color, color: '#fff' }}
-                                        >
-                                            {tag.name}
-                                        </span>
-                                    ))}
-                                </div>
-                            </div>
+                            <ThemedAccordion items={accordionItems} />
                         </div>
                     </div>
 
-                    {/* Related Projects */}
                     {relatedProjects.length > 0 && (
                         <div className="mt-16">
                             <h2 className="mb-8 text-2xl font-bold">Related Projects</h2>
