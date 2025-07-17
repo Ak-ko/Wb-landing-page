@@ -35,15 +35,13 @@ export default function BlogPageSection() {
     return (
         <div>
             <div className="app-container p-5 md:p-9">
-                {blogs.data.length > 0 && (
-                    <BlogPageFilters
-                        tags={tags}
-                        search={filters?.query || ''}
-                        defaultFilters={localFilters}
-                        selectedTag={filters?.tag as unknown as number}
-                        onFilterChange={handleFilterChange}
-                    />
-                )}
+                <BlogPageFilters
+                    tags={tags}
+                    search={filters?.query || ''}
+                    defaultFilters={localFilters}
+                    selectedTag={filters?.tag as unknown as number}
+                    onFilterChange={handleFilterChange}
+                />
                 <AnimatePresence mode="wait">
                     <motion.div
                         className="my-16"

@@ -36,7 +36,7 @@ export default function BrandingProjectsSection() {
         route('branding-projects.list'),
     );
 
-    const handleFilterChange = (newFilters: typeof localFilters) => {
+    const handleFilterChange = (newFilters: { query: string; tag: number | null; page?: number }) => {
         setIsFilter(true);
         setLocalFilters({ ...newFilters, page: 1 });
     };
@@ -44,10 +44,7 @@ export default function BrandingProjectsSection() {
     return (
         <div className="min-h-screen py-12">
             <div className="app-container">
-                {projects.data.length > 0 && (
-                    // @ts-expect-error @ts-ignore
-                    <BrandingProjectsFilters tags={tags} currentFilters={localFilters} onFilterChange={handleFilterChange} />
-                )}
+                <BrandingProjectsFilters tags={tags} currentFilters={localFilters} onFilterChange={handleFilterChange} />
 
                 <AnimatePresence mode="wait">
                     <motion.div

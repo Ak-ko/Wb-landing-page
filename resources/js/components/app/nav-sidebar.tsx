@@ -1,5 +1,5 @@
 import useNavStore from '@/store/useNavStore';
-import { Link } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronsRight } from 'lucide-react';
 import CharacterWithTiltRightStyle from './icons/characters/navbar-section/character-with-titlt-right-style';
@@ -136,12 +136,15 @@ export default function NavSidebar() {
                                     {link.label}
                                 </a>
                             ) : (
-                                <Link
-                                    href={link.href}
+                                <div
+                                    onClick={() => {
+                                        router.visit(link.href);
+                                        handleCloseNav();
+                                    }}
                                     className="flex min-h-[60px] w-full cursor-pointer items-center justify-center text-lg font-bold text-white/50 uppercase transition-all duration-500 hover:text-white active:text-white"
                                 >
                                     {link.label}
-                                </Link>
+                                </div>
                             )}
                         </div>
                     ))}
