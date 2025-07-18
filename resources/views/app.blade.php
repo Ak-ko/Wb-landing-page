@@ -53,7 +53,7 @@
         }
     </style>
 
-    <title inertia>{{ config('app.name', 'Walking Brands') }}</title>
+    <title inertia>Walking Brands | Design and Art Consultancy</title>
 
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
