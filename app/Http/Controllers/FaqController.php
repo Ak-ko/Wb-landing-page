@@ -6,6 +6,8 @@ use App\Mail\FaqAskedMail;
 use App\Models\Faq;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class FaqController extends Controller
@@ -128,9 +130,58 @@ class FaqController extends Controller
         $subject = 'A Question is Asked !';
 
         $adminEmail = config('app.admin_email');
+        $googleScriptUrl = config('app.google_script_url');
 
-        Mail::to([$adminEmail, $cleanData['email']])->send(new FaqAskedMail($cleanData, $subject));
+        $data = [
+            'email' => $cleanData['email'],
+            'question' => $cleanData['question'],
+            'answer' => null,
+            'color' => '#1274ef'
+        ];
 
-        return back()->with('success', 'Email sent successfully!');
+        $htmlBody = view('emails.faq.asked', ['data' => $data])->render();
+
+        try {
+            $response = Http::post($googleScriptUrl, [
+                'type' => 'FAQ',
+                'from' => $cleanData['email'],
+                'to' => $adminEmail,
+                'subject' => $subject,
+                'body' => $cleanData['question'],
+                'bodyHtml' => $htmlBody,
+            ]);
+
+            if ($response->successful()) {
+                return back()->with('success', 'Email sent successfully!');
+            } else {
+                Log::error('Email API call failed.', [
+                    'status' => $response->status(),
+                    'body' => $response->body(),
+                ]);
+                return back()->with('error', 'Failed to send the email. Please try again later.');
+            }
+        } catch (\Exception $e) {
+            Log::error('Email sending exception', [
+                'error' => $e->getMessage(),
+            ]);
+
+            return back()->with('error', 'An unexpected error occurred while sending the email.');
+        }
     }
+
+    // public function sendFaqEmail()
+    // {
+    //     $cleanData = request()->validate([
+    //         'email' => 'required|email',
+    //         'question' => 'required|string|max:255',
+    //     ]);
+
+    //     $subject = 'A Question is Asked !';
+
+    //     $adminEmail = config('app.admin_email');
+
+    //     Mail::to([$adminEmail, $cleanData['email']])->send(new FaqAskedMail($cleanData, $subject));
+
+    //     return back()->with('success', 'Email sent successfully!');
+    // }
 }
