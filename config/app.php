@@ -17,6 +17,8 @@ return [
 
     'admin_password' => env('ADMIN_PASSWORD', 'password'),
 
+    'google_script_url' => env('GOOGLE_SCRIPT_URL', ''),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment
