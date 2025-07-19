@@ -15,18 +15,18 @@ export default function EditBusinessProcess({ businessProcess }: Props) {
 
     return (
         <>
-            <Head title={`Edit Business Process: ${businessProcess.title}`} />
+            <Head title={`Edit Creative Process: ${businessProcess.title}`} />
 
             <div className="container py-6">
                 <div className="mb-8">
                     <Button variant="outline" onClick={() => router.visit(route('business-processes.index'))}>
                         <ArrowLeft className="mr-2 h-4 w-4" />
-                        Back to Business Processes
+                        Back to Creative Processes
                     </Button>
                 </div>
 
                 <div className="mx-auto max-w-2xl rounded-lg border p-6 shadow-sm">
-                    <h1 className="mb-6 text-2xl font-bold">Edit Business Process</h1>
+                    <h1 className="mb-6 text-2xl font-bold">Edit Creative Process</h1>
                     <BusinessProcessForm businessProcess={businessProcess} onSuccess={handleSuccess} />
                 </div>
             </div>

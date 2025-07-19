@@ -1,5 +1,5 @@
-import ColorSuggestions from '@/components/app/color-suggestions';
 import { Button } from '@/components/ui/button';
+import { ColorInput } from '@/components/ui/color-input';
 import { Input } from '@/components/ui/input';
 import { TagT } from '@/types';
 import { useForm } from '@inertiajs/react';
@@ -34,10 +34,6 @@ export default function TagForm({ tag, onSuccess }: TagFormProps) {
         }
     };
 
-    const handleColorSelect = (color: string) => {
-        setData('color', color);
-    };
-
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
@@ -48,24 +44,7 @@ export default function TagForm({ tag, onSuccess }: TagFormProps) {
                 {errors.name && <p className="text-sm text-red-500">{errors.name}</p>}
             </div>
 
-            <div className="space-y-2">
-                <label htmlFor="color" className="block text-sm font-medium">
-                    Tag Color
-                </label>
-                <div className="flex items-center gap-3">
-                    <Input id="color" type="color" value={data.color} onChange={(e) => setData('color', e.target.value)} className="h-10 w-20" />
-                    <Input
-                        type="text"
-                        value={data.color}
-                        onChange={(e) => setData('color', e.target.value)}
-                        placeholder="#HEX color"
-                        className="flex-1"
-                    />
-                    <ColorSuggestions onColorSelect={handleColorSelect} />
-                </div>
-                <p className="text-xs text-gray-500">Choose a color or select from suggestions</p>
-                {errors.color && <p className="text-sm text-red-500">{errors.color}</p>}
-            </div>
+            <ColorInput label="Tag Color" value={data.color} onChange={(value) => setData('color', value)} error={errors.color} />
 
             <div className="flex justify-end space-x-2">
                 <Button type="button" variant="outline" onClick={onSuccess}>

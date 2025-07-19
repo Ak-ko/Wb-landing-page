@@ -80,12 +80,12 @@ export default function HarmonyOfTheDesignSection() {
                             <img src={images.four.image} alt="Image" className="h-full w-full rounded-lg object-cover" />
                         </div>
                         <div className="flex w-full items-center lg:col-span-2">
-                            <p className="ml-9 text-center text-xl font-semibold lg:max-w-[420px] lg:text-left">
+                            <p className="ml-9 text-center text-xl font-light lg:max-w-[420px] lg:text-left">
                                 Design is more than just aesthetics; it's about problem-solving and communicating ideas effectively.
                             </p>
                         </div>
                         <div className="flex w-full items-center lg:col-span-2">
-                            <p className="mr-9 ml-auto text-center text-xl font-semibold lg:max-w-[420px] lg:text-right">
+                            <p className="mr-9 ml-auto text-center text-xl font-light lg:max-w-[420px] lg:text-right">
                                 Art, on the other hand, is about expression, creativity, and evoking emotions.
                             </p>
                         </div>
@@ -125,7 +125,7 @@ export default function HarmonyOfTheDesignSection() {
                             <h1 className="mx-auto max-w-[300px] text-[50px] font-bold uppercase md:text-[75px]">Art</h1>
                         </div>
                         <div className="flex w-full items-center lg:col-span-2">
-                            <p className="mr-9 ml-auto text-center text-xl font-semibold lg:max-w-[420px] lg:text-right">
+                            <p className="mr-9 ml-auto text-center text-xl font-light lg:max-w-[420px] lg:text-right">
                                 When these two elements come together, they form a powerful tool that can transform businesses and inspire people
                             </p>
                         </div>
@@ -136,7 +136,7 @@ export default function HarmonyOfTheDesignSection() {
                             <img src={images.fourteen.image} alt="Image" className="h-full w-full rounded-lg object-cover" />
                         </div>
                         <div className="flex w-full items-center lg:col-span-2">
-                            <p className="ml-9 text-center text-xl font-semibold lg:max-w-[420px] lg:text-left">
+                            <p className="ml-9 text-center text-xl font-light lg:max-w-[420px] lg:text-left">
                                 Every brand has a story to tell, and through our artistic vision and design prowess, we help bring those stories to
                                 life.
                             </p>

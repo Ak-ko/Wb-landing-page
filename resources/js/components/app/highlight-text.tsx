@@ -20,9 +20,9 @@ const HighlightText = ({ content, onClick, highlightClassName, contentClassName 
             onClick={onClick}
         >
             <motion.span
-                animate={{ scaleX: isInView ? 1 : 0 }}
+                animate={{ scaleX: isInView ? 1 : 0, skewY: isInView ? 0 : 20 }}
                 transition={{ duration: 0.5 }}
-                className={cn('bg-secondary-pink absolute inset-0 z-0 h-full w-full origin-left -skew-y-[0.4deg]', highlightClassName)}
+                className={cn('bg-secondary-pink absolute inset-0 z-0 h-full w-full origin-left', highlightClassName)}
             />
 
             <motion.span

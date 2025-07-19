@@ -11,6 +11,7 @@ use App\Http\Controllers\BusinessBrandGuidelineController;
 use App\Http\Controllers\BusinessPackageAddonController;
 use App\Http\Controllers\BusinessPackagesController;
 use App\Http\Controllers\BusinessProcessController;
+use App\Http\Controllers\ColorController;
 use App\Http\Controllers\ComicArtController;
 use App\Http\Controllers\CompanyPolicyController;
 use App\Http\Controllers\ContactController;
@@ -182,6 +183,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Brand Strategies
     Route::resource('/admin/brand-strategies', \App\Http\Controllers\BrandStrategyController::class);
+
+    // Theme Colors
+    Route::resource('/admin/theme-colors', ColorController::class);
 });
 
 // faq

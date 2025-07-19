@@ -50,7 +50,7 @@ export default function BlogSection() {
     return (
         <section className="py-32">
             <div className="app-container">
-                <SectionHeader header="Our Blog" />
+                <SectionHeader header="Our Blogs" />
 
                 <CommonBodyAnimation>
                     <Carousel setApi={setApi} className="w-full">

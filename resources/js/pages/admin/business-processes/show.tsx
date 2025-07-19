@@ -11,13 +11,13 @@ interface Props {
 export default function ShowBusinessProcess({ businessProcess }: Props) {
     return (
         <>
-            <Head title={`Business Process: ${businessProcess.title}`} />
+            <Head title={`Creative Process: ${businessProcess.title}`} />
 
             <div className="container py-6">
                 <div className="mb-8">
                     <Button variant="outline" onClick={() => router.visit(route('business-processes.index'))}>
                         <ArrowLeft className="mr-2 h-4 w-4" />
-                        Back to Business Processes
+                        Back to Creative Processes
                     </Button>
                 </div>
 

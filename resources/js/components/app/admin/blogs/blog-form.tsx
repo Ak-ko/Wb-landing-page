@@ -1,5 +1,6 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { ColorInput } from '@/components/ui/color-input';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
@@ -8,7 +9,6 @@ import { cn } from '@/lib/utils';
 import { BlogT, TagT } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { useState } from 'react';
-import ColorSuggestions from '../../color-suggestions';
 import BlogImageGallery from './blog-image-gallery';
 
 interface BlogFormProps {
@@ -42,10 +42,6 @@ export default function BlogForm({ blog, tags, onSuccess }: BlogFormProps) {
     });
 
     const [newImages, setNewImages] = useState<{ file: string | File; url: string; is_primary: boolean }[]>([]);
-
-    const handleColorSelect = (color: string) => {
-        setData('color', color);
-    };
 
     const updatePrimaryImageStatus = (isPrimary: boolean, targetId?: number | null, isNew = false) => {
         if (isPrimary) {
@@ -208,24 +204,7 @@ export default function BlogForm({ blog, tags, onSuccess }: BlogFormProps) {
                 {errors.description && <p className="text-sm text-red-500">{errors.description}</p>}
             </div>
 
-            <div className="space-y-2">
-                <label htmlFor="color" className="block text-sm font-medium">
-                    Blog Color
-                </label>
-                <div className="flex items-center gap-3">
-                    <Input id="color" type="color" value={data.color} onChange={(e) => setData('color', e.target.value)} className="h-10 w-20" />
-                    <Input
-                        type="text"
-                        value={data.color}
-                        onChange={(e) => setData('color', e.target.value)}
-                        placeholder="#HEX color"
-                        className="flex-1"
-                    />
-                    <ColorSuggestions onColorSelect={handleColorSelect} />
-                </div>
-                <p className="text-xs text-gray-500">Choose a color or select from suggestions</p>
-                {errors.color && <p className="text-sm text-red-500">{errors.color}</p>}
-            </div>
+            <ColorInput label="Blog Color" value={data.color} onChange={(value) => setData('color', value)} error={errors.color} />
 
             <div className="flex items-center space-x-2">
                 <Switch
