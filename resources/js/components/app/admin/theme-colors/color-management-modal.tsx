@@ -15,6 +15,7 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { SimpleHexColorInput } from '@/components/ui/simple-hex-color-input';
 import { useForm } from '@inertiajs/react';
 import { Trash2 } from 'lucide-react';
 import { useEffect } from 'react';
@@ -45,7 +46,7 @@ export default function ColorManagementModal({ isOpen, onClose, editingColor, se
         reset,
         delete: destroy,
     } = useForm({
-        color: editingColor?.color || '000000',
+        color: editingColor?.color || '#000000',
         type: editingColor?.type || selectedType,
     });
 
@@ -57,16 +58,11 @@ export default function ColorManagementModal({ isOpen, onClose, editingColor, se
             });
         } else {
             setData({
-                color: '000000',
+                color: '#000000',
                 type: selectedType,
             });
         }
     }, [editingColor, selectedType]);
-
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const newValue = e.target.value.replace(/[^0-9a-fA-F]/g, '').slice(0, 6);
-        setData('color', `#${newValue}`);
-    };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -123,19 +119,13 @@ export default function ColorManagementModal({ isOpen, onClose, editingColor, se
                                     onChange={(e) => setData('color', e.target.value)}
                                     className="h-10 w-20 cursor-pointer border p-1"
                                 />
-                                <div className="relative w-full">
-                                    <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center border-r px-3 text-gray-500">
-                                        #
-                                    </div>
-                                    <Input
-                                        type="text"
-                                        value={data.color}
-                                        onChange={handleInputChange}
-                                        maxLength={6}
-                                        placeholder="#000000"
-                                        className="w-full pl-11"
-                                    />
-                                </div>
+                                <SimpleHexColorInput
+                                    value={data.color}
+                                    onChange={(value) => setData('color', value)}
+                                    error={errors.color}
+                                    updateOnChange={true}
+                                    className="flex-1"
+                                />
                             </div>
                             {errors.color && <p className="text-sm text-red-600">{errors.color}</p>}
                         </div>
