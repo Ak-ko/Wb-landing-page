@@ -10,8 +10,8 @@ export default function TeamMembersSection() {
 
     if (!teamMembers || teamMembers?.length === 0) return null;
 
-    const topTeamMembers = teamMembers?.slice(0, 4);
-    const bottomTeamMembers = teamMembers?.slice(4);
+    const topTeamMembers = teamMembers?.slice(0, 1);
+    const bottomTeamMembers = teamMembers?.slice(1);
 
     return (
         <section className="py-32">
@@ -25,7 +25,7 @@ export default function TeamMembersSection() {
 
             <CommonBodyAnimation>
                 {bottomTeamMembers?.length > 0 && (
-                    <div className="grid grid-cols-1 py-20 md:grid-cols-5 lg:grid-cols-6">
+                    <div className="grid grid-cols-1 py-20 md:grid-cols-5 lg:grid-cols-5 2xl:grid-cols-6">
                         {bottomTeamMembers?.map((t, x) => <TeamMemberCard key={x} teamMember={t} varient="compact" />)}
                     </div>
                 )}

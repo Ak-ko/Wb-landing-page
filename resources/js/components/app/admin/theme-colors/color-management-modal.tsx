@@ -11,8 +11,8 @@ import {
     AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
+import { DefaultColorInput } from '@/components/ui/default-color-input';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { SimpleHexColorInput } from '@/components/ui/simple-hex-color-input';
@@ -112,13 +112,7 @@ export default function ColorManagementModal({ isOpen, onClose, editingColor, se
                         <div className="grid gap-2">
                             <Label htmlFor="color">Color</Label>
                             <div className="flex gap-2">
-                                <Input
-                                    id="color"
-                                    type="color"
-                                    value={data.color}
-                                    onChange={(e) => setData('color', e.target.value)}
-                                    className="h-10 w-20 cursor-pointer border p-1"
-                                />
+                                <DefaultColorInput value={data.color} onChange={(value) => setData('color', value)} id="color" size="lg" />
                                 <SimpleHexColorInput
                                     value={data.color}
                                     onChange={(value) => setData('color', value)}
