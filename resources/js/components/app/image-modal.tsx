@@ -1,6 +1,5 @@
-import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
-import React, { useState } from 'react';
+import { useKeyboardNavigation } from '@/hooks/use-keyboard-navigation';
+import { useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 
 export default function ImageModal<ImgT extends { id: number; image: string }>({
@@ -8,53 +7,115 @@ export default function ImageModal<ImgT extends { id: number; image: string }>({
     open,
     initialIndex,
     onClose,
+    showIndicators = false,
 }: {
     images: ImgT[];
     open: boolean;
     initialIndex: number;
     onClose: () => void;
+    showIndicators?: boolean;
 }) {
-    const [current, setCurrent] = useState<number>(initialIndex || 0);
-    const [direction, setDirection] = useState<1 | -1>(1);
-    React.useEffect(() => {
-        if (open) setCurrent(initialIndex);
+    const scrollContainerRef = useRef<HTMLDivElement>(null);
+    const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
+    const [currentIndex, setCurrentIndex] = useState(initialIndex || 0);
+
+    // Check if file is a video based on extension
+    const isVideo = (url: string): boolean => {
+        const videoExtensions = ['.mp4', '.webm', '.ogg', '.avi', '.mov', '.wmv', '.flv', '.mkv'];
+        const extension = url.toLowerCase().substring(url.lastIndexOf('.'));
+        return videoExtensions.includes(extension);
+    };
+
+    // Navigation helper function
+    const scrollToImage = (index: number) => {
+        if (index >= 0 && index < images.length && itemRefs.current[index]) {
+            itemRefs.current[index]?.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start',
+            });
+            setCurrentIndex(index);
+        }
+    };
+
+    // Use the reusable keyboard navigation hook
+    useKeyboardNavigation({
+        isActive: open,
+        totalItems: images.length,
+        currentIndex,
+        onNavigate: scrollToImage,
+        onClose,
+        enableArrowKeys: true,
+        enableEscapeKey: true,
+    });
+
+    // Handle body scroll prevention
+    useEffect(() => {
+        if (open) {
+            document.body.style.overflow = 'hidden';
+        }
+
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [open]);
+
+    // Scroll to initial item when modal opens
+    useEffect(() => {
+        if (open && initialIndex >= 0) {
+            setCurrentIndex(initialIndex);
+            setTimeout(() => {
+                scrollToImage(initialIndex);
+            }, 100);
+        }
     }, [open, initialIndex]);
+
+    // Track which image is currently in view for accurate indicators
+    useEffect(() => {
+        if (!open) return;
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        const index = itemRefs.current.findIndex((ref) => ref === entry.target);
+                        if (index !== -1) {
+                            setCurrentIndex(index);
+                        }
+                    }
+                });
+            },
+            {
+                threshold: 0.5, // Trigger when 50% of the image is visible
+                rootMargin: '0px',
+            },
+        );
+
+        // Observe all image containers
+        itemRefs.current.forEach((ref) => {
+            if (ref) observer.observe(ref);
+        });
+
+        return () => {
+            observer.disconnect();
+        };
+    }, [open, images.length]);
+
     if (!open || !images || images.length === 0) return null;
-    const prev = () => {
-        setDirection(-1);
-        setCurrent((c: number) => (c === 0 ? images.length - 1 : c - 1));
-    };
-    const next = () => {
-        setDirection(1);
-        setCurrent((c: number) => (c === images.length - 1 ? 0 : c + 1));
-    };
+
     // Portal target
     const modalRoot = typeof window !== 'undefined' ? document.body : null;
-    const variants = {
-        enter: (dir: number) => ({
-            x: dir > 0 ? '20vw' : '-20vw',
-            opacity: 0,
-        }),
-        center: {
-            x: 0,
-            opacity: 1,
-        },
-        exit: (dir: number) => ({
-            x: dir > 0 ? '-20vw' : '20vw',
-            opacity: 0,
-        }),
-    };
+
     const modalContent = (
-        <div className="fixed inset-0 z-[1000] flex items-center justify-center" style={{ background: 'rgba(0,0,0,0.92)' }}>
+        <div className="fixed inset-0 z-[1000] flex items-start justify-center bg-black">
             {/* Close Button */}
             <button
-                className="absolute top-6 right-8 z-[1010] rounded-full bg-black/40 p-2 text-white transition hover:bg-black/70"
+                className="fixed top-6 right-8 z-[1010] rounded-full bg-black/60 p-3 text-white transition-all hover:scale-110 hover:bg-black/80"
                 onClick={onClose}
-                aria-label="Close"
+                aria-label="Close modal"
             >
                 <svg
-                    width="28"
-                    height="28"
+                    width="24"
+                    height="24"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
@@ -66,46 +127,72 @@ export default function ImageModal<ImgT extends { id: number; image: string }>({
                     <line x1="6" y1="6" x2="18" y2="18" />
                 </svg>
             </button>
-            {/* Navigation Arrows */}
-            {images.length > 1 && (
-                <>
-                    <button
-                        className="pointer-events-auto absolute top-1/2 left-0 z-[1010] -translate-y-1/2 rounded-full bg-white/80 p-3 text-gray-900 shadow-lg transition hover:bg-white disabled:opacity-50"
-                        style={{ marginLeft: '24px' }}
-                        onClick={prev}
-                        aria-label="Previous image"
-                    >
-                        <ArrowLeft size={32} />
-                    </button>
-                    <button
-                        className="pointer-events-auto absolute top-1/2 right-0 z-[1010] -translate-y-1/2 rounded-full bg-white/80 p-3 text-gray-900 shadow-lg transition hover:bg-white disabled:opacity-50"
-                        style={{ marginRight: '24px' }}
-                        onClick={next}
-                        aria-label="Next image"
-                    >
-                        <ArrowRight size={32} />
-                    </button>
-                </>
-            )}
-            {/* Fullscreen Image with Animation */}
-            <div className="flex h-auto max-h-[100vh] w-auto max-w-[100vw] items-center justify-center">
-                <AnimatePresence custom={direction} initial={false} mode="wait">
-                    <motion.img
-                        key={images[current].image}
-                        src={images[current].image}
-                        alt="Project image"
-                        className="h-auto max-h-[100vh] w-auto max-w-[100vw] rounded-lg object-contain shadow-2xl"
-                        style={{ boxShadow: '0 8px 40px 0 rgba(0,0,0,0.7)' }}
-                        custom={direction}
-                        variants={variants}
-                        initial="enter"
-                        animate="center"
-                        exit="exit"
-                        transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
-                    />
-                </AnimatePresence>
+
+            {/* Vertical scrollable content */}
+            <div
+                ref={scrollContainerRef}
+                className="h-full w-full overflow-y-auto"
+                style={{
+                    scrollBehavior: 'smooth',
+                    scrollbarWidth: 'thin',
+                    scrollbarColor: '#4B5563 #000000',
+                }}
+            >
+                <div className="flex flex-col">
+                    {images.map((image, index) => (
+                        <div
+                            key={image.id}
+                            ref={(el) => {
+                                itemRefs.current[index] = el;
+                            }}
+                            className="flex w-full items-center justify-center"
+                        >
+                            {isVideo(image.image) ? (
+                                <video
+                                    src={image.image}
+                                    className="h-full w-full object-contain"
+                                    controls
+                                    autoPlay
+                                    muted
+                                    loop
+                                    playsInline
+                                    onError={(e) => {
+                                        console.error('Video failed to load:', image.image);
+                                        e.currentTarget.style.display = 'none';
+                                    }}
+                                />
+                            ) : (
+                                <img
+                                    src={image.image}
+                                    alt={`Image ${index + 1}`}
+                                    className="h-full w-full object-contain"
+                                    loading={index <= 2 ? 'eager' : 'lazy'} // Load first few images immediately
+                                    onError={(e) => {
+                                        console.error('Image failed to load:', image.image);
+                                        e.currentTarget.style.display = 'none';
+                                    }}
+                                />
+                            )}
+                        </div>
+                    ))}
+                </div>
             </div>
+
+            {/* Scroll indicator (optional) */}
+            {showIndicators && images.length > 1 && (
+                <div className="fixed top-1/2 right-6 z-[1010] flex -translate-y-1/2 flex-col gap-2">
+                    {images.map((_, index) => (
+                        <button
+                            key={index}
+                            className={`h-2 w-2 rounded-full transition-all hover:bg-white/60 ${index === currentIndex ? 'bg-white' : 'bg-white/30'}`}
+                            onClick={() => scrollToImage(index)}
+                            aria-label={`Go to ${isVideo(images[index].image) ? 'video' : 'image'} ${index + 1}`}
+                        />
+                    ))}
+                </div>
+            )}
         </div>
     );
+
     return modalRoot ? ReactDOM.createPortal(modalContent, modalRoot) : null;
 }
