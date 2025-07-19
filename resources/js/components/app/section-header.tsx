@@ -4,7 +4,7 @@ import React from 'react';
 
 interface PropsT {
     header: string | React.ReactNode;
-    description?: string;
+    description?: string | React.ReactNode;
     headerClass?: string;
     descriptionClass?: string;
     containerClass?: string;

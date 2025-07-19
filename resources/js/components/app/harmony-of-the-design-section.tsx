@@ -66,7 +66,7 @@ export default function HarmonyOfTheDesignSection() {
 
             <CommonBodyAnimation>
                 <div className="app-container flex justify-center py-15">
-                    <div className="grid [grid-auto-rows:280px] gap-3 lg:[grid-template-columns:repeat(4,_280px)]">
+                    <div className="grid [grid-auto-rows:280px] gap-3 lg:[grid-template-columns:repeat(4,_280px)] 2xl:lg:[grid-template-columns:repeat(4,_300px)]">
                         <div>
                             <img src={images.one.image} alt="Image" className="h-full w-full rounded-lg object-cover" />
                         </div>

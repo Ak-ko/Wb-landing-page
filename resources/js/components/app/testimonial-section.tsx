@@ -1,10 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { scrollUpVarients } from '@/lib/animation-varients';
 import { TestimonialT } from '@/types';
 import { usePage } from '@inertiajs/react';
-import { AnimatePresence, motion } from 'framer-motion';
 import { X } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
+import SlideUpCarousel from '../common/slide-up-carousel';
 import { Dialog, DialogClose, DialogContent, DialogHeader, DialogOverlay, DialogTitle } from '../ui/dialog';
 import CloseQuote from './icons/close-quote';
 import SectionHeader from './section-header';
@@ -12,50 +11,19 @@ import TestimonialCard from './testimonial-card';
 
 export default function TestimonialSection() {
     const { testimonials } = usePage<{ testimonials: TestimonialT[] }>().props;
-    const [currentIndex, setCurrentIndex] = useState(0);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [selectedTestimonial, setSelectedTestimonial] = useState<TestimonialT | null>(null);
-    const intervalRef = useRef<NodeJS.Timeout | null>(null);
-
-    // Start the interval when the component mounts
-    const startInterval = () => {
-        if (intervalRef.current) return;
-
-        intervalRef.current = setInterval(() => {
-            if (testimonials?.length > 1) {
-                setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
-            }
-        }, 5000);
-    };
-
-    // Clear the interval when the component unmounts
-    const clearInterval = () => {
-        if (intervalRef.current) {
-            window.clearInterval(intervalRef.current);
-            intervalRef.current = null;
-        }
-    };
 
     // Handle opening the dialog
     const handleOpenDialog = (testimonial: TestimonialT) => {
         setSelectedTestimonial(testimonial);
         setIsDialogOpen(true);
-        clearInterval(); // Pause the animation
     };
 
     // Handle closing the dialog
     const handleCloseDialog = () => {
         setIsDialogOpen(false);
-        startInterval(); // Resume the animation
     };
-
-    useEffect(() => {
-        startInterval();
-
-        return () => {
-            clearInterval();
-        };
-    }, [testimonials?.length]);
 
     if (!testimonials || testimonials.length === 0) {
         return null;
@@ -63,31 +31,33 @@ export default function TestimonialSection() {
 
     return (
         <>
-            <section id="testimonials" className="app-container flex flex-col items-center py-32 lg:flex-row lg:items-start lg:justify-between">
+            <section id="testimonials" className="app-container flex flex-col items-center py-32 lg:flex-row lg:justify-between 2xl:!px-[200px]">
                 <SectionHeader
                     containerClass="lg:block "
                     headerClass="lg:text-start lg:max-w-sm"
                     descriptionClass="lg:text-start !lg:max-w-[350px]"
                     header="What our clients say"
-                    description="We aren't just a great creative studio, we're an excellent business partner."
+                    description={
+                        <div className="mt-3">
+                            <span>We aren't just a great creative studio,</span>
+                            <br />
+                            <span> we're an excellent business partner.</span>
+                        </div>
+                    }
                 />
-                <div className="relative mt-18 min-h-[320px] w-full overflow-y-hidden lg:mt-0 lg:w-[550px]" style={{ height: '200px' }}>
-                    <AnimatePresence initial={false}>
-                        <motion.div
-                            key={currentIndex}
-                            initial="enter"
-                            animate="center"
-                            exit="exit"
-                            variants={scrollUpVarients}
-                            className="absolute top-0 left-0 w-full"
-                        >
-                            <TestimonialCard
-                                testimonial={testimonials[currentIndex]}
-                                containerClass="mb-3"
-                                onClick={() => handleOpenDialog(testimonials[currentIndex])}
-                            />
-                        </motion.div>
-                    </AnimatePresence>
+                <div className="relative mt-18 w-full lg:mt-0 lg:w-[650px]">
+                    <SlideUpCarousel
+                        items={testimonials}
+                        renderItem={(testimonial) => (
+                            <TestimonialCard testimonial={testimonial} containerClass="w-full" onClick={() => handleOpenDialog(testimonial)} />
+                        )}
+                        onItemClick={handleOpenDialog}
+                        autoPlay={!isDialogOpen}
+                        containerHeight={420}
+                        containerPadding={50}
+                        interval={4000}
+                        animationDuration={0.8}
+                    />
                 </div>
             </section>
 

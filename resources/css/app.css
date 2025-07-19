@@ -193,7 +193,7 @@
     }
 
     .app-container {
-        @apply container mx-auto px-5 xl:px-8 2xl:px-11;
+        @apply container mx-auto px-5 xl:px-8 2xl:!max-w-[1800px] 2xl:px-11;
     }
 
     .hero-section-header-text-size {
@@ -242,11 +242,11 @@
 
 @media screen and (max-width: 2600px) {
     .hero__left__mascot {
-        left: calc(100vw - 67%) !important;
+        left: calc(100vw - 70%) !important;
     }
 
     .hero__right__mascot {
-        right: calc(100vw - 70%) !important;
+        right: calc(100vw - 73%) !important;
     }
 }
 
