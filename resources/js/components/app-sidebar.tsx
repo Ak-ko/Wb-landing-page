@@ -43,7 +43,7 @@ const mainNavItems: NavItem[] = [
                 icon: Building,
             },
             {
-                title: 'Branding Projects',
+                title: 'Projects',
                 href: '/admin/branding-projects',
                 icon: Briefcase,
             },

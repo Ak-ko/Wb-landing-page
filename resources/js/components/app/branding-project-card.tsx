@@ -2,7 +2,7 @@ import { BrandingProjectT } from '@/types';
 import { router } from '@inertiajs/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { MapPin } from 'lucide-react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 interface BrandingProjectCardProps {
     project: BrandingProjectT;
@@ -15,38 +15,72 @@ export default function BrandingProjectCard({ project, className = '' }: Brandin
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
     const images = project.images || [];
 
-    // Find primary image and put it first
-    const sortedImages = [...images].sort((a, b) => {
-        if (a.is_primary) return -1;
-        if (b.is_primary) return 1;
-        return a.order - b.order;
-    });
+    // Memoize sorted images to prevent infinite re-renders
+    const sortedImages = useMemo(() => {
+        return [...images].sort((a, b) => {
+            if (a.is_primary) return -1;
+            if (b.is_primary) return 1;
+            return a.order - b.order;
+        });
+    }, [images]);
 
-    // Preload images for smoother transitions
+    // Preload images only once when component mounts
     useEffect(() => {
         if (!sortedImages.length) return;
 
-        const loadPromises = sortedImages.map((image, idx) => {
-            return new Promise<void>((resolve) => {
+        // Initialize loading state
+        setImagesLoaded(new Array(sortedImages.length).fill(false));
+
+        // Preload only the first image immediately, others lazily
+        const preloadFirstImage = () => {
+            if (sortedImages[0]) {
                 const img = new Image();
                 img.onload = () => {
                     setImagesLoaded((prev) => {
                         const newLoaded = [...prev];
-                        newLoaded[idx] = true;
+                        newLoaded[0] = true;
                         return newLoaded;
                     });
-                    resolve();
                 };
-                img.onerror = () => resolve();
-                img.src = image.image || '/assets/placeholder.png';
-            });
-        });
+                img.onerror = () => {
+                    setImagesLoaded((prev) => {
+                        const newLoaded = [...prev];
+                        newLoaded[0] = true; // Still show even if failed
+                        return newLoaded;
+                    });
+                };
+                img.src = sortedImages[0].image || '/assets/placeholder.png';
+            }
+        };
 
-        Promise.all(loadPromises);
-    }, [sortedImages]);
+        preloadFirstImage();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [sortedImages.length]);
 
-    // Original animation timing with performance optimizations
-    const startAnimation = useCallback(() => {
+    // Preload next image when index changes
+    useEffect(() => {
+        if (sortedImages[currentImageIndex] && !imagesLoaded[currentImageIndex]) {
+            const img = new Image();
+            img.onload = () => {
+                setImagesLoaded((prev) => {
+                    const newLoaded = [...prev];
+                    newLoaded[currentImageIndex] = true;
+                    return newLoaded;
+                });
+            };
+            img.onerror = () => {
+                setImagesLoaded((prev) => {
+                    const newLoaded = [...prev];
+                    newLoaded[currentImageIndex] = true;
+                    return newLoaded;
+                });
+            };
+            img.src = sortedImages[currentImageIndex].image || '/assets/placeholder.png';
+        }
+    }, [currentImageIndex, sortedImages, imagesLoaded]);
+
+    // Start animation with proper cleanup
+    useEffect(() => {
         if (sortedImages.length <= 1) return;
 
         intervalRef.current = setInterval(() => {
@@ -61,15 +95,10 @@ export default function BrandingProjectCard({ project, className = '' }: Brandin
         };
     }, [sortedImages.length]);
 
-    useEffect(() => {
-        const cleanup = startAnimation();
-        return cleanup;
-    }, [startAnimation]);
-
     // Handle card click to navigate to detail page
-    const handleCardClick = () => {
+    const handleCardClick = useCallback(() => {
         router.visit(route('branding-projects.detail', project.id));
-    };
+    }, [project.id]);
 
     if (!sortedImages.length) return null;
 
@@ -78,24 +107,14 @@ export default function BrandingProjectCard({ project, className = '' }: Brandin
             className={`group relative cursor-pointer overflow-hidden rounded-lg shadow-md transition-all hover:shadow-xl ${className}`}
             onClick={handleCardClick}
         >
-            {/* Image carousel with original scroll-up animation but optimized */}
-            <div
-                className="relative aspect-[4/3] w-full overflow-hidden bg-gray-100"
-                style={{
-                    willChange: 'transform',
-                    backfaceVisibility: 'hidden',
-                }}
-            >
+            {/* Image carousel with optimized animation */}
+            <div className="relative aspect-[4/3] w-full overflow-hidden bg-gray-100">
                 <AnimatePresence initial={false}>
                     <motion.img
                         key={currentImageIndex}
                         src={sortedImages[currentImageIndex]?.image || '/assets/placeholder.png'}
                         alt={project.title}
                         className="absolute inset-0 h-full w-full object-cover"
-                        style={{
-                            willChange: 'transform',
-                            backfaceVisibility: 'hidden',
-                        }}
                         initial={{ y: '100%', opacity: 1 }}
                         animate={{
                             y: 0,
@@ -104,7 +123,7 @@ export default function BrandingProjectCard({ project, className = '' }: Brandin
                         exit={{ y: '-100%', opacity: 1 }}
                         transition={{
                             duration: 0.7,
-                            ease: [0.4, 0, 0.2, 1], // Smooth easing
+                            ease: [0.4, 0, 0.2, 1],
                             opacity: { duration: 0.2 },
                         }}
                         loading="lazy"

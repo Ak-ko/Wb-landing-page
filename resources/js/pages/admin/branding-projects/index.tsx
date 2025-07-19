@@ -26,7 +26,7 @@ import { BrandingProjectT, BreadcrumbItem, CommonPaginationT } from '@/types';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Branding Projects',
+        title: 'Projects',
         href: '/admin/branding-projects',
     },
 ];
@@ -154,11 +154,11 @@ export default function BrandingProjects({
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Branding Projects" />
+            <Head title="Projects" />
 
             <div className="space-y-4 p-4">
                 <div className="flex flex-col justify-between gap-2 md:flex-row md:items-center">
-                    <DashboardTitle title="Branding Projects" description="Manage your branding projects" />
+                    <DashboardTitle title="Projects" description="Manage your projects" />
 
                     <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between md:gap-2">
                         <BrandingProjectFilters onSearch={handleSearch} defaultQuery={filters.query || ''} />
@@ -168,7 +168,7 @@ export default function BrandingProjects({
 
                             <Button onClick={() => router.get(route('branding-projects.create'))}>
                                 <Plus className="mr-2 h-4 w-4" />
-                                Add Branding Project
+                                Add Project
                             </Button>
                         </div>
                     </div>
@@ -207,7 +207,7 @@ export default function BrandingProjects({
                     <AlertDialogHeader>
                         <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                         <AlertDialogDescription>
-                            This action cannot be undone. This will permanently delete the branding project and remove it from our servers.
+                            This action cannot be undone. This will permanently delete the project and remove it from our servers.
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>

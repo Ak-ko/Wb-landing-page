@@ -2,6 +2,7 @@ import useNavStore from '@/store/useNavStore';
 import { Link, router } from '@inertiajs/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronsRight } from 'lucide-react';
+import { useEffect } from 'react';
 import CharacterWithTiltRightStyle from './icons/characters/navbar-section/character-with-titlt-right-style';
 import Logo from './icons/logo';
 import TypewriterText from './type-write-text';
@@ -24,13 +25,13 @@ const links: LinksT[] = [
         externalLink: false,
     },
     {
-        label: 'Our Works',
-        href: route('branding-projects.list'),
+        label: 'Design Services',
+        href: route('business-plan-page'),
         externalLink: false,
     },
     {
-        label: 'Our Expertise',
-        href: route('business-plan-page'),
+        label: 'Art Services',
+        href: route('art-plan-page'),
         externalLink: false,
     },
     {
@@ -47,6 +48,18 @@ const links: LinksT[] = [
 
 export default function NavSidebar() {
     const { isToggle, toggle } = useNavStore();
+
+    useEffect(() => {
+        if (isToggle) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [isToggle]);
 
     const handleCloseNav = () => {
         toggle();

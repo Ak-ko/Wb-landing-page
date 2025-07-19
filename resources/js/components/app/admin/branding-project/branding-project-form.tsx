@@ -32,7 +32,7 @@ export default function BrandingProjectForm({ brandingProject, tags, onSubmit }:
         client_email: brandingProject?.client_email || '',
         client_phone: brandingProject?.client_phone || '',
         client_origin: brandingProject?.client_origin || '',
-        service_fees: brandingProject?.service_fees || '',
+        service_fees: brandingProject?.service_fees || 0,
         year: brandingProject?.year || '',
         industry_type: brandingProject?.industry_type || '',
         project_keywords: brandingProject?.project_keywords || '',
@@ -286,21 +286,6 @@ export default function BrandingProjectForm({ brandingProject, tags, onSubmit }:
                             rows={3}
                         />
                         {errors.description && <p className="text-sm text-red-500">{errors.description}</p>}
-                    </div>
-
-                    <div className="space-y-2">
-                        <label htmlFor="service_fees" className="block text-sm font-medium">
-                            Service Fees
-                        </label>
-                        <Input
-                            id="service_fees"
-                            type="number"
-                            step="0.01"
-                            placeholder="Enter service fees"
-                            value={data.service_fees}
-                            onChange={(e) => setData('service_fees', e.target.value)}
-                        />
-                        {errors.service_fees && <p className="text-sm text-red-500">{errors.service_fees}</p>}
                     </div>
 
                     <div className="space-y-2">
