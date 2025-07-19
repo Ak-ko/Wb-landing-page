@@ -400,7 +400,7 @@ export default function BrandingProjectForm({ brandingProject, tags, onSubmit }:
 
             <div className="space-y-2">
                 <label className="block text-sm font-medium">
-                    Project Images <span className="text-red-500">*</span>
+                    Project Media <span className="text-red-500">*</span>
                 </label>
                 <BrandingProjectImageGallery
                     images={allImages}

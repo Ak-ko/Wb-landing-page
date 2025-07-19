@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { Image, Plus } from 'lucide-react';
+import { Image, Play, Plus } from 'lucide-react';
 import { useState } from 'react';
 import BrandingProjectImageDialog from './branding-project-image-dialog';
 
@@ -27,6 +27,13 @@ export default function BrandingProjectImageGallery({
     const [dialogOpen, setDialogOpen] = useState(false);
     const [selectedImage, setSelectedImage] = useState<ImageItem | null>(null);
 
+    // Check if file is a video based on extension
+    const isVideo = (url: string): boolean => {
+        const videoExtensions = ['.mp4', '.webm', '.ogg', '.avi', '.mov', '.wmv', '.flv', '.mkv'];
+        const extension = url.toLowerCase().substring(url.lastIndexOf('.'));
+        return videoExtensions.includes(extension);
+    };
+
     const handleOpenDialog = (image?: ImageItem) => {
         setSelectedImage(image || { is_primary: false });
         setDialogOpen(true);
@@ -47,10 +54,22 @@ export default function BrandingProjectImageGallery({
                 {images.map((image, index) => (
                     <div
                         key={image.id || index}
-                        className="relative h-24 w-24 cursor-pointer overflow-hidden rounded-md border"
+                        className="group relative h-24 w-24 cursor-pointer overflow-hidden rounded-md border"
                         onClick={() => handleOpenDialog(image)}
                     >
-                        <img src={image.url} alt={`Project image ${index + 1}`} className="h-full w-full object-cover" />
+                        {image.url && isVideo(image.url) ? (
+                            <>
+                                <video src={image.url} className="h-full w-full object-cover" muted preload="metadata" playsInline />
+                                <div className="absolute top-1/2 left-1/2 z-5 flex size-[30px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-white/60 transition-all duration-500 group-hover:border-white">
+                                    <Play
+                                        className="size-[15px] text-white/60 transition-all duration-500 group-hover:text-white"
+                                        fill="currentColor"
+                                    />
+                                </div>
+                            </>
+                        ) : (
+                            <img src={image.url} alt={`Project media ${index + 1}`} className="h-full w-full object-cover" />
+                        )}
                         {image.is_primary && (
                             <div className="absolute top-1 right-1">
                                 <span className="bg-primary rounded-full px-1.5 py-0.5 text-[10px] text-white">Primary</span>
@@ -67,14 +86,14 @@ export default function BrandingProjectImageGallery({
                         onClick={() => handleOpenDialog()}
                     >
                         <Plus className="h-6 w-6" />
-                        <span className="mt-1 text-xs">Add Image</span>
+                        <span className="mt-1 text-xs">Add Media</span>
                     </Button>
                 )}
 
                 {images.length === 0 && !isEditing && (
                     <div className="flex h-24 w-24 flex-col items-center justify-center rounded-md border border-dashed">
                         <Image className="h-6 w-6 text-gray-400" />
-                        <span className="mt-1 text-xs text-gray-500">No images</span>
+                        <span className="mt-1 text-xs text-gray-500">No media</span>
                     </div>
                 )}
             </div>

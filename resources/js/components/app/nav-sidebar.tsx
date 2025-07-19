@@ -35,6 +35,11 @@ const links: LinksT[] = [
         externalLink: false,
     },
     {
+        label: 'Our Works',
+        href: route('branding-projects.list'),
+        externalLink: false,
+    },
+    {
         label: 'Our Blogs',
         href: route('blogs.list'),
         externalLink: false,
@@ -87,7 +92,7 @@ export default function NavSidebar() {
             </div>
 
             <div className="relative hidden h-full w-full items-center sm:flex">
-                <div className="w-full -translate-y-[50%] text-white">
+                <div className="w-full -translate-y-[30%] text-white">
                     {links?.map((link: LinksT, indx: number) =>
                         link?.externalLink ? (
                             <a

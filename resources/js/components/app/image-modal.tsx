@@ -17,7 +17,9 @@ export default function ImageModal<ImgT extends { id: number; image: string }>({
 }) {
     const scrollContainerRef = useRef<HTMLDivElement>(null);
     const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
+    const videoRefs = useRef<{ [key: string]: HTMLVideoElement | null }>({});
     const [currentIndex, setCurrentIndex] = useState(initialIndex || 0);
+    const [videoLoadingStates, setVideoLoadingStates] = useState<{ [key: string]: 'loading' | 'loaded' | 'error' }>({});
 
     // Check if file is a video based on extension
     const isVideo = (url: string): boolean => {
@@ -26,9 +28,30 @@ export default function ImageModal<ImgT extends { id: number; image: string }>({
         return videoExtensions.includes(extension);
     };
 
+    // Handle video loading states
+    const handleVideoLoadStart = (index: number) => {
+        setVideoLoadingStates((prev) => ({ ...prev, [`video-${index}`]: 'loading' }));
+    };
+
+    const handleVideoCanPlay = (index: number) => {
+        setVideoLoadingStates((prev) => ({ ...prev, [`video-${index}`]: 'loaded' }));
+    };
+
+    const handleVideoError = (index: number, url: string) => {
+        console.error('Video failed to load:', url);
+        setVideoLoadingStates((prev) => ({ ...prev, [`video-${index}`]: 'error' }));
+    };
+
     // Navigation helper function
     const scrollToImage = (index: number) => {
         if (index >= 0 && index < images.length && itemRefs.current[index]) {
+            // Pause all videos when navigating, but don't reset their state
+            Object.values(videoRefs.current).forEach((video) => {
+                if (video && !video.paused) {
+                    video.pause();
+                }
+            });
+
             itemRefs.current[index]?.scrollIntoView({
                 behavior: 'smooth',
                 block: 'start',
@@ -100,6 +123,20 @@ export default function ImageModal<ImgT extends { id: number; image: string }>({
         };
     }, [open, images.length]);
 
+    // Clean up when modal closes
+    useEffect(() => {
+        if (!open) {
+            // Pause all videos but don't clear refs to prevent remounting issues
+            Object.values(videoRefs.current).forEach((video) => {
+                if (video && !video.paused) {
+                    video.pause();
+                }
+            });
+            // Reset loading states when modal closes
+            setVideoLoadingStates({});
+        }
+    }, [open]);
+
     if (!open || !images || images.length === 0) return null;
 
     // Portal target
@@ -148,24 +185,65 @@ export default function ImageModal<ImgT extends { id: number; image: string }>({
                             className="flex w-full items-center justify-center"
                         >
                             {isVideo(image.image) ? (
-                                <video
-                                    src={image.image}
-                                    className="h-full w-full object-contain"
-                                    controls
-                                    autoPlay
-                                    muted
-                                    loop
-                                    playsInline
-                                    onError={(e) => {
-                                        console.error('Video failed to load:', image.image);
-                                        e.currentTarget.style.display = 'none';
-                                    }}
-                                />
+                                <div className="relative flex w-full max-w-[90vw] items-center justify-center">
+                                    {videoLoadingStates[`video-${index}`] === 'loading' && (
+                                        <div className="absolute inset-0 flex items-center justify-center bg-black/50 text-white">
+                                            <div className="text-center">
+                                                <div className="mx-auto mb-2 h-8 w-8 animate-spin rounded-full border-b-2 border-white"></div>
+                                                <p>Loading video...</p>
+                                            </div>
+                                        </div>
+                                    )}
+                                    {videoLoadingStates[`video-${index}`] === 'error' && (
+                                        <div className="flex items-center justify-center rounded-lg bg-gray-800 p-8 text-white">
+                                            <div className="text-center">
+                                                <p className="mb-4">Failed to load video</p>
+                                                <button
+                                                    onClick={() => {
+                                                        const video = videoRefs.current[`modal-video-${index}`];
+                                                        if (video) {
+                                                            handleVideoLoadStart(index);
+                                                            video.load(); // Retry loading
+                                                        }
+                                                    }}
+                                                    className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+                                                >
+                                                    Retry
+                                                </button>
+                                            </div>
+                                        </div>
+                                    )}
+                                    <video
+                                        key={`modal-video-${image.id}`} // Use unique key to prevent reuse issues
+                                        ref={(el) => {
+                                            if (el) {
+                                                videoRefs.current[`modal-video-${index}`] = el;
+                                            }
+                                        }}
+                                        autoPlay
+                                        src={image.image}
+                                        className="h-full w-full object-contain"
+                                        controls
+                                        muted
+                                        playsInline
+                                        preload="metadata"
+                                        controlsList="nodownload"
+                                        onLoadStart={() => handleVideoLoadStart(index)}
+                                        onCanPlay={() => handleVideoCanPlay(index)}
+                                        onError={() => handleVideoError(index, image.image)}
+                                        onStalled={() => console.warn('Video stalled:', image.image)}
+                                        onSuspend={() => console.warn('Video suspended:', image.image)}
+                                        onAbort={() => console.warn('Video aborted:', image.image)}
+                                        style={{
+                                            display: videoLoadingStates[`video-${index}`] === 'error' ? 'none' : 'block',
+                                        }}
+                                    />
+                                </div>
                             ) : (
                                 <img
                                     src={image.image}
                                     alt={`Image ${index + 1}`}
-                                    className="h-full w-full object-contain"
+                                    className="h-full max-h-[90vh] w-full max-w-[90vw] object-contain"
                                     loading={index <= 2 ? 'eager' : 'lazy'} // Load first few images immediately
                                     onError={(e) => {
                                         console.error('Image failed to load:', image.image);
