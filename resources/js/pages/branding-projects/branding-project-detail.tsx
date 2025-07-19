@@ -6,7 +6,7 @@ import useTopScrollAnimation from '@/hooks/use-top-scroll-animation';
 import LandingLayout from '@/layouts/landing-layout';
 import { BrandingProjectT } from '@/types';
 import { Head, Link } from '@inertiajs/react';
-import { Building2, Calendar, Crown } from 'lucide-react';
+import { Building2, Calendar, Crown, MapPin } from 'lucide-react';
 import { useState } from 'react';
 
 interface BrandingProjectDetailProps {
@@ -43,57 +43,67 @@ export default function BrandingProjectDetail({ project, relatedProjects }: Bran
                 </div>
             ),
         },
-        {
-            id: 'team-members',
-            title: 'Team Members',
-            content: (
-                <div className="space-y-4">
-                    {project.members.map((member) => (
-                        <div key={member.id} className="relative flex items-center gap-4 rounded-lg bg-white p-3 shadow-sm">
-                            {member.image && (
-                                <img
-                                    src={member.image}
-                                    alt={member.name}
-                                    className="border-primary/30 h-10 w-10 rounded-full border-2 object-cover"
-                                />
-                            )}
-                            <div>
-                                <p className="flex items-center gap-2 font-medium text-gray-900">
-                                    {member.name}
-                                    {member.pivot?.is_lead && (
-                                        <span
-                                            className="ml-2 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold shadow-sm"
-                                            style={{ backgroundColor: 'var(--primary)', color: 'var(--primary-foreground)' }}
-                                        >
-                                            <Crown size={16} className="text-white" />
-                                            Leader
-                                        </span>
-                                    )}
-                                </p>
-                                <p className="text-sm text-gray-500">{member.designation}</p>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            ),
-        },
-        {
-            id: 'technologies',
-            title: 'Technologies & Tools',
-            content: (
-                <div className="flex flex-wrap gap-2">
-                    {project.tags.map((tag) => (
-                        <span
-                            key={tag.id}
-                            className="rounded-full px-3 py-1 text-sm font-medium"
-                            style={{ backgroundColor: tag.color, color: '#fff' }}
-                        >
-                            {tag.name}
-                        </span>
-                    ))}
-                </div>
-            ),
-        },
+        // Only show team members section if there are members
+        ...(project.members && project.members.length > 0
+            ? [
+                  {
+                      id: 'team-members',
+                      title: 'Team Members',
+                      content: (
+                          <div className="space-y-4">
+                              {project.members.map((member) => (
+                                  <div key={member.id} className="relative flex items-center gap-4 rounded-lg bg-white p-3 shadow-sm">
+                                      {member.image && (
+                                          <img
+                                              src={member.image}
+                                              alt={member.name}
+                                              className="border-primary/30 h-10 w-10 rounded-full border-2 object-cover"
+                                          />
+                                      )}
+                                      <div>
+                                          <p className="flex items-center gap-2 font-medium text-gray-900">
+                                              {member.name}
+                                              {member.pivot?.is_lead && (
+                                                  <span
+                                                      className="ml-2 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold shadow-sm"
+                                                      style={{ backgroundColor: 'var(--primary)', color: 'var(--primary-foreground)' }}
+                                                  >
+                                                      <Crown size={16} className="text-white" />
+                                                      Leader
+                                                  </span>
+                                              )}
+                                          </p>
+                                          <p className="text-sm text-gray-500">{member.designation}</p>
+                                      </div>
+                                  </div>
+                              ))}
+                          </div>
+                      ),
+                  },
+              ]
+            : []),
+        // Only show technologies section if there are tags
+        ...(project.tags && project.tags.length > 0
+            ? [
+                  {
+                      id: 'technologies',
+                      title: 'Technologies & Tools',
+                      content: (
+                          <div className="flex flex-wrap gap-2">
+                              {project.tags.map((tag) => (
+                                  <span
+                                      key={tag.id}
+                                      className="rounded-full px-3 py-1 text-sm font-medium"
+                                      style={{ backgroundColor: tag.color, color: '#fff' }}
+                                  >
+                                      {tag.name}
+                                  </span>
+                              ))}
+                          </div>
+                      ),
+                  },
+              ]
+            : []),
     ];
 
     return (
@@ -122,6 +132,12 @@ export default function BrandingProjectDetail({ project, relatedProjects }: Bran
                                     <Calendar size={20} />
                                     <span>{project.year}</span>
                                 </div>
+                                {project.client_origin && (
+                                    <div className="flex items-center gap-2">
+                                        <MapPin size={20} />
+                                        <span>{project.client_origin}</span>
+                                    </div>
+                                )}
                                 <div className="flex items-center gap-2">
                                     <BehanceIcon fill="#d0d4db" className="mt-1 size-[25px]" />
                                     <a
@@ -217,7 +233,13 @@ export default function BrandingProjectDetail({ project, relatedProjects }: Bran
                                         )}
                                         <div className="p-6">
                                             <h3 className="mb-2 text-xl font-bold text-gray-900">{project.title}</h3>
-                                            <p className="text-sm text-gray-600">{project.client_company}</p>
+                                            <p className="mb-2 text-sm text-gray-600">{project.client_company}</p>
+                                            {project.client_origin && (
+                                                <div className="flex items-center gap-1 text-xs text-gray-500">
+                                                    <MapPin size={12} />
+                                                    <span>{project.client_origin}</span>
+                                                </div>
+                                            )}
                                         </div>
                                     </Link>
                                 ))}

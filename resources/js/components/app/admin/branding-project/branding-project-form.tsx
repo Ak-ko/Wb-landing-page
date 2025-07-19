@@ -31,6 +31,7 @@ export default function BrandingProjectForm({ brandingProject, tags, onSubmit }:
         client_name: brandingProject?.client_name || '',
         client_email: brandingProject?.client_email || '',
         client_phone: brandingProject?.client_phone || '',
+        client_origin: brandingProject?.client_origin || '',
         service_fees: brandingProject?.service_fees || '',
         year: brandingProject?.year || '',
         industry_type: brandingProject?.industry_type || '',
@@ -289,7 +290,7 @@ export default function BrandingProjectForm({ brandingProject, tags, onSubmit }:
 
                     <div className="space-y-2">
                         <label htmlFor="service_fees" className="block text-sm font-medium">
-                            Service Fees<span className="text-red-500">*</span>
+                            Service Fees
                         </label>
                         <Input
                             id="service_fees"
@@ -318,7 +319,7 @@ export default function BrandingProjectForm({ brandingProject, tags, onSubmit }:
 
                     <div className="col-span-2 space-y-2">
                         <label htmlFor="project_members" className="block text-sm font-medium">
-                            Project Members<span className="text-red-500">*</span>
+                            Project Members
                         </label>
                         <Select
                             className="rounded-2xl border-0 shadow-xs"
@@ -397,6 +398,18 @@ export default function BrandingProjectForm({ brandingProject, tags, onSubmit }:
                         />
                         {errors.client_phone && <p className="text-sm text-red-500">{errors.client_phone}</p>}
                     </div>
+                    <div className="space-y-2">
+                        <label htmlFor="client_origin" className="block text-sm font-medium">
+                            Location
+                        </label>
+                        <Input
+                            id="client_origin"
+                            placeholder="Enter client location (city, state, country)"
+                            value={data.client_origin}
+                            onChange={(e) => setData('client_origin', e.target.value)}
+                        />
+                        {errors.client_origin && <p className="text-sm text-red-500">{errors.client_origin}</p>}
+                    </div>
                 </div>
             </fieldset>
 
@@ -423,9 +436,7 @@ export default function BrandingProjectForm({ brandingProject, tags, onSubmit }:
 
             {tags?.length > 0 && (
                 <div className="space-y-2">
-                    <label className="block text-sm font-medium">
-                        Tags <span className="text-red-500">*</span>
-                    </label>
+                    <label className="block text-sm font-medium">Tags</label>
                     <div className="flex flex-wrap gap-2">
                         {tags?.map((tag) => (
                             <Badge

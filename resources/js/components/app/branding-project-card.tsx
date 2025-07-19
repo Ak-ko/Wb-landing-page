@@ -1,6 +1,7 @@
 import { BrandingProjectT } from '@/types';
 import { router } from '@inertiajs/react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { MapPin } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 interface BrandingProjectCardProps {
@@ -124,9 +125,15 @@ export default function BrandingProjectCard({ project, className = '' }: Brandin
                 <h3 className="translate-y-2 transform text-lg font-bold text-white transition-transform duration-300 group-hover:translate-y-0">
                     {project.title}
                 </h3>
-                <p className="mb-2 translate-y-2 transform text-sm text-white/80 transition-transform delay-75 duration-300 group-hover:translate-y-0">
+                <p className="mb-1 translate-y-2 transform text-sm text-white/80 transition-transform delay-75 duration-300 group-hover:translate-y-0">
                     {project.client_company}
                 </p>
+                {project.client_origin && (
+                    <div className="mb-2 flex translate-y-2 transform items-center gap-1 text-xs text-white/70 transition-transform delay-100 duration-300 group-hover:translate-y-0">
+                        <MapPin size={12} />
+                        <span>{project.client_origin}</span>
+                    </div>
+                )}
             </div>
         </div>
     );

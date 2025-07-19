@@ -1,6 +1,7 @@
 import { BrandingProjectT } from '@/types';
 import { Link } from '@inertiajs/react';
 import { motion } from 'framer-motion';
+import { MapPin } from 'lucide-react';
 
 export default function BrandingProjectsGrid({ projects }: { projects: BrandingProjectT[] }) {
     return (
@@ -22,7 +23,13 @@ export default function BrandingProjectsGrid({ projects }: { projects: BrandingP
                         )}
                         <div className="p-6">
                             <h3 className="mb-2 text-xl font-bold text-gray-900">{project.title}</h3>
-                            <p className="mb-4 text-sm text-gray-600">{project.client_company}</p>
+                            <p className="mb-2 text-sm text-gray-600">{project.client_company}</p>
+                            {project.client_origin && (
+                                <div className="mb-4 flex items-center gap-1 text-xs text-gray-500">
+                                    <MapPin size={12} />
+                                    <span>{project.client_origin}</span>
+                                </div>
+                            )}
                             <div className="flex flex-wrap gap-2">
                                 {project.tags.map((tag) => (
                                     <span

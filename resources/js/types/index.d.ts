@@ -102,6 +102,7 @@ export type BrandingProjectT = {
     client_company: string;
     client_email: string;
     client_phone: string;
+    client_origin: string | null;
     service_fees: number | null;
     year: string | null;
     industry_type: string | null;
