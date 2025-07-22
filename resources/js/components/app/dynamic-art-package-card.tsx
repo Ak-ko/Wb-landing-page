@@ -17,7 +17,7 @@ export default function DynamicArtPackageCard({ artPackage }: PropsT) {
     return (
         <div
             className={`rounded-2xl bg-black p-7 transition-all duration-500 hover:shadow-xl hover:ring-4 hover:ring-black`}
-            style={{ color: textColor }}
+            style={{ color: '#fff' }}
         >
             <h1 className="text-3xl font-bold uppercase" style={{ color: artPackage?.color }}>
                 {artPackage?.title}
@@ -40,7 +40,7 @@ export default function DynamicArtPackageCard({ artPackage }: PropsT) {
                             <div className="flex items-center gap-2 text-sm">
                                 <span>Duration:</span>
                                 <div className="flex items-center">
-                                    <span className="inline-block h-[1px] w-[50px]" style={{ backgroundColor: textColor }} />
+                                    <span className="inline-block h-[1px] w-[50px]" style={{ backgroundColor: '#fff' }} />
                                     <ChevronRight className="-ml-2 size-4" />
                                 </div>
                                 <span> {p?.duration}</span>

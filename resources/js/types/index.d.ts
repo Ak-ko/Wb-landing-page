@@ -254,7 +254,7 @@ export type ArtPackageItemT = {
 
 export type ArtPackagePriceT = {
     id: number;
-    price: number;
+    price: string;
     duration: string;
     art_package_id: number;
 } & TimestampsT;

@@ -40,7 +40,7 @@ export default function ArtPackageForm({ package: artPackage, types, onSuccess }
     };
 
     const addPrice = () => {
-        setData('prices', [...data.prices, { price: 0, duration: '' }]);
+        setData('prices', [...data.prices, { price: '', duration: '' }]);
     };
 
     const removePrice = (index: number) => {
@@ -147,9 +147,9 @@ export default function ArtPackageForm({ package: artPackage, types, onSuccess }
                         {data.prices.map((price, index) => (
                             <div key={index} className="flex items-center gap-2">
                                 <Input
-                                    type="number"
+                                    type="text"
                                     value={price.price}
-                                    onChange={(e) => updatePriceValue(index, 'price', parseFloat(e.target.value) || 0)}
+                                    onChange={(e) => updatePriceValue(index, 'price', e.target.value || '')}
                                     placeholder="Price"
                                     className="flex-1"
                                 />

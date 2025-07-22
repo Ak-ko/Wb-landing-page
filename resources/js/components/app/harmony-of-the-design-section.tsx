@@ -66,7 +66,7 @@ export default function HarmonyOfTheDesignSection() {
 
             <CommonBodyAnimation>
                 <div className="app-container flex justify-center py-15">
-                    <div className="grid [grid-auto-rows:280px] gap-3 lg:[grid-template-columns:repeat(4,_280px)] 2xl:lg:[grid-template-columns:repeat(4,_300px)]">
+                    <div className="grid [grid-auto-rows:280px] gap-3 md:[grid-auto-rows:420px] lg:[grid-auto-rows:300px] lg:[grid-template-columns:repeat(4,_280px)] 2xl:lg:[grid-template-columns:repeat(4,_300px)]">
                         <div>
                             <img src={images.one.image} alt="Image" className="h-full w-full rounded-lg object-cover" />
                         </div>
@@ -101,7 +101,7 @@ export default function HarmonyOfTheDesignSection() {
                         <div className="hidden w-full items-center lg:col-span-2 lg:flex">
                             <h1 className="mx-auto max-w-[300px] text-[50px] font-bold uppercase md:text-[75px]">Design</h1>
                         </div>
-                        <div className="flex w-full flex-col items-center gap-5 py-5 lg:col-span-2 lg:hidden lg:flex-row lg:gap-0">
+                        <div className="flex w-full flex-col items-center gap-5 bg-blue-500 py-5 lg:hidden">
                             <h1 className="mx-auto max-w-[300px] text-[45px] font-bold uppercase md:text-[75px]">Design</h1>
                             <h1 className="mx-auto max-w-[300px] text-[45px] font-bold uppercase md:text-[75px]">Meets</h1>
                             <h1 className="mx-auto max-w-[300px] text-[45px] font-bold uppercase md:text-[75px]">Art</h1>

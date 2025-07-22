@@ -25,12 +25,12 @@ const links: LinksT[] = [
         externalLink: false,
     },
     {
-        label: 'Design Services',
+        label: 'Our Design Expertise',
         href: route('business-plan-page'),
         externalLink: false,
     },
     {
-        label: 'Art Services',
+        label: 'Our Art Expertise',
         href: route('art-plan-page'),
         externalLink: false,
     },
@@ -45,7 +45,7 @@ const links: LinksT[] = [
         externalLink: false,
     },
     {
-        label: 'Our Contact',
+        label: 'Contact Us',
         href: route('contact-us-page'),
         externalLink: false,
     },
