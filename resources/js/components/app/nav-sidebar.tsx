@@ -2,6 +2,7 @@ import useNavStore from '@/store/useNavStore';
 import { Link, router } from '@inertiajs/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronsRight } from 'lucide-react';
+import { useEffect } from 'react';
 import CharacterWithTiltRightStyle from './icons/characters/navbar-section/character-with-titlt-right-style';
 import Logo from './icons/logo';
 import TypewriterText from './type-write-text';
@@ -24,13 +25,18 @@ const links: LinksT[] = [
         externalLink: false,
     },
     {
-        label: 'Our Works',
-        href: route('branding-projects.list'),
+        label: 'Our Design Expertise',
+        href: route('business-plan-page'),
         externalLink: false,
     },
     {
-        label: 'Our Expertise',
-        href: route('business-plan-page'),
+        label: 'Our Art Expertise',
+        href: route('art-plan-page'),
+        externalLink: false,
+    },
+    {
+        label: 'Our Works',
+        href: route('branding-projects.list'),
         externalLink: false,
     },
     {
@@ -39,7 +45,7 @@ const links: LinksT[] = [
         externalLink: false,
     },
     {
-        label: 'Our Contact',
+        label: 'Contact Us',
         href: route('contact-us-page'),
         externalLink: false,
     },
@@ -47,6 +53,18 @@ const links: LinksT[] = [
 
 export default function NavSidebar() {
     const { isToggle, toggle } = useNavStore();
+
+    useEffect(() => {
+        if (isToggle) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [isToggle]);
 
     const handleCloseNav = () => {
         toggle();
@@ -74,7 +92,7 @@ export default function NavSidebar() {
             </div>
 
             <div className="relative hidden h-full w-full items-center sm:flex">
-                <div className="w-full -translate-y-[50%] text-white">
+                <div className="w-full -translate-y-[30%] text-white">
                     {links?.map((link: LinksT, indx: number) =>
                         link?.externalLink ? (
                             <a

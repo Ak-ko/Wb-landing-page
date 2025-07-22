@@ -34,8 +34,8 @@ export default function DynamicArtHeader({
                 transition={{ duration: 0.95, type: 'ease-out' }}
                 className="app-container"
             >
-                <h1 className={cn('mb-3 text-[50px] font-bold text-white uppercase sm:text-[80px]', titleClass)}>{title}</h1>
-                <p className={cn('max-w-[650px] text-lg leading-[2] text-white', descriptionClass)}>{description}</p>
+                <h1 className={cn('mb-3 text-center text-[50px] font-bold text-white uppercase sm:text-[80px]', titleClass)}>{title}</h1>
+                <p className={cn('mx-auto max-w-[650px] text-center text-lg leading-[2] text-white', descriptionClass)}>{description}</p>
             </motion.div>
         </div>
     );

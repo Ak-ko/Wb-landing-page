@@ -19,6 +19,7 @@ class BrandingProject extends Model
         'client_name',
         'client_email',
         'client_phone',
+        'client_origin',
         'service_fees',
         'industry_type',
         'year',

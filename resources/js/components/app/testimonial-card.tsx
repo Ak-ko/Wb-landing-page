@@ -15,32 +15,32 @@ export default function TestimonialCard({ testimonial, containerClass, onClick }
     return (
         <div
             className={cn(
-                'w-full rounded-xl bg-[#f4f4f4] p-4 shadow transition-all duration-300 md:p-12 lg:min-w-[550px]',
+                'w-full rounded-xl bg-[#f4f4f4] p-6 shadow transition-all duration-300 md:p-16 lg:min-w-[650px]',
                 'transform cursor-pointer hover:-translate-y-1 hover:shadow-lg',
                 containerClass,
             )}
             onClick={onClick}
         >
-            <div className="mb-3 flex items-start justify-between">
-                <div className="flex items-start gap-2">
-                    <img className="h-[55px] w-[55px] rounded-full object-cover" src={imageUrl} alt={testimonial.name || 'Client'} />
+            <div className="mb-4 flex items-start justify-between">
+                <div className="flex items-start gap-3">
+                    <img className="h-[70px] w-[70px] rounded-full object-cover" src={imageUrl} alt={testimonial.name || 'Client'} />
                     <div>
-                        <h1 className="text-lg font-bold">{testimonial.name || 'Anonymous'}</h1>
+                        <h1 className="text-xl font-bold">{testimonial.name || 'Anonymous'}</h1>
                         {testimonial?.position && testimonial?.company && (
                             <p
                                 style={{
                                     color: textColor,
                                 }}
-                                className="line-clamp-2 max-w-[350px] text-sm"
+                                className="line-clamp-2 max-w-[400px] text-base"
                             >
                                 {testimonial.position}, {testimonial.company}
                             </p>
                         )}
                     </div>
                 </div>
-                <CloseQuote color={textColor} width={50} />
+                <CloseQuote color={textColor} width={60} />
             </div>
-            <p className="line-clamp-5 text-sm leading-[2] font-light">{testimonial.description}</p>
+            <p className="line-clamp-5 text-base leading-[2] font-light">{testimonial.description}</p>
         </div>
     );
 }

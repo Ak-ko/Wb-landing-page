@@ -26,7 +26,7 @@ export default function BusinessProcessFilters({ onSearch, defaultQuery = '' }: 
                 </div>
                 <Input
                     type="text"
-                    placeholder="Search business processes..."
+                    placeholder="Search creative processes..."
                     className="w-full py-2 pr-4 pl-9"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}

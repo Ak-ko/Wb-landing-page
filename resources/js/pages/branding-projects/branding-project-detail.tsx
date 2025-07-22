@@ -6,8 +6,8 @@ import useTopScrollAnimation from '@/hooks/use-top-scroll-animation';
 import LandingLayout from '@/layouts/landing-layout';
 import { BrandingProjectT } from '@/types';
 import { Head, Link } from '@inertiajs/react';
-import { Building2, Calendar, Crown } from 'lucide-react';
-import { useState } from 'react';
+import { Building2, Calendar, Crown, MapPin, Play } from 'lucide-react';
+import { useRef, useState } from 'react';
 
 interface BrandingProjectDetailProps {
     project: BrandingProjectT;
@@ -18,6 +18,59 @@ export default function BrandingProjectDetail({ project, relatedProjects }: Bran
     const { topBarClass } = useTopScrollAnimation();
     const [modalOpen, setModalOpen] = useState(false);
     const [modalIndex, setModalIndex] = useState(0);
+    const [videoPlaying, setVideoPlaying] = useState<{ [key: string]: boolean }>({});
+    const videoRefs = useRef<{ [key: string]: HTMLVideoElement | null }>({});
+
+    // Check if file is a video based on extension
+    const isVideo = (url: string): boolean => {
+        const videoExtensions = ['.mp4', '.webm', '.ogg', '.avi', '.mov', '.wmv', '.flv', '.mkv'];
+        const extension = url.toLowerCase().substring(url.lastIndexOf('.'));
+        return videoExtensions.includes(extension);
+    };
+
+    // Handle video click - play/pause without opening modal if clicking on video controls
+    const handleVideoClick = (idx: number, event: React.MouseEvent) => {
+        const video = videoRefs.current[`video-${idx}`];
+        if (!video) return;
+
+        // Check if click was on video controls (bottom part of video)
+        const rect = video.getBoundingClientRect();
+        const clickY = event.clientY - rect.top;
+        const videoHeight = rect.height;
+        const controlsArea = videoHeight - 50; // Approximate controls area
+
+        if (clickY > controlsArea && video.controls) {
+            // Click was in controls area, don't open modal
+            event.stopPropagation();
+            return;
+        }
+
+        // Click was on video content, open modal
+        setModalOpen(true);
+        setModalIndex(idx);
+    };
+
+    // Handle video play/pause events
+    const handleVideoPlay = (idx: number) => {
+        setVideoPlaying((prev) => ({ ...prev, [`video-${idx}`]: true }));
+    };
+
+    const handleVideoPause = (idx: number) => {
+        setVideoPlaying((prev) => ({ ...prev, [`video-${idx}`]: false }));
+    };
+
+    // Handle play button click
+    const handlePlayButtonClick = (idx: number, event: React.MouseEvent) => {
+        event.stopPropagation();
+        const video = videoRefs.current[`video-${idx}`];
+        if (video) {
+            if (video.paused) {
+                video.play();
+            } else {
+                video.pause();
+            }
+        }
+    };
 
     // Prepare accordion items
     const accordionItems = [
@@ -43,57 +96,67 @@ export default function BrandingProjectDetail({ project, relatedProjects }: Bran
                 </div>
             ),
         },
-        {
-            id: 'team-members',
-            title: 'Team Members',
-            content: (
-                <div className="space-y-4">
-                    {project.members.map((member) => (
-                        <div key={member.id} className="relative flex items-center gap-4 rounded-lg bg-white p-3 shadow-sm">
-                            {member.image && (
-                                <img
-                                    src={member.image}
-                                    alt={member.name}
-                                    className="border-primary/30 h-10 w-10 rounded-full border-2 object-cover"
-                                />
-                            )}
-                            <div>
-                                <p className="flex items-center gap-2 font-medium text-gray-900">
-                                    {member.name}
-                                    {member.pivot?.is_lead && (
-                                        <span
-                                            className="ml-2 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold shadow-sm"
-                                            style={{ backgroundColor: 'var(--primary)', color: 'var(--primary-foreground)' }}
-                                        >
-                                            <Crown size={16} className="text-white" />
-                                            Leader
-                                        </span>
-                                    )}
-                                </p>
-                                <p className="text-sm text-gray-500">{member.designation}</p>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            ),
-        },
-        {
-            id: 'technologies',
-            title: 'Technologies & Tools',
-            content: (
-                <div className="flex flex-wrap gap-2">
-                    {project.tags.map((tag) => (
-                        <span
-                            key={tag.id}
-                            className="rounded-full px-3 py-1 text-sm font-medium"
-                            style={{ backgroundColor: tag.color, color: '#fff' }}
-                        >
-                            {tag.name}
-                        </span>
-                    ))}
-                </div>
-            ),
-        },
+        // Only show team members section if there are members
+        ...(project.members && project.members.length > 0
+            ? [
+                  {
+                      id: 'team-members',
+                      title: 'Team Members',
+                      content: (
+                          <div className="space-y-4">
+                              {project.members.map((member) => (
+                                  <div key={member.id} className="relative flex items-center gap-4 rounded-lg bg-white p-3 shadow-sm">
+                                      {member.image && (
+                                          <img
+                                              src={member.image}
+                                              alt={member.name}
+                                              className="border-primary/30 h-10 w-10 rounded-full border-2 object-cover"
+                                          />
+                                      )}
+                                      <div>
+                                          <p className="flex items-center gap-2 font-medium text-gray-900">
+                                              {member.name}
+                                              {member.pivot?.is_lead && (
+                                                  <span
+                                                      className="ml-2 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold shadow-sm"
+                                                      style={{ backgroundColor: 'var(--primary)', color: 'var(--primary-foreground)' }}
+                                                  >
+                                                      <Crown size={16} className="text-white" />
+                                                      Leader
+                                                  </span>
+                                              )}
+                                          </p>
+                                          <p className="text-sm text-gray-500">{member.designation}</p>
+                                      </div>
+                                  </div>
+                              ))}
+                          </div>
+                      ),
+                  },
+              ]
+            : []),
+        // Only show technologies section if there are tags
+        ...(project.tags && project.tags.length > 0
+            ? [
+                  {
+                      id: 'technologies',
+                      title: 'Technologies & Tools',
+                      content: (
+                          <div className="flex flex-wrap gap-2">
+                              {project.tags.map((tag) => (
+                                  <span
+                                      key={tag.id}
+                                      className="rounded-full px-3 py-1 text-sm font-medium"
+                                      style={{ backgroundColor: tag.color, color: '#fff' }}
+                                  >
+                                      {tag.name}
+                                  </span>
+                              ))}
+                          </div>
+                      ),
+                  },
+              ]
+            : []),
     ];
 
     return (
@@ -122,6 +185,12 @@ export default function BrandingProjectDetail({ project, relatedProjects }: Bran
                                     <Calendar size={20} />
                                     <span>{project.year}</span>
                                 </div>
+                                {project.client_origin && (
+                                    <div className="flex items-center gap-2">
+                                        <MapPin size={20} />
+                                        <span>{project.client_origin}</span>
+                                    </div>
+                                )}
                                 <div className="flex items-center gap-2">
                                     <BehanceIcon fill="#d0d4db" className="mt-1 size-[25px]" />
                                     <a
@@ -146,16 +215,48 @@ export default function BrandingProjectDetail({ project, relatedProjects }: Bran
                                     <CarouselContent>
                                         {project.images.map((image, idx) => (
                                             <CarouselItem key={image.id}>
-                                                <div className="relative aspect-video overflow-hidden rounded-lg">
-                                                    <img
-                                                        src={image.image}
-                                                        alt={project.title}
-                                                        className="h-full w-full cursor-pointer object-cover transition-transform duration-200 hover:scale-105"
-                                                        onClick={() => {
-                                                            setModalOpen(true);
-                                                            setModalIndex(idx);
-                                                        }}
-                                                    />
+                                                <div className="group relative aspect-video overflow-hidden rounded-lg">
+                                                    {isVideo(image.image) ? (
+                                                        <>
+                                                            <video
+                                                                ref={(el) => {
+                                                                    videoRefs.current[`video-${idx}`] = el;
+                                                                }}
+                                                                autoPlay
+                                                                src={image.image}
+                                                                className="h-full w-full cursor-pointer object-cover transition-transform duration-200 hover:scale-105"
+                                                                onClick={(e) => handleVideoClick(idx, e)}
+                                                                onPlay={() => handleVideoPlay(idx)}
+                                                                onPause={() => handleVideoPause(idx)}
+                                                                muted
+                                                                preload="metadata"
+                                                                playsInline
+                                                                controls
+                                                                controlsList="nodownload"
+                                                            />
+                                                            {!videoPlaying[`video-${idx}`] && (
+                                                                <div
+                                                                    className="absolute top-1/2 left-1/2 z-5 flex size-[60px] -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border-4 border-white/60 transition-all duration-500 group-hover:border-white"
+                                                                    onClick={(e) => handlePlayButtonClick(idx, e)}
+                                                                >
+                                                                    <Play
+                                                                        className="size-[30px] text-white/60 transition-all duration-500 group-hover:text-white"
+                                                                        fill="currentColor"
+                                                                    />
+                                                                </div>
+                                                            )}
+                                                        </>
+                                                    ) : (
+                                                        <img
+                                                            src={image.image}
+                                                            alt={project.title}
+                                                            className="h-full w-full cursor-pointer object-cover transition-transform duration-200 hover:scale-105"
+                                                            onClick={() => {
+                                                                setModalOpen(true);
+                                                                setModalIndex(idx);
+                                                            }}
+                                                        />
+                                                    )}
                                                 </div>
                                             </CarouselItem>
                                         ))}
@@ -217,7 +318,13 @@ export default function BrandingProjectDetail({ project, relatedProjects }: Bran
                                         )}
                                         <div className="p-6">
                                             <h3 className="mb-2 text-xl font-bold text-gray-900">{project.title}</h3>
-                                            <p className="text-sm text-gray-600">{project.client_company}</p>
+                                            <p className="mb-2 text-sm text-gray-600">{project.client_company}</p>
+                                            {project.client_origin && (
+                                                <div className="flex items-center gap-1 text-xs text-gray-500">
+                                                    <MapPin size={12} />
+                                                    <span>{project.client_origin}</span>
+                                                </div>
+                                            )}
                                         </div>
                                     </Link>
                                 ))}

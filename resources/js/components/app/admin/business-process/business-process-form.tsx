@@ -1,14 +1,11 @@
-import { useForm, usePage } from '@inertiajs/react';
-import { useState } from 'react';
-
 import ImageUploader from '@/components/common/image-upload';
 import { Button } from '@/components/ui/button';
+import { ColorInput } from '@/components/ui/color-input';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { BusinessProcessT } from '@/types';
-import ColorSuggestions from '../../color-suggestions';
+import { useForm } from '@inertiajs/react';
+import { useState } from 'react';
 
 interface BusinessProcessFormProps {
     businessProcess?: BusinessProcessT;
@@ -26,23 +23,15 @@ export default function BusinessProcessForm({ businessProcess, onSuccess }: Busi
     });
 
     const [isImageUploading, setIsImageUploading] = useState(false);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [currentImageUrl, setCurrentImageUrl] = useState<string>(businessProcess?.image || '');
-    const props = usePage<{ ziggy: { url: string } }>().props;
 
     const handleImageChange = async (file: File | string) => {
         if (typeof file === 'string') {
             setData('image', file);
-            setCurrentImageUrl(`${props?.ziggy?.url}/storage/${file}`);
         }
     };
 
     const handleUploadStateChange = (state: 'idle' | 'uploading' | 'paused' | 'error' | 'completed') => {
         setIsImageUploading(state === 'uploading' || state === 'paused');
-    };
-
-    const handleColorSelect = (color: string) => {
-        setData('color_tag', color);
     };
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -71,53 +60,24 @@ export default function BusinessProcessForm({ businessProcess, onSuccess }: Busi
     };
 
     return (
-        <form onSubmit={handleSubmit} className="hide-scrollbar !max-h-[650px] space-y-6 !overflow-y-auto">
+        <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
                 <label htmlFor="title" className="block text-sm font-medium">
-                    Title
+                    Title <span className="text-red-500">*</span>
                 </label>
-                <Input id="title" placeholder="Enter title" value={data.title} onChange={(e) => setData('title', e.target.value)} />
+                <Input id="title" value={data.title} onChange={(e) => setData('title', e.target.value)} />
                 {errors.title && <p className="text-sm text-red-500">{errors.title}</p>}
             </div>
 
             <div className="space-y-2">
                 <label htmlFor="step" className="block text-sm font-medium">
-                    Step Number
+                    Step <span className="text-red-500">*</span>
                 </label>
-                <Input
-                    id="step"
-                    type="number"
-                    placeholder="Enter step number (e.g., 1, 2, 3)"
-                    value={data.step}
-                    onChange={(e) => setData('step', e.target.value)}
-                />
+                <Input id="step" type="number" value={data.step} onChange={(e) => setData('step', e.target.value)} />
                 {errors.step && <p className="text-sm text-red-500">{errors.step}</p>}
             </div>
 
-            <div className="space-y-2">
-                <label htmlFor="color_tag" className="block text-sm font-medium">
-                    Color Tag
-                </label>
-                <div className="flex items-center gap-3">
-                    <Input
-                        id="color_tag"
-                        type="color"
-                        value={data.color_tag}
-                        onChange={(e) => setData('color_tag', e.target.value)}
-                        className="h-10 w-20 cursor-pointer"
-                    />
-                    <Input
-                        type="text"
-                        value={data.color_tag}
-                        onChange={(e) => setData('color_tag', e.target.value)}
-                        placeholder="#000000"
-                        className="w-full"
-                    />
-                    <ColorSuggestions onColorSelect={handleColorSelect} />
-                </div>
-                <p className="text-xs text-gray-500">Choose a color or select from suggestions</p>
-                {errors.color_tag && <p className="text-sm text-red-500">{errors.color_tag}</p>}
-            </div>
+            <ColorInput label="Color Tag" value={data.color_tag} onChange={(value) => setData('color_tag', value)} error={errors.color_tag} />
 
             <div className="space-y-2">
                 <label htmlFor="description" className="block text-sm font-medium">
@@ -125,18 +85,12 @@ export default function BusinessProcessForm({ businessProcess, onSuccess }: Busi
                 </label>
                 <Textarea
                     id="description"
-                    placeholder="Enter business process description"
+                    placeholder="Enter creative process description"
                     value={data.description || ''}
                     onChange={(e) => setData('description', e.target.value)}
                     rows={3}
                 />
                 {errors.description && <p className="text-sm text-red-500">{errors.description}</p>}
-            </div>
-
-            <div className="flex items-center space-x-2">
-                <Switch id="is_active" checked={data.is_active} onCheckedChange={(checked) => setData('is_active', checked)} />
-                <Label htmlFor="is_active">Active</Label>
-                {errors.is_active && <p className="text-sm text-red-500">{errors.is_active}</p>}
             </div>
 
             <ImageUploader
@@ -145,7 +99,6 @@ export default function BusinessProcessForm({ businessProcess, onSuccess }: Busi
                 onUploadStateChange={handleUploadStateChange}
                 onImageRemove={() => {
                     setData('image', '');
-                    setCurrentImageUrl('');
                 }}
                 error={errors.image}
                 placeholderText="Click to upload or drag and drop"
@@ -154,13 +107,7 @@ export default function BusinessProcessForm({ businessProcess, onSuccess }: Busi
 
             <div className="flex justify-end gap-2">
                 <Button type="submit" disabled={processing || isImageUploading}>
-                    {processing
-                        ? 'Saving...'
-                        : isImageUploading
-                          ? 'Uploading...'
-                          : businessProcess
-                            ? 'Update Business Process'
-                            : 'Create Business Process'}
+                    {processing ? 'Saving...' : isImageUploading ? 'Uploading...' : businessProcess ? 'Update Process' : 'Create Process'}
                 </Button>
             </div>
         </form>

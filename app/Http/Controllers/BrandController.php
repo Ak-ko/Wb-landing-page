@@ -25,7 +25,7 @@ class BrandController extends Controller
 
         // Get paginated results
         $brands = $query->orderBy('name')
-            ->paginate(5)
+            ->paginate($request->input('perPage', 10))
             ->withQueryString();
 
         return Inertia::render('admin/brands/index', [

@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { ColorInput } from '@/components/ui/color-input';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
@@ -8,7 +9,6 @@ import { BrandStrategyT, BusinessBrandGuidelineT, BusinessPackageT } from '@/typ
 import { Link, useForm, usePage } from '@inertiajs/react';
 import { Plus, Trash2 } from 'lucide-react';
 import Select from 'react-select';
-import ColorSuggestions from '../../color-suggestions';
 
 interface BusinessPackageWithStrategyT extends BusinessPackageT {
     brand_strategy?: {
@@ -99,10 +99,6 @@ export default function BusinessPackageForm({ businessPackage, onSuccess }: Busi
         setData('durations', updatedDurations);
     };
 
-    const handleColorSelect = (color: string) => {
-        setData('color', color);
-    };
-
     const handleDiscountToggle = (checked: boolean) => {
         setData('is_discount', checked);
         if (!checked) {
@@ -175,29 +171,8 @@ export default function BusinessPackageForm({ businessPackage, onSuccess }: Busi
                         {errorMap.description && <p className="text-sm text-red-500">{errorMap.description}</p>}
                     </div>
 
-                    <div className="col-span-2 space-y-2">
-                        <label htmlFor="color" className="block text-sm font-medium">
-                            Package Color<span className="text-red-500">*</span>
-                        </label>
-                        <div className="flex items-center gap-3">
-                            <Input
-                                id="color"
-                                type="color"
-                                value={data.color}
-                                onChange={(e) => setData('color', e.target.value)}
-                                className="h-10 w-20"
-                            />
-                            <Input
-                                type="text"
-                                value={data.color}
-                                onChange={(e) => setData('color', e.target.value)}
-                                placeholder="#HEX color"
-                                className="flex-1"
-                            />
-                            <ColorSuggestions onColorSelect={handleColorSelect} />
-                        </div>
-                        <p className="text-xs text-gray-500">Choose a color or select from suggestions</p>
-                        {errorMap.color && <p className="text-sm text-red-500">{errorMap.color}</p>}
+                    <div className="col-span-2">
+                        <ColorInput label="Package Color" value={data.color} onChange={(value) => setData('color', value)} error={errorMap.color} />
                     </div>
 
                     <div className="col-span-2 flex items-center space-x-2">

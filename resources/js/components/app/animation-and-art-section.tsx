@@ -6,16 +6,13 @@ export default function AnimationAndArtSection() {
     return (
         <div>
             <DynamicArtHeader
-                containerClass="flex flex-col items-end"
                 title={
                     <>
                         <span className="text-secondary-pink">Animation</span> <br />
                         <span className="text-crayola-blue"> & Motion </span>Art
                     </>
                 }
-                titleClass="md:text-start text-center"
                 description={`Welcome to our illustration laboratory, where we transform concepts into visual gold! Our mad scientist artists wield pencils like wands, conjuring up illustrations that make eyes pop and jaws drop. Whether you need a whimsical wonderland or a futuristic cityscape, we're the alchemists who'll brew up the perfect visual potion. Fancy seeing your ideas wear their Sunday best? Step into our gallery of visual witchcraft!`}
-                descriptionClass="md:text-start  text-center"
             />
 
             <AnimationAndMotionCarouselSection />

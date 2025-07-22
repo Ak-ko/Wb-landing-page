@@ -30,7 +30,7 @@ export default function OurExpertiseSection() {
                 <SectionHeader header="Our Expertise" />
 
                 <CommonBodyAnimation>
-                    <div className="grid grid-cols-1 gap-5 py-10 md:px-15 lg:grid-cols-2 xl:px-30">
+                    <div className="grid grid-cols-1 gap-5 py-10 md:px-15 lg:grid-cols-2 xl:px-30 2xl:px-[320px]">
                         {/* New Business Card */}
                         <motion.div
                             whileInView={{ x: 0 }}
@@ -91,7 +91,7 @@ export default function OurExpertiseSection() {
 
                             <div className="md:text-end">
                                 <Link href={route('art-plan-page')} className={cn('primary_btn', 'flex justify-center px-8 py-5 md:inline-flex')}>
-                                    See Plans
+                                    See Packages
                                 </Link>
                             </div>
 

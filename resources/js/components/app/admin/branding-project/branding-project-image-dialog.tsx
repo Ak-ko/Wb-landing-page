@@ -35,6 +35,13 @@ export default function BrandingProjectImageDialog({
     const [isPrimary, setIsPrimary] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
 
+    // Check if file is a video based on extension
+    const isVideo = (url: string): boolean => {
+        const videoExtensions = ['.mp4', '.webm', '.ogg', '.avi', '.mov', '.wmv', '.flv', '.mkv'];
+        const extension = url.toLowerCase().substring(url.lastIndexOf('.'));
+        return videoExtensions.includes(extension);
+    };
+
     const handleImageChange = (file: File | string) => {
         setSelectedFile(file);
     };
@@ -86,7 +93,7 @@ export default function BrandingProjectImageDialog({
         <Dialog open={open} onOpenChange={(open) => !open && handleCancel()}>
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
-                    <DialogTitle>{selectedFile ? 'Upload New Image' : image?.id ? 'Manage Image' : 'Add New Image'}</DialogTitle>
+                    <DialogTitle>{selectedFile ? 'Upload New Media' : image?.id ? 'Manage Media' : 'Add New Media'}</DialogTitle>
                 </DialogHeader>
 
                 <div className="flex flex-col items-center justify-center space-y-4 py-4">
@@ -99,7 +106,8 @@ export default function BrandingProjectImageDialog({
                                 onImageRemove={() => setSelectedFile(null)}
                                 aspectRatio="aspect-square"
                                 placeholderText="Drag and drop or click to upload"
-                                helperText="SVG, PNG, JPG or GIF (max. 300MB)"
+                                helperText="SVG, PNG, JPG or MP4 Video (max. 300MB)"
+                                acceptedFormats="image/jpeg, image/png, image/svg+xml, video/mp4, video/webm, video/ogg, video/avi, video/mov, video/wmv, video/flv, video/mkv"
                             />
 
                             {selectedFile && (
@@ -115,14 +123,18 @@ export default function BrandingProjectImageDialog({
                                         htmlFor="isPrimary"
                                         className="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                     >
-                                        Set as primary image
+                                        Set as primary media
                                     </label>
                                 </div>
                             )}
                         </>
                     ) : (
                         <div className="relative">
-                            <img src={image.url} alt="Project image" className="max-h-64 max-w-full rounded-md object-contain" />
+                            {image.url && isVideo(image.url) ? (
+                                <video src={image.url} controls className="max-h-64 max-w-full rounded-md object-contain" />
+                            ) : (
+                                <img src={image.url} alt="Project media" className="max-h-64 max-w-full rounded-md object-contain" />
+                            )}
                             {image.is_primary && (
                                 <div className="absolute top-2 right-2">
                                     <span className="bg-primary rounded-full px-2 py-1 text-xs text-white">Primary</span>

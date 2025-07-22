@@ -43,7 +43,7 @@ const mainNavItems: NavItem[] = [
                 icon: Building,
             },
             {
-                title: 'Branding Projects',
+                title: 'Projects',
                 href: '/admin/branding-projects',
                 icon: Briefcase,
             },
@@ -63,12 +63,12 @@ const mainNavItems: NavItem[] = [
                 icon: Users,
             },
             {
-                title: 'Business Processes',
+                title: 'Creative Processes',
                 href: '/admin/business-processes',
                 icon: BarChart2,
             },
             {
-                title: 'Blog',
+                title: 'Blogs',
                 href: '/admin/blogs',
                 icon: Briefcase,
             },
@@ -162,6 +162,11 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Settings',
         items: [
+            {
+                title: 'Theme Colors',
+                href: '/admin/theme-colors',
+                icon: Palette,
+            },
             {
                 title: 'Company Policies',
                 href: '/admin/policies',

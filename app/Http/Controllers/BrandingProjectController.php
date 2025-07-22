@@ -52,9 +52,6 @@ class BrandingProjectController extends Controller
 
     public function store(Request $request)
     {
-        if (empty($request->tags)) {
-            return back()->with('error', 'At least one tag must be selected.');
-        }
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',
@@ -63,19 +60,20 @@ class BrandingProjectController extends Controller
             'client_name' => 'nullable|string|max:255',
             'client_email' => 'nullable|email|max:255',
             'client_phone' => 'nullable|string|max:255',
-            'service_fees' => 'required|numeric',
+            'client_origin' => 'nullable|string|max:255',
+            'service_fees' => 'nullable|numeric',
             'year' => 'required|numeric',
             'project_keywords' => 'required|string',
             'industry_type' => 'required|string',
             'project_scopes' => 'required|string',
             'project_link' => 'required|string',
             'is_published' => 'required|boolean',
-            'tags' => 'required|array',
+            'tags' => 'nullable|array',
             'tags.*' => 'exists:tags,id',
             'images' => 'required|array',
             'images.*' => 'required',
             'primary_image_index' => 'nullable|integer',
-            'project_members' => 'required|array',
+            'project_members' => 'nullable|array',
             'project_members.*' => 'required',
         ]);
 
@@ -86,6 +84,7 @@ class BrandingProjectController extends Controller
             'client_name' => $validated['client_name'] ?? null,
             'client_email' => $validated['client_email'] ?? null,
             'client_phone' => $validated['client_phone'] ?? null,
+            'client_origin' => $validated['client_origin'] ?? null,
             'service_fees' => $validated['service_fees'] ?? null,
             'year' => $validated['year'],
             'project_keywords' => $validated['project_keywords'],
@@ -116,7 +115,7 @@ class BrandingProjectController extends Controller
             }
         }
 
-        if (isset($validated['project_members'])) {
+        if (isset($validated['project_members']) && !empty($validated['project_members'])) {
             foreach ($validated['project_members'] as $member) {
                 BrandingProjectMember::create([
                     'branding_project_id' => $brandingProject->id,
@@ -153,9 +152,6 @@ class BrandingProjectController extends Controller
 
     public function update(Request $request, BrandingProject $brandingProject)
     {
-        if (empty($request->tags)) {
-            return back()->with('error', 'At least one tag must be selected.');
-        }
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',
@@ -164,6 +160,7 @@ class BrandingProjectController extends Controller
             'client_name' => 'nullable|string|max:255',
             'client_email' => 'nullable|email|max:255',
             'client_phone' => 'nullable|string|max:255',
+            'client_origin' => 'nullable|string|max:255',
             'service_fees' => 'nullable|numeric',
             'year' => 'required|numeric',
             'project_keywords' => 'required|string',
@@ -171,7 +168,7 @@ class BrandingProjectController extends Controller
             'project_link' => 'required|string',
             'industry_type' => 'required|string',
             'is_published' => 'required|boolean',
-            'tags' => 'required|array',
+            'tags' => 'nullable|array',
             'tags.*' => 'exists:tags,id',
             'images' => 'nullable|array',
             'images.*' => 'required',
@@ -179,7 +176,7 @@ class BrandingProjectController extends Controller
             'primary_image_index' => 'nullable|integer',
             'removed_images' => 'nullable|array',
             'removed_images.*' => 'exists:branding_project_images,id',
-            'project_members' => 'required|array',
+            'project_members' => 'nullable|array',
             'project_members.*' => 'required',
         ]);
 
@@ -190,6 +187,7 @@ class BrandingProjectController extends Controller
             'client_name' => $validated['client_name'] ?? null,
             'client_email' => $validated['client_email'] ?? null,
             'client_phone' => $validated['client_phone'] ?? null,
+            'client_origin' => $validated['client_origin'] ?? null,
             'service_fees' => $validated['service_fees'] ?? null,
             'industry_type' => $validated['industry_type'],
             'project_keywords' => $validated['project_keywords'],
@@ -201,6 +199,8 @@ class BrandingProjectController extends Controller
 
         if (isset($validated['tags']) && !empty($validated['tags'])) {
             $brandingProject->tags()->sync($validated['tags']);
+        } else {
+            $brandingProject->tags()->sync([]);
         }
 
         if (isset($validated['removed_images'])) {
@@ -245,9 +245,9 @@ class BrandingProjectController extends Controller
                 ->update(['is_primary' => true]);
         }
 
-        if (isset($validated['project_members'])) {
-            $brandingProject->members()->detach();
+        $brandingProject->members()->detach();
 
+        if (isset($validated['project_members']) && !empty($validated['project_members'])) {
             foreach ($validated['project_members'] as $member) {
                 BrandingProjectMember::create([
                     'branding_project_id' => $brandingProject->id,

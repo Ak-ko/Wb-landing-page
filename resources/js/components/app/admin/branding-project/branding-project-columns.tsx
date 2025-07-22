@@ -37,6 +37,14 @@ export const createBrandingProjectColumns = ({ handleDeleteClick }: BrandingProj
         header: 'Client',
     },
     {
+        accessorKey: 'client_origin',
+        header: 'Location',
+        cell: ({ row }) => {
+            if (!row.original.client_origin) return <span>-</span>;
+            return <span>{row.original.client_origin}</span>;
+        },
+    },
+    {
         accessorKey: 'industry_type',
         header: 'Industry',
     },

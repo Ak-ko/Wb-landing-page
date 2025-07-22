@@ -16,7 +16,7 @@ interface EditBrandingProjectProps {
 export default function EditBrandingProject({ brandingProject, tags }: EditBrandingProjectProps) {
     const breadcrumbs: BreadcrumbItem[] = [
         {
-            title: 'Branding Projects',
+            title: 'Projects',
             href: '/admin/branding-projects',
         },
         {
@@ -31,11 +31,11 @@ export default function EditBrandingProject({ brandingProject, tags }: EditBrand
 
             <div className="space-y-4 p-4">
                 <div className="flex items-center justify-between">
-                    <DashboardTitle title={`Edit ${brandingProject.title}`} description="Update this branding project's information" />
+                    <DashboardTitle title={`Edit ${brandingProject.title}`} description="Update this project's information" />
 
                     <Button variant="outline" onClick={() => router.get('/admin/branding-projects')}>
                         <ArrowLeft className="mr-2 h-4 w-4" />
-                        Back to Branding Projects
+                        Back to Projects
                     </Button>
                 </div>
 

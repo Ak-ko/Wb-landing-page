@@ -10,7 +10,7 @@ import { BreadcrumbItem, TagT } from '@/types';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Branding Projects',
+        title: 'Projects',
         href: '/admin/branding-projects',
     },
     {
@@ -22,15 +22,15 @@ const breadcrumbs: BreadcrumbItem[] = [
 export default function CreateBrandingProject({ tags }: { tags: TagT[] }) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Create Branding Project" />
+            <Head title="Create Project" />
 
             <div className="space-y-4 p-4">
                 <div className="flex items-center justify-between">
-                    <DashboardTitle title="Create Branding Project" description="Add a new branding project to your portfolio" />
+                    <DashboardTitle title="Create Project" description="Add a new project to your portfolio" />
 
                     <Button variant="outline" onClick={() => router.get('/admin/branding-projects')}>
                         <ArrowLeft className="mr-2 h-4 w-4" />
-                        Back to Branding Projects
+                        Back to Projects
                     </Button>
                 </div>
 

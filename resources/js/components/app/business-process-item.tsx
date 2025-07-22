@@ -43,7 +43,7 @@ export default function BusinessProcessItem({ businessProcess }: BusinessProcess
                             )}
                         >
                             <motion.h1
-                                className="text-xl font-bold md:text-2xl"
+                                className="text-center text-xl font-bold md:text-2xl"
                                 initial={{ y: -10, opacity: 0 }}
                                 animate={{ y: 0, opacity: 1 }}
                                 transition={{ duration: 0.4, delay: 0.2 }}
@@ -51,7 +51,7 @@ export default function BusinessProcessItem({ businessProcess }: BusinessProcess
                                 STEP
                             </motion.h1>
                             <motion.h1
-                                className="text-xl font-bold md:text-3xl"
+                                className="mr-1 text-center text-xl font-bold md:text-3xl"
                                 initial={{ y: 10, opacity: 0 }}
                                 animate={{ y: 0, opacity: 1 }}
                                 transition={{ duration: 0.4, delay: 0.3 }}
@@ -63,15 +63,9 @@ export default function BusinessProcessItem({ businessProcess }: BusinessProcess
                 </div>
 
                 {/* Text content - Second on mobile */}
-                <div
-                    className={cn(
-                        'order-2 flex justify-center md:justify-start',
-                        businessProcess.step % 2 === 0 ? 'md:order-1' : 'md:order-3',
-                        businessProcess.step % 2 === 0 ? 'md:text-right' : 'md:text-left',
-                    )}
-                >
+                <div className={cn('order-2 flex justify-center md:order-3 md:justify-start md:text-left')}>
                     <motion.div
-                        className="w-full max-w-[300px] text-center md:max-w-[400px] md:text-inherit"
+                        className="w-full max-w-[300px] text-left md:max-w-[400px] md:text-inherit"
                         initial={{ y: isMobile ? 20 : 0, x: isMobile ? 0 : businessProcess.step % 2 === 0 ? 20 : -20, opacity: 0 }}
                         animate={{ y: 0, x: 0, opacity: 1 }}
                         transition={{ duration: 0.6, delay: 0.2 }}
@@ -84,12 +78,7 @@ export default function BusinessProcessItem({ businessProcess }: BusinessProcess
                 </div>
 
                 {/* Image - Last on mobile */}
-                <div
-                    className={cn(
-                        'order-3 mt-4 flex justify-center md:order-1 md:mt-0 md:justify-start',
-                        businessProcess.step % 2 === 0 ? 'md:order-3' : 'md:order-1',
-                    )}
-                >
+                <div className={cn('order-3 mt-4 flex justify-center md:order-1 md:mt-0 md:justify-start')}>
                     {businessProcess?.image && (
                         <motion.div
                             className="relative w-full max-w-[200px] md:max-w-[400px]"

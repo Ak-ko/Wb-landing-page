@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import ImageUploader from '@/components/common/image-upload';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
+import { ColorInput } from '@/components/ui/color-input';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
@@ -13,7 +14,6 @@ import { useImageColor } from '@/hooks/use-image-color'; // Assuming this hook e
 import { TeamMemberT } from '@/types'; // Assuming TeamMemberT type
 import { MinusCircle, PlusCircle } from 'lucide-react'; // Assuming lucide-react is installed
 import { useState } from 'react';
-import ColorSuggestions from '../../color-suggestions';
 
 interface TeamMemberFormProps {
     teamMember?: TeamMemberT;
@@ -96,10 +96,6 @@ export default function TeamMemberForm({ teamMember, onSuccess }: TeamMemberForm
     const removeSocialLink = (index: number) => {
         const newSocialLinks = data.social_links.filter((_, i) => i !== index);
         setData('social_links', newSocialLinks.length > 0 ? newSocialLinks : [{ platform: '', url: '' }]);
-    };
-
-    const handleColorSelect = (color: string) => {
-        setData('color', color);
     };
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -265,30 +261,7 @@ export default function TeamMemberForm({ teamMember, onSuccess }: TeamMemberForm
                 </div>
             </div>
 
-            <div className="space-y-2">
-                <label htmlFor="color" className="block text-sm font-medium">
-                    Color
-                </label>
-                <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-md border" style={{ backgroundColor: data.color }} />
-                    <div className="flex items-center gap-2">
-                        <Input
-                            type="text"
-                            value={data.color}
-                            onChange={(e) => setData('color', e.target.value)}
-                            placeholder="#000000"
-                            className="w-32"
-                        />
-                        <ColorSuggestions onColorSelect={handleColorSelect} />
-                    </div>
-                </div>
-                <p className="text-xs text-gray-500">
-                    {isColorLoading && currentMascotImageUrl
-                        ? 'Extracting color from mascot image...'
-                        : 'Color is automatically extracted from the mascot image, but you can change it manually'}
-                </p>
-                {errors.color && <p className="text-sm text-red-500">{errors.color}</p>}
-            </div>
+            <ColorInput label="Color" value={data.color} onChange={(value) => setData('color', value)} error={errors.color} />
 
             <div className="flex items-center space-x-2">
                 <Checkbox id="is_active" checked={data.is_active} onCheckedChange={(checked) => setData('is_active', checked as boolean)} />

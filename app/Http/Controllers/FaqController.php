@@ -169,6 +169,17 @@ class FaqController extends Controller
         }
     }
 
+    /**
+     * Get all published FAQs for frontend
+     */
+    public function getAllFaqs()
+    {
+        if (request()->expectsJson()) {
+            $faqs = Faq::published()->get();
+            return response()->json($faqs);
+        }
+    }
+
     // public function sendFaqEmail()
     // {
     //     $cleanData = request()->validate([

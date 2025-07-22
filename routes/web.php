@@ -1,7 +1,6 @@
 <?php
 
 use App\Enums\ArtPackageType;
-use Carbon\Carbon;
 use App\Http\Controllers\AnimationAndMotionController;
 use App\Http\Controllers\ArtPackageController;
 use App\Http\Controllers\BlogController;
@@ -11,6 +10,7 @@ use App\Http\Controllers\BusinessBrandGuidelineController;
 use App\Http\Controllers\BusinessPackageAddonController;
 use App\Http\Controllers\BusinessPackagesController;
 use App\Http\Controllers\BusinessProcessController;
+use App\Http\Controllers\ColorController;
 use App\Http\Controllers\ComicArtController;
 use App\Http\Controllers\CompanyPolicyController;
 use App\Http\Controllers\ContactController;
@@ -26,7 +26,6 @@ use App\Models\ArtPackage;
 use App\Models\Blog;
 use App\Models\Brand;
 use App\Models\BrandingProject;
-use App\Models\BusinessBrandGuideline;
 use App\Models\BusinessPackageAddon;
 use App\Models\BusinessPackageItems;
 use App\Models\BusinessPackages;
@@ -34,7 +33,6 @@ use App\Models\BusinessProcess;
 use App\Models\ComicArtImages;
 use App\Models\CompanyPolicy;
 use App\Models\Faq;
-use App\Models\IllustrationArt;
 use App\Models\IllustrationArtImages;
 use App\Models\MascortArt;
 use App\Models\StickerArtImages;
@@ -57,7 +55,7 @@ Route::get('/', function () {
 
     $blogs = Blog::latest()->published()->with(['tags', 'images'])->take(6)->get();
 
-    $faqs = Faq::published()->get();
+    $faqs = Faq::published()->take(10)->get();
 
     return Inertia::render('home/home-page', [
         'brands' => $brands,
@@ -182,11 +180,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Brand Strategies
     Route::resource('/admin/brand-strategies', \App\Http\Controllers\BrandStrategyController::class);
+
+    // Theme Colors
+    Route::resource('/admin/theme-colors', ColorController::class);
 });
 
 // faq
 Route::post('/faq/send-email', [FaqController::class, 'sendFaqEmail'])
     ->name('faq.send-email');
+
+Route::get('/faq/all', [FaqController::class, 'getAllFaqs'])
+    ->name('faq.all');
 
 // contact us
 Route::post('/contact/send', [ContactController::class, 'sendMessage'])

@@ -56,7 +56,7 @@ class BusinessProcessController extends Controller
 
         BusinessProcess::create($validated);
 
-        return redirect()->route('business-processes.index')->with('success', 'Business process created successfully.');
+        return redirect()->route('business-processes.index')->with('success', 'Creative process created successfully.');
     }
 
     /**
@@ -95,7 +95,7 @@ class BusinessProcessController extends Controller
 
         $businessProcess->update($validated);
 
-        return redirect()->route('business-processes.index')->with('success', 'Business process updated successfully.');
+        return redirect()->route('business-processes.index')->with('success', 'Creative process updated successfully.');
     }
 
     /**
@@ -105,6 +105,6 @@ class BusinessProcessController extends Controller
     {
         $businessProcess->delete();
 
-        return redirect()->route('business-processes.index')->with('success', 'Business process deleted successfully.');
+        return redirect()->route('business-processes.index')->with('success', 'Creative process deleted successfully.');
     }
 }

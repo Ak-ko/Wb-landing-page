@@ -102,6 +102,7 @@ export type BrandingProjectT = {
     client_company: string;
     client_email: string;
     client_phone: string;
+    client_origin: string | null;
     service_fees: number | null;
     year: string | null;
     industry_type: string | null;
@@ -253,7 +254,7 @@ export type ArtPackageItemT = {
 
 export type ArtPackagePriceT = {
     id: number;
-    price: number;
+    price: string;
     duration: string;
     art_package_id: number;
 } & TimestampsT;

@@ -28,7 +28,7 @@ import { BreadcrumbItem, BusinessProcessT, CommonPaginationT } from '@/types';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Business Processes',
+        title: 'Creative Processes',
         href: '/admin/business-processes',
     },
 ];
@@ -155,11 +155,11 @@ export default function BusinessProcesses({
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Business Processes" />
+            <Head title="Creative Processes" />
 
             <div className="space-y-4 p-4">
                 <div className="flex flex-col justify-between gap-2 md:flex-row md:items-center">
-                    <DashboardTitle title="Business Processes" description="Manage your business processes" />
+                    <DashboardTitle title="Creative Processes" description="Manage your creative processes" />
 
                     <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between md:gap-2">
                         <BusinessProcessFilters onSearch={handleSearch} defaultQuery={filters.query || ''} />
@@ -171,12 +171,12 @@ export default function BusinessProcesses({
                                 <DialogTrigger asChild>
                                     <Button>
                                         <Plus className="mr-2 h-4 w-4" />
-                                        Add Business Process
+                                        Add Creative Process
                                     </Button>
                                 </DialogTrigger>
                                 <DialogContent className="sm:max-w-[425px]">
                                     <DialogHeader>
-                                        <DialogTitle>Add New Business Process</DialogTitle>
+                                        <DialogTitle>Add New Creative Process</DialogTitle>
                                     </DialogHeader>
                                     <BusinessProcessForm onSuccess={() => setIsAddDialogOpen(false)} />
                                 </DialogContent>
@@ -217,7 +217,7 @@ export default function BusinessProcesses({
                 <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
                     <DialogContent className="sm:max-w-[425px]">
                         <DialogHeader>
-                            <DialogTitle>Edit Business Process</DialogTitle>
+                            <DialogTitle>Edit Creative Process</DialogTitle>
                         </DialogHeader>
                         <BusinessProcessForm businessProcess={selectedBusinessProcess} onSuccess={() => setIsEditDialogOpen(false)} />
                     </DialogContent>
@@ -229,7 +229,7 @@ export default function BusinessProcesses({
                     <AlertDialogHeader>
                         <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                         <AlertDialogDescription>
-                            This action cannot be undone. This will permanently delete the business process and remove it from our servers.
+                            This action cannot be undone. This will permanently delete the creative process and remove it from our servers.
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
