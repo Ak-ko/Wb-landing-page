@@ -19,7 +19,7 @@ class TeamMemberController extends Controller
         }
 
         $teamMembers = $query->orderBy('name')
-            ->paginate(5)
+            ->paginate($request->input('perPage', 10))
             ->withQueryString();
 
         return Inertia::render('admin/team-members/index', [

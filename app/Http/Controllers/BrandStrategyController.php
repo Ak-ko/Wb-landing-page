@@ -14,6 +14,8 @@ class BrandStrategyController extends Controller
     public function index(Request $request)
     {
         $strategies = BrandStrategy::with('elements.items')
+            ->where('title', 'like', "%{$request->query('query')}%")
+            ->orWhere('description', 'like', "%{$request->query('query')}%")
             ->paginate($request->input('perPage', 10))
             ->withQueryString();
 

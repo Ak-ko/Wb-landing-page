@@ -13,6 +13,7 @@ import {
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
+import useFilter from '@/hooks/use-filter';
 import AppLayout from '@/layouts/app-layout';
 import { BrandStrategyT, BreadcrumbItem, CommonPaginationT } from '@/types';
 import { Head, router } from '@inertiajs/react';
@@ -37,6 +38,46 @@ export default function BrandStrategies({
 }) {
     const [strategyIdToDelete, setStrategyIdToDelete] = useState<number | null>(null);
 
+    // Set up filter states
+    const [filterStates, setFilterStates] = useState({
+        pageSize: strategies?.per_page,
+        pageIndex: strategies?.current_page,
+        query: filters.query || '',
+    });
+
+    // Use the filter hook
+    const { setIsFilter } = useFilter(
+        {
+            perPage: filterStates.pageSize,
+            page: filterStates.pageIndex,
+            query: filterStates.query,
+        },
+        route('brand-strategies.index'),
+        false,
+    );
+
+    const handleSearch = (query: string) => {
+        setFilterStates((prev) => ({ ...prev, query }));
+        setIsFilter(true);
+    };
+
+    const onPaginationChange = (page: number) => {
+        setIsFilter(true);
+        setFilterStates((prev) => ({
+            ...prev,
+            pageIndex: page,
+        }));
+    };
+
+    const onSelectChange = (value: number) => {
+        setIsFilter(true);
+        return setFilterStates((prev) => ({
+            ...prev,
+            pageIndex: 1,
+            pageSize: value,
+        }));
+    };
+
     const handleDeleteClick = (id: number) => setStrategyIdToDelete(id);
     const handleDeleteConfirm = () => {
         if (strategyIdToDelete) {
@@ -54,7 +95,7 @@ export default function BrandStrategies({
                 <div className="flex flex-col justify-between gap-2 md:flex-row md:items-center">
                     <DashboardTitle title="Brand Strategies" description="Manage your brand strategies" />
                     <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between md:gap-2">
-                        <BrandStrategyFilters onSearch={() => {}} defaultQuery={filters.query || ''} />
+                        <BrandStrategyFilters onSearch={handleSearch} defaultQuery={filters.query || ''} />
                         <Button onClick={() => router.get(route('brand-strategies.create'))}>
                             <Plus className="mr-2 h-4 w-4" />
                             Add Brand Strategy
@@ -64,8 +105,8 @@ export default function BrandStrategies({
                 <DataTable
                     columns={brandStrategyColumns}
                     data={strategies.data}
-                    onPaginationChange={() => {}}
-                    onSelectChange={() => {}}
+                    onPaginationChange={onPaginationChange}
+                    onSelectChange={onSelectChange}
                     pagingData={{
                         pageIndex: strategies.current_page,
                         pageSize: strategies.per_page,

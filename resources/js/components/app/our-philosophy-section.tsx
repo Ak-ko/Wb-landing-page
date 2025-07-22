@@ -9,10 +9,8 @@ import SectionHeader from './section-header';
 export default function OurPhilosophySection() {
     const { policy } = usePage<{ policy: CompanyPolicyT }>().props;
 
-    // Check if any policy content exists
     const hasAnyPolicy = policy?.mission || policy?.vision || policy?.core_values;
 
-    // Count available cards
     const availableCards = [policy?.mission && 'mission', policy?.vision && 'vision', policy?.core_values && 'core_values'].filter(Boolean);
 
     const cardCount = availableCards.length;
