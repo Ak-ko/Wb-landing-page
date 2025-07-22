@@ -58,7 +58,7 @@ Route::get('/', function () {
 
     $blogs = Blog::latest()->published()->with(['tags', 'images'])->take(6)->get();
 
-    $faqs = Faq::published()->get();
+    $faqs = Faq::published()->take(10)->get();
 
     return Inertia::render('home/home-page', [
         'brands' => $brands,
@@ -191,6 +191,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // faq
 Route::post('/faq/send-email', [FaqController::class, 'sendFaqEmail'])
     ->name('faq.send-email');
+
+Route::get('/faq/all', [FaqController::class, 'getAllFaqs'])
+    ->name('faq.all');
 
 // contact us
 Route::post('/contact/send', [ContactController::class, 'sendMessage'])

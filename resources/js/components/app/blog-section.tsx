@@ -59,6 +59,7 @@ export default function BlogSection() {
                                 <CarouselItem key={blog.id}>
                                     <Link
                                         href={route('blogs.detail', { blog: blog.id })}
+                                        preserveScroll={true}
                                         className="block cursor-pointer overflow-hidden rounded-xl transition-shadow hover:shadow-lg"
                                     >
                                         <motion.div
@@ -110,21 +111,6 @@ export default function BlogSection() {
                                             >
                                                 <h3 className="mb-3 text-xl font-bold md:mb-4 md:text-2xl">{blog.title}</h3>
                                                 <p className="line-clamp-3 text-sm md:line-clamp-4 md:text-base">{blog.description}</p>
-                                                <div className="mt-3 flex flex-wrap justify-center gap-2 md:mt-4">
-                                                    {blog.tags &&
-                                                        blog.tags.map((tag) => (
-                                                            <span
-                                                                style={{
-                                                                    backgroundColor: tag.color,
-                                                                    color: isLightColor(tag.color) ? 'black' : 'white',
-                                                                }}
-                                                                key={tag.id}
-                                                                className="rounded-full bg-gray-100 px-2 py-0.5 text-xs md:px-3 md:py-1 md:text-sm"
-                                                            >
-                                                                {tag.name}
-                                                            </span>
-                                                        ))}
-                                                </div>
                                             </motion.div>
 
                                             {/* Second image - hidden on mobile */}
@@ -174,18 +160,20 @@ export default function BlogSection() {
                         {blogs?.length > 1 && (
                             <>
                                 <CarouselPrevious
+                                    disabled={currentIndex === 0}
                                     style={{
                                         backgroundColor: blogs[currentIndex]?.color,
                                         color: isLightColor(blogs[currentIndex]?.color) ? 'black' : 'white',
                                     }}
-                                    className="left-0 md:left-2"
+                                    className="left-0 size-[50px] md:left-2"
                                 />
                                 <CarouselNext
+                                    disabled={currentIndex === blogs.length - 1}
                                     style={{
                                         backgroundColor: blogs[currentIndex]?.color,
                                         color: isLightColor(blogs[currentIndex]?.color) ? 'black' : 'white',
                                     }}
-                                    className="right-0 md:right-2"
+                                    className="right-0 size-[50px] md:right-2"
                                 />
                             </>
                         )}

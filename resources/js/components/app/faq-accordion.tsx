@@ -12,15 +12,27 @@ interface FaqAccordionItemProps {
     faq: FaqT;
     isOpen: boolean;
     onClick: () => void;
+    index: number;
 }
 
-function FaqAccordionItem({ faq, isOpen, onClick }: FaqAccordionItemProps) {
+function FaqAccordionItem({ faq, isOpen, onClick, index }: FaqAccordionItemProps) {
     return (
-        <div
+        <motion.div
             className="bg-gray-100/50"
             style={{
                 borderLeftWidth: 4,
                 borderLeftColor: faq.color || '#3b82f6',
+            }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+                duration: 0.5,
+                delay: index * 0.1,
+                ease: 'easeOut',
+            }}
+            whileHover={{
+                scale: 1.02,
+                transition: { duration: 0.2 },
             }}
         >
             <div
@@ -32,10 +44,9 @@ function FaqAccordionItem({ faq, isOpen, onClick }: FaqAccordionItemProps) {
             >
                 <div className="flex items-center justify-between py-4">
                     <h3 className="flex-1 text-lg font-medium select-none">{faq.question}</h3>
-                    <ChevronDown
-                        className={cn('mr-3 transition-transform duration-200', isOpen ? 'rotate-180' : 'rotate-0')}
-                        style={{ color: faq.color || '#3b82f6' }}
-                    />
+                    <motion.div animate={{ rotateX: isOpen ? 180 : 0 }} transition={{ duration: 0.2 }}>
+                        <ChevronDown className="mr-3" style={{ color: faq.color || '#3b82f6' }} />
+                    </motion.div>
                 </div>
             </div>
 
@@ -45,14 +56,20 @@ function FaqAccordionItem({ faq, isOpen, onClick }: FaqAccordionItemProps) {
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.25, ease: 'easeInOut' }}
+                        transition={{ duration: 0.3, ease: 'easeInOut' }}
                         className="overflow-hidden pr-4"
                     >
-                        <div className="prose prose-sm max-w-none px-8 pb-4" dangerouslySetInnerHTML={{ __html: faq.answer }} />
+                        <motion.div
+                            className="prose prose-sm max-w-none px-8 pb-4"
+                            dangerouslySetInnerHTML={{ __html: faq.answer }}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.1, duration: 0.2 }}
+                        />
                     </motion.div>
                 )}
             </AnimatePresence>
-        </div>
+        </motion.div>
     );
 }
 
@@ -64,10 +81,10 @@ export default function FaqAccordion({ faqs }: FaqAccordionProps) {
     };
 
     return (
-        <div className={`w-full max-w-3xl space-y-3`}>
+        <motion.div className={`w-full max-w-3xl space-y-3`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
             {faqs.map((faq, index) => (
-                <FaqAccordionItem key={faq.id} faq={faq} isOpen={openIndex === index} onClick={() => handleToggle(index)} />
+                <FaqAccordionItem key={faq.id} faq={faq} isOpen={openIndex === index} onClick={() => handleToggle(index)} index={index} />
             ))}
-        </div>
+        </motion.div>
     );
 }

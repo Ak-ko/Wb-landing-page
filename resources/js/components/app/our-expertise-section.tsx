@@ -91,7 +91,7 @@ export default function OurExpertiseSection() {
 
                             <div className="md:text-end">
                                 <Link href={route('art-plan-page')} className={cn('primary_btn', 'flex justify-center px-8 py-5 md:inline-flex')}>
-                                    See Plans
+                                    See Packages
                                 </Link>
                             </div>
 
