@@ -116,7 +116,7 @@ export default function BrandingProjectDetail({ project, relatedProjects }: Bran
                                       <div>
                                           <p className="flex items-center gap-2 font-medium text-gray-900">
                                               {member.name}
-                                              {member.pivot?.is_lead && (
+                                              {!!member?.pivot?.is_lead && (
                                                   <span
                                                       className="ml-2 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold shadow-sm"
                                                       style={{ backgroundColor: 'var(--primary)', color: 'var(--primary-foreground)' }}

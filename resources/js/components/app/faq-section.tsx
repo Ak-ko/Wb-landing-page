@@ -14,7 +14,6 @@ const INITIAL_FAQ_COUNT = 10;
 
 export default function FaqSection() {
     const { faqs } = usePage<{ faqs: FaqT[] }>().props;
-    console.log(faqs.length);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [allFaqs, setAllFaqs] = useState<FaqT[]>([]);
     const [isLoading, setIsLoading] = useState(false);

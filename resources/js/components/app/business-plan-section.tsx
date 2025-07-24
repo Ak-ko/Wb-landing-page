@@ -1,11 +1,12 @@
 import { isLightColor } from '@/lib/colors';
 import { MESSENGER } from '@/lib/social-links';
-import { cn } from '@/lib/utils';
+import { chunkBy, cn, splitIntoColumns } from '@/lib/utils';
 import { BusinessPackageT } from '@/types';
 import { usePage } from '@inertiajs/react';
 import { AnimatePresence, motion as framerMotion, motion } from 'framer-motion';
-import { Check } from 'lucide-react';
+import { ArrowLeft, Check, ChevronRight } from 'lucide-react';
 import React, { useState } from 'react';
+import DynamicDots from './dynamic-dots';
 
 interface BrandElementItem {
     id: number | string;
@@ -44,24 +45,40 @@ type PanelKey = (typeof PANELS)[number]['key'];
 
 // BreadcrumbBar
 function BreadcrumbBar({ color, activePanel, setPanel }: { color: string; activePanel: PanelKey; setPanel: (panel: PanelKey) => void }) {
+    const handlePanelClick = (panel: PanelKey) => {
+        setPanel(panel);
+        // Smooth scroll to top of the section
+        const section = document.querySelector('.business-plan-section');
+        if (section) {
+            section.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start',
+            });
+        }
+    };
+
     return (
         <div
-            className="mx-auto mb-11 flex h-16 w-[88%] items-center justify-center"
+            className="mx-auto mb-11 flex h-25 w-[88%] items-center justify-between"
             style={{ borderTop: `2px solid ${color}`, borderBottom: `2px solid ${color}`, background: 'black' }}
         >
             {PANELS.map((panel, idx) => (
                 <React.Fragment key={panel.key}>
                     <button
-                        onClick={() => setPanel(panel.key as PanelKey)}
+                        onClick={() => handlePanelClick(panel.key as PanelKey)}
                         className={cn(
-                            'px-6 py-2 text-base font-bold uppercase transition-all',
+                            'cursor-pointer px-6 py-2 text-4xl font-bold uppercase transition-all hover:text-white 2xl:text-[38px]',
                             activePanel === panel.key ? 'text-white' : 'text-white/50',
                             'focus:outline-none',
                         )}
                     >
                         {panel.label}
                     </button>
-                    {idx < PANELS.length - 1 && <span className="text-lg text-white/30">&gt;</span>}
+                    {idx < PANELS.length - 1 && (
+                        <span className="text-white/30">
+                            <ChevronRight className="size-[50px] 2xl:size-[70px]" />
+                        </span>
+                    )}
                 </React.Fragment>
             ))}
         </div>
@@ -83,49 +100,116 @@ function PackagePanelContent({
     color: string;
     scrollbarStyle: string;
 }) {
+    const [col1, col2, col3] = splitIntoColumns<AllItem>(b?.all_items ?? [], ~~b?.all_items?.length / 2.5);
+
+    if (col1?.length === 0 && col2?.length === 0 && col3?.length === 0) return null;
+
     return (
-        <div className="mb-11 w-full">
+        <div className="mb-11 w-[88%]">
             <div className="mb-11 flex flex-col items-center justify-center">
-                <div className="mb-3 flex items-center gap-3 text-center text-3xl font-bold uppercase" style={{ color }}>
+                <div
+                    className="mb-3 flex items-center gap-3 text-center font-bold uppercase md:text-[50px] lg:text-[60px] 2xl:text-[80px]"
+                    style={{ color }}
+                >
                     <span>{b?.name}</span>
                 </div>
-                <p className="mb-3 max-w-2xl text-center text-sm text-white/80 uppercase">{b?.description}</p>
+                <p className="mb-4 max-w-2xl text-center text-white/80 uppercase md:text-sm lg:text-xl 2xl:text-2xl">{b?.description}</p>
                 {b?.is_recommended && (
                     <span
-                        className="ml-2 rounded-full px-3 py-2 text-xs uppercase"
+                        className="lg:text-md rounded-full px-8 py-2 text-xs font-bold uppercase 2xl:text-lg"
                         style={{ background: color, color: isLightColor(color) ? 'black' : 'white' }}
                     >
                         Recommended
                     </span>
                 )}
             </div>
-            <div className={cn('w-full flex-1 overflow-y-auto', scrollbarStyle)} style={{ maxHeight: 300 }}>
-                <ul className={cn('grid w-full grid-cols-3 gap-3 px-4 pr-1')}>
-                    {b?.all_items?.map((i: AllItem, idx: number) => (
-                        <li
-                            key={i?.id}
-                            className={cn(
-                                'flex w-full items-center space-x-1 self-start text-sm uppercase',
-                                i?.is_included ? 'text-white' : 'text-white/50 line-through',
-                                idx < 4 ? 'font-bold' : 'font-normal',
-                            )}
-                        >
-                            <Check style={{ color }} />
-                            <div className="mt-1 flex items-start gap-2">
-                                <span className="text-wrap">{i?.name}</span>
-                                {i?.detail_link && (
-                                    <a
-                                        href={i?.detail_link}
-                                        target="_blank"
-                                        className="inline-block text-xs font-normal text-nowrap text-white capitalize underline"
-                                    >
-                                        See Detail
-                                    </a>
+            <div className={cn('mx-auto flex w-full', scrollbarStyle)}>
+                {col1?.length > 0 && (
+                    <ul className="flex w-full flex-col gap-5">
+                        {col1?.map((i: AllItem) => (
+                            <li
+                                key={i?.id}
+                                className={cn(
+                                    'flex w-full items-start space-x-1 self-start text-xl 2xl:text-[25px]',
+                                    i?.is_included ? 'text-white' : 'text-white/50 line-through',
                                 )}
-                            </div>
-                        </li>
-                    ))}
-                </ul>
+                            >
+                                <Check className="shrink-0" style={{ color }} />
+                                <div className="space-x-2.5 !leading-[25px]">
+                                    <span className="text-wrap">{i?.name}</span>
+                                    {i?.detail_link && (
+                                        <a
+                                            href={i?.detail_link}
+                                            target="_blank"
+                                            style={{ color }}
+                                            className="inline-block text-xs font-normal text-nowrap text-white capitalize underline 2xl:mt-2 2xl:text-sm"
+                                        >
+                                            (See Detail)
+                                        </a>
+                                    )}
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                )}
+
+                {col2?.length > 0 && (
+                    <ul className="flex w-full flex-col gap-5">
+                        {col2?.map((i: AllItem) => (
+                            <li
+                                key={i?.id}
+                                className={cn(
+                                    'flex w-full items-start space-x-1 self-start text-xl 2xl:text-[25px]',
+                                    i?.is_included ? 'text-white' : 'text-white/50 line-through',
+                                )}
+                            >
+                                <Check className="shrink-0" style={{ color }} />
+                                <div className="space-x-2.5 !leading-[25px]">
+                                    <span className="text-wrap">{i?.name}</span>
+                                    {i?.detail_link && (
+                                        <a
+                                            href={i?.detail_link}
+                                            target="_blank"
+                                            style={{ color }}
+                                            className="inline-block text-xs font-normal text-nowrap text-white capitalize underline 2xl:mt-2 2xl:text-sm"
+                                        >
+                                            (See Detail)
+                                        </a>
+                                    )}
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                )}
+
+                {col3?.length > 0 && (
+                    <ul className="flex w-full flex-col gap-5">
+                        {col3?.map((i: AllItem) => (
+                            <li
+                                key={i?.id}
+                                className={cn(
+                                    'flex w-full items-start space-x-1 self-start text-xl 2xl:text-[25px]',
+                                    i?.is_included ? 'text-white' : 'text-white/50 line-through',
+                                )}
+                            >
+                                <Check className="shrink-0" style={{ color }} />
+                                <div className="space-x-2.5 !leading-[25px]">
+                                    <span className="text-wrap">{i?.name}</span>
+                                    {i?.detail_link && (
+                                        <a
+                                            href={i?.detail_link}
+                                            target="_blank"
+                                            style={{ color }}
+                                            className="inline-block text-xs font-normal text-nowrap text-white capitalize underline 2xl:mt-2 2xl:text-sm"
+                                        >
+                                            (See Detail)
+                                        </a>
+                                    )}
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                )}
             </div>
         </div>
     );
@@ -146,39 +230,49 @@ function StrategyPanelContent({
     color: string;
     scrollbarStyle: string;
 }) {
+    const chunks = chunkBy(b?.brand_strategy?.elements ?? [], Math.ceil((b?.brand_strategy?.elements?.length ?? 0) / 2));
+
+    if (chunks?.length === 0) return null;
+
     return (
-        <div className="mb-11">
+        <div className="mb-11 w-[88%]">
             <div className="mb-11 flex flex-col items-center justify-center">
-                <div className="mb-3 flex items-center gap-3 text-center text-3xl font-bold uppercase" style={{ color }}>
+                <div
+                    className="mb-3 flex items-center gap-3 text-center font-bold uppercase md:text-[50px] lg:text-[60px] 2xl:text-[80px]"
+                    style={{ color }}
+                >
                     <span>{b?.brand_strategy?.title}</span>
                 </div>
-                <p className="mb-3 max-w-2xl text-center text-sm text-white/80 uppercase">{b?.brand_strategy?.description}</p>
+                <p className="mb-3 max-w-2xl text-center text-sm text-white/80 uppercase lg:text-xl 2xl:text-2xl">{b?.brand_strategy?.description}</p>
             </div>
-            <div className={cn('w-full flex-1 overflow-y-auto', scrollbarStyle)} style={{ maxHeight: 300 }}>
-                <ul className={cn('grid w-full grid-cols-2 gap-13 px-4 pr-1')}>
-                    {b?.brand_strategy?.elements?.map((i: BrandElement) => (
-                        <li key={i?.id}>
-                            <div className="flex w-full items-center gap-3 text-xl font-bold text-white uppercase">
-                                <span>{i?.order}</span>
-                                <span>{i?.title}</span>
-                            </div>
-                            <ul className="my-2">
-                                {i?.items?.map((j: BrandElementItem, subIdx: number) => (
-                                    <li key={j?.id} className="flex items-center gap-3 text-white uppercase">
-                                        <span>{j?.order}.</span>
-                                        <span className="flex min-w-0 flex-1 items-center">
-                                            <span className="truncate">{j?.title}</span>
-                                            <span className="mx-2 flex-1 overflow-hidden whitespace-nowrap text-white" style={{ letterSpacing: 2 }}>
-                                                {'.'.repeat(100)}
-                                            </span>
-                                            <span className="text-base text-white">{String(subIdx + 1).padStart(2, '0')}</span>
-                                        </span>
-                                    </li>
-                                ))}
-                            </ul>
-                        </li>
+            <div className={cn('w-full flex-1 overflow-y-auto', scrollbarStyle)} style={{ maxHeight: 450 }}>
+                <div className="flex w-full gap-10 px-4 pr-1">
+                    {chunks.map((column, colIdx) => (
+                        <ul key={colIdx} className="flex w-full flex-col gap-8">
+                            {column.map((i: BrandElement) => (
+                                <li key={i?.id}>
+                                    <div className="flex w-full items-center gap-3 text-xl font-bold text-white uppercase 2xl:text-lg">
+                                        <span>{i?.order}</span>
+                                        <span>{i?.title}</span>
+                                    </div>
+
+                                    <ul className="my-2 space-y-2">
+                                        {i?.items?.map((j: BrandElementItem, subIdx: number) => (
+                                            <li key={j?.id} className="flex items-start gap-3 text-white">
+                                                <span>{j?.order}.</span>
+                                                <span className="2xl:text-md flex min-w-0 flex-1 items-center">
+                                                    <span className="flex-1">{j?.title}</span>
+                                                    <DynamicDots />
+                                                    <span className="text-base text-white">{String(subIdx + 1).padStart(2, '0')}</span>
+                                                </span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </li>
+                            ))}
+                        </ul>
                     ))}
-                </ul>
+                </div>
             </div>
         </div>
     );
@@ -199,39 +293,50 @@ function GuidelinePanelContent({
     color: string;
     scrollbarStyle: string;
 }) {
+    const chunks = chunkBy(b?.brand_guideline?.elements ?? [], Math.ceil((b?.brand_guideline?.elements?.length ?? 0) / 2));
+
+    if (chunks?.length === 0) return null;
+
     return (
-        <div className="mb-11">
+        <div className="mb-11 w-[88%]">
             <div className="mb-11 flex flex-col items-center justify-center">
-                <div className="mb-3 flex items-center gap-3 text-center text-3xl font-bold uppercase" style={{ color }}>
+                <div
+                    className="mb-3 flex items-center gap-3 text-center font-bold uppercase md:text-[50px] lg:text-[60px] 2xl:text-[80px]"
+                    style={{ color }}
+                >
                     <span>{b?.brand_guideline?.title}</span>
                 </div>
-                <p className="mb-3 max-w-2xl text-center text-sm text-white/80 uppercase">{b?.brand_guideline?.description}</p>
+                <p className="mb-3 max-w-2xl text-center text-sm text-white/80 uppercase lg:text-xl 2xl:text-2xl">
+                    {b?.brand_guideline?.description}
+                </p>
             </div>
-            <div className={cn('w-full flex-1 overflow-y-auto', scrollbarStyle)} style={{ maxHeight: 300 }}>
-                <ul className={cn('grid w-full grid-cols-2 gap-13 px-4 pr-1')}>
-                    {b?.brand_guideline?.elements?.map((i: BrandElement) => (
-                        <li key={i?.id}>
-                            <div className="flex w-full items-center gap-3 text-xl font-bold text-white uppercase">
-                                <span>{i?.order}</span>
-                                <span>{i?.title}</span>
-                            </div>
-                            <ul className="my-2">
-                                {i?.items?.map((j: BrandElementItem, subIdx: number) => (
-                                    <li key={j?.id} className="flex items-center gap-3 text-white uppercase">
-                                        <span>{j?.order}.</span>
-                                        <span className="flex min-w-0 flex-1 items-center">
-                                            <span className="truncate">{j?.title}</span>
-                                            <span className="mx-2 flex-1 overflow-hidden whitespace-nowrap text-white" style={{ letterSpacing: 2 }}>
-                                                {'.'.repeat(100)}
-                                            </span>
-                                            <span className="text-base text-white">{String(subIdx + 1).padStart(2, '0')}</span>
-                                        </span>
-                                    </li>
-                                ))}
-                            </ul>
-                        </li>
+            <div className={cn('w-full flex-1 overflow-y-auto', scrollbarStyle)} style={{ maxHeight: 450 }}>
+                <div className="flex w-full gap-10 px-4 pr-1">
+                    {chunks.map((column, colIdx) => (
+                        <ul key={colIdx} className="flex w-full flex-col gap-8">
+                            {column.map((i: BrandElement) => (
+                                <li key={i?.id}>
+                                    <div className="flex w-full items-center gap-3 text-xl font-bold text-white uppercase 2xl:text-lg">
+                                        <span>{i?.order}</span>
+                                        <span>{i?.title}</span>
+                                    </div>
+                                    <ul className="my-2">
+                                        {i?.items?.map((j: BrandElementItem, subIdx: number) => (
+                                            <li key={j?.id} className="flex items-center gap-3 text-white uppercase">
+                                                <span>{j?.order}.</span>
+                                                <span className="2xl:text-md flex min-w-0 flex-1 items-center">
+                                                    <span className="flex-1">{j?.title}</span>
+                                                    <DynamicDots />
+                                                    <span className="text-base text-white">{String(subIdx + 1).padStart(2, '0')}</span>
+                                                </span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </li>
+                            ))}
+                        </ul>
                     ))}
-                </ul>
+                </div>
             </div>
         </div>
     );
@@ -253,23 +358,24 @@ function PriceSection({
     hasDiscount: boolean;
 }) {
     return (
-        <div className="flex flex-col items-center bg-white py-22 text-center">
+        <div className="flex flex-col items-center bg-white py-[200px] text-center">
             <div className="mb-5">
-                <div className="mb-2 text-4xl font-bold uppercase" style={{ color }}>
+                <div className="mb-2 text-[50px] font-bold uppercase" style={{ color }}>
                     {b?.name}
                 </div>
-                <div className="mb-1 text-base text-black/80">for an investment of just</div>
+                <div className="mb-1 text-xl text-black/80">for an investment of just</div>
             </div>
             {hasDiscount && (
-                <div className="mb-5">
-                    {b.discount_description && <div className="text-primary-orange text-2xl font-semibold">{b.discount_description}</div>}
-                    <div className="mb-1 text-xl line-through" style={{ textDecorationColor: 'var(--color-primary-orange, #FFA500)' }}>
+                <div className="mb-5 space-y-3">
+                    {b.discount_description && <div className="text-primary-orange text-3xl">{b.discount_description}</div>}
+                    <div className="relative mb-1 text-3xl text-gray-500">
                         {b.price_text}
+                        <div className="bg-primary-orange absolute top-1/2 left-0 h-[2px] w-[100%]" />
                     </div>
                 </div>
             )}
-            <div className="mb-5 text-3xl font-bold text-black">{hasDiscount ? b.discount_price_text : b.price_text}</div>
-            <div className="mb-3 space-y-1 text-lg text-black/80">
+            <div className="mb-5 text-[45px] font-bold text-black">{hasDiscount ? b.discount_price_text : b.price_text}</div>
+            <div className="mb-3 space-y-1 text-2xl text-black/80">
                 {b?.durations?.map((d: Duration) => (
                     <div key={d?.id}>
                         <span>
@@ -348,7 +454,7 @@ function MobileBusinessPackageDetail({
         >
             <div className="flex items-center p-4">
                 <button onClick={onBack} className="mr-2 text-lg font-bold text-white">
-                    ←
+                    <ArrowLeft className="size-6" />
                 </button>
                 <span className="text-lg font-bold text-white">{b.name}</span>
             </div>
@@ -359,12 +465,12 @@ function MobileBusinessPackageDetail({
                             {b.name}
                         </div>
                         <p className="mb-4 text-center text-sm text-white/80 uppercase">{b.description}</p>
-                        <ul className={cn('grid w-full flex-1 grid-cols-1 gap-2', scrollbarStyle)} style={{ maxHeight: 300 }}>
+                        <ul className={cn('grid w-full flex-1 grid-cols-1 gap-2 overflow-y-auto', scrollbarStyle)} style={{ maxHeight: 300 }}>
                             {b.all_items?.map((i: AllItem, idx: number) => (
                                 <li
                                     key={i.id}
                                     className={cn(
-                                        'flex items-center space-x-1 text-base uppercase',
+                                        'flex items-start space-x-1 text-base uppercase',
                                         i.is_included ? 'text-white' : 'text-white/50 line-through',
                                         idx < 4 ? 'font-bold' : 'font-normal',
                                     )}
@@ -377,8 +483,9 @@ function MobileBusinessPackageDetail({
                                                 href={i?.detail_link}
                                                 target="_blank"
                                                 className="inline-block w-[30%] text-sm font-normal text-nowrap text-white capitalize underline"
+                                                style={{ color }}
                                             >
-                                                See Detail
+                                                (See Detail)
                                             </a>
                                         )}
                                     </div>
@@ -393,7 +500,7 @@ function MobileBusinessPackageDetail({
                             {b.brand_strategy?.title}
                         </div>
                         <p className="mb-4 text-center text-sm text-white/80 uppercase">{b.brand_strategy?.description}</p>
-                        <ul className={cn('grid w-full flex-1 grid-cols-1 gap-2', scrollbarStyle)} style={{ maxHeight: 300 }}>
+                        <ul className={cn('grid w-full flex-1 grid-cols-1 gap-2 overflow-y-auto', scrollbarStyle)} style={{ maxHeight: 300 }}>
                             {b.brand_strategy?.elements?.map((i: BrandElement) => (
                                 <li key={i.id}>
                                     <div className="flex items-center gap-2 text-lg font-bold text-white uppercase">
@@ -419,7 +526,7 @@ function MobileBusinessPackageDetail({
                             {b.brand_guideline?.title}
                         </div>
                         <p className="mb-4 text-center text-sm text-white/80 uppercase">{b.brand_guideline?.description}</p>
-                        <ul className={cn('grid w-full flex-1 grid-cols-1 gap-2', scrollbarStyle)} style={{ maxHeight: 300 }}>
+                        <ul className={cn('grid w-full flex-1 grid-cols-1 gap-2 overflow-y-auto', scrollbarStyle)} style={{ maxHeight: 300 }}>
                             {b.brand_guideline?.elements?.map((i: BrandElement) => (
                                 <li key={i.id}>
                                     <div className="flex items-center gap-2 text-lg font-bold text-white uppercase">
@@ -549,7 +656,7 @@ export default function BusinessPlanSection() {
 
             {/* Desktop version */}
             <section className="hidden py-16 md:block">
-                <div className="app-container mx-auto max-w-[1200px]">
+                <div className="">
                     {businessPackages.map((bRaw) => {
                         const b = bRaw as BusinessPackageT & {
                             brand_strategy?: BrandStrategyOrGuideline;
@@ -563,8 +670,8 @@ export default function BusinessPlanSection() {
                         const activePanel = activePanels[b.id] || 'main';
                         const setPanel = (panel: PanelKey) => setActivePanels((prev) => ({ ...prev, [b.id]: panel }));
                         return (
-                            <div key={b.id} className="mb-16">
-                                <div className="flex w-full flex-col overflow-hidden rounded-xl bg-black py-11" style={{ minHeight: 700 }}>
+                            <div key={b.id} className="business-plan-section mb-16">
+                                <div className="flex min-h-[2000px] w-full flex-col overflow-hidden bg-black py-11 2xl:min-h-[2200px]">
                                     <div className="relative flex-1 overflow-hidden">
                                         {/* Panels */}
                                         <motion.div

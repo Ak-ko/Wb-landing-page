@@ -26,3 +26,23 @@ export function calculateReadingTime(content: string): number {
     const minutes = Math.ceil(wordCount / 200);
     return Math.max(1, minutes);
 }
+
+export function splitIntoColumns<T>(items: T[], equalColumnCount = 5): T[][] {
+    if (items?.length === 0) return [];
+
+    const col1 = items.slice(0, equalColumnCount);
+    const col2 = items.slice(equalColumnCount, equalColumnCount * 2);
+    const col3 = items.slice(equalColumnCount * 2);
+
+    return [col1, col2, col3];
+}
+
+export function chunkBy<T>(arr: T[], chunkSize: number): T[][] {
+    if (arr?.length === 0) return [];
+
+    const chunks: T[][] = [];
+    for (let i = 0; i < arr.length; i += chunkSize) {
+        chunks.push(arr.slice(i, i + chunkSize));
+    }
+    return chunks;
+}
