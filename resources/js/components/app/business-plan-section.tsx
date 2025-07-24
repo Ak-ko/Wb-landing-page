@@ -89,7 +89,6 @@ function BreadcrumbBar({ color, activePanel, setPanel }: { color: string; active
 function PackagePanelContent({
     b,
     color,
-    scrollbarStyle,
 }: {
     b: BusinessPackageT & {
         brand_strategy?: BrandStrategyOrGuideline;
@@ -98,7 +97,6 @@ function PackagePanelContent({
         all_items?: AllItem[];
     };
     color: string;
-    scrollbarStyle: string;
 }) {
     const [col1, col2, col3] = splitIntoColumns<AllItem>(b?.all_items ?? [], ~~b?.all_items?.length / 2.5);
 
@@ -123,7 +121,13 @@ function PackagePanelContent({
                     </span>
                 )}
             </div>
-            <div className={cn('mx-auto flex w-full', scrollbarStyle)}>
+            <div
+                className="scrollbar-thin scrollbar-track-black mx-auto flex w-full overflow-y-auto"
+                style={{
+                    scrollbarColor: `${color} black`,
+                    scrollbarWidth: 'thin',
+                }}
+            >
                 {col1?.length > 0 && (
                     <ul className="flex w-full flex-col gap-5">
                         {col1?.map((i: AllItem) => (
@@ -219,7 +223,6 @@ function PackagePanelContent({
 function StrategyPanelContent({
     b,
     color,
-    scrollbarStyle,
 }: {
     b: BusinessPackageT & {
         brand_strategy?: BrandStrategyOrGuideline;
@@ -228,7 +231,6 @@ function StrategyPanelContent({
         all_items?: AllItem[];
     };
     color: string;
-    scrollbarStyle: string;
 }) {
     const chunks = chunkBy(b?.brand_strategy?.elements ?? [], Math.ceil((b?.brand_strategy?.elements?.length ?? 0) / 2));
 
@@ -245,7 +247,14 @@ function StrategyPanelContent({
                 </div>
                 <p className="mb-3 max-w-2xl text-center text-sm text-white/80 uppercase lg:text-xl 2xl:text-2xl">{b?.brand_strategy?.description}</p>
             </div>
-            <div className={cn('w-full flex-1 overflow-y-auto', scrollbarStyle)} style={{ maxHeight: 450 }}>
+            <div
+                className="scrollbar-thin scrollbar-track-black w-full flex-1 overflow-y-auto"
+                style={{
+                    maxHeight: 450,
+                    scrollbarColor: `${color} black`,
+                    scrollbarWidth: 'thin',
+                }}
+            >
                 <div className="flex w-full gap-10 px-4 pr-1">
                     {chunks.map((column, colIdx) => (
                         <ul key={colIdx} className="flex w-full flex-col gap-8">
@@ -282,7 +291,6 @@ function StrategyPanelContent({
 function GuidelinePanelContent({
     b,
     color,
-    scrollbarStyle,
 }: {
     b: BusinessPackageT & {
         brand_strategy?: BrandStrategyOrGuideline;
@@ -291,7 +299,6 @@ function GuidelinePanelContent({
         all_items?: AllItem[];
     };
     color: string;
-    scrollbarStyle: string;
 }) {
     const chunks = chunkBy(b?.brand_guideline?.elements ?? [], Math.ceil((b?.brand_guideline?.elements?.length ?? 0) / 2));
 
@@ -310,7 +317,14 @@ function GuidelinePanelContent({
                     {b?.brand_guideline?.description}
                 </p>
             </div>
-            <div className={cn('w-full flex-1 overflow-y-auto', scrollbarStyle)} style={{ maxHeight: 450 }}>
+            <div
+                className="scrollbar-thin scrollbar-track-black w-full flex-1 overflow-y-auto"
+                style={{
+                    maxHeight: 450,
+                    scrollbarColor: `${color} black`,
+                    scrollbarWidth: 'thin',
+                }}
+            >
                 <div className="flex w-full gap-10 px-4 pr-1">
                     {chunks.map((column, colIdx) => (
                         <ul key={colIdx} className="flex w-full flex-col gap-8">
@@ -401,7 +415,7 @@ function PriceSection({
 // Mobile Card Component
 function BusinessPackageCard({ b, color, onClick }: { b: BusinessPackageT & { all_items?: AllItem[] }; color: string; onClick: () => void }) {
     return (
-        <div className="relative mb-6 overflow-hidden rounded-2xl p-5" style={{ background: color }}>
+        <div onClick={onClick} className="relative mb-6 overflow-hidden rounded-2xl p-5" style={{ background: color }}>
             <div>
                 <img src="/assets/logo.png" className="absolute top-1/2 right-[-15%] size-[150px] -translate-y-1/2 opacity-[15%]" />
             </div>
@@ -442,7 +456,6 @@ function MobileBusinessPackageDetail({
     onBack: () => void;
 }) {
     const [activePanel, setActivePanel] = useState<PanelKey>('main');
-    const scrollbarStyle = `scrollbar-thin scrollbar-thumb-[${color}] scrollbar-track-black`;
     const hasDiscount = b.is_discount;
     return (
         <framerMotion.div
@@ -465,7 +478,14 @@ function MobileBusinessPackageDetail({
                             {b.name}
                         </div>
                         <p className="mb-4 text-center text-sm text-white/80 uppercase">{b.description}</p>
-                        <ul className={cn('grid w-full flex-1 grid-cols-1 gap-2 overflow-y-auto', scrollbarStyle)} style={{ maxHeight: 300 }}>
+                        <ul
+                            className="scrollbar-thin scrollbar-track-black grid w-full flex-1 grid-cols-1 gap-2 overflow-y-auto"
+                            style={{
+                                maxHeight: 300,
+                                scrollbarColor: `${color} black`,
+                                scrollbarWidth: 'thin',
+                            }}
+                        >
                             {b.all_items?.map((i: AllItem, idx: number) => (
                                 <li
                                     key={i.id}
@@ -500,7 +520,14 @@ function MobileBusinessPackageDetail({
                             {b.brand_strategy?.title}
                         </div>
                         <p className="mb-4 text-center text-sm text-white/80 uppercase">{b.brand_strategy?.description}</p>
-                        <ul className={cn('grid w-full flex-1 grid-cols-1 gap-2 overflow-y-auto', scrollbarStyle)} style={{ maxHeight: 300 }}>
+                        <ul
+                            className="scrollbar-thin scrollbar-track-black grid w-full flex-1 grid-cols-1 gap-2 overflow-y-auto"
+                            style={{
+                                maxHeight: 300,
+                                scrollbarColor: `${color} black`,
+                                scrollbarWidth: 'thin',
+                            }}
+                        >
                             {b.brand_strategy?.elements?.map((i: BrandElement) => (
                                 <li key={i.id}>
                                     <div className="flex items-center gap-2 text-lg font-bold text-white uppercase">
@@ -526,7 +553,14 @@ function MobileBusinessPackageDetail({
                             {b.brand_guideline?.title}
                         </div>
                         <p className="mb-4 text-center text-sm text-white/80 uppercase">{b.brand_guideline?.description}</p>
-                        <ul className={cn('grid w-full flex-1 grid-cols-1 gap-2 overflow-y-auto', scrollbarStyle)} style={{ maxHeight: 300 }}>
+                        <ul
+                            className="scrollbar-thin scrollbar-track-black grid w-full flex-1 grid-cols-1 gap-2 overflow-y-auto"
+                            style={{
+                                maxHeight: 300,
+                                scrollbarColor: `${color} black`,
+                                scrollbarWidth: 'thin',
+                            }}
+                        >
                             {b.brand_guideline?.elements?.map((i: BrandElement) => (
                                 <li key={i.id}>
                                     <div className="flex items-center gap-2 text-lg font-bold text-white uppercase">
@@ -665,7 +699,6 @@ export default function BusinessPlanSection() {
                             all_items?: AllItem[];
                         };
                         const color = b?.color || '#00FF00';
-                        const scrollbarStyle = `scrollbar-thin scrollbar-thumb-[${color}] scrollbar-track-black`;
                         const hasDiscount = b.is_discount;
                         const activePanel = activePanels[b.id] || 'main';
                         const setPanel = (panel: PanelKey) => setActivePanels((prev) => ({ ...prev, [b.id]: panel }));
@@ -680,7 +713,7 @@ export default function BusinessPlanSection() {
                                             className="absolute top-0 left-0 flex h-full w-full flex-col items-center px-8 pt-8"
                                             style={{ zIndex: 2 }}
                                         >
-                                            <PackagePanelContent b={b} color={color} scrollbarStyle={scrollbarStyle} />
+                                            <PackagePanelContent b={b} color={color} />
                                         </motion.div>
                                         <motion.div
                                             animate={{ x: activePanel === 'strategy' ? 0 : activePanel === 'guideline' ? '-100%' : '100%' }}
@@ -688,7 +721,7 @@ export default function BusinessPlanSection() {
                                             className="absolute top-0 left-0 flex h-full w-full flex-col items-center px-8 pt-8"
                                             style={{ zIndex: 2 }}
                                         >
-                                            <StrategyPanelContent b={b} color={color} scrollbarStyle={scrollbarStyle} />
+                                            <StrategyPanelContent b={b} color={color} />
                                         </motion.div>
                                         <motion.div
                                             animate={{ x: activePanel === 'guideline' ? 0 : '100%' }}
@@ -696,7 +729,7 @@ export default function BusinessPlanSection() {
                                             className="absolute top-0 left-0 flex h-full w-full flex-col items-center px-8 pt-8"
                                             style={{ zIndex: 2 }}
                                         >
-                                            <GuidelinePanelContent b={b} color={color} scrollbarStyle={scrollbarStyle} />
+                                            <GuidelinePanelContent b={b} color={color} />
                                         </motion.div>
                                     </div>
                                     <BreadcrumbBar color={color} activePanel={activePanel} setPanel={setPanel} />
