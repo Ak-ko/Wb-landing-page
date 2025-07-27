@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\BusinessBrandGuideline;
 use App\Models\BrandGuidelineElement;
 use App\Models\BrandGuidelineElementItem;
+use App\Traits\HasDuplicateFunctionality;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class BusinessBrandGuidelineController extends Controller
 {
+    use HasDuplicateFunctionality;
     public function index(Request $request)
     {
         $guidelines = BusinessBrandGuideline::with('elements.items')
@@ -158,5 +160,15 @@ class BusinessBrandGuidelineController extends Controller
     {
         $businessBrandGuideline->delete();
         return redirect()->route('business-brand-guidelines.index')->with('success', 'Guideline deleted successfully.');
+    }
+
+    public function duplicate(Request $request)
+    {
+        return $this->duplicateRecord(
+            $request,
+            BusinessBrandGuideline::class,
+            ['title', 'description'],
+            ['elements' => ['items']]
+        );
     }
 }
