@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import SortableList from '@/components/common/sortable-list';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -42,10 +44,9 @@ export default function BusinessBrandGuidelineForm({ guideline }: Props) {
                         order: item.order,
                     })) || [],
             })) || [],
-    });
+    } as any);
 
     const addElement = () => {
-        // @ts-expect-error @ts-ignore
         setData('elements', [...data.elements, { title: '', order: null, items: [] }]);
     };
     const removeElement = (idx: number) => {
@@ -57,7 +58,6 @@ export default function BusinessBrandGuidelineForm({ guideline }: Props) {
     };
     const addItem = (elementIdx: number) => {
         const updated = [...data.elements];
-        // @ts-expect-error @ts-ignore
         updated[elementIdx].items.push({ title: '', order: null });
         // Update order numbers for items in this element
         updated[elementIdx].items = updateOrderNumbers(updated[elementIdx].items);
