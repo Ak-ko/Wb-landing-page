@@ -121,6 +121,22 @@ formatOrderNumber(1, 2); // "1.2"
 formatOrderNumber(null); // ""
 ```
 
+## Server-Side Sorting
+
+The backend models have been updated to automatically sort elements and items by their `order` field:
+
+### Business Brand Guidelines
+
+- `BusinessBrandGuideline::elements()` - Returns elements ordered by `order` ASC
+- `BrandGuidelineElement::items()` - Returns items ordered by `order` ASC
+
+### Brand Strategies
+
+- `BrandStrategy::elements()` - Returns elements ordered by `order` ASC
+- `BrandStrategyElement::items()` - Returns items ordered by `order` ASC
+
+This ensures that when data is loaded from the server, it's already in the correct order, providing a consistent experience across the application.
+
 ## Integration Examples
 
 ### Brand Strategy Form
@@ -131,6 +147,7 @@ The brand strategy form demonstrates how to use nested sorting:
 2. Items within each element can also be reordered
 3. Order numbers are automatically updated when items are reordered
 4. Order numbers are also updated when items are added or removed
+5. Server-side sorting ensures data is loaded in the correct order
 
 ### Business Brand Guideline Form
 
@@ -142,3 +159,4 @@ Similar to the brand strategy form, but for business brand guidelines.
 - Items must have an `id` property (number or string)
 - Items must have an `order` property (number or null)
 - Items should extend the `SortableItem` interface
+- Backend models should include proper ordering in relationships
