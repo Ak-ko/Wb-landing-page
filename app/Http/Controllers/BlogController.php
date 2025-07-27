@@ -138,7 +138,7 @@ class BlogController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'is_published' => 'boolean',
-            'tags' => 'required|array',
+            'tags' => 'nullable|array',
             'tags.*' => 'exists:tags,id',
             'images' => 'nullable|array|min:2',
             'images.*' => 'required',
@@ -187,7 +187,7 @@ class BlogController extends Controller
             $primaryId = $request->input('primary_image_id', 0);
 
             foreach ($validated['images'] as $index => $image) {
-                $dbImagePath = Str::after($image, "/storage/");
+                $dbImagePath = Str::after($image, config('app.url'));
                 $blogImage = BlogImage::where('image', $dbImagePath)->first();
 
                 if ($blogImage) {

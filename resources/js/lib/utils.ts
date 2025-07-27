@@ -5,16 +5,23 @@ export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
 
-export function getArrayDifferences<T>(array1: T[], array2: T[]) {
-    const set1 = new Set(array1);
-    const set2 = new Set(array2);
+export function getArrayDifferences<T>(oldArray: T[], newArray: T[]): { added: T[]; removed: T[] } {
+    const added = newArray.filter((item) => !oldArray.includes(item));
+    const removed = oldArray.filter((item) => !newArray.includes(item));
+    return { added, removed };
+}
 
-    const differences = [...array1.filter((x) => !set2.has(x)), ...array2.filter((x) => !set1.has(x))];
-
-    const newItems = differences.filter((x) => set2.has(x));
-    const removedItems = differences.filter((x) => !set2.has(x));
-
-    return { newItems, removedItems };
+export function shouldBePrimaryImage(
+    currentNewImagesLength: number,
+    currentExistingImagesLength: number,
+    isPrimary: boolean,
+    index?: number,
+    total?: number,
+): boolean {
+    if (isPrimary) return true;
+    if (currentNewImagesLength === 0 && currentExistingImagesLength === 0) return true;
+    if (index === 0 && total && total > 1) return true;
+    return false;
 }
 
 export function calculateReadingTime(content: string): number {

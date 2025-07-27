@@ -366,13 +366,6 @@ export type BrandStrategyT = {
     updated_at: string;
 };
 
-interface CommonPaginationT<T> {
-    data: T[];
-    current_page: number;
-    per_page: number;
-    total: number;
-}
-
 export interface ChunkUploadHook {
     isUploading: boolean;
     progress: number;
@@ -385,3 +378,6 @@ export interface ChunkUploadHook {
         onError: (error: any) => void;
     }) => void;
 }
+
+// Export common types
+export * from './common';

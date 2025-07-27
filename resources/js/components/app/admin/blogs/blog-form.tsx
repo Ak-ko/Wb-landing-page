@@ -1,15 +1,19 @@
-import { Badge } from '@/components/ui/badge';
+import FormField from '@/components/common/form-field';
+import ImageDialog from '@/components/common/image-dialog';
+import ImageGallery from '@/components/common/image-gallery';
+import MultiImageUploader from '@/components/common/multi-image-upload';
+import TagSelector from '@/components/common/tag-selector';
 import { Button } from '@/components/ui/button';
 import { ColorInput } from '@/components/ui/color-input';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
-import { cn } from '@/lib/utils';
+import { shouldBePrimaryImage } from '@/lib/utils';
 import { BlogT, TagT } from '@/types';
+import { ImageItem, NewImage } from '@/types/common';
 import { useForm } from '@inertiajs/react';
-import { useState } from 'react';
-import BlogImageGallery from './blog-image-gallery';
+import { useMemo, useState } from 'react';
 
 interface BlogFormProps {
     blog?: BlogT;
@@ -19,7 +23,6 @@ interface BlogFormProps {
 
 export default function BlogForm({ blog, tags, onSuccess }: BlogFormProps) {
     const [selectedTags, setSelectedTags] = useState<number[]>(blog?.tags.map((tag) => tag.id) || []);
-
     const [existingImages, setExistingImages] = useState(
         blog?.images.map((img) => ({
             id: img.id,
@@ -27,6 +30,9 @@ export default function BlogForm({ blog, tags, onSuccess }: BlogFormProps) {
             is_primary: img.is_primary,
         })) || [],
     );
+    const [newImages, setNewImages] = useState<NewImage[]>([]);
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [selectedImage, setSelectedImage] = useState<ImageItem | null>(null);
 
     const { data, setData, post, put, processing, errors, reset, transform } = useForm({
         title: blog?.title || '',
@@ -41,31 +47,42 @@ export default function BlogForm({ blog, tags, onSuccess }: BlogFormProps) {
         primary_image_index: null as number | null,
     });
 
-    const [newImages, setNewImages] = useState<{ file: string | File; url: string; is_primary: boolean }[]>([]);
+    const displayImages = useMemo(() => {
+        return [
+            ...existingImages,
+            ...newImages.map((img, index) => ({
+                id: `new-${index}`,
+                url: img.url,
+                is_primary: img.is_primary,
+                isNew: true,
+                file: img.file,
+            })),
+        ];
+    }, [existingImages, newImages]);
 
     const updatePrimaryImageStatus = (isPrimary: boolean, targetId?: number | null, isNew = false) => {
-        if (isPrimary) {
-            setExistingImages((prev) =>
-                prev.map((img) => ({
-                    ...img,
-                    is_primary: !isNew && targetId !== null ? img.id === targetId : false,
-                })),
-            );
+        if (!isPrimary) return;
 
-            setNewImages((prev) =>
-                prev.map((img, i) => ({
-                    ...img,
-                    is_primary: isNew && targetId !== null ? i === targetId : false,
-                })),
-            );
+        setExistingImages((prev) =>
+            prev.map((img) => ({
+                ...img,
+                is_primary: !isNew && targetId !== null ? img.id === targetId : false,
+            })),
+        );
 
-            if (!isNew && targetId !== null) {
-                setData('primary_image_id', targetId as number);
-                setData('primary_image_index', null);
-            } else if (isNew && targetId !== null) {
-                setData('primary_image_id', null);
-                setData('primary_image_index', targetId as number);
-            }
+        setNewImages((prev) =>
+            prev.map((img, i) => ({
+                ...img,
+                is_primary: isNew && targetId !== null ? i === targetId : false,
+            })),
+        );
+
+        if (!isNew && targetId !== null) {
+            setData('primary_image_id', targetId as number);
+            setData('primary_image_index', null);
+        } else if (isNew && targetId !== null) {
+            setData('primary_image_id', null);
+            setData('primary_image_index', targetId as number);
         }
     };
 
@@ -75,23 +92,40 @@ export default function BlogForm({ blog, tags, onSuccess }: BlogFormProps) {
         setData('tags', newSelectedTags);
     };
 
-    const handleImageUpload = (file: File | string, isPrimary = false) => {
-        if (typeof file === 'string') {
-            const newImage = {
-                file,
-                url: `/storage/${file}`,
-                is_primary: isPrimary,
-            };
+    const updateNewImagesWithPrimary = (newImage: NewImage) => {
+        setNewImages((prev) => {
+            const updatedImages = prev.map((img) => ({ ...img, is_primary: false }));
+            return [...updatedImages, newImage];
+        });
+    };
 
-            const newIndex = newImages.length;
+    const handleImageUpload = (file: File | string, index?: number, total?: number, isPrimary = false) => {
+        if (typeof file !== 'string') return;
+
+        const currentNewImagesLength = newImages.length;
+        const currentExistingImagesLength = existingImages.length;
+        const primary = shouldBePrimaryImage(currentNewImagesLength, currentExistingImagesLength, isPrimary, index, total);
+
+        const newImage = {
+            file,
+            url: `/storage/${file}`,
+            is_primary: primary,
+        };
+
+        const newIndex = currentNewImagesLength;
+
+        if (primary) {
+            setData('primary_image_index', newIndex);
+            updateNewImagesWithPrimary(newImage);
+        } else {
             setNewImages((prev) => [...prev, newImage]);
-
-            if (isPrimary) {
-                updatePrimaryImageStatus(true, newIndex, true);
-            }
-
-            setData('images', [...data.images, file]);
         }
+
+        setData('images', [...data.images, file]);
+    };
+
+    const handleImageUploadForGallery = (file: File | string, isPrimary = false) => {
+        handleImageUpload(file, undefined, undefined, isPrimary);
     };
 
     const handleRemoveExistingImage = (imageId: number) => {
@@ -144,22 +178,70 @@ export default function BlogForm({ blog, tags, onSuccess }: BlogFormProps) {
         }
     };
 
+    const handleImageReorder = (reorderedImages: ImageItem[]) => {
+        const existingImagesMap = new Map(existingImages.map((img) => [img.id, img]));
+        const newImagesMap = new Map(newImages.map((img, index) => [`new-${index}`, img]));
+
+        const reorderedExisting: typeof existingImages = [];
+        const reorderedNew: NewImage[] = [];
+
+        reorderedImages.forEach((img) => {
+            if (typeof img.id === 'number') {
+                const existingImage = existingImagesMap.get(img.id);
+                if (existingImage) {
+                    reorderedExisting.push({
+                        ...existingImage,
+                        is_primary: img.is_primary,
+                    });
+                }
+            } else if (typeof img.id === 'string' && img.id.startsWith('new-')) {
+                const newImage = newImagesMap.get(img.id);
+                if (newImage) {
+                    reorderedNew.push({
+                        ...newImage,
+                        is_primary: img.is_primary,
+                    });
+                }
+            }
+        });
+
+        setExistingImages(reorderedExisting);
+        setNewImages(reorderedNew);
+    };
+
+    const getImagePath = (img: ImageItem) => {
+        if (typeof img.id === 'number') {
+            return (img.url || '').replace('/storage/', '');
+        } else {
+            const newImg = img as { id: string; url: string; is_primary: boolean; isNew: boolean; file: string | File };
+            return typeof newImg.file === 'string' ? newImg.file : (newImg.url || '').replace('/storage/', '');
+        }
+    };
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
         const url = blog ? route('blogs.update', blog.id) : route('blogs.store');
 
+        const reorderedImagePaths = displayImages.map(getImagePath);
+
+        const reorderedNewImages = displayImages
+            .filter(
+                (img): img is { id: string; url: string; is_primary: boolean; isNew: boolean; file: string | File } => 'isNew' in img && img.isNew,
+            )
+            .map((img) => ({
+                file: typeof img.file === 'string' ? img.file : img.url.replace('/storage/', ''),
+                is_primary: img.is_primary,
+            }));
+
         transform((data) => ({
             ...data,
-            new_images: newImages,
+            images: reorderedImagePaths,
+            new_images: reorderedNewImages,
         }));
 
         if (blog) {
-            put(url, {
-                onSuccess: () => {
-                    onSuccess();
-                },
-            });
+            put(url, { onSuccess });
         } else {
             post(url, {
                 onSuccess: () => {
@@ -170,98 +252,73 @@ export default function BlogForm({ blog, tags, onSuccess }: BlogFormProps) {
         }
     };
 
-    const allImages = [
-        ...existingImages,
-        ...newImages.map((img, index) => ({
-            id: `new-${index}`,
-            url: img.url,
-            is_primary: img.is_primary,
-            isNew: true,
-        })),
-    ];
+    const handleImageDelete = (imageId: number | string) => {
+        if (typeof imageId === 'number') {
+            handleRemoveExistingImage(imageId);
+        } else if (typeof imageId === 'string' && imageId.startsWith('new-')) {
+            const index = parseInt(imageId.replace('new-', ''), 10);
+            handleRemoveNewImage(index);
+        }
+    };
+
+    const handleImageClick = (image: ImageItem) => {
+        setSelectedImage(image);
+        setDialogOpen(true);
+    };
+
+    const handleCloseDialog = () => {
+        setDialogOpen(false);
+        setSelectedImage(null);
+    };
 
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="space-y-2">
-                <label htmlFor="title" className="block text-sm font-medium">
-                    Blog Title <span className="text-red-500">*</span>
-                </label>
-                <Input id="title" placeholder="Enter blog title" value={data.title} onChange={(e) => setData('title', e.target.value)} />
-                {errors.title && <p className="text-sm text-red-500">{errors.title}</p>}
-            </div>
+            <FormField label="Blog Title" required error={errors.title}>
+                <Input placeholder="Enter blog title" value={data.title} onChange={(e) => setData('title', e.target.value)} />
+            </FormField>
 
-            <div className="space-y-2">
-                <label htmlFor="description" className="block text-sm font-medium">
-                    Description
-                </label>
+            <FormField label="Description" error={errors.description}>
                 <Textarea
-                    id="description"
                     placeholder="Enter blog description"
                     value={data.description}
                     onChange={(e) => setData('description', e.target.value)}
                     rows={3}
                 />
-                {errors.description && <p className="text-sm text-red-500">{errors.description}</p>}
-            </div>
+            </FormField>
 
             <ColorInput label="Blog Color" value={data.color} onChange={(value) => setData('color', value)} error={errors.color} />
 
             <div className="flex items-center space-x-2">
-                <Switch
-                    id="is_published"
-                    checked={data.is_published}
-                    onCheckedChange={(checked) => {
-                        setData('is_published', checked);
-                    }}
-                />
+                <Switch id="is_published" checked={data.is_published} onCheckedChange={(checked) => setData('is_published', checked)} />
                 <Label htmlFor="is_published">Published</Label>
                 {errors.is_published && <p className="text-sm text-red-500">{errors.is_published}</p>}
             </div>
 
-            <div className="space-y-2">
-                <label className="block text-sm font-medium">
-                    Blog Images <span className="text-red-500">*</span>
-                </label>
-                <BlogImageGallery
-                    images={allImages}
-                    onImageUpload={handleImageUpload}
-                    onImageDelete={(imageId: number | string) => {
-                        if (typeof imageId === 'number') {
-                            handleRemoveExistingImage(imageId);
-                        } else if (typeof imageId === 'string' && imageId.startsWith('new-')) {
-                            const index = parseInt(imageId.replace('new-', ''), 10);
-                            handleRemoveNewImage(index);
-                        }
-                    }}
-                    onSetPrimaryImage={handleSetPrimaryImage}
-                    isEditing={true}
+            <FormField label="Blog Images" required error={errors.images}>
+                <MultiImageUploader
+                    onImageChange={handleImageUpload}
+                    onImageRemove={() => {}}
+                    error={errors.images}
+                    maxFiles={10}
+                    helperText="SVG, PNG, JPG or GIF (max. 300 MB each)"
                 />
-                {errors.images && <p className="text-sm text-red-500">{errors.images}</p>}
-            </div>
 
-            {tags?.length > 0 && (
-                <div className="space-y-2">
-                    <label className="block text-sm font-medium">
-                        Tags <span className="text-red-500">*</span>
-                    </label>
-                    <div className="flex flex-wrap gap-2">
-                        {tags?.map((tag) => (
-                            <Badge
-                                key={tag.id}
-                                style={{
-                                    backgroundColor: selectedTags.includes(tag.id) ? tag.color : 'transparent',
-                                    color: selectedTags.includes(tag.id) ? 'white' : 'black',
-                                }}
-                                className={cn('cursor-pointer border', selectedTags.includes(tag.id) ? 'border-transparent' : 'border-gray-300')}
-                                onClick={() => handleTagToggle(tag.id)}
-                            >
-                                {tag.name}
-                            </Badge>
-                        ))}
+                {displayImages.length > 0 && (
+                    <div className="mt-6">
+                        <h4 className="mb-3 text-sm font-medium text-gray-700">Uploaded Images ({displayImages.length})</h4>
+                        <ImageGallery
+                            images={displayImages}
+                            onImageClick={handleImageClick}
+                            onReorder={handleImageReorder}
+                            isEditing={true}
+                            allowDrag={!!blog}
+                        />
                     </div>
-                    {errors.tags && <p className="text-sm text-red-500">{errors.tags}</p>}
-                </div>
-            )}
+                )}
+            </FormField>
+
+            <TagSelector tags={tags} selectedTags={selectedTags} onTagToggle={handleTagToggle} error={errors.tags} required />
+
             <div className="flex justify-end space-x-2">
                 <Button type="button" variant="outline" onClick={() => window.history.back()}>
                     Cancel
@@ -270,6 +327,16 @@ export default function BlogForm({ blog, tags, onSuccess }: BlogFormProps) {
                     {blog ? 'Update Blog' : 'Create Blog'}
                 </Button>
             </div>
+
+            <ImageDialog
+                open={dialogOpen}
+                onClose={handleCloseDialog}
+                image={selectedImage || undefined}
+                onDelete={handleImageDelete}
+                onSetPrimary={handleSetPrimaryImage}
+                onUpload={handleImageUploadForGallery}
+                isEditing={true}
+            />
         </form>
     );
 }
