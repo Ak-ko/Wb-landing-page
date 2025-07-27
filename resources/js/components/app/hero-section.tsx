@@ -85,7 +85,7 @@ export default function HeroSection() {
                 </div>
             )}
 
-            <div className="relative flex max-w-[2500px] flex-col items-center justify-center gap-5 pt-7 lg:flex-row">
+            <div className="relative mx-auto flex max-w-[2500px] flex-col items-center justify-center gap-5 pt-7 lg:flex-row">
                 <div className="hidden w-full md:block">
                     <CharacterWithCoffee className="hero__left__mascot absolute w-[120px] md:bottom-0 lg:-bottom-8 xl:left-[calc(100vw-76%)] 2xl:left-[calc(100vw-65%)]" />
                 </div>

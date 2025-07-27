@@ -10,6 +10,8 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
+    --breakpoint-3xl: 150rem;
+
     --font-sans:
         'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 
@@ -194,7 +196,11 @@
     }
 
     .app-container {
-        @apply container mx-auto px-5 xl:px-8 2xl:!max-w-[1800px] 2xl:px-11;
+        @apply container mx-auto px-5 xl:px-8 2xl:!max-w-[2000px] 2xl:px-11;
+
+        @media screen and (min-width: 2500px) {
+            @apply !max-w-[2500px];
+        }
     }
 
     .hero-section-header-text-size {
@@ -241,13 +247,23 @@
     }
 }
 
-@media screen and (max-width: 2600px) {
+@media screen and (max-width: 3000px) {
     .hero__left__mascot {
-        left: calc(100vw - 70%) !important;
+        left: calc(100vw - 82%) !important;
     }
 
     .hero__right__mascot {
-        right: calc(100vw - 73%) !important;
+        right: calc(100vw - 84%) !important;
+    }
+}
+
+@media screen and (max-width: 2600px) {
+    .hero__left__mascot {
+        left: calc(100vw - 68%) !important;
+    }
+
+    .hero__right__mascot {
+        right: calc(100vw - 70%) !important;
     }
 }
 

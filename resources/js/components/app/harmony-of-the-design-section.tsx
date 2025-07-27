@@ -196,7 +196,7 @@ export default function HarmonyOfTheDesignSection() {
                 <div className="app-container flex justify-center py-15">
                     <div className="w-full">
                         <div className="space-y-8">
-                            <div className="relative">
+                            <div className="relative flex justify-center">
                                 <AnimatePresence mode="wait">
                                     {isCompactMode ? (
                                         <motion.div key="compact" variants={layoutVariants} initial="hidden" animate="visible" exit="exit">

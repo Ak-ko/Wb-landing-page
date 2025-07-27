@@ -3,7 +3,7 @@ import { Link } from '@inertiajs/react';
 
 export default function SeeBusinessPlanServicesSection() {
     return (
-        <section className="relative mx-auto max-w-[1800px] overflow-hidden py-[100px] lg:py-[259px]">
+        <section className="relative mx-auto overflow-hidden py-[100px] lg:py-[259px]">
             <img
                 src="/assets/red-dragon.png"
                 className="absolute right-[8%] hidden max-w-[1500px] -rotate-y-[180deg] lg:top-[-10%] lg:block lg:w-[1100px] xl:top-[-50%] xl:w-auto 2xl:left-[-5%] 2xl:max-w-[1800px]"

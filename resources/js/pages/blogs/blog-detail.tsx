@@ -20,7 +20,7 @@ export default function BlogDetail({ blog, relatedBlogs, readingTime }: BlogDeta
             <Head title={blog.title} />
             <div className={`${topBarClass} fixed top-0 left-0 z-[5] h-[5px] w-full origin-left`} />
 
-            <div className="py-5">
+            <div className="min-h-[90vh] py-5">
                 <div className="app-container mx-auto max-w-3xl">
                     <div className="mb-4 flex items-center gap-2 text-sm text-gray-500">
                         <Link href={route('blogs.list')} className="hover:text-primary">
