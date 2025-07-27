@@ -59,7 +59,7 @@ function BreadcrumbBar({ color, activePanel, setPanel }: { color: string; active
 
     return (
         <div
-            className="mx-auto mb-11 flex h-25 w-[88%] items-center justify-between"
+            className="mx-auto my-11 flex h-25 w-[88%] items-center justify-between"
             style={{ borderTop: `2px solid ${color}`, borderBottom: `2px solid ${color}`, background: 'black' }}
         >
             {PANELS.map((panel, idx) => (
@@ -706,7 +706,7 @@ export default function BusinessPlanSection() {
                         return (
                             <div key={b.id} className="business-plan-section mb-16">
                                 <div className="flex min-h-[1500px] w-full flex-col overflow-hidden bg-black py-11 2xl:min-h-[1800px]">
-                                    <div className="relative flex-1 overflow-hidden">
+                                    <div className="relative flex-1 overflow-y-auto">
                                         {/* Panels */}
                                         <motion.div
                                             animate={{ x: activePanel === 'main' ? 0 : activePanel === 'strategy' ? '-100%' : '-200%' }}
