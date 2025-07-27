@@ -20,6 +20,7 @@ interface UploadingFile {
     state: UploadState;
     error?: string;
     uploader?: UploaderInstance;
+    isVideo?: boolean;
 }
 
 interface MultiImageUploaderProps {
@@ -32,8 +33,9 @@ interface MultiImageUploaderProps {
     helperText?: string;
     uploadUrl?: string;
     cancelUrl?: string;
-    labelText?: 'Images' | 'Videos';
+    labelText?: 'Images' | 'Videos' | 'Media';
     maxFiles?: number;
+    showLabel?: boolean;
 }
 
 export default function MultiImageUploader({
@@ -41,13 +43,14 @@ export default function MultiImageUploader({
     onImageRemove,
     error,
     maxSizeMB = 300,
-    acceptedFormats = 'image/*',
+    acceptedFormats = 'image/*,video/*',
     placeholderText = 'Click to upload or drag and drop',
-    helperText = 'SVG, PNG, JPG or GIF (max. 300 MB)',
+    helperText = 'SVG, PNG, JPG, GIF, MP4, WebM (max. 300 MB)',
     uploadUrl = route('api.image.upload'),
-    labelText = 'Images',
+    labelText = 'Media',
     cancelUrl = route('api.image.upload.cancel'),
     maxFiles = 10,
+    showLabel = true,
 }: MultiImageUploaderProps) {
     const [uploadingFiles, setUploadingFiles] = useState<UploadingFile[]>([]);
     const [fileError, setFileError] = useState<string | null>(null);
@@ -61,21 +64,58 @@ export default function MultiImageUploader({
         return null;
     };
 
-    const createFilePreview = (file: File, fileId: string, index: number, total: number) => {
-        const reader = new FileReader();
-        reader.onload = () => {
-            const newFile: UploadingFile = {
-                id: fileId,
-                file,
-                preview: reader.result as string,
-                progress: 0,
-                state: 'idle',
-            };
+    const isVideoFile = (file: File): boolean => {
+        return file.type.startsWith('video/');
+    };
 
-            setUploadingFiles((prev) => [...prev, newFile]);
-            startUpload(newFile, index, total);
-        };
-        reader.readAsDataURL(file);
+    const createFilePreview = (file: File, fileId: string, index: number, total: number) => {
+        const isVideo = isVideoFile(file);
+
+        if (isVideo) {
+            // For videos, create a video preview
+            const video = document.createElement('video');
+            video.preload = 'metadata';
+            video.onloadedmetadata = () => {
+                const canvas = document.createElement('canvas');
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                const ctx = canvas.getContext('2d');
+                if (ctx) {
+                    ctx.drawImage(video, 0, 0);
+                    const preview = canvas.toDataURL('image/jpeg');
+
+                    const newFile: UploadingFile = {
+                        id: fileId,
+                        file,
+                        preview,
+                        progress: 0,
+                        state: 'idle',
+                        isVideo: true,
+                    };
+
+                    setUploadingFiles((prev) => [...prev, newFile]);
+                    startUpload(newFile, index, total);
+                }
+            };
+            video.src = URL.createObjectURL(file);
+        } else {
+            // For images, use FileReader
+            const reader = new FileReader();
+            reader.onload = () => {
+                const newFile: UploadingFile = {
+                    id: fileId,
+                    file,
+                    preview: reader.result as string,
+                    progress: 0,
+                    state: 'idle',
+                    isVideo: false,
+                };
+
+                setUploadingFiles((prev) => [...prev, newFile]);
+                startUpload(newFile, index, total);
+            };
+            reader.readAsDataURL(file);
+        }
     };
 
     const handleFileSelect = (files: FileList | null) => {
@@ -229,7 +269,7 @@ export default function MultiImageUploader({
 
     return (
         <div className="space-y-4">
-            <label className="block text-sm font-medium">{labelText}</label>
+            {showLabel && <label className="block text-sm font-medium">{labelText}</label>}
 
             <Label
                 htmlFor="multi-file"
@@ -324,7 +364,16 @@ function UploadingFileCard({ file, onPause, onResume, onRetry, onCancel }: Uploa
         <div className="relative overflow-hidden rounded-lg border bg-white p-4 shadow-sm">
             <div className="flex items-center space-x-3">
                 <div className="flex-shrink-0">
-                    <img src={file.preview} alt={file.file.name} className="h-12 w-12 rounded object-cover" />
+                    {file.isVideo ? (
+                        <div className="relative h-12 w-12 overflow-hidden rounded">
+                            <img src={file.preview} alt={file.file.name} className="h-full w-full object-cover" />
+                            <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                                <div className="ml-1 h-0 w-0 border-t-[6px] border-b-[6px] border-l-[8px] border-t-transparent border-b-transparent border-l-white"></div>
+                            </div>
+                        </div>
+                    ) : (
+                        <img src={file.preview} alt={file.file.name} className="h-12 w-12 rounded object-cover" />
+                    )}
                 </div>
                 <div className="min-w-0 flex-1">
                     <p className="truncate text-sm font-medium text-gray-900">{file.file.name}</p>

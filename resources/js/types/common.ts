@@ -6,6 +6,7 @@ export interface ImageItem {
     isNew?: boolean;
     file?: string | File;
     order?: number;
+    isVideo?: boolean;
 }
 
 export interface NewImage {
@@ -14,6 +15,7 @@ export interface NewImage {
     is_primary?: boolean;
     is_mascot?: boolean;
     order?: number;
+    isVideo?: boolean;
 }
 
 export interface FormFieldProps {
@@ -57,4 +59,5 @@ export interface ImageDialogProps {
     aspectRatio?: string;
     placeholderText?: string;
     helperText?: string;
+    acceptedFormats?: string;
 }

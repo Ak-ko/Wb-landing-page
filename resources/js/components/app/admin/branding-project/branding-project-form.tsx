@@ -492,7 +492,8 @@ export default function BrandingProjectForm({ brandingProject, tags, onSubmit }:
                     error={errors.images}
                     maxFiles={10}
                     helperText="SVG, PNG, JPG, GIF, MP4, WebM (max. 300 MB each)"
-                    labelText="Images"
+                    labelText="Media"
+                    showLabel={false}
                 />
 
                 {displayImages.length > 0 && (

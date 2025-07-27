@@ -16,15 +16,15 @@ export default function ImageDialog({
     onUpload,
     isEditing,
     title,
-    uploadTitle = 'Upload New Image',
-    manageTitle = 'Manage Image',
-    addTitle = 'Add New Image',
+    uploadTitle = 'Upload New Media',
+    manageTitle = 'Manage Media',
+    addTitle = 'Add New Media',
     showPrimaryOption = true,
     showMascotOption = false,
     showDeleteOption = true,
     aspectRatio = 'aspect-square',
     placeholderText = 'Drag and drop or click to upload',
-    helperText = 'SVG, PNG, JPG or GIF (max. 300MB)',
+    helperText = 'SVG, PNG, JPG, GIF, MP4, WebM (max. 300MB)',
 }: ImageDialogProps) {
     const [isImageUploading, setIsImageUploading] = useState(false);
     const [selectedFile, setSelectedFile] = useState<File | string | null>(null);
@@ -89,6 +89,11 @@ export default function ImageDialog({
         }
     };
 
+    const isVideoFile = (url: string): boolean => {
+        const videoExtensions = ['.mp4', '.webm', '.ogg', '.mov', '.avi'];
+        return videoExtensions.some((ext) => url.toLowerCase().includes(ext));
+    };
+
     const dialogTitle = title || (selectedFile ? uploadTitle : image?.id ? manageTitle : addTitle);
 
     return (
@@ -109,13 +114,14 @@ export default function ImageDialog({
                                 aspectRatio={aspectRatio}
                                 placeholderText={placeholderText}
                                 helperText={helperText}
+                                acceptedFormats="image/*,video/*"
                             />
 
                             {showPrimaryOption && (
                                 <div className="flex items-center space-x-2">
                                     <Checkbox id="isPrimary" checked={isPrimary} onCheckedChange={(checked) => setIsPrimary(checked as boolean)} />
                                     <label htmlFor="isPrimary" className="text-sm text-gray-700">
-                                        Set as primary image
+                                        Set as primary media
                                     </label>
                                 </div>
                             )}
@@ -124,18 +130,34 @@ export default function ImageDialog({
                                 <div className="flex items-center space-x-2">
                                     <Checkbox id="isMascot" checked={isMascot} onCheckedChange={(checked) => setIsMascot(checked as boolean)} />
                                     <label htmlFor="isMascot" className="text-sm text-gray-700">
-                                        Set as mascot image
+                                        Set as mascot media
                                     </label>
                                 </div>
                             )}
                         </>
                     ) : (
                         <div className="relative w-full">
-                            <img src={image.url} alt="Image" className="max-h-64 w-full rounded-md object-contain" />
-                            <div className="absolute top-2 right-2 flex flex-col gap-1">
-                                {image.is_primary && <span className="bg-primary rounded-full px-2 py-1 text-xs text-white">Primary</span>}
-                                {image.is_mascot && <span className="bg-secondary-pink rounded-full px-2 py-1 text-xs text-white">Mascot</span>}
-                            </div>
+                            {isVideoFile(image.url) ? (
+                                <div className="relative">
+                                    <video src={image.url} controls className="max-h-64 w-full rounded-md object-contain" />
+                                    <div className="absolute top-2 right-2 flex flex-col gap-1">
+                                        {image.is_primary && <span className="bg-primary rounded-full px-2 py-1 text-xs text-white">Primary</span>}
+                                        {image.is_mascot && (
+                                            <span className="bg-secondary-pink rounded-full px-2 py-1 text-xs text-white">Mascot</span>
+                                        )}
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="relative">
+                                    <img src={image.url} alt="Image" className="max-h-64 w-full rounded-md object-contain" />
+                                    <div className="absolute top-2 right-2 flex flex-col gap-1">
+                                        {image.is_primary && <span className="bg-primary rounded-full px-2 py-1 text-xs text-white">Primary</span>}
+                                        {image.is_mascot && (
+                                            <span className="bg-secondary-pink rounded-full px-2 py-1 text-xs text-white">Mascot</span>
+                                        )}
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>

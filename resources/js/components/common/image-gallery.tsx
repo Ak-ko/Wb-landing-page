@@ -1,5 +1,5 @@
 import { ImageGalleryProps, ImageItem } from '@/types/common';
-import { GripVertical, Image } from 'lucide-react';
+import { GripVertical, Image, Play } from 'lucide-react';
 import { useCallback, useState } from 'react';
 
 export default function ImageGallery({
@@ -54,9 +54,15 @@ export default function ImageGallery({
         setDraggedIndex(null);
     }, []);
 
+    const isVideoFile = (url: string): boolean => {
+        const videoExtensions = ['.mp4', '.webm', '.ogg', '.mov', '.avi'];
+        return videoExtensions.some((ext) => url.toLowerCase().includes(ext));
+    };
+
     const renderImageItem = useCallback(
         (image: ImageItem, index: number) => {
             const imageId = image.id?.toString() || `new-${index}`;
+            const isVideo = isVideoFile(image.url || '');
 
             return (
                 <div
@@ -71,7 +77,18 @@ export default function ImageGallery({
                     } ${isEditing ? 'hover:scale-105' : ''} ${imageClassName}`}
                     onClick={() => onImageClick?.(image)}
                 >
-                    <img src={image.url} alt={`Image ${index + 1}`} className="h-full w-full object-cover" />
+                    {isVideo ? (
+                        <div className="relative h-full w-full">
+                            <video src={image.url} className="h-full w-full object-cover" muted preload="metadata" />
+                            <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white/80">
+                                    <Play className="ml-0.5 h-4 w-4 text-gray-800" />
+                                </div>
+                            </div>
+                        </div>
+                    ) : (
+                        <img src={image.url} alt={`Image ${index + 1}`} className="h-full w-full object-cover" />
+                    )}
 
                     {isEditing && allowDrag && showDragHandle && (
                         <div
@@ -113,7 +130,7 @@ export default function ImageGallery({
         () => (
             <div className={`flex flex-col items-center justify-center rounded-md border border-dashed ${imageClassName}`}>
                 <Image className="h-6 w-6 text-gray-400" />
-                <span className="mt-1 text-xs text-gray-500">No images</span>
+                <span className="mt-1 text-xs text-gray-500">No media</span>
             </div>
         ),
         [imageClassName],

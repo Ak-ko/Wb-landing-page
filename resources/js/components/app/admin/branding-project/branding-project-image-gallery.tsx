@@ -85,6 +85,7 @@ export default function BrandingProjectImageGallery({
                 addTitle="Add New Media"
                 placeholderText="Drag and drop or click to upload media"
                 helperText="SVG, PNG, JPG, GIF, MP4, WebM (max. 300MB)"
+                acceptedFormats="image/*,video/*"
             />
         </div>
     );

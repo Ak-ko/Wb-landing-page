@@ -33,9 +33,9 @@ export default function ImageUploader({
     error,
     aspectRatio = 'aspect-video',
     maxSizeMB = 300,
-    acceptedFormats = 'image/*',
+    acceptedFormats = 'image/*,video/*',
     placeholderText = 'Click to upload or drag and drop',
-    helperText = 'SVG, PNG, JPG or GIF (max. 300 MB)',
+    helperText = 'SVG, PNG, JPG, GIF, MP4, WebM (max. 300 MB)',
     uploadUrl = route('api.image.upload'),
     labelText = 'Image',
     cancelUrl = route('api.image.upload.cancel'),
@@ -128,12 +128,33 @@ export default function ImageUploader({
         setUploadState('idle');
         uploadInitiatedRef.current = false;
 
-        // Preview the image
-        const reader = new FileReader();
-        reader.onload = () => {
-            setImagePreview(reader.result as string);
-        };
-        reader.readAsDataURL(file);
+        // Check if it's a video file
+        const isVideo = file.type.startsWith('video/');
+
+        if (isVideo) {
+            // For videos, create a video preview
+            const video = document.createElement('video');
+            video.preload = 'metadata';
+            video.onloadedmetadata = () => {
+                const canvas = document.createElement('canvas');
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                const ctx = canvas.getContext('2d');
+                if (ctx) {
+                    ctx.drawImage(video, 0, 0);
+                    const preview = canvas.toDataURL('image/jpeg');
+                    setImagePreview(preview);
+                }
+            };
+            video.src = URL.createObjectURL(file);
+        } else {
+            // For images, use FileReader
+            const reader = new FileReader();
+            reader.onload = () => {
+                setImagePreview(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+        }
 
         // Set the selected file to trigger the upload
         setSelectedFile(file);
@@ -316,14 +337,21 @@ export default function ImageUploader({
                 <div
                     className={`relative ${aspectRatio} w-full min-w-[300px] overflow-hidden rounded-md bg-gray-100 shadow-md transition-all hover:shadow-lg`}
                 >
-                    <motion.img
-                        src={imagePreview}
-                        alt="Image preview"
-                        className={`h-full w-full object-contain ${uploadState === 'uploading' || uploadState === 'paused' ? 'opacity-40' : ''}`}
+                    <motion.div
+                        className={`relative h-full w-full ${uploadState === 'uploading' || uploadState === 'paused' ? 'opacity-40' : ''}`}
                         initial={{ opacity: 0, scale: 1.05 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.3 }}
-                    />
+                    >
+                        <img src={imagePreview} alt="Media preview" className="h-full w-full object-contain" />
+                        {selectedFile && selectedFile.type.startsWith('video/') && (
+                            <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/80">
+                                    <div className="ml-1 h-0 w-0 border-t-[8px] border-b-[8px] border-l-[12px] border-t-transparent border-b-transparent border-l-gray-800"></div>
+                                </div>
+                            </div>
+                        )}
+                    </motion.div>
 
                     {/* Upload overlay with circular progress */}
                     <AnimatePresence mode="wait">
