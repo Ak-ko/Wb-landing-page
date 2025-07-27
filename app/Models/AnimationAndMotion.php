@@ -20,6 +20,6 @@ class AnimationAndMotion extends Model
 
     public function images()
     {
-        return $this->hasMany(AnimationAndMotionImage::class, 'animation_and_motion_id');
+        return $this->hasMany(AnimationAndMotionImage::class, 'animation_and_motion_id')->orderBy('order');
     }
 }

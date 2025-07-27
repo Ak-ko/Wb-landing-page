@@ -392,6 +392,7 @@ export default function MascortArtForm({ mascortArt, onSuccess }: MascortArtForm
                     onImageRemove={() => {}}
                     error={errors.images}
                     maxFiles={10}
+                    showLabel={false}
                     helperText="SVG, PNG, JPG or GIF (max. 300 MB each)"
                 />
 

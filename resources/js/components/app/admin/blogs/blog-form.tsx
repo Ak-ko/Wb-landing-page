@@ -300,6 +300,7 @@ export default function BlogForm({ blog, tags, onSuccess }: BlogFormProps) {
                     onImageRemove={() => {}}
                     error={errors.images}
                     maxFiles={10}
+                    showLabel={false}
                     helperText="SVG, PNG, JPG or GIF (max. 300 MB each)"
                 />
 

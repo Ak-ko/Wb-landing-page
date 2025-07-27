@@ -12,7 +12,7 @@ class AnimationAndMotionImage extends Model
     /** @use HasFactory<\Database\Factories\AnimationAndMotionImageFactory> */
     use HasFactory, HasVideo;
 
-    protected $fillable = ['image', 'animation_and_motion_id'];
+    protected $fillable = ['image', 'animation_and_motion_id', 'order'];
 
     /**
      * Get the image attribute with full URL.
@@ -30,10 +30,10 @@ class AnimationAndMotionImage extends Model
     }
 
     /**
-     * Get the illustration art that owns the image.
+     * Get the animation and motion that owns the image.
      */
     public function animationAndMotion()
     {
-        return $this->belongsTo(ComicArt::class, 'animation_and_motion_id');
+        return $this->belongsTo(AnimationAndMotion::class, 'animation_and_motion_id');
     }
 }

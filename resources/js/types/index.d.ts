@@ -309,7 +309,7 @@ export type AnimationAndMotionT = {
 export type AnimationAndMotionImageT = {
     id: number;
     image: string;
-    is_primary: boolean;
+    order: number;
 } & TimestampsT;
 export type BrandGuidelineElementItemT = {
     id: number;
