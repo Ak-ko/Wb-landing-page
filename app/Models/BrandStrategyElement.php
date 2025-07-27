@@ -23,6 +23,6 @@ class BrandStrategyElement extends Model
 
     public function items()
     {
-        return $this->hasMany(BrandStrategyElementItem::class, 'brand_strategy_element_id');
+        return $this->hasMany(BrandStrategyElementItem::class, 'brand_strategy_element_id')->orderBy('order', 'asc');
     }
 }

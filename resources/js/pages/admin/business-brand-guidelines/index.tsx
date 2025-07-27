@@ -5,6 +5,14 @@ import { useState } from 'react';
 import { createBusinessBrandGuidelineColumns } from '@/components/app/admin/business-brand-guideline/business-brand-guideline-columns';
 import BusinessBrandGuidelineFilters from '@/components/app/admin/business-brand-guideline/business-brand-guideline-filters';
 import DashboardTitle from '@/components/app/dashboard-title';
+import { DuplicateButton } from '@/components/common/duplicate-button';
+import {
+    ConfirmDuplicateModal,
+    CreatingDuplicateModal,
+    DeletingDuplicateModal,
+    SuccessDuplicateModal,
+    UndoDuplicateModal,
+} from '@/components/common/duplicate-modals';
 import { DataCardView } from '@/components/data-view/card/data-card-view';
 import { DataTable } from '@/components/data-view/table/data-table';
 import { ViewMode, ViewToggle } from '@/components/data-view/view-toggle';
@@ -19,6 +27,7 @@ import {
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
+import { useDuplicateRecord } from '@/hooks/use-duplicate-record';
 import useFilter from '@/hooks/use-filter';
 import AppLayout from '@/layouts/app-layout';
 import { BusinessBrandGuidelineT, CommonPaginationT } from '@/types';
@@ -48,6 +57,19 @@ export default function BusinessBrandGuidelinesIndex({ guidelines, filters }: In
         route('business-brand-guidelines.index'),
         false,
     );
+
+    // Duplicate functionality
+    const duplicateHook = useDuplicateRecord({
+        duplicateRoute: route('business-brand-guidelines.duplicate'),
+        editRoute: (id: number) => route('business-brand-guidelines.edit', id),
+        onSuccess: () => {
+            // Refresh the page to show the new record
+            router.reload();
+        },
+        onError: (errors) => {
+            console.error('Duplicate error:', errors);
+        },
+    });
 
     const handleDeleteClick = (id: number) => setDeleteId(id);
     const handleDeleteConfirm = () => {
@@ -100,7 +122,10 @@ export default function BusinessBrandGuidelinesIndex({ guidelines, filters }: In
                 </div>
                 {viewMode === 'table' ? (
                     <DataTable
-                        columns={createBusinessBrandGuidelineColumns({ handleDeleteClick })}
+                        columns={createBusinessBrandGuidelineColumns({
+                            handleDeleteClick,
+                            handleDuplicateClick: duplicateHook.handleDuplicateClick,
+                        })}
                         data={guidelines.data}
                         pagingData={{
                             pageIndex: guidelines?.current_page,
@@ -128,6 +153,7 @@ export default function BusinessBrandGuidelinesIndex({ guidelines, filters }: In
                                             <Edit />
                                         </Button>
                                     </Link>
+                                    <DuplicateButton onClick={() => duplicateHook.handleDuplicateClick(guideline)} />
                                     <Button size="icon" variant="destructive" onClick={() => handleDeleteClick(guideline.id)}>
                                         <Trash2 />
                                     </Button>
@@ -144,6 +170,8 @@ export default function BusinessBrandGuidelinesIndex({ guidelines, filters }: In
                     />
                 )}
             </div>
+
+            {/* Delete Confirmation Modal */}
             <AlertDialog open={!!deleteId} onOpenChange={() => setDeleteId(null)}>
                 <AlertDialogContent>
                     <AlertDialogHeader>
@@ -158,6 +186,39 @@ export default function BusinessBrandGuidelinesIndex({ guidelines, filters }: In
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
+
+            {/* Duplicate Modals */}
+            <ConfirmDuplicateModal
+                isOpen={duplicateHook.isConfirmModalOpen}
+                onConfirm={duplicateHook.handleConfirmDuplicate}
+                onCancel={duplicateHook.handleCancelDuplicate}
+                recordTitle={(duplicateHook.recordToDuplicate?.title as string) || ''}
+            />
+
+            <CreatingDuplicateModal
+                isOpen={duplicateHook.isCreatingModalOpen}
+                recordTitle={(duplicateHook.recordToDuplicate?.title as string) || ''}
+            />
+
+            <SuccessDuplicateModal
+                isOpen={duplicateHook.isSuccessModalOpen}
+                onClose={duplicateHook.handleSuccessModalClose}
+                onEdit={duplicateHook.handleEditDuplicatedRecord}
+                onUndo={() => duplicateHook.setIsUndoModalOpen(true)}
+                recordTitle={(duplicateHook.recordToDuplicate?.title as string) || ''}
+            />
+
+            <UndoDuplicateModal
+                isOpen={duplicateHook.isUndoModalOpen}
+                onConfirm={duplicateHook.handleUndoDuplicate}
+                onCancel={duplicateHook.handleUndoModalClose}
+                recordTitle={(duplicateHook.recordToDuplicate?.title as string) || ''}
+            />
+
+            <DeletingDuplicateModal
+                isOpen={duplicateHook.isDeletingModalOpen}
+                recordTitle={(duplicateHook.recordToDuplicate?.title as string) || ''}
+            />
         </AppLayout>
     );
 }

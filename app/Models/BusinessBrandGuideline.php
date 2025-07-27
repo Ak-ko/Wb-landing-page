@@ -17,7 +17,7 @@ class BusinessBrandGuideline extends Model
 
     public function elements()
     {
-        return $this->hasMany(BrandGuidelineElement::class);
+        return $this->hasMany(BrandGuidelineElement::class)->orderBy('order', 'asc');
     }
 
     public function businessPackages()

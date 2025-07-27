@@ -156,6 +156,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Art and Motion Art
     Route::resource('/admin/business-brand-guidelines', BusinessBrandGuidelineController::class);
+    Route::post('/admin/business-brand-guidelines/duplicate', [BusinessBrandGuidelineController::class, 'duplicate'])
+        ->name('business-brand-guidelines.duplicate');
 
     // Add-on Packages
     Route::resource('/admin/add-on-packages', BusinessPackageAddonController::class);
