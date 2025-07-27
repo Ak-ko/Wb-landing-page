@@ -11,7 +11,21 @@ class StickerArtImages extends Model
     /** @use HasFactory<\Database\Factories\StickerArtImagesFactory> */
     use HasFactory, HasImage;
 
-    protected $fillable = ['image', 'sticker_art_id'];
+    protected $fillable = [
+        'sticker_art_id',
+        'image',
+        'order',
+    ];
+
+    /**
+     * The "booted" method of the model.
+     */
+    protected static function booted()
+    {
+        static::addGlobalScope('order', function ($query) {
+            $query->orderBy('order', 'asc');
+        });
+    }
 
     /**
      * Get the image attribute with full URL.

@@ -30,7 +30,7 @@ class Blog extends Model
 
     public function images(): HasMany
     {
-        return $this->hasMany(BlogImage::class);
+        return $this->hasMany(BlogImage::class)->orderBy('order');
     }
 
     public function primaryImage()

@@ -11,8 +11,17 @@ class IllustrationArtImages extends Model
 {
     use HasFactory, HasImage;
 
-    protected $fillable = ['image', 'illustration_art_id'];
+    protected $fillable = ['image', 'illustration_art_id', 'order'];
 
+    /**
+     * The "booted" method of the model.
+     */
+    protected static function booted()
+    {
+        static::addGlobalScope('order', function ($query) {
+            $query->orderBy('order', 'asc');
+        });
+    }
 
     /**
      * Get the image attribute with full URL.

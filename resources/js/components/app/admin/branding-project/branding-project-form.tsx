@@ -1,15 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
+import MultiImageUploader from '@/components/common/multi-image-upload';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
-import { cn } from '@/lib/utils';
+import { cn, shouldBePrimaryImage } from '@/lib/utils';
 import { BrandingProjectMemberT, BrandingProjectT, TagT, TeamMemberT } from '@/types';
+import { ImageItem, NewImage } from '@/types/common';
 import { useForm, usePage } from '@inertiajs/react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import Select, { MultiValue } from 'react-select';
 import ProjectLeadCard from '../../project-lead-card';
 import BrandingProjectImageGallery from './branding-project-image-gallery';
@@ -24,7 +26,19 @@ export default function BrandingProjectForm({ brandingProject, tags, onSubmit }:
     const [selectedTags, setSelectedTags] = useState<number[]>(brandingProject?.tags.map((tag) => tag.id) || []);
     const { teamMembers } = usePage<{ teamMembers: TeamMemberT[] }>().props;
 
-    const { data, setData, post, put, processing, errors, reset } = useForm({
+    const [existingImages, setExistingImages] = useState(
+        brandingProject?.images.map((img) => ({
+            id: img.id,
+            url: `${img.image}`,
+            is_primary: img.is_primary,
+        })) || [],
+    );
+
+    const [newImages, setNewImages] = useState<NewImage[]>([]);
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [selectedImage, setSelectedImage] = useState<ImageItem | null>(null);
+
+    const { data, setData, post, put, processing, errors, reset, transform } = useForm({
         title: brandingProject?.title || '',
         description: brandingProject?.description || '',
         client_company: brandingProject?.client_company || '',
@@ -40,7 +54,8 @@ export default function BrandingProjectForm({ brandingProject, tags, onSubmit }:
         project_link: brandingProject?.project_link || '',
         tags: brandingProject?.tags.map((tag) => tag.id) || [],
         is_published: brandingProject?.is_published || (true as boolean),
-        images: [] as File[],
+        images: brandingProject?.images?.map((brandingProjectImage) => brandingProjectImage?.image) || ([] as string[]),
+        new_images: [],
         removed_images: [] as number[],
         primary_image_id: brandingProject?.images.find((img) => img.is_primary)?.id || null,
         primary_image_index: null as number | null,
@@ -52,43 +67,44 @@ export default function BrandingProjectForm({ brandingProject, tags, onSubmit }:
             })) || ([] as BrandingProjectMemberT[] | null),
     });
 
-    const [existingImages, setExistingImages] = useState(
-        brandingProject?.images.map((img) => ({
-            id: img.id,
-            url: `${img.image}`,
-            is_primary: img.is_primary,
-        })) || [],
-    );
-
     const [selectedTeamMembers, setSelectedTeamMembers] = useState<TeamMemberT[]>(brandingProject?.members || []);
 
-    const [newImages, setNewImages] = useState<{ file: string | File; url: string; is_primary: boolean }[]>([]);
+    const displayImages = useMemo(() => {
+        return [
+            ...existingImages,
+            ...newImages.map((img, index) => ({
+                id: `new-${index}`,
+                url: img.url,
+                is_primary: img.is_primary,
+                isNew: true,
+                file: img.file,
+            })),
+        ];
+    }, [existingImages, newImages]);
 
     const updatePrimaryImageStatus = (isPrimary: boolean, targetId?: number | null, isNew = false) => {
-        if (isPrimary) {
-            setExistingImages((prev) =>
-                prev.map((img) => ({
-                    ...img,
-                    is_primary: !isNew && targetId !== null ? img.id === targetId : false,
-                })),
-            );
+        if (!isPrimary) return;
 
-            setNewImages((prev) =>
-                prev.map((img, i) => ({
-                    ...img,
-                    is_primary: isNew && targetId !== null ? i === targetId : false,
-                })),
-            );
+        setExistingImages((prev) =>
+            prev.map((img) => ({
+                ...img,
+                is_primary: !isNew && targetId !== null ? img.id === targetId : false,
+            })),
+        );
 
-            if (!isNew && targetId !== null) {
-                // @ts-expect-error @ts-ignore
-                setData('primary_image_id', targetId);
-                setData('primary_image_index', null);
-            } else if (isNew && targetId !== null) {
-                setData('primary_image_id', null);
-                // @ts-expect-error @ts-ignore
-                setData('primary_image_index', targetId);
-            }
+        setNewImages((prev) =>
+            prev.map((img, i) => ({
+                ...img,
+                is_primary: isNew && targetId !== null ? i === targetId : false,
+            })),
+        );
+
+        if (!isNew && targetId !== null) {
+            setData('primary_image_id', targetId as number);
+            setData('primary_image_index', null);
+        } else if (isNew && targetId !== null) {
+            setData('primary_image_id', null);
+            setData('primary_image_index', targetId as number);
         }
     };
 
@@ -98,22 +114,40 @@ export default function BrandingProjectForm({ brandingProject, tags, onSubmit }:
         setData('tags', newSelectedTags);
     };
 
-    const handleImageUpload = (file: File | string, isPrimary = false) => {
+    const updateNewImagesWithPrimary = (newImage: NewImage) => {
+        setNewImages((prev) => {
+            const updatedImages = prev.map((img) => ({ ...img, is_primary: false }));
+            return [...updatedImages, newImage];
+        });
+    };
+
+    const handleImageUpload = (file: File | string, index?: number, total?: number, isPrimary = false) => {
+        if (typeof file !== 'string') return;
+
+        const currentNewImagesLength = newImages.length;
+        const currentExistingImagesLength = existingImages.length;
+        const primary = shouldBePrimaryImage(currentNewImagesLength, currentExistingImagesLength, isPrimary, index, total);
+
         const newImage = {
             file,
             url: `/storage/${file}`,
-            is_primary: isPrimary,
+            is_primary: primary,
         };
 
-        const newIndex = newImages.length;
-        setNewImages((prev) => [...prev, newImage]);
+        const newIndex = currentNewImagesLength;
 
-        if (isPrimary) {
-            updatePrimaryImageStatus(true, newIndex, true);
+        if (primary) {
+            setData('primary_image_index', newIndex);
+            updateNewImagesWithPrimary(newImage);
+        } else {
+            setNewImages((prev) => [...prev, newImage]);
         }
 
-        // @ts-expect-error @ts-ignore
         setData('images', [...data.images, file]);
+    };
+
+    const handleImageUploadForGallery = (file: File | string, isPrimary = false) => {
+        handleImageUpload(file, undefined, undefined, isPrimary);
     };
 
     const handleRemoveExistingImage = (imageId: number) => {
@@ -170,13 +204,14 @@ export default function BrandingProjectForm({ brandingProject, tags, onSubmit }:
     };
 
     const handleLeadChange = (selectedTeamMember: TeamMemberT, checked: boolean) => {
-        // @ts-expect-error @ts-ignore
-        const updatedMembers = data?.project_members?.map((member: BrandingProjectMemberT) => {
-            if (member?.team_member_id === selectedTeamMember?.id) {
-                return { ...member, is_lead: checked };
-            }
-            return member;
-        });
+        const updatedMembers = data?.project_members?.map(
+            (member: { team_member_id: number; is_lead: boolean; branding_project_id: number | null }) => {
+                if (member?.team_member_id === selectedTeamMember?.id) {
+                    return { ...member, is_lead: checked };
+                }
+                return member;
+            },
+        );
 
         setData('project_members', updatedMembers as BrandingProjectMemberT[]);
     };
@@ -190,10 +225,60 @@ export default function BrandingProjectForm({ brandingProject, tags, onSubmit }:
         }
     };
 
+    const handleImageReorder = (reorderedImages: ImageItem[]) => {
+        const existingImagesMap = new Map(existingImages.map((img) => [img.id, img]));
+        const newImagesMap = new Map(newImages.map((img, index) => [`new-${index}`, img]));
+
+        const reorderedExistingImages: typeof existingImages = [];
+        const reorderedNewImages: typeof newImages = [];
+
+        reorderedImages.forEach((img) => {
+            if (typeof img.id === 'number') {
+                const existingImg = existingImagesMap.get(img.id);
+                if (existingImg) {
+                    reorderedExistingImages.push(existingImg);
+                }
+            } else if (typeof img.id === 'string' && img.id.startsWith('new-')) {
+                const index = parseInt(img.id.replace('new-', ''), 10);
+                const newImg = newImagesMap.get(img.id);
+                if (newImg) {
+                    reorderedNewImages.push(newImg);
+                }
+            }
+        });
+
+        setExistingImages(reorderedExistingImages);
+        setNewImages(reorderedNewImages);
+    };
+
+    const getImagePath = (img: ImageItem) => {
+        if (img.isNew && img.file) {
+            return typeof img.file === 'string' ? img.file : img.url;
+        }
+        return img.url;
+    };
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
         const url = brandingProject ? route('branding-projects.update', brandingProject.id) : route('branding-projects.store');
+
+        const reorderedImagePaths = displayImages.map(getImagePath);
+
+        const reorderedNewImages = displayImages
+            .filter(
+                (img): img is { id: string; url: string; is_primary: boolean; isNew: boolean; file: string | File } => 'isNew' in img && img.isNew,
+            )
+            .map((img) => ({
+                file: typeof img.file === 'string' ? img.file : img.url.replace('/storage/', ''),
+                is_primary: img.is_primary,
+            }));
+
+        transform((data) => ({
+            ...data,
+            images: reorderedImagePaths,
+            new_images: reorderedNewImages,
+        }));
 
         if (brandingProject) {
             put(url);
@@ -202,15 +287,14 @@ export default function BrandingProjectForm({ brandingProject, tags, onSubmit }:
         }
     };
 
-    const allImages = [
-        ...existingImages,
-        ...newImages.map((img, index) => ({
-            id: `new-${index}`,
-            url: img.url,
-            is_primary: img.is_primary,
-            isNew: true,
-        })),
-    ];
+    const handleImageDelete = (imageId: number | string) => {
+        if (typeof imageId === 'number') {
+            handleRemoveExistingImage(imageId);
+        } else if (typeof imageId === 'string' && imageId.startsWith('new-')) {
+            const index = parseInt(imageId.replace('new-', ''), 10);
+            handleRemoveNewImage(index);
+        }
+    };
 
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -402,20 +486,30 @@ export default function BrandingProjectForm({ brandingProject, tags, onSubmit }:
                 <label className="block text-sm font-medium">
                     Project Media <span className="text-red-500">*</span>
                 </label>
-                <BrandingProjectImageGallery
-                    images={allImages}
-                    onImageUpload={handleImageUpload}
-                    onImageDelete={(imageId) => {
-                        if (typeof imageId === 'number') {
-                            handleRemoveExistingImage(imageId);
-                        } else if (typeof imageId === 'string' && imageId.startsWith('new-')) {
-                            const index = parseInt(imageId.replace('new-', ''), 10);
-                            handleRemoveNewImage(index);
-                        }
-                    }}
-                    onSetPrimaryImage={handleSetPrimaryImage}
-                    isEditing={true}
+                <MultiImageUploader
+                    onImageChange={handleImageUpload}
+                    onImageRemove={() => {}}
+                    error={errors.images}
+                    maxFiles={10}
+                    helperText="SVG, PNG, JPG, GIF, MP4, WebM (max. 300 MB each)"
+                    labelText="Media"
+                    showLabel={false}
                 />
+
+                {displayImages.length > 0 && (
+                    <div className="mt-6">
+                        <h4 className="mb-3 text-sm font-medium text-gray-700">Uploaded Media ({displayImages.length})</h4>
+                        <BrandingProjectImageGallery
+                            images={displayImages}
+                            onImageUpload={handleImageUploadForGallery}
+                            onImageDelete={handleImageDelete}
+                            onSetPrimaryImage={handleSetPrimaryImage}
+                            onReorder={handleImageReorder}
+                            isEditing={true}
+                            allowDrag={true}
+                        />
+                    </div>
+                )}
                 {errors.images && <p className="text-sm text-red-500">{errors.images}</p>}
             </div>
 

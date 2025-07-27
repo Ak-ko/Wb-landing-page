@@ -1,7 +1,8 @@
-import ComicImageGallery from '@/components/app/admin/comic-art/comic-art-image-gallery';
+import ImageGallery from '@/components/common/image-gallery';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import { ComicArtT } from '@/types';
+import { ImageItem } from '@/types/common';
 import { PageProps } from '@inertiajs/core';
 import { Head, Link } from '@inertiajs/react';
 import { ArrowLeft, Edit } from 'lucide-react';
@@ -11,10 +12,10 @@ interface ComicArtShowPropsT extends PageProps {
 }
 
 export default function ComicArtShow({ comicArt }: ComicArtShowPropsT) {
-    const formattedImages = comicArt.images.map((img) => ({
+    const formattedImages: ImageItem[] = comicArt.images.map((img) => ({
         id: img.id,
         url: `${img.image}`,
-        is_primary: img.is_primary,
+        order: img.order,
     }));
 
     return (
@@ -43,7 +44,7 @@ export default function ComicArtShow({ comicArt }: ComicArtShowPropsT) {
                         <div className="rounded-md border p-6">
                             <div className="mb-6">
                                 <h2 className="mb-2 text-lg font-semibold">Images</h2>
-                                <ComicImageGallery images={formattedImages} onImageUpload={() => {}} isEditing={false} />
+                                <ImageGallery images={formattedImages} isEditing={false} />
                             </div>
 
                             <div className="mb-6">
