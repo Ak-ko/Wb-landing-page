@@ -124,6 +124,7 @@ function PackagePanelContent({
             <div
                 className="scrollbar-thin scrollbar-track-black mx-auto flex w-full overflow-y-auto"
                 style={{
+                    maxHeight: 1200,
                     scrollbarColor: `${color} black`,
                     scrollbarWidth: 'thin',
                 }}
@@ -250,7 +251,7 @@ function StrategyPanelContent({
             <div
                 className="scrollbar-thin scrollbar-track-black w-full flex-1 overflow-y-auto"
                 style={{
-                    maxHeight: 450,
+                    maxHeight: 1200,
                     scrollbarColor: `${color} black`,
                     scrollbarWidth: 'thin',
                 }}
@@ -320,7 +321,7 @@ function GuidelinePanelContent({
             <div
                 className="scrollbar-thin scrollbar-track-black w-full flex-1 overflow-y-auto"
                 style={{
-                    maxHeight: 450,
+                    maxHeight: 1200,
                     scrollbarColor: `${color} black`,
                     scrollbarWidth: 'thin',
                 }}
@@ -704,7 +705,7 @@ export default function BusinessPlanSection() {
                         const setPanel = (panel: PanelKey) => setActivePanels((prev) => ({ ...prev, [b.id]: panel }));
                         return (
                             <div key={b.id} className="business-plan-section mb-16">
-                                <div className="flex min-h-[2000px] w-full flex-col overflow-hidden bg-black py-11 2xl:min-h-[2200px]">
+                                <div className="flex min-h-[1500px] w-full flex-col overflow-hidden bg-black py-11 2xl:min-h-[1800px]">
                                     <div className="relative flex-1 overflow-hidden">
                                         {/* Panels */}
                                         <motion.div
