@@ -63,7 +63,7 @@ export default function AnimationAndMotionForm({ animationAndMotion }: Animation
 
         transform((data) => ({
             ...data,
-            new_images: newImages,
+            new_images: newImages.map((img) => img.file),
         }));
 
         if (animationAndMotion) {

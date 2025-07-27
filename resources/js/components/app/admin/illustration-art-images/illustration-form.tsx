@@ -63,7 +63,7 @@ export default function IllustrationForm({ illustrationArt }: IllustrationFormPr
 
         transform((data) => ({
             ...data,
-            new_images: newImages,
+            new_images: newImages.map((img) => img.file),
         }));
 
         if (illustrationArt) {

@@ -141,9 +141,11 @@ class ComicArtController extends Controller
         // Handle new images
         if (isset($validated['new_images']) && is_array($validated['new_images'])) {
             foreach ($validated['new_images'] as $index => $image) {
+                $path = is_string($image) ? $image : $image['file'];
+
                 ComicArtImages::create([
                     'comic_art_id' => $comicArt->id,
-                    'image' => $image['file'],
+                    'image' => $path,
                 ]);
             }
         }

@@ -191,7 +191,7 @@ export default function BlogForm({ blog, tags, onSuccess }: BlogFormProps) {
                 if (existingImage) {
                     reorderedExisting.push({
                         ...existingImage,
-                        is_primary: img.is_primary,
+                        is_primary: img.is_primary as boolean,
                     });
                 }
             } else if (typeof img.id === 'string' && img.id.startsWith('new-')) {
@@ -199,7 +199,7 @@ export default function BlogForm({ blog, tags, onSuccess }: BlogFormProps) {
                 if (newImage) {
                     reorderedNew.push({
                         ...newImage,
-                        is_primary: img.is_primary,
+                        is_primary: img.is_primary as boolean,
                     });
                 }
             }

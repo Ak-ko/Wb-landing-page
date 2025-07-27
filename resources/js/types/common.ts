@@ -1,15 +1,19 @@
 export interface ImageItem {
     id?: number | string;
     url?: string;
-    is_primary: boolean;
+    is_primary?: boolean;
+    is_mascot?: boolean;
     isNew?: boolean;
     file?: string | File;
+    order?: number;
 }
 
 export interface NewImage {
     file: string | File;
     url: string;
     is_primary: boolean;
+    is_mascot?: boolean;
+    order?: number;
 }
 
 export interface FormFieldProps {
@@ -28,6 +32,7 @@ export interface ImageGalleryProps {
     isEditing?: boolean;
     allowDrag?: boolean;
     showPrimaryBadge?: boolean;
+    showMascotBadge?: boolean;
     showDragHandle?: boolean;
     className?: string;
     imageClassName?: string;
@@ -39,13 +44,15 @@ export interface ImageDialogProps {
     image?: ImageItem;
     onDelete?: (imageId: number | string) => void;
     onSetPrimary?: (imageId: number | string) => void;
-    onUpload?: (file: File | string, isPrimary: boolean) => void;
+    onSetMascot?: (imageId: number | string) => void;
+    onUpload?: (file: File | string, isPrimary: boolean, isMascot?: boolean) => void;
     isEditing: boolean;
     title?: string;
     uploadTitle?: string;
     manageTitle?: string;
     addTitle?: string;
     showPrimaryOption?: boolean;
+    showMascotOption?: boolean;
     showDeleteOption?: boolean;
     aspectRatio?: string;
     placeholderText?: string;

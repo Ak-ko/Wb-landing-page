@@ -56,7 +56,6 @@ class StickerArtController extends Controller
             'description' => $validated['description'] ?? null,
         ]);
 
-        // Handle images
         if (isset($validated['images']) && is_array($validated['images'])) {
             foreach ($validated['images'] as $index => $image) {
                 if (is_string($image)) {
@@ -66,6 +65,7 @@ class StickerArtController extends Controller
                 StickerArtImages::create([
                     'sticker_art_id' => $stickerArt->id,
                     'image' => $path,
+                    'order' => $index,
                 ]);
             }
         }
@@ -106,11 +106,11 @@ class StickerArtController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'images' => 'nullable|array|min:1',
+            'images' => 'nullable|array',
             'images.*' => 'required',
             'new_images' => 'nullable|array',
             'removed_images' => 'nullable|array',
-            'removed_images.*' => 'exists:comic_art_images,id',
+            'removed_images.*' => 'exists:sticker_art_images,id',
         ]);
 
         $stickerArt->update([
@@ -118,29 +118,34 @@ class StickerArtController extends Controller
             'description' => $validated['description'] ?? null,
         ]);
 
-        // Handle removed images
         if (isset($validated['removed_images'])) {
-            $imagesToDelete = StickerArtImages::whereIn('id', $validated['removed_images'])
-                ->where('sticker_art_id', $stickerArt->id)
-                ->get();
+            StickerArtImages::whereIn('id', $validated['removed_images'])->delete();
+        }
 
-            foreach ($imagesToDelete as $image) {
-                // Delete the file from storage
-                $image->deleteImage($image->image);
-                // Delete the record
-                $image->delete();
+        if (isset($validated['images']) && is_array($validated['images'])) {
+            foreach ($validated['images'] as $index => $imagePath) {
+                $existingImage = StickerArtImages::where('sticker_art_id', $stickerArt->id)
+                    ->where('image', $imagePath)
+                    ->first();
+
+                if ($existingImage) {
+                    $existingImage->update(['order' => $index]);
+                }
             }
         }
 
-        // Handle existing images
-        $existingImagesCount = $stickerArt->images()->count();
-
-        // Handle new images
         if (isset($validated['new_images']) && is_array($validated['new_images'])) {
+            $maxOrder = $stickerArt->images()->max('order') ?? -1;
+
             foreach ($validated['new_images'] as $index => $image) {
+                if (is_string($image)) {
+                    $path = $image;
+                }
+
                 StickerArtImages::create([
                     'sticker_art_id' => $stickerArt->id,
-                    'image' => $image['file'],
+                    'image' => $path,
+                    'order' => $maxOrder + $index + 1,
                 ]);
             }
         }
@@ -154,12 +159,7 @@ class StickerArtController extends Controller
      */
     public function destroy(StickerArt $stickerArt)
     {
-        // Delete associated images from storage
-        foreach ($stickerArt->images as $image) {
-            $image->deleteImage($image->image);
-        }
-
-        // The comic art and its images will be deleted due to the cascade constraint
+        $stickerArt->images()->delete();
         $stickerArt->delete();
 
         return redirect()->route('sticker-art.index')

@@ -1,4 +1,4 @@
-import StickerImageGallery from '@/components/app/admin/sticker-art/sticker-art-image-gallery';
+import ImageGallery from '@/components/common/image-gallery';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import { StickerArtT } from '@/types';
@@ -14,7 +14,6 @@ export default function StickerArtShow({ stickerArt }: StickerShowPropsT) {
     const formattedImages = stickerArt.images.map((img) => ({
         id: img.id,
         url: `${img.image}`,
-        is_primary: img.is_primary,
     }));
 
     return (
@@ -43,7 +42,7 @@ export default function StickerArtShow({ stickerArt }: StickerShowPropsT) {
                         <div className="rounded-md border p-6">
                             <div className="mb-6">
                                 <h2 className="mb-2 text-lg font-semibold">Images</h2>
-                                <StickerImageGallery images={formattedImages} onImageUpload={() => {}} isEditing={false} />
+                                <ImageGallery images={formattedImages} isEditing={false} showPrimaryBadge={false} />
                             </div>
 
                             <div className="mb-6">

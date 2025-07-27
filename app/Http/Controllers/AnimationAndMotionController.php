@@ -142,9 +142,11 @@ class AnimationAndMotionController extends Controller
         // Handle new images
         if (isset($validated['new_images']) && is_array($validated['new_images'])) {
             foreach ($validated['new_images'] as $index => $image) {
+                $path = is_string($image) ? $image : $image['file'];
+
                 AnimationAndMotionImage::create([
                     'animation_and_motion_id' => $animationAndMotion->id,
-                    'image' => $image['file'],
+                    'image' => $path,
                 ]);
             }
         }

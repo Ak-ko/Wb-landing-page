@@ -233,6 +233,7 @@ export type MascortArtT = {
         image: string;
         is_primary: boolean;
         is_mascot: boolean;
+        order: number;
     }[];
 } & TimestampsT;
 
@@ -289,13 +290,13 @@ export type StickerArtT = {
     id: number;
     title: string;
     description: string | null;
-    images: ComicArtImageT[];
+    images: StickerArtImageT[];
 } & TimestampsT;
 
 export type StickerArtImageT = {
     id: number;
     image: string;
-    is_primary: boolean;
+    order: number;
 } & TimestampsT;
 
 export type AnimationAndMotionT = {

@@ -16,6 +16,7 @@ class MascortArtImages extends Model
         'image',
         'is_primary',
         'is_mascot',
+        'order',
     ];
 
     protected $casts = [
@@ -41,5 +42,12 @@ class MascortArtImages extends Model
         }
 
         return $this->getImageUrl($value);
+    }
+
+    protected static function booted()
+    {
+        static::addGlobalScope('order', function ($query) {
+            $query->orderBy('order', 'asc');
+        });
     }
 }

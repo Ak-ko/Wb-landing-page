@@ -9,6 +9,7 @@ export default function ImageGallery({
     isEditing = false,
     allowDrag = false,
     showPrimaryBadge = true,
+    showMascotBadge = false,
     showDragHandle = true,
     className = '',
     imageClassName = 'h-24 w-24',
@@ -81,11 +82,14 @@ export default function ImageGallery({
                         </div>
                     )}
 
-                    {showPrimaryBadge && image.is_primary && (
-                        <div className="absolute top-1 right-1">
+                    <div className="absolute top-1 right-1 flex flex-col gap-1">
+                        {showPrimaryBadge && image.is_primary && (
                             <span className="bg-primary rounded-full px-1.5 py-0.5 text-[10px] text-white">Primary</span>
-                        </div>
-                    )}
+                        )}
+                        {showMascotBadge && image.is_mascot && (
+                            <span className="bg-secondary-pink rounded-full px-1.5 py-0.5 text-[10px] text-white">Mascot</span>
+                        )}
+                    </div>
                 </div>
             );
         },
@@ -100,6 +104,7 @@ export default function ImageGallery({
             onImageClick,
             imageClassName,
             showPrimaryBadge,
+            showMascotBadge,
             showDragHandle,
         ],
     );

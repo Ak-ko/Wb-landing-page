@@ -1,5 +1,6 @@
 import ImageUploader from '@/components/common/image-upload';
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { ImageDialogProps } from '@/types/common';
 import { Check, Trash2, X } from 'lucide-react';
@@ -11,6 +12,7 @@ export default function ImageDialog({
     image,
     onDelete,
     onSetPrimary,
+    onSetMascot,
     onUpload,
     isEditing,
     title,
@@ -18,6 +20,7 @@ export default function ImageDialog({
     manageTitle = 'Manage Image',
     addTitle = 'Add New Image',
     showPrimaryOption = true,
+    showMascotOption = false,
     showDeleteOption = true,
     aspectRatio = 'aspect-square',
     placeholderText = 'Drag and drop or click to upload',
@@ -26,6 +29,7 @@ export default function ImageDialog({
     const [isImageUploading, setIsImageUploading] = useState(false);
     const [selectedFile, setSelectedFile] = useState<File | string | null>(null);
     const [isPrimary, setIsPrimary] = useState(false);
+    const [isMascot, setIsMascot] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
 
     const handleImageChange = (file: File | string) => {
@@ -36,9 +40,10 @@ export default function ImageDialog({
         setIsImageUploading(state === 'uploading' || state === 'paused');
 
         if (state === 'completed' && selectedFile && onUpload) {
-            onUpload(selectedFile, isPrimary);
+            onUpload(selectedFile, isPrimary, isMascot);
             setSelectedFile(null);
             setIsPrimary(false);
+            setIsMascot(false);
             onClose();
         }
     };
@@ -46,6 +51,7 @@ export default function ImageDialog({
     const handleCancel = () => {
         setSelectedFile(null);
         setIsPrimary(false);
+        setIsMascot(false);
         onClose();
     };
 
@@ -76,6 +82,13 @@ export default function ImageDialog({
         }
     };
 
+    const handleSetMascot = () => {
+        if (image?.id && onSetMascot) {
+            onSetMascot(image.id);
+            onClose();
+        }
+    };
+
     const dialogTitle = title || (selectedFile ? uploadTitle : image?.id ? manageTitle : addTitle);
 
     return (
@@ -100,22 +113,29 @@ export default function ImageDialog({
 
                             {showPrimaryOption && (
                                 <div className="flex items-center space-x-2">
-                                    <input
-                                        type="checkbox"
-                                        id="isPrimary"
-                                        checked={isPrimary}
-                                        onChange={(e) => setIsPrimary(e.target.checked)}
-                                        className="rounded border-gray-300"
-                                    />
+                                    <Checkbox id="isPrimary" checked={isPrimary} onCheckedChange={(checked) => setIsPrimary(checked as boolean)} />
                                     <label htmlFor="isPrimary" className="text-sm text-gray-700">
                                         Set as primary image
                                     </label>
                                 </div>
                             )}
+
+                            {showMascotOption && (
+                                <div className="flex items-center space-x-2">
+                                    <Checkbox id="isMascot" checked={isMascot} onCheckedChange={(checked) => setIsMascot(checked as boolean)} />
+                                    <label htmlFor="isMascot" className="text-sm text-gray-700">
+                                        Set as mascot image
+                                    </label>
+                                </div>
+                            )}
                         </>
                     ) : (
-                        <div className="relative">
-                            <img src={image.url} alt="Image" className="max-h-64 max-w-full rounded-md object-contain" />
+                        <div className="relative w-full">
+                            <img src={image.url} alt="Image" className="max-h-64 w-full rounded-md object-contain" />
+                            <div className="absolute top-2 right-2 flex flex-col gap-1">
+                                {image.is_primary && <span className="bg-primary rounded-full px-2 py-1 text-xs text-white">Primary</span>}
+                                {image.is_mascot && <span className="bg-secondary-pink rounded-full px-2 py-1 text-xs text-white">Mascot</span>}
+                            </div>
                         </div>
                     )}
                 </div>
@@ -138,6 +158,12 @@ export default function ImageDialog({
                                     <Button type="button" variant="outline" onClick={handleSetPrimary}>
                                         <Check className="mr-2 h-4 w-4" />
                                         Set as Primary
+                                    </Button>
+                                )}
+                                {showMascotOption && !image.is_mascot && (
+                                    <Button type="button" variant="outline" onClick={handleSetMascot}>
+                                        <Check className="mr-2 h-4 w-4" />
+                                        Set as Mascot
                                     </Button>
                                 )}
                                 {showDeleteOption && (
