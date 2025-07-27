@@ -283,7 +283,7 @@ export type ComicArtT = {
 export type ComicArtImageT = {
     id: number;
     image: string;
-    is_primary: boolean;
+    order: number;
 } & TimestampsT;
 
 export type StickerArtT = {
