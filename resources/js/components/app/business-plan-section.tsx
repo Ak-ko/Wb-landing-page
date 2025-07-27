@@ -261,7 +261,7 @@ function StrategyPanelContent({
                         <ul key={colIdx} className="flex w-full flex-col gap-8">
                             {column.map((i: BrandElement) => (
                                 <li key={i?.id}>
-                                    <div className="flex w-full items-center gap-3 text-xl font-bold text-white uppercase 2xl:text-lg">
+                                    <div className="flex w-full items-start gap-3 text-xl font-bold text-white uppercase 2xl:text-lg">
                                         <span>{i?.order}</span>
                                         <span>{i?.title}</span>
                                     </div>
@@ -331,13 +331,13 @@ function GuidelinePanelContent({
                         <ul key={colIdx} className="flex w-full flex-col gap-8">
                             {column.map((i: BrandElement) => (
                                 <li key={i?.id}>
-                                    <div className="flex w-full items-center gap-3 text-xl font-bold text-white uppercase 2xl:text-lg">
+                                    <div className="flex w-full items-start gap-3 text-xl font-bold text-white uppercase 2xl:text-lg">
                                         <span>{i?.order}</span>
                                         <span>{i?.title}</span>
                                     </div>
                                     <ul className="my-2">
                                         {i?.items?.map((j: BrandElementItem, subIdx: number) => (
-                                            <li key={j?.id} className="flex items-center gap-3 text-white uppercase">
+                                            <li key={j?.id} className="flex items-start gap-3 text-white uppercase">
                                                 <span>{j?.order}.</span>
                                                 <span className="2xl:text-md flex min-w-0 flex-1 items-center">
                                                     <span className="flex-1">{j?.title}</span>
