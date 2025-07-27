@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\IllustrationArt;
 use App\Models\IllustrationArtImages;
-use App\Traits\IllustrationArtTrait;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class IllustrationArtController extends Controller
@@ -55,6 +54,7 @@ class IllustrationArtController extends Controller
             'description' => 'nullable|string',
             'images' => 'required|array|min:1',
             'images.*' => 'required',
+            'new_images' => 'nullable|array',
         ]);
 
         $illustrationArt = IllustrationArt::create([
@@ -62,16 +62,15 @@ class IllustrationArtController extends Controller
             'description' => $validated['description'] ?? null,
         ]);
 
-        // Handle images
-        if (isset($validated['images']) && is_array($validated['images'])) {
-            foreach ($validated['images'] as $index => $image) {
-                if (is_string($image)) {
-                    $path = $image;
-                }
+        // Handle new images
+        if (isset($validated['new_images']) && is_array($validated['new_images'])) {
+            foreach ($validated['new_images'] as $index => $image) {
+                $path = is_string($image) ? $image : $image;
 
                 IllustrationArtImages::create([
                     'illustration_art_id' => $illustrationArt->id,
                     'image' => $path,
+                    'order' => $index,
                 ]);
             }
         }
@@ -138,17 +137,30 @@ class IllustrationArtController extends Controller
             }
         }
 
-        // Handle existing images
-        $existingImagesCount = $illustrationArt->images()->count();
+        // Update order for existing images
+        if (isset($validated['images']) && is_array($validated['images'])) {
+            foreach ($validated['images'] as $index => $imagePath) {
+                $existingImage = IllustrationArtImages::where('illustration_art_id', $illustrationArt->id)
+                    ->where('image', Str::after($imagePath, config('app.url')))
+                    ->first();
+
+                if ($existingImage) {
+                    $existingImage->update(['order' => $index]);
+                }
+            }
+        }
 
         // Handle new images
         if (isset($validated['new_images']) && is_array($validated['new_images'])) {
+            $maxOrder = $illustrationArt->images()->max('order') ?? -1;
+
             foreach ($validated['new_images'] as $index => $image) {
-                $path = is_string($image) ? $image : $image['file'];
+                $path = is_string($image) ? $image : $image;
 
                 IllustrationArtImages::create([
                     'illustration_art_id' => $illustrationArt->id,
                     'image' => $path,
+                    'order' => $maxOrder + $index + 1,
                 ]);
             }
         }

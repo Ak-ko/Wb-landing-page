@@ -11,7 +11,7 @@ export interface ImageItem {
 export interface NewImage {
     file: string | File;
     url: string;
-    is_primary: boolean;
+    is_primary?: boolean;
     is_mascot?: boolean;
     order?: number;
 }

@@ -270,7 +270,7 @@ export type IllustrationArtT = {
 export type IllustrationArtImageT = {
     id: number;
     image: string;
-    is_primary: boolean;
+    order: number;
 } & TimestampsT;
 
 export type ComicArtT = {
