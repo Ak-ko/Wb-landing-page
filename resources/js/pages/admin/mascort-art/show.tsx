@@ -1,7 +1,7 @@
 import { Head, Link } from '@inertiajs/react';
 import { ArrowLeft, Edit } from 'lucide-react';
 
-import MascortArtImageGallery from '@/components/app/admin/mascort-art/mascort-art-image-gallery';
+import ImageGallery from '@/components/common/image-gallery';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem, MascortArtT } from '@/types';
@@ -62,7 +62,7 @@ export default function MascortArtShow({ mascortArt }: MascortArtShowProps) {
 
                     <div className="space-y-2">
                         <h2 className="text-lg font-semibold">Images</h2>
-                        <MascortArtImageGallery images={formattedImages} isEditing={false} onImageUpload={() => {}} />
+                        <ImageGallery images={formattedImages} isEditing={false} showMascotBadge={true} />
                     </div>
 
                     <div className="space-y-2">

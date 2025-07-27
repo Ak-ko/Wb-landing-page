@@ -233,6 +233,7 @@ export type MascortArtT = {
         image: string;
         is_primary: boolean;
         is_mascot: boolean;
+        order: number;
     }[];
 } & TimestampsT;
 
@@ -269,7 +270,7 @@ export type IllustrationArtT = {
 export type IllustrationArtImageT = {
     id: number;
     image: string;
-    is_primary: boolean;
+    order: number;
 } & TimestampsT;
 
 export type ComicArtT = {
@@ -282,20 +283,20 @@ export type ComicArtT = {
 export type ComicArtImageT = {
     id: number;
     image: string;
-    is_primary: boolean;
+    order: number;
 } & TimestampsT;
 
 export type StickerArtT = {
     id: number;
     title: string;
     description: string | null;
-    images: ComicArtImageT[];
+    images: StickerArtImageT[];
 } & TimestampsT;
 
 export type StickerArtImageT = {
     id: number;
     image: string;
-    is_primary: boolean;
+    order: number;
 } & TimestampsT;
 
 export type AnimationAndMotionT = {
@@ -308,7 +309,7 @@ export type AnimationAndMotionT = {
 export type AnimationAndMotionImageT = {
     id: number;
     image: string;
-    is_primary: boolean;
+    order: number;
 } & TimestampsT;
 export type BrandGuidelineElementItemT = {
     id: number;
@@ -366,13 +367,6 @@ export type BrandStrategyT = {
     updated_at: string;
 };
 
-interface CommonPaginationT<T> {
-    data: T[];
-    current_page: number;
-    per_page: number;
-    total: number;
-}
-
 export interface ChunkUploadHook {
     isUploading: boolean;
     progress: number;
@@ -385,3 +379,6 @@ export interface ChunkUploadHook {
         onError: (error: any) => void;
     }) => void;
 }
+
+// Export common types
+export * from './common';

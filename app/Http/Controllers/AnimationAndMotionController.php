@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AnimationAndMotion;
 use App\Models\AnimationAndMotionImage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class AnimationAndMotionController extends Controller
@@ -53,6 +54,7 @@ class AnimationAndMotionController extends Controller
             'description' => 'nullable|string',
             'images' => 'required|array|min:1',
             'images.*' => 'required',
+            'new_images' => 'nullable|array',
         ]);
 
         $animationAndMotion = AnimationAndMotion::create([
@@ -60,16 +62,15 @@ class AnimationAndMotionController extends Controller
             'description' => $validated['description'] ?? null,
         ]);
 
-        // Handle images
-        if (isset($validated['images']) && is_array($validated['images'])) {
-            foreach ($validated['images'] as $index => $image) {
-                if (is_string($image)) {
-                    $path = $image;
-                }
+        // Handle new images
+        if (isset($validated['new_images']) && is_array($validated['new_images'])) {
+            foreach ($validated['new_images'] as $index => $image) {
+                $path = is_string($image) ? $image : $image;
 
                 AnimationAndMotionImage::create([
                     'animation_and_motion_id' => $animationAndMotion->id,
                     'image' => $path,
+                    'order' => $index,
                 ]);
             }
         }
@@ -136,19 +137,33 @@ class AnimationAndMotionController extends Controller
             }
         }
 
-        // Handle existing images
-        $existingImagesCount = $animationAndMotion->images()->count();
+        // Update order for existing images
+        if (isset($validated['images']) && is_array($validated['images'])) {
+            foreach ($validated['images'] as $index => $imagePath) {
+                $existingImage = AnimationAndMotionImage::where('animation_and_motion_id', $animationAndMotion->id)
+                    ->where('image', Str::after($imagePath, config('app.url')))
+                    ->first();
 
-        // Handle new images
-        if (isset($validated['new_images']) && is_array($validated['new_images'])) {
-            foreach ($validated['new_images'] as $index => $image) {
-                AnimationAndMotionImage::create([
-                    'animation_and_motion_id' => $animationAndMotion->id,
-                    'image' => $image['file'],
-                ]);
+                if ($existingImage) {
+                    $existingImage->update(['order' => $index]);
+                }
             }
         }
 
+        // Handle new images
+        if (isset($validated['new_images']) && is_array($validated['new_images'])) {
+            $maxOrder = $animationAndMotion->images()->max('order') ?? -1;
+
+            foreach ($validated['new_images'] as $index => $image) {
+                $path = is_string($image) ? $image : $image;
+
+                AnimationAndMotionImage::create([
+                    'animation_and_motion_id' => $animationAndMotion->id,
+                    'image' => $path,
+                    'order' => $maxOrder + $index + 1,
+                ]);
+            }
+        }
 
         return redirect()->route('animation-and-motion.index')
             ->with('success', 'Animation and Motion updated successfully.');

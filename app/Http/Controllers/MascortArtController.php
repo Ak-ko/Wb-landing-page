@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\MascortArt;
 use App\Models\MascortArtImages;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class MascortArtController extends Controller
@@ -131,7 +132,9 @@ class MascortArtController extends Controller
             'images.*' => 'required',
             'new_images' => 'nullable|array',
             'primary_image_id' => 'nullable|integer',
+            'primary_image_index' => 'nullable|integer',
             'mascot_image_id' => 'nullable|integer',
+            'mascot_image_index' => 'nullable|integer',
             'removed_images' => 'nullable|array',
             'removed_images.*' => 'exists:mascort_art_images,id',
         ]);
@@ -141,9 +144,21 @@ class MascortArtController extends Controller
             'description' => $validated['description'] ?? null,
         ]);
 
-        // Handle removed images
         if (isset($validated['removed_images'])) {
             MascortArtImages::whereIn('id', $validated['removed_images'])->delete();
+        }
+
+
+        if (isset($validated['images']) && is_array($validated['images'])) {
+            foreach ($validated['images'] as $index => $imagePath) {
+                $existingImage = MascortArtImages::where('mascort_art_id', $mascortArt->id)
+                    ->where('image', Str::after($imagePath, config('app.url')))
+                    ->first();
+
+                if ($existingImage) {
+                    $existingImage->update(['order' => $index]);
+                }
+            }
         }
 
         // Reset all primary and mascot flags
@@ -166,17 +181,34 @@ class MascortArtController extends Controller
 
         // Handle new images
         if (isset($validated['new_images']) && is_array($validated['new_images'])) {
-            foreach ($validated['new_images'] as $image) {
+            $maxOrder = $mascortArt->images()->max('order') ?? -1;
+            $newImageIds = [];
+
+            foreach ($validated['new_images'] as $index => $image) {
                 if (is_string($image)) {
                     $path = $image;
                 }
 
-                MascortArtImages::create([
+                $newImage = MascortArtImages::create([
                     'mascort_art_id' => $mascortArt->id,
                     'image' => $path,
                     'is_primary' => false,
                     'is_mascot' => false,
+                    'order' => $maxOrder + $index + 1,
                 ]);
+
+                $newImageIds[$index] = $newImage->id;
+            }
+
+            // Set primary and mascot flags for new images based on indices
+            if (isset($validated['primary_image_index']) && isset($newImageIds[$validated['primary_image_index']])) {
+                MascortArtImages::where('id', $newImageIds[$validated['primary_image_index']])
+                    ->update(['is_primary' => true]);
+            }
+
+            if (isset($validated['mascot_image_index']) && isset($newImageIds[$validated['mascot_image_index']])) {
+                MascortArtImages::where('id', $newImageIds[$validated['mascot_image_index']])
+                    ->update(['is_mascot' => true]);
             }
         }
 

@@ -17,6 +17,6 @@ class BrandStrategy extends Model
 
     public function elements()
     {
-        return $this->hasMany(BrandStrategyElement::class, 'brand_strategy_id');
+        return $this->hasMany(BrandStrategyElement::class, 'brand_strategy_id')->orderBy('order', 'asc');
     }
 }

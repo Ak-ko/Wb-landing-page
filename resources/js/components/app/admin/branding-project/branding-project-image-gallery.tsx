@@ -1,38 +1,31 @@
+import ImageDialog from '@/components/common/image-dialog';
+import ImageGallery from '@/components/common/image-gallery';
 import { Button } from '@/components/ui/button';
-import { Image, Play, Plus } from 'lucide-react';
+import { ImageItem } from '@/types/common';
+import { Plus } from 'lucide-react';
 import { useState } from 'react';
-import BrandingProjectImageDialog from './branding-project-image-dialog';
-
-interface ImageItem {
-    id?: number | string;
-    url?: string;
-    is_primary: boolean;
-    isNew?: boolean;
-}
 
 interface BrandingProjectImageGalleryProps {
     images: ImageItem[];
     onImageUpload: (file: File | string, isPrimary?: boolean) => void;
     onImageDelete?: (imageId: number | string) => void;
     onSetPrimaryImage?: (imageId: number | string) => void;
+    onReorder?: (reorderedImages: ImageItem[]) => void;
     isEditing: boolean;
+    allowDrag?: boolean;
 }
+
 export default function BrandingProjectImageGallery({
     images,
     onImageUpload,
     onImageDelete,
     onSetPrimaryImage,
+    onReorder,
     isEditing,
+    allowDrag = true,
 }: BrandingProjectImageGalleryProps) {
     const [dialogOpen, setDialogOpen] = useState(false);
     const [selectedImage, setSelectedImage] = useState<ImageItem | null>(null);
-
-    // Check if file is a video based on extension
-    const isVideo = (url: string): boolean => {
-        const videoExtensions = ['.mp4', '.webm', '.ogg', '.avi', '.mov', '.wmv', '.flv', '.mkv'];
-        const extension = url.toLowerCase().substring(url.lastIndexOf('.'));
-        return videoExtensions.includes(extension);
-    };
 
     const handleOpenDialog = (image?: ImageItem) => {
         setSelectedImage(image || { is_primary: false });
@@ -48,57 +41,37 @@ export default function BrandingProjectImageGallery({
         onImageUpload(file, isPrimary);
     };
 
+    const handleImageClick = (image: ImageItem) => {
+        handleOpenDialog(image);
+    };
+
     return (
         <div className="space-y-4">
-            <div className="flex flex-wrap gap-4">
-                {images.map((image, index) => (
-                    <div
-                        key={image.id || index}
-                        className="group relative h-24 w-24 cursor-pointer overflow-hidden rounded-md border"
-                        onClick={() => handleOpenDialog(image)}
-                    >
-                        {image.url && isVideo(image.url) ? (
-                            <>
-                                <video src={image.url} className="h-full w-full object-cover" muted preload="metadata" playsInline />
-                                <div className="absolute top-1/2 left-1/2 z-5 flex size-[30px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-white/60 transition-all duration-500 group-hover:border-white">
-                                    <Play
-                                        className="size-[15px] text-white/60 transition-all duration-500 group-hover:text-white"
-                                        fill="currentColor"
-                                    />
-                                </div>
-                            </>
-                        ) : (
-                            <img src={image.url} alt={`Project media ${index + 1}`} className="h-full w-full object-cover" />
-                        )}
-                        {image.is_primary && (
-                            <div className="absolute top-1 right-1">
-                                <span className="bg-primary rounded-full px-1.5 py-0.5 text-[10px] text-white">Primary</span>
-                            </div>
-                        )}
-                    </div>
-                ))}
+            <ImageGallery
+                images={images}
+                onImageClick={handleImageClick}
+                onReorder={onReorder}
+                isEditing={isEditing}
+                allowDrag={allowDrag}
+                showPrimaryBadge={true}
+                showDragHandle={true}
+                className=""
+                imageClassName="h-24 w-24"
+            />
 
-                {isEditing && (
-                    <Button
-                        type="button"
-                        variant="outline"
-                        className="flex h-24 w-24 flex-col items-center justify-center rounded-md border border-dashed"
-                        onClick={() => handleOpenDialog()}
-                    >
-                        <Plus className="h-6 w-6" />
-                        <span className="mt-1 text-xs">Add Media</span>
-                    </Button>
-                )}
+            {isEditing && (
+                <Button
+                    type="button"
+                    variant="outline"
+                    className="flex h-24 w-24 flex-col items-center justify-center rounded-md border border-dashed"
+                    onClick={() => handleOpenDialog()}
+                >
+                    <Plus className="h-6 w-6" />
+                    <span className="mt-1 text-xs">Add Media</span>
+                </Button>
+            )}
 
-                {images.length === 0 && !isEditing && (
-                    <div className="flex h-24 w-24 flex-col items-center justify-center rounded-md border border-dashed">
-                        <Image className="h-6 w-6 text-gray-400" />
-                        <span className="mt-1 text-xs text-gray-500">No media</span>
-                    </div>
-                )}
-            </div>
-
-            <BrandingProjectImageDialog
+            <ImageDialog
                 open={dialogOpen}
                 onClose={handleCloseDialog}
                 image={selectedImage || undefined}
@@ -106,6 +79,13 @@ export default function BrandingProjectImageGallery({
                 onSetPrimary={onSetPrimaryImage}
                 onUpload={handleImageUpload}
                 isEditing={isEditing}
+                title="Manage Project Media"
+                uploadTitle="Upload New Media"
+                manageTitle="Manage Media"
+                addTitle="Add New Media"
+                placeholderText="Drag and drop or click to upload media"
+                helperText="SVG, PNG, JPG, GIF, MP4, WebM (max. 300MB)"
+                acceptedFormats="image/*,video/*"
             />
         </div>
     );

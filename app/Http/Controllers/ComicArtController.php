@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ComicArt;
 use App\Models\ComicArtImages;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class ComicArtController extends Controller
@@ -52,6 +53,7 @@ class ComicArtController extends Controller
             'description' => 'nullable|string',
             'images' => 'required|array|min:1',
             'images.*' => 'required',
+            'new_images' => 'nullable|array',
         ]);
 
         $comicArt = ComicArt::create([
@@ -59,16 +61,15 @@ class ComicArtController extends Controller
             'description' => $validated['description'] ?? null,
         ]);
 
-        // Handle images
-        if (isset($validated['images']) && is_array($validated['images'])) {
-            foreach ($validated['images'] as $index => $image) {
-                if (is_string($image)) {
-                    $path = $image;
-                }
+        // Handle new images
+        if (isset($validated['new_images']) && is_array($validated['new_images'])) {
+            foreach ($validated['new_images'] as $index => $image) {
+                $path = is_string($image) ? $image : $image;
 
                 ComicArtImages::create([
                     'comic_art_id' => $comicArt->id,
                     'image' => $path,
+                    'order' => $index,
                 ]);
             }
         }
@@ -135,15 +136,30 @@ class ComicArtController extends Controller
             }
         }
 
-        // Handle existing images
-        $existingImagesCount = $comicArt->images()->count();
+        // Update order for existing images
+        if (isset($validated['images']) && is_array($validated['images'])) {
+            foreach ($validated['images'] as $index => $imagePath) {
+                $existingImage = ComicArtImages::where('comic_art_id', $comicArt->id)
+                    ->where('image', Str::after($imagePath, config('app.url')))
+                    ->first();
+
+                if ($existingImage) {
+                    $existingImage->update(['order' => $index]);
+                }
+            }
+        }
 
         // Handle new images
         if (isset($validated['new_images']) && is_array($validated['new_images'])) {
+            $maxOrder = $comicArt->images()->max('order') ?? -1;
+
             foreach ($validated['new_images'] as $index => $image) {
+                $path = is_string($image) ? $image : $image;
+
                 ComicArtImages::create([
                     'comic_art_id' => $comicArt->id,
-                    'image' => $image['file'],
+                    'image' => $path,
+                    'order' => $maxOrder + $index + 1,
                 ]);
             }
         }

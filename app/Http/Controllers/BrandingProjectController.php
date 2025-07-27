@@ -70,8 +70,9 @@ class BrandingProjectController extends Controller
             'is_published' => 'required|boolean',
             'tags' => 'nullable|array',
             'tags.*' => 'exists:tags,id',
-            'images' => 'required|array',
+            'images' => 'required|array|min:2',
             'images.*' => 'required',
+            'new_images' => 'nullable|array',
             'primary_image_index' => 'nullable|integer',
             'project_members' => 'nullable|array',
             'project_members.*' => 'required',
@@ -111,6 +112,17 @@ class BrandingProjectController extends Controller
                     'image' => $path,
                     'is_primary' => $index == $primaryIndex,
                     'order' => $index,
+                ]);
+            }
+        }
+
+        if (isset($validated['new_images']) && is_array($validated['new_images'])) {
+            foreach ($validated['new_images'] as $index => $image) {
+                BrandingProjectImage::create([
+                    'branding_project_id' => $brandingProject->id,
+                    'image' => $image['file'],
+                    'order' => count($validated['images'] ?? []) + $index,
+                    'is_primary' => $image['is_primary'],
                 ]);
             }
         }
@@ -170,8 +182,9 @@ class BrandingProjectController extends Controller
             'is_published' => 'required|boolean',
             'tags' => 'nullable|array',
             'tags.*' => 'exists:tags,id',
-            'images' => 'nullable|array',
+            'images' => 'nullable|array|min:2',
             'images.*' => 'required',
+            'new_images' => 'nullable|array',
             'primary_image_id' => 'nullable|integer',
             'primary_image_index' => 'nullable|integer',
             'removed_images' => 'nullable|array',
@@ -213,36 +226,42 @@ class BrandingProjectController extends Controller
             }
         }
 
-        if (isset($validated['images']) && is_array($validated['images'])) {
-            $existingImagesCount = $brandingProject->images()->count();
-            $primaryIndex = $request->input('primary_image_index');
-
-            if ($primaryIndex !== null) {
-                $brandingProject->images()->update(['is_primary' => false]);
-            }
-
-            foreach ($validated['images'] as $index => $image) {
-                if (is_string($image)) {
-                    $path = $image;
-                } else {
-                    $path = $image->store('branding-projects', 'public');
-                }
-
-                BrandingProjectImage::create([
-                    'branding_project_id' => $brandingProject->id,
-                    'image' => $path,
-                    'is_primary' => $primaryIndex !== null && $index == $primaryIndex,
-                    'order' => $existingImagesCount + $index,
-                ]);
-            }
-        }
+        BrandingProjectImage::where('branding_project_id', $brandingProject->id)->update(['is_primary' => false]);
 
         if ($request->has('primary_image_id') && $request->input('primary_image_index') === null) {
-            $brandingProject->images()->update(['is_primary' => false]);
-
             BrandingProjectImage::where('id', $request->input('primary_image_id'))
                 ->where('branding_project_id', $brandingProject->id)
                 ->update(['is_primary' => true]);
+        }
+
+        $existingImagesCount = $brandingProject->images()->count();
+
+        if (isset($validated['images']) && is_array($validated['images'])) {
+            $primaryId = $request->input('primary_image_id', 0);
+
+            foreach ($validated['images'] as $index => $image) {
+                $dbImagePath = \Illuminate\Support\Str::after($image, config('app.url'));
+                $brandingProjectImage = BrandingProjectImage::where('image', $dbImagePath)->first();
+
+                if ($brandingProjectImage) {
+                    $brandingProjectImage->update([
+                        'branding_project_id' => $brandingProject->id,
+                        'order' => $existingImagesCount + $index,
+                        'is_primary' => $primaryId == $brandingProjectImage->id,
+                    ]);
+                }
+            }
+        }
+
+        if (isset($validated['new_images']) && is_array($validated['new_images'])) {
+            foreach ($validated['new_images'] as $index => $image) {
+                BrandingProjectImage::create([
+                    'branding_project_id' => $brandingProject->id,
+                    'image' => $image['file'],
+                    'order' => $existingImagesCount + $index,
+                    'is_primary' => $image['is_primary'],
+                ]);
+            }
         }
 
         $brandingProject->members()->detach();

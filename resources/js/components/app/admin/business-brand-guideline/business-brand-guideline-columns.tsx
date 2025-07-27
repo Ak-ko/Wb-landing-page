@@ -1,3 +1,4 @@
+import { DuplicateButton } from '@/components/common/duplicate-button';
 import { Button } from '@/components/ui/button';
 import { BusinessBrandGuidelineT } from '@/types';
 import { Link } from '@inertiajs/react';
@@ -6,9 +7,13 @@ import { Edit, Eye, Trash2 } from 'lucide-react';
 
 type ActionsProps = {
     handleDeleteClick: (id: number) => void;
+    handleDuplicateClick: (record: BusinessBrandGuidelineT) => void;
 };
 
-export const createBusinessBrandGuidelineColumns = ({ handleDeleteClick }: ActionsProps): ColumnDef<BusinessBrandGuidelineT>[] => [
+export const createBusinessBrandGuidelineColumns = ({
+    handleDeleteClick,
+    handleDuplicateClick,
+}: ActionsProps): ColumnDef<BusinessBrandGuidelineT>[] => [
     {
         accessorKey: 'title',
         header: 'Title',
@@ -38,6 +43,7 @@ export const createBusinessBrandGuidelineColumns = ({ handleDeleteClick }: Actio
                         <Edit className="h-4 w-4" />
                     </Button>
                 </Link>
+                <DuplicateButton onClick={() => handleDuplicateClick(row.original)} />
                 <Button variant="ghost" size="icon" className="text-red-500" onClick={() => handleDeleteClick(row.original.id)}>
                     <Trash2 className="h-4 w-4" />
                 </Button>

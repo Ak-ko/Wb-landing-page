@@ -23,6 +23,6 @@ class BrandGuidelineElement extends Model
 
     public function items()
     {
-        return $this->hasMany(BrandGuidelineElementItem::class);
+        return $this->hasMany(BrandGuidelineElementItem::class)->orderBy('order', 'asc');
     }
 }
