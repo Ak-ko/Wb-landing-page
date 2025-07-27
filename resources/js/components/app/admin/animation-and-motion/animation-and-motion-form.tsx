@@ -241,6 +241,7 @@ export default function AnimationAndMotionForm({ animationAndMotion }: Animation
                 uploadTitle="Upload New Animation Video"
                 manageTitle="Manage Animation Video"
                 addTitle="Add New Animation Video"
+                showPrimaryOption={false}
             />
         </form>
     );

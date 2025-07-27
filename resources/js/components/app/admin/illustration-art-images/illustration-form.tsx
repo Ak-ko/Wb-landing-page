@@ -234,6 +234,7 @@ export default function IllustrationForm({ illustrationArt }: IllustrationFormPr
                 uploadTitle="Upload New Illustration Image"
                 manageTitle="Manage Illustration Image"
                 addTitle="Add New Illustration Image"
+                showPrimaryOption={false}
             />
         </form>
     );

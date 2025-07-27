@@ -234,6 +234,7 @@ export default function ComicArtForm({ comicArt }: ComicArtFormProps) {
                 uploadTitle="Upload New Comic Image"
                 manageTitle="Manage Comic Image"
                 addTitle="Add New Comic Image"
+                showPrimaryOption={false}
             />
         </form>
     );
