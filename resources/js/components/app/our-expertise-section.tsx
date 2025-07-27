@@ -30,7 +30,7 @@ export default function OurExpertiseSection() {
                 <SectionHeader header="Our Expertise" />
 
                 <CommonBodyAnimation>
-                    <div className="grid grid-cols-1 gap-5 py-10 md:px-15 lg:grid-cols-2 xl:px-30 2xl:px-[320px]">
+                    <div className="3xl:px-[550px] grid grid-cols-1 gap-5 py-10 md:px-15 lg:grid-cols-2 xl:px-30 2xl:px-[320px]">
                         {/* New Business Card */}
                         <motion.div
                             whileInView={{ x: 0 }}

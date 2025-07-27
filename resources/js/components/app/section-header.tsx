@@ -19,9 +19,14 @@ export default function SectionHeader({ header, headerClass, descriptionClass, d
             transition={{ duration: 0.95, delay: 0.3, type: 'linear' }}
             className={cn('flex flex-col items-center justify-center gap-5 px-3 lg:px-0', containerClass)}
         >
-            <h1 className={cn('text-center text-[40px] font-extrabold uppercase sm:text-[50px]', headerClass)}>{header}</h1>
+            <h1 className={cn('text-center text-[40px] font-extrabold uppercase sm:text-[50px] 2xl:text-[60px]', headerClass)}>{header}</h1>
             {typeof description === 'string' ? (
-                <p className={cn('text-md font-inter max-w-[350px] text-center font-normal sm:max-w-[550px] sm:text-lg', descriptionClass)}>
+                <p
+                    className={cn(
+                        'text-md font-inter max-w-[350px] text-center font-normal sm:!max-w-[800px] sm:text-lg 2xl:max-w-[500px] 2xl:text-2xl',
+                        descriptionClass,
+                    )}
+                >
                     {description}
                 </p>
             ) : (

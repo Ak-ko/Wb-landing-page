@@ -53,7 +53,7 @@ export default function ContactUsSection() {
                                             className="bg-secondary-pink hover:bg-secondary-pink/80 flex items-center gap-2 rounded-xl px-8 py-4 text-white transition-all duration-500"
                                             href={`tel:${PHONE}`}
                                         >
-                                            <Phone /> <span>+95(9) 882 881 902</span>
+                                            <Phone /> <span>+95(9) 882 881 903</span>
                                         </a>
                                     </div>
                                     {/* <div className="absolute -right-[33%] -bottom-[35%] hidden xl:block">

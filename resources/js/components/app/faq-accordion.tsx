@@ -42,10 +42,10 @@ function FaqAccordionItem({ faq, isOpen, onClick, index }: FaqAccordionItemProps
                 )}
                 onClick={onClick}
             >
-                <div className="flex items-center justify-between py-4">
+                <div className="flex items-center justify-between py-4 pr-3">
                     <h3 className="flex-1 text-lg font-medium select-none">{faq.question}</h3>
-                    <motion.div animate={{ rotateX: isOpen ? 180 : 0 }} transition={{ duration: 0.2 }}>
-                        <ChevronDown className="mr-3" style={{ color: faq.color || '#3b82f6' }} />
+                    <motion.div animate={{ rotate: isOpen ? 180 : 0, transformOrigin: 'center' }} transition={{ duration: 0.5 }}>
+                        <ChevronDown style={{ color: faq.color || '#3b82f6' }} />
                     </motion.div>
                 </div>
             </div>

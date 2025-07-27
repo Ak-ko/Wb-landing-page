@@ -11,73 +11,17 @@ interface BrandingProjectCardProps {
 
 export default function BrandingProjectCard({ project, className = '' }: BrandingProjectCardProps) {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
-    const [imagesLoaded, setImagesLoaded] = useState<boolean[]>([]);
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
-    const images = project.images || [];
 
     // Memoize sorted images to prevent infinite re-renders
     const sortedImages = useMemo(() => {
+        const images = project.images || [];
         return [...images].sort((a, b) => {
             if (a.is_primary) return -1;
             if (b.is_primary) return 1;
             return a.order - b.order;
         });
-    }, [images]);
-
-    // Preload images only once when component mounts
-    useEffect(() => {
-        if (!sortedImages.length) return;
-
-        // Initialize loading state
-        setImagesLoaded(new Array(sortedImages.length).fill(false));
-
-        // Preload only the first image immediately, others lazily
-        const preloadFirstImage = () => {
-            if (sortedImages[0]) {
-                const img = new Image();
-                img.onload = () => {
-                    setImagesLoaded((prev) => {
-                        const newLoaded = [...prev];
-                        newLoaded[0] = true;
-                        return newLoaded;
-                    });
-                };
-                img.onerror = () => {
-                    setImagesLoaded((prev) => {
-                        const newLoaded = [...prev];
-                        newLoaded[0] = true; // Still show even if failed
-                        return newLoaded;
-                    });
-                };
-                img.src = sortedImages[0].image || '/assets/placeholder.png';
-            }
-        };
-
-        preloadFirstImage();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [sortedImages.length]);
-
-    // Preload next image when index changes
-    useEffect(() => {
-        if (sortedImages[currentImageIndex] && !imagesLoaded[currentImageIndex]) {
-            const img = new Image();
-            img.onload = () => {
-                setImagesLoaded((prev) => {
-                    const newLoaded = [...prev];
-                    newLoaded[currentImageIndex] = true;
-                    return newLoaded;
-                });
-            };
-            img.onerror = () => {
-                setImagesLoaded((prev) => {
-                    const newLoaded = [...prev];
-                    newLoaded[currentImageIndex] = true;
-                    return newLoaded;
-                });
-            };
-            img.src = sortedImages[currentImageIndex].image || '/assets/placeholder.png';
-        }
-    }, [currentImageIndex, sortedImages, imagesLoaded]);
+    }, [project.images]);
 
     // Start animation with proper cleanup
     useEffect(() => {
@@ -118,25 +62,17 @@ export default function BrandingProjectCard({ project, className = '' }: Brandin
                         initial={{ y: '100%', opacity: 1 }}
                         animate={{
                             y: 0,
-                            opacity: imagesLoaded[currentImageIndex] ? 1 : 0,
+                            opacity: 1,
                         }}
                         exit={{ y: '-100%', opacity: 1 }}
                         transition={{
                             duration: 0.7,
                             ease: [0.4, 0, 0.2, 1],
-                            opacity: { duration: 0.2 },
                         }}
                         loading="lazy"
                         decoding="async"
                     />
                 </AnimatePresence>
-
-                {/* Loading indicator */}
-                {!imagesLoaded[currentImageIndex] && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-gray-200">
-                        <div className="h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-blue-600"></div>
-                    </div>
-                )}
             </div>
 
             {/* Project info overlay */}

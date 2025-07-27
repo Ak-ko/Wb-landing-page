@@ -14,7 +14,6 @@ const INITIAL_FAQ_COUNT = 10;
 
 export default function FaqSection() {
     const { faqs } = usePage<{ faqs: FaqT[] }>().props;
-    console.log(faqs.length);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [allFaqs, setAllFaqs] = useState<FaqT[]>([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -50,7 +49,7 @@ export default function FaqSection() {
                                     <FaqAccordion faqs={faqs} />
                                     {hasMoreFaqs && (
                                         <motion.div
-                                            className="mt-6 text-center"
+                                            className="mt-6 max-w-[768px] text-center"
                                             initial={{ opacity: 0, y: 20 }}
                                             animate={{ opacity: 1, y: 0 }}
                                             transition={{ duration: 0.5 }}

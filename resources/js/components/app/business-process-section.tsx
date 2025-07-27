@@ -71,9 +71,9 @@ export default function BusinessProcessSection() {
                 />
             </div>
 
-            <div className="relative min-h-[60vh]">
+            <div className="relative">
                 {/* Navigation Buttons */}
-                <div className="absolute top-1/2 right-4 left-4 z-20 flex -translate-y-1/2 justify-between">
+                <div className="app-container absolute top-1/2 right-4 left-4 z-20 flex -translate-y-1/2 justify-between">
                     <motion.button
                         onClick={() => paginate(-1)}
                         className="flex h-10 w-10 items-center justify-center rounded-full bg-black text-white shadow-lg md:h-12 md:w-12"
