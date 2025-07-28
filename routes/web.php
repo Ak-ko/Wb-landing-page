@@ -153,6 +153,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Business Packages
     Route::resource('/admin/business-packages', BusinessPackagesController::class);
+    Route::post('/admin/business-packages/duplicate', [BusinessPackagesController::class, 'duplicate'])
+        ->name('business-packages.duplicate');
 
     // Art and Motion Art
     Route::resource('/admin/business-brand-guidelines', BusinessBrandGuidelineController::class);
@@ -167,6 +169,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Art Packages
     Route::resource('/admin/art-packages', ArtPackageController::class);
+    Route::post('/admin/art-packages/duplicate', [ArtPackageController::class, 'duplicate'])
+        ->name('art-packages.duplicate');
 
     // Illustration Art
     Route::resource('/admin/illustration-art', IllustrationArtController::class);
@@ -182,6 +186,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Brand Strategies
     Route::resource('/admin/brand-strategies', \App\Http\Controllers\BrandStrategyController::class);
+    Route::post('/admin/brand-strategies/duplicate', [\App\Http\Controllers\BrandStrategyController::class, 'duplicate'])
+        ->name('brand-strategies.duplicate');
 
     // Theme Colors
     Route::resource('/admin/theme-colors', ColorController::class);

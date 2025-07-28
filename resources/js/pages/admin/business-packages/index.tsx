@@ -5,6 +5,14 @@ import { useState } from 'react';
 import { createBusinessPackageColumns } from '@/components/app/admin/business-package/business-package-columns';
 import BusinessPackageFilters from '@/components/app/admin/business-package/business-package-filters.tsx';
 import DashboardTitle from '@/components/app/dashboard-title';
+import { DuplicateButton } from '@/components/common/duplicate-button';
+import {
+    ConfirmDuplicateModal,
+    CreatingDuplicateModal,
+    DeletingDuplicateModal,
+    SuccessDuplicateModal,
+    UndoDuplicateModal,
+} from '@/components/common/duplicate-modals';
 import { DataCardView } from '@/components/data-view/card/data-card-view';
 import { DataTable } from '@/components/data-view/table/data-table';
 import { ViewMode, ViewToggle } from '@/components/data-view/view-toggle';
@@ -21,6 +29,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { useDuplicateRecord } from '@/hooks/use-duplicate-record';
 import useFilter from '@/hooks/use-filter';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem, BusinessPackageT, CommonPaginationT } from '@/types';
@@ -69,6 +78,19 @@ export default function BusinessPackages({
         false,
     );
 
+    // Duplicate functionality
+    const duplicateHook = useDuplicateRecord({
+        duplicateRoute: route('business-packages.duplicate'),
+        editRoute: (id: number) => route('business-packages.edit', id),
+        onSuccess: () => {
+            // Refresh the page to show the new record
+            router.reload();
+        },
+        onError: (errors) => {
+            console.error('Duplicate error:', errors);
+        },
+    });
+
     const handleSearch = (query: string) => {
         setFilterStates((prev) => ({ ...prev, query, pageIndex: 1 }));
         setIsFilter(true);
@@ -111,6 +133,7 @@ export default function BusinessPackages({
 
     const businessPackageColumns = createBusinessPackageColumns({
         handleDeleteClick,
+        handleDuplicateClick: duplicateHook.handleDuplicateClick,
     });
 
     const renderBusinessPackageCard = (businessPackage: BusinessPackageT) => (
@@ -150,6 +173,7 @@ export default function BusinessPackages({
                         Edit
                     </Button>
                 </Link>
+                <DuplicateButton onClick={() => duplicateHook.handleDuplicateClick(businessPackage)} />
                 <Button variant="ghost" size="sm" className="text-red-500" onClick={() => handleDeleteClick(businessPackage.id)}>
                     <Trash2 className="h-4 w-4" />
                     Delete
@@ -229,6 +253,39 @@ export default function BusinessPackages({
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
+
+            {/* Duplicate Modals */}
+            <ConfirmDuplicateModal
+                isOpen={duplicateHook.isConfirmModalOpen}
+                onConfirm={duplicateHook.handleConfirmDuplicate}
+                onCancel={duplicateHook.handleCancelDuplicate}
+                recordTitle={(duplicateHook.recordToDuplicate?.name as string) || ''}
+            />
+
+            <CreatingDuplicateModal
+                isOpen={duplicateHook.isCreatingModalOpen}
+                recordTitle={(duplicateHook.recordToDuplicate?.name as string) || ''}
+            />
+
+            <SuccessDuplicateModal
+                isOpen={duplicateHook.isSuccessModalOpen}
+                onClose={duplicateHook.handleSuccessModalClose}
+                onEdit={duplicateHook.handleEditDuplicatedRecord}
+                onUndo={() => duplicateHook.setIsUndoModalOpen(true)}
+                recordTitle={(duplicateHook.recordToDuplicate?.name as string) || ''}
+            />
+
+            <UndoDuplicateModal
+                isOpen={duplicateHook.isUndoModalOpen}
+                onConfirm={duplicateHook.handleUndoDuplicate}
+                onCancel={duplicateHook.handleUndoModalClose}
+                recordTitle={(duplicateHook.recordToDuplicate?.name as string) || ''}
+            />
+
+            <DeletingDuplicateModal
+                isOpen={duplicateHook.isDeletingModalOpen}
+                recordTitle={(duplicateHook.recordToDuplicate?.name as string) || ''}
+            />
         </AppLayout>
     );
 }

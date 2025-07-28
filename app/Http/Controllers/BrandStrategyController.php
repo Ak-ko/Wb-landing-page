@@ -5,12 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\BrandStrategy;
 use App\Models\BrandStrategyElement;
 use App\Models\BrandStrategyElementItem;
+use App\Traits\HasDuplicateFunctionality;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class BrandStrategyController extends Controller
 {
+    use HasDuplicateFunctionality;
+
     public function index(Request $request)
     {
         $strategies = BrandStrategy::with('elements.items')
@@ -160,5 +163,43 @@ class BrandStrategyController extends Controller
     {
         $brandStrategy->delete();
         return redirect()->route('brand-strategies.index')->with('success', 'Strategy deleted successfully.');
+    }
+
+    public function duplicate(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer|exists:brand_strategies,id',
+        ]);
+
+        $originalStrategy = BrandStrategy::with(['elements.items'])->findOrFail($request->id);
+
+        $duplicatedStrategy = DB::transaction(function () use ($originalStrategy) {
+            // Create the duplicated strategy
+            $duplicateData = [
+                'title' => $originalStrategy->title . ' (Copy)',
+                'description' => $originalStrategy->description,
+            ];
+
+            $duplicatedStrategy = BrandStrategy::create($duplicateData);
+
+            // Duplicate elements and their items
+            foreach ($originalStrategy->elements as $element) {
+                $duplicatedElement = $duplicatedStrategy->elements()->create([
+                    'title' => $element->title,
+                    'order' => $element->order,
+                ]);
+
+                foreach ($element->items as $item) {
+                    $duplicatedElement->items()->create([
+                        'title' => $item->title,
+                        'order' => $item->order,
+                    ]);
+                }
+            }
+
+            return $duplicatedStrategy;
+        });
+
+        return back()->with('duplicated_id', $duplicatedStrategy->id);
     }
 }
