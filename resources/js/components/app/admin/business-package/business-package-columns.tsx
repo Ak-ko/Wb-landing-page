@@ -1,3 +1,4 @@
+import { DuplicateButton } from '@/components/common/duplicate-button';
 import { Button } from '@/components/ui/button';
 import { BusinessPackageT } from '@/types';
 import { Link } from '@inertiajs/react';
@@ -7,9 +8,13 @@ import ColorTag from '../../color-tag';
 
 type BusinessPackageActionsProps = {
     handleDeleteClick: (id: number) => void;
+    handleDuplicateClick: (record: BusinessPackageT) => void;
 };
 
-export const createBusinessPackageColumns = ({ handleDeleteClick }: BusinessPackageActionsProps): ColumnDef<BusinessPackageT>[] => [
+export const createBusinessPackageColumns = ({
+    handleDeleteClick,
+    handleDuplicateClick,
+}: BusinessPackageActionsProps): ColumnDef<BusinessPackageT>[] => [
     {
         accessorKey: 'name',
         header: 'Name',
@@ -100,6 +105,7 @@ export const createBusinessPackageColumns = ({ handleDeleteClick }: BusinessPack
                         <Edit className="h-4 w-4" />
                     </Button>
                 </Link>
+                <DuplicateButton onClick={() => handleDuplicateClick(row.original)} />
                 <Button variant="ghost" size="icon" className="text-red-500" onClick={() => handleDeleteClick(row.original.id)}>
                     <Trash2 className="h-4 w-4" />
                 </Button>

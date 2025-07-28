@@ -259,11 +259,11 @@
 
 @media screen and (max-width: 2600px) {
     .hero__left__mascot {
-        left: calc(100vw - 68%) !important;
+        left: calc(100vw - 71%) !important;
     }
 
     .hero__right__mascot {
-        right: calc(100vw - 70%) !important;
+        right: calc(100vw - 74%) !important;
     }
 }
 

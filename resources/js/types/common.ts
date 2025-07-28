@@ -61,3 +61,13 @@ export interface ImageDialogProps {
     helperText?: string;
     acceptedFormats?: string;
 }
+
+export interface CommonPaginationT<T> {
+    data: T[];
+    current_page: number;
+    per_page: number;
+    total: number;
+    last_page: number;
+    from: number;
+    to: number;
+}

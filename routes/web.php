@@ -153,6 +153,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Business Packages
     Route::resource('/admin/business-packages', BusinessPackagesController::class);
+    Route::post('/admin/business-packages/duplicate', [BusinessPackagesController::class, 'duplicate'])
+        ->name('business-packages.duplicate');
 
     // Art and Motion Art
     Route::resource('/admin/business-brand-guidelines', BusinessBrandGuidelineController::class);

@@ -5,11 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\BusinessBrandGuideline;
 use App\Models\BusinessPackages;
 use App\Models\BrandStrategy;
+use App\Models\BusinessPackageItems;
+use App\Traits\HasDuplicateFunctionality;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\DB;
 
 class BusinessPackagesController extends Controller
 {
+    use HasDuplicateFunctionality;
+
     public function index(Request $request)
     {
         $packages = BusinessPackages::query()
@@ -86,10 +91,13 @@ class BusinessPackagesController extends Controller
             $businessPackage->durations()->create($durationData);
         }
 
-        // Create package items
+        // Create package items and attach them
+        $itemIds = [];
         foreach ($validated['items'] as $itemData) {
-            $businessPackage->businessPackageItems()->create($itemData);
+            $item = BusinessPackageItems::create($itemData);
+            $itemIds[] = $item->id;
         }
+        $businessPackage->businessPackageItems()->attach($itemIds);
 
         return redirect()->route('business-packages.index')->with('success', 'Package created successfully.');
     }
@@ -153,12 +161,14 @@ class BusinessPackagesController extends Controller
         }
 
         // Update package items
-        $businessPackage->businessPackageItems()->delete();
         $businessPackage->businessPackageItems()->detach();
 
+        $itemIds = [];
         foreach ($validated['items'] as $itemData) {
-            $businessPackage->businessPackageItems()->create($itemData);
+            $item = BusinessPackageItems::create($itemData);
+            $itemIds[] = $item->id;
         }
+        $businessPackage->businessPackageItems()->attach($itemIds);
 
         return redirect()->route('business-packages.index')->with('success', 'Package updated successfully.');
     }
@@ -168,5 +178,59 @@ class BusinessPackagesController extends Controller
         $businessPackage->delete();
 
         return redirect()->route('business-packages.index')->with('success', 'Package deleted successfully.');
+    }
+
+    public function duplicate(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer|exists:business_packages,id',
+        ]);
+
+        $originalPackage = BusinessPackages::with(['businessPackageItems', 'durations'])->findOrFail($request->id);
+
+        $duplicatedPackage = DB::transaction(function () use ($originalPackage) {
+            // Create the duplicated package
+            $duplicateData = [
+                'name' => $originalPackage->name . ' (Copy)',
+                'description' => $originalPackage->description,
+                'price_text' => $originalPackage->price_text,
+                'price' => $originalPackage->price,
+                'currency' => $originalPackage->currency,
+                'color' => $originalPackage->color,
+                'is_recommended' => $originalPackage->is_recommended,
+                'is_discount' => $originalPackage->is_discount,
+                'discount_price_text' => $originalPackage->discount_price_text,
+                'discount_description' => $originalPackage->discount_description,
+                'discount_end_date' => $originalPackage->discount_end_date,
+                'business_brand_guideline_id' => $originalPackage->business_brand_guideline_id,
+                'brand_strategy_id' => $originalPackage->brand_strategy_id,
+            ];
+
+            $duplicatedPackage = BusinessPackages::create($duplicateData);
+
+            // Duplicate durations
+            foreach ($originalPackage->durations as $duration) {
+                $duplicatedPackage->durations()->create([
+                    'duration' => $duration->duration,
+                    'duration_remarks' => $duration->duration_remarks,
+                ]);
+            }
+
+            // Duplicate business package items and attach them
+            $itemIds = [];
+            foreach ($originalPackage->businessPackageItems as $item) {
+                $duplicatedItem = BusinessPackageItems::create([
+                    'name' => $item->name,
+                    'is_included' => $item->is_included,
+                    'detail_link' => $item->detail_link,
+                ]);
+                $itemIds[] = $duplicatedItem->id;
+            }
+            $duplicatedPackage->businessPackageItems()->attach($itemIds);
+
+            return $duplicatedPackage;
+        });
+
+        return back()->with('duplicated_id', $duplicatedPackage->id);
     }
 }
