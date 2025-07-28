@@ -1,10 +1,17 @@
+import { DuplicateButton } from '@/components/common/duplicate-button';
 import { Button } from '@/components/ui/button';
 import { BrandStrategyT } from '@/types';
 import { Link } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
 import { Edit, Eye, Trash2 } from 'lucide-react';
 
-export const createBrandStrategyColumns = ({ handleDeleteClick }: { handleDeleteClick: (id: number) => void }): ColumnDef<BrandStrategyT>[] => [
+export const createBrandStrategyColumns = ({
+    handleDeleteClick,
+    handleDuplicateClick,
+}: {
+    handleDeleteClick: (id: number) => void;
+    handleDuplicateClick: (record: BrandStrategyT) => void;
+}): ColumnDef<BrandStrategyT>[] => [
     {
         accessorKey: 'title',
         header: 'Title',
@@ -33,6 +40,7 @@ export const createBrandStrategyColumns = ({ handleDeleteClick }: { handleDelete
                         <Edit className="h-4 w-4" />
                     </Button>
                 </Link>
+                <DuplicateButton onClick={() => handleDuplicateClick(row.original)} />
                 <Button variant="ghost" size="icon" className="text-red-500" onClick={() => handleDeleteClick(row.original.id)}>
                     <Trash2 className="h-4 w-4" />
                 </Button>

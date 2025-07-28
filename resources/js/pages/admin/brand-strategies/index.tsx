@@ -1,6 +1,13 @@
 import { createBrandStrategyColumns } from '@/components/app/admin/brand-strategy/brand-strategy-columns';
 import BrandStrategyFilters from '@/components/app/admin/brand-strategy/brand-strategy-filters';
 import DashboardTitle from '@/components/app/dashboard-title';
+import {
+    ConfirmDuplicateModal,
+    CreatingDuplicateModal,
+    DeletingDuplicateModal,
+    SuccessDuplicateModal,
+    UndoDuplicateModal,
+} from '@/components/common/duplicate-modals';
 import { DataTable } from '@/components/data-view/table/data-table';
 import {
     AlertDialog,
@@ -13,6 +20,7 @@ import {
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
+import { useDuplicateRecord } from '@/hooks/use-duplicate-record';
 import useFilter from '@/hooks/use-filter';
 import AppLayout from '@/layouts/app-layout';
 import { BrandStrategyT, BreadcrumbItem, CommonPaginationT } from '@/types';
@@ -56,6 +64,19 @@ export default function BrandStrategies({
         false,
     );
 
+    // Duplicate functionality
+    const duplicateHook = useDuplicateRecord({
+        duplicateRoute: route('brand-strategies.duplicate'),
+        editRoute: (id: number) => route('brand-strategies.edit', id),
+        onSuccess: () => {
+            // Refresh the page to show the new record
+            router.reload();
+        },
+        onError: (errors) => {
+            console.error('Duplicate error:', errors);
+        },
+    });
+
     const handleSearch = (query: string) => {
         setFilterStates((prev) => ({ ...prev, query }));
         setIsFilter(true);
@@ -86,7 +107,10 @@ export default function BrandStrategies({
         }
     };
 
-    const brandStrategyColumns = createBrandStrategyColumns({ handleDeleteClick });
+    const brandStrategyColumns = createBrandStrategyColumns({
+        handleDeleteClick,
+        handleDuplicateClick: duplicateHook.handleDuplicateClick,
+    });
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -128,6 +152,39 @@ export default function BrandStrategies({
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
+
+            {/* Duplicate Modals */}
+            <ConfirmDuplicateModal
+                isOpen={duplicateHook.isConfirmModalOpen}
+                onConfirm={duplicateHook.handleConfirmDuplicate}
+                onCancel={duplicateHook.handleCancelDuplicate}
+                recordTitle={(duplicateHook.recordToDuplicate?.title as string) || ''}
+            />
+
+            <CreatingDuplicateModal
+                isOpen={duplicateHook.isCreatingModalOpen}
+                recordTitle={(duplicateHook.recordToDuplicate?.title as string) || ''}
+            />
+
+            <SuccessDuplicateModal
+                isOpen={duplicateHook.isSuccessModalOpen}
+                onClose={duplicateHook.handleSuccessModalClose}
+                onEdit={duplicateHook.handleEditDuplicatedRecord}
+                onUndo={() => duplicateHook.setIsUndoModalOpen(true)}
+                recordTitle={(duplicateHook.recordToDuplicate?.title as string) || ''}
+            />
+
+            <UndoDuplicateModal
+                isOpen={duplicateHook.isUndoModalOpen}
+                onConfirm={duplicateHook.handleUndoDuplicate}
+                onCancel={duplicateHook.handleUndoModalClose}
+                recordTitle={(duplicateHook.recordToDuplicate?.title as string) || ''}
+            />
+
+            <DeletingDuplicateModal
+                isOpen={duplicateHook.isDeletingModalOpen}
+                recordTitle={(duplicateHook.recordToDuplicate?.title as string) || ''}
+            />
         </AppLayout>
     );
 }

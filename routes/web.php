@@ -186,6 +186,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Brand Strategies
     Route::resource('/admin/brand-strategies', \App\Http\Controllers\BrandStrategyController::class);
+    Route::post('/admin/brand-strategies/duplicate', [\App\Http\Controllers\BrandStrategyController::class, 'duplicate'])
+        ->name('brand-strategies.duplicate');
 
     // Theme Colors
     Route::resource('/admin/theme-colors', ColorController::class);
