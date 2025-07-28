@@ -169,6 +169,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Art Packages
     Route::resource('/admin/art-packages', ArtPackageController::class);
+    Route::post('/admin/art-packages/duplicate', [ArtPackageController::class, 'duplicate'])
+        ->name('art-packages.duplicate');
 
     // Illustration Art
     Route::resource('/admin/illustration-art', IllustrationArtController::class);

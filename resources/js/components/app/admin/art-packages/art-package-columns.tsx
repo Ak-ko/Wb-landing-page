@@ -1,3 +1,4 @@
+import { DuplicateButton } from '@/components/common/duplicate-button';
 import { Button } from '@/components/ui/button';
 import { ArtPackageT } from '@/types';
 import { Link } from '@inertiajs/react';
@@ -7,9 +8,10 @@ import ColorTag from '../../color-tag';
 
 type ArtPackageActionsProps = {
     handleDeleteClick: (id: number) => void;
+    handleDuplicateClick: (record: ArtPackageT) => void;
 };
 
-export const createArtPackageColumns = ({ handleDeleteClick }: ArtPackageActionsProps): ColumnDef<ArtPackageT>[] => [
+export const createArtPackageColumns = ({ handleDeleteClick, handleDuplicateClick }: ArtPackageActionsProps): ColumnDef<ArtPackageT>[] => [
     {
         accessorKey: 'title',
         header: 'Title',
@@ -58,6 +60,7 @@ export const createArtPackageColumns = ({ handleDeleteClick }: ArtPackageActions
                             <Edit className="h-4 w-4" />
                         </Button>
                     </Link>
+                    <DuplicateButton onClick={() => handleDuplicateClick(row.original)} />
                     <Button variant="ghost" size="icon" className="text-red-500" onClick={() => handleDeleteClick(row.original.id)}>
                         <Trash2 className="h-4 w-4" />
                     </Button>

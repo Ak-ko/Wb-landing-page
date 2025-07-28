@@ -5,6 +5,14 @@ import { useState } from 'react';
 import { createArtPackageColumns } from '@/components/app/admin/art-packages/art-package-columns';
 import ArtPackageFilters from '@/components/app/admin/art-packages/art-package-filters';
 import DashboardTitle from '@/components/app/dashboard-title';
+import { DuplicateButton } from '@/components/common/duplicate-button';
+import {
+    ConfirmDuplicateModal,
+    CreatingDuplicateModal,
+    DeletingDuplicateModal,
+    SuccessDuplicateModal,
+    UndoDuplicateModal,
+} from '@/components/common/duplicate-modals';
 import { DataCardView } from '@/components/data-view/card/data-card-view';
 import { DataTable } from '@/components/data-view/table/data-table';
 import { ViewMode, ViewToggle } from '@/components/data-view/view-toggle';
@@ -20,6 +28,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { CardFooter } from '@/components/ui/card';
+import { useDuplicateRecord } from '@/hooks/use-duplicate-record';
 import useFilter from '@/hooks/use-filter';
 import AppLayout from '@/layouts/app-layout';
 import { ArtPackageT, BreadcrumbItem, CommonPaginationT } from '@/types';
@@ -65,6 +74,19 @@ export default function ArtPackages({
         false,
     );
 
+    // Duplicate functionality
+    const duplicateHook = useDuplicateRecord({
+        duplicateRoute: route('art-packages.duplicate'),
+        editRoute: (id: number) => route('art-packages.edit', id),
+        onSuccess: () => {
+            // Refresh the page to show the new record
+            router.reload();
+        },
+        onError: (errors) => {
+            console.error('Duplicate error:', errors);
+        },
+    });
+
     const handleSearch = (query: string) => {
         setFilterStates((prev) => ({ ...prev, query, pageIndex: 1 }));
         setIsFilter(true);
@@ -108,7 +130,10 @@ export default function ArtPackages({
         }
     };
 
-    const columns = createArtPackageColumns({ handleDeleteClick });
+    const columns = createArtPackageColumns({
+        handleDeleteClick,
+        handleDuplicateClick: duplicateHook.handleDuplicateClick,
+    });
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -183,6 +208,7 @@ export default function ArtPackages({
                                                     Edit
                                                 </Button>
                                             </Link>
+                                            <DuplicateButton onClick={() => duplicateHook.handleDuplicateClick(item)} />
                                             <Button variant="destructive" size="sm" onClick={() => handleDeleteClick(item.id)}>
                                                 Delete
                                             </Button>
@@ -234,6 +260,39 @@ export default function ArtPackages({
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
+
+            {/* Duplicate Modals */}
+            <ConfirmDuplicateModal
+                isOpen={duplicateHook.isConfirmModalOpen}
+                onConfirm={duplicateHook.handleConfirmDuplicate}
+                onCancel={duplicateHook.handleCancelDuplicate}
+                recordTitle={(duplicateHook.recordToDuplicate?.title as string) || ''}
+            />
+
+            <CreatingDuplicateModal
+                isOpen={duplicateHook.isCreatingModalOpen}
+                recordTitle={(duplicateHook.recordToDuplicate?.title as string) || ''}
+            />
+
+            <SuccessDuplicateModal
+                isOpen={duplicateHook.isSuccessModalOpen}
+                onClose={duplicateHook.handleSuccessModalClose}
+                onEdit={duplicateHook.handleEditDuplicatedRecord}
+                onUndo={() => duplicateHook.setIsUndoModalOpen(true)}
+                recordTitle={(duplicateHook.recordToDuplicate?.title as string) || ''}
+            />
+
+            <UndoDuplicateModal
+                isOpen={duplicateHook.isUndoModalOpen}
+                onConfirm={duplicateHook.handleUndoDuplicate}
+                onCancel={duplicateHook.handleUndoModalClose}
+                recordTitle={(duplicateHook.recordToDuplicate?.title as string) || ''}
+            />
+
+            <DeletingDuplicateModal
+                isOpen={duplicateHook.isDeletingModalOpen}
+                recordTitle={(duplicateHook.recordToDuplicate?.title as string) || ''}
+            />
         </AppLayout>
     );
 }

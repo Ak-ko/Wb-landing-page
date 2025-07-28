@@ -4,11 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\ArtPackage;
 use App\Enums\ArtPackageType;
+use App\Traits\HasDuplicateFunctionality;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class ArtPackageController extends Controller
 {
+    use HasDuplicateFunctionality;
+
     public function index(Request $request)
     {
         $filters = $request->only(['query', 'type']);
@@ -162,5 +166,45 @@ class ArtPackageController extends Controller
         $artPackage->delete();
 
         return redirect()->route('art-packages.index')->with('success', 'Art package deleted successfully.');
+    }
+
+    public function duplicate(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer|exists:art_packages,id',
+        ]);
+
+        $originalPackage = ArtPackage::with(['items', 'prices'])->findOrFail($request->id);
+
+        $duplicatedPackage = DB::transaction(function () use ($originalPackage) {
+            // Create the duplicated package
+            $duplicateData = [
+                'title' => $originalPackage->title . ' (Copy)',
+                'description' => $originalPackage->description,
+                'type' => $originalPackage->type,
+                'color' => $originalPackage->color,
+            ];
+
+            $duplicatedPackage = ArtPackage::create($duplicateData);
+
+            // Duplicate items
+            foreach ($originalPackage->items as $item) {
+                $duplicatedPackage->items()->create([
+                    'item' => $item->item,
+                ]);
+            }
+
+            // Duplicate prices
+            foreach ($originalPackage->prices as $price) {
+                $duplicatedPackage->prices()->create([
+                    'price' => $price->price,
+                    'duration' => $price->duration,
+                ]);
+            }
+
+            return $duplicatedPackage;
+        });
+
+        return back()->with('duplicated_id', $duplicatedPackage->id);
     }
 }
