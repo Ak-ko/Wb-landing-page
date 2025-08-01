@@ -3,7 +3,7 @@ import useFilter from '@/hooks/use-filter';
 import { BlogT, TagT } from '@/types';
 import { usePage } from '@inertiajs/react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import BlogList from './blog-list';
 import BlogPageFilters from './blog-page-filters';
 import { NotFoundLottie } from './lottie/not-found-lottie';
@@ -24,6 +24,14 @@ export default function BlogPageSection() {
         tag: filters?.tag || null,
         page: filters?.page || 1,
     });
+
+    useEffect(() => {
+        setLocalFilters({
+            query: filters?.query || '',
+            tag: filters?.tag || null,
+            page: filters?.page || 1,
+        });
+    }, [filters?.query, filters?.tag, filters?.page]);
 
     const { setIsFilter } = useFilter(localFilters, route('blogs.list'), false);
 

@@ -12,6 +12,6 @@ class TeamMemberSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        \App\Models\TeamMember::factory(10)->create();
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\TeamMemberType;
 use App\Traits\HasImage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -21,13 +22,15 @@ class TeamMember extends Model
         'social_links',
         'image',
         'color',
+        'type',
         'is_active',
         'bio'
     ];
 
     protected $casts = [
         'social_links' => 'array',
-        'is_active' => 'boolean'
+        'is_active' => 'boolean',
+        'type' => TeamMemberType::class
     ];
 
     public function scopeActive($query)

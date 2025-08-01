@@ -17,7 +17,20 @@ class TeamMemberFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => fake()->name(),
+            'designation' => fake()->jobTitle(),
+            'bio' => fake()->paragraph(),
+            'mascot_image' => fake()->imageUrl(400, 400, 'people'),
+            'email' => fake()->unique()->safeEmail(),
+            'phone' => fake()->phoneNumber(),
+            'social_links' => json_encode([
+                'twitter' => fake()->url(),
+                'linkedin' => fake()->url(),
+            ]),
+            'image' => fake()->imageUrl(400, 400, 'people'),
+            'color' => fake()->hexColor(),
+            'type' => fake()->randomElement(['member', 'star_member']),
+            'is_active' => fake()->boolean(),
         ];
     }
 }

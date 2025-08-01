@@ -10,23 +10,27 @@ export default function TeamMembersSection() {
 
     if (!teamMembers || teamMembers?.length === 0) return null;
 
-    const topTeamMembers = teamMembers?.slice(0, 1);
-    const bottomTeamMembers = teamMembers?.slice(1);
+    const starTeamMember = teamMembers?.find((member) => member.type === 'star_member');
+    const regularTeamMembers = teamMembers?.filter((member) => member.type === 'member');
 
     return (
         <section className="py-32">
             <div className="app-container">
                 <SectionHeader header="Meet the walking gang" />
 
-                <div className="grid grid-cols-1 gap-4 py-11 xl:grid-cols-2">
-                    {topTeamMembers?.map((t, x) => <TeamMemberCard key={x} teamMember={t} />)}
-                </div>
+                {starTeamMember && (
+                    <div className="grid grid-cols-1 gap-4 py-11 xl:grid-cols-2">
+                        <TeamMemberCard teamMember={starTeamMember} />
+                    </div>
+                )}
             </div>
 
             <CommonBodyAnimation>
-                {bottomTeamMembers?.length > 0 && (
+                {regularTeamMembers && regularTeamMembers.length > 0 && (
                     <div className="grid grid-cols-1 py-20 md:grid-cols-5 lg:grid-cols-5 2xl:grid-cols-6">
-                        {bottomTeamMembers?.map((t, x) => <TeamMemberCard key={x} teamMember={t} varient="compact" />)}
+                        {regularTeamMembers.map((member, index) => (
+                            <TeamMemberCard key={index} teamMember={member} varient="compact" />
+                        ))}
                     </div>
                 )}
             </CommonBodyAnimation>

@@ -296,8 +296,8 @@ class BrandingProjectController extends Controller
     public function projectsList(Request $request)
     {
         $query = BrandingProject::with(['tags', 'images', 'members'])
-            ->published()
-            ->latest();
+            ->latest()
+            ->published();
 
         if ($request->has('query') && $request->query('query') !== '') {
             $searchQuery = $request->query('query');
@@ -314,13 +314,13 @@ class BrandingProjectController extends Controller
             });
         }
 
-        $projects = $query->paginate(12)->withQueryString();
+        $projects = $query->paginate(6)->withQueryString();
         $tags = Tag::whereHas('brandingProjects')->get();
 
         return Inertia::render('branding-projects/branding-projects-page', [
             'projects' => $projects,
             'tags' => $tags,
-            'filters' => $request->only(['query', 'tag']),
+            'filters' => $request->only(['query', 'tag', 'page']),
         ]);
     }
 
