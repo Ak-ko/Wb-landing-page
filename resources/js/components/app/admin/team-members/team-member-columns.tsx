@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { TeamMemberT } from '@/types'; // Assuming you have a TeamMemberT type in your types file
 import { ColumnDef } from '@tanstack/react-table';
-import { Edit, Image, Trash2 } from 'lucide-react';
+import { Edit, Image, Star, Trash2 } from 'lucide-react';
 import ColorTag from '../../color-tag';
 import EmailActions from '../../email-actions';
 import PhoneActions from '../../phone-actions';
@@ -23,6 +23,16 @@ export const createTeamMemberColumns = ({ handleEdit, handleToggleActive, handle
         accessorKey: 'designation',
         header: 'Designation',
         cell: ({ row }) => <div>{row.original.designation || <span className="text-gray-400">Not provided</span>}</div>,
+    },
+    {
+        accessorKey: 'type',
+        header: 'Type',
+        cell: ({ row }) => (
+            <div className="flex items-center gap-2">
+                {row.original.type === 'star_member' && <Star className="h-4 w-4 fill-yellow-500 text-yellow-500" />}
+                <span className="capitalize">{row.original.type.replace('_', ' ')}</span>
+            </div>
+        ),
     },
     {
         accessorKey: 'mascot_image',

@@ -1,15 +1,19 @@
 import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useDebounce } from '@uidotdev/usehooks';
 import { Search } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 interface TeamMemberFiltersProps {
     onSearch: (query: string) => void;
+    onTypeFilter: (type: string) => void;
     defaultQuery?: string;
+    defaultType?: string;
 }
 
-export default function TeamMemberFilters({ onSearch, defaultQuery = '' }: TeamMemberFiltersProps) {
+export default function TeamMemberFilters({ onSearch, onTypeFilter, defaultQuery = '', defaultType = '' }: TeamMemberFiltersProps) {
     const [searchQuery, setSearchQuery] = useState(defaultQuery);
+    const [typeFilter, setTypeFilter] = useState(defaultType);
 
     const debounceQuery = useDebounce(searchQuery, 500);
 
@@ -17,6 +21,11 @@ export default function TeamMemberFilters({ onSearch, defaultQuery = '' }: TeamM
         onSearch(debounceQuery);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debounceQuery]);
+
+    useEffect(() => {
+        onTypeFilter(typeFilter);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [typeFilter]);
 
     return (
         <div className="flex items-center gap-4">
@@ -32,6 +41,16 @@ export default function TeamMemberFilters({ onSearch, defaultQuery = '' }: TeamM
                     onChange={(e) => setSearchQuery(e.target.value)}
                 />
             </div>
+            <Select value={typeFilter || 'all'} onValueChange={(value) => setTypeFilter(value === 'all' ? '' : value)}>
+                <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Filter by type" />
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectItem value="all">All Types</SelectItem>
+                    <SelectItem value="member">Member</SelectItem>
+                    <SelectItem value="star_member">Star Member</SelectItem>
+                </SelectContent>
+            </Select>
         </div>
     );
 }

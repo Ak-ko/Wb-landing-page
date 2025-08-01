@@ -18,13 +18,17 @@ class TeamMemberController extends Controller
                 ->orWhere('designation', 'like', "%{$searchTerm}%");
         }
 
+        if ($request->has('type') && $request->query('type')) {
+            $query->where('type', $request->query('type'));
+        }
+
         $teamMembers = $query->orderBy('name')
             ->paginate($request->input('perPage', 10))
             ->withQueryString();
 
         return Inertia::render('admin/team-members/index', [
             'teamMembers' => $teamMembers,
-            'filters' => $request->only(['query']),
+            'filters' => $request->only(['query', 'type']),
         ]);
     }
 
@@ -44,6 +48,7 @@ class TeamMemberController extends Controller
             'social_links' => 'nullable|json',
             'image' => 'nullable|string',
             'color' => 'nullable|string|max:20',
+            'type' => 'required|in:member,star_member',
             'is_active' => 'boolean',
             'bio' => 'nullable|string|max:255',
         ]);
@@ -72,6 +77,7 @@ class TeamMemberController extends Controller
             'social_links' => 'nullable|json',
             'image' => 'nullable|string',
             'color' => 'nullable|string|max:20',
+            'type' => 'required|in:member,star_member',
             'is_active' => 'boolean',
             'bio' => 'nullable|string|max:255',
         ]);

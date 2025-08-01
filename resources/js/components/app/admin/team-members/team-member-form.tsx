@@ -9,6 +9,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { ColorInput } from '@/components/ui/color-input';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useImageColor } from '@/hooks/use-image-color'; // Assuming this hook exists
 import { TeamMemberT } from '@/types'; // Assuming TeamMemberT type
@@ -42,6 +43,7 @@ export default function TeamMemberForm({ teamMember, onSuccess }: TeamMemberForm
         image: teamMember?.image || '',
         bio: teamMember?.bio || '',
         color: teamMember?.color || '#000000',
+        type: teamMember?.type || 'member',
         is_active: teamMember?.is_active ?? true,
     });
 
@@ -169,6 +171,22 @@ export default function TeamMemberForm({ teamMember, onSuccess }: TeamMemberForm
                 </label>
                 <Textarea id="bio" placeholder="Enter Bio for this member..." value={data.bio} onChange={(e) => setData('bio', e.target.value)} />
                 {errors.bio && <p className="text-sm text-red-500">{errors.bio}</p>}
+            </div>
+
+            <div className="space-y-2">
+                <label htmlFor="type" className="block text-sm font-medium">
+                    Type <span className="text-red-500">*</span>
+                </label>
+                <Select value={data.type} onValueChange={(value) => setData('type', value)}>
+                    <SelectTrigger>
+                        <SelectValue placeholder="Select member type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="member">Member</SelectItem>
+                        <SelectItem value="star_member">Star Member</SelectItem>
+                    </SelectContent>
+                </Select>
+                {errors.type && <p className="text-sm text-red-500">{errors.type}</p>}
             </div>
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">

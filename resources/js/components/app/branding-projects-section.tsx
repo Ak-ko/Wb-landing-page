@@ -5,7 +5,7 @@ import useFilter from '@/hooks/use-filter';
 import { BrandingProjectT, TagT } from '@/types';
 import { usePage } from '@inertiajs/react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import BrandingProjectsFilters from './branding-projects-filters';
 import BrandingProjectsGrid from './branding-projects-grid';
 
@@ -27,14 +27,15 @@ export default function BrandingProjectsSection() {
         page: filters?.page || 1,
     });
 
-    const { setIsFilter } = useFilter(
-        {
-            query: localFilters.query,
-            tag: localFilters.tag,
-            page: localFilters.page,
-        },
-        route('branding-projects.list'),
-    );
+    useEffect(() => {
+        setLocalFilters({
+            query: filters?.query || '',
+            tag: filters?.tag || null,
+            page: filters?.page || 1,
+        });
+    }, [filters?.query, filters?.tag, filters?.page]);
+
+    const { setIsFilter } = useFilter(localFilters, route('branding-projects.list'), false);
 
     const handleFilterChange = (newFilters: { query: string; tag: number | null; page?: number }) => {
         setIsFilter(true);
@@ -45,7 +46,6 @@ export default function BrandingProjectsSection() {
         <div className="min-h-screen py-12">
             <div className="app-container">
                 <BrandingProjectsFilters tags={tags} currentFilters={localFilters} onFilterChange={handleFilterChange} />
-
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={`${filters?.query}-${filters?.tag}-${filters?.page}`}

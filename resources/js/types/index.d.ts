@@ -168,6 +168,7 @@ export type TeamMemberT = {
     social_links?: string;
     image?: string;
     color?: string;
+    type: 'member' | 'star_member';
     bio?: string;
     is_active: boolean;
     pivot: BrandingProjectMemberT;

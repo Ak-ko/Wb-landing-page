@@ -23,6 +23,16 @@ class BrandingProjectImage extends Model
     }
 
     /**
+     * The "booted" method of the model.
+     */
+    protected static function booted()
+    {
+        static::addGlobalScope('order', function ($query) {
+            $query->orderBy('order', 'asc');
+        });
+    }
+
+    /**
      * Get the image attribute with full URL.
      *
      * @param  string|null  $value

@@ -1,5 +1,5 @@
 import { Head, router } from '@inertiajs/react';
-import { Edit, Image, Plus, Trash2 } from 'lucide-react';
+import { Edit, Image, Plus, Star, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 
 import { createTeamMemberColumns } from '@/components/app/admin/team-members/team-member-columns';
@@ -42,6 +42,7 @@ export default function TeamMembers({
     teamMembers: CommonPaginationT<TeamMemberT>;
     filters: {
         query: string;
+        type: string;
     };
 }) {
     const [viewMode, setViewMode] = useState<ViewMode>('table');
@@ -55,6 +56,7 @@ export default function TeamMembers({
         pageSize: teamMembers?.per_page,
         pageIndex: teamMembers?.current_page,
         query: filters.query || '',
+        type: filters.type || '',
     });
 
     const { setIsFilter } = useFilter(
@@ -62,6 +64,7 @@ export default function TeamMembers({
             perPage: filterStates.pageSize,
             page: filterStates.pageIndex,
             query: filterStates.query,
+            type: filterStates.type,
         },
         route('team-members.index'),
         false,
@@ -69,6 +72,11 @@ export default function TeamMembers({
 
     const handleSearch = (query: string) => {
         setFilterStates((prev) => ({ ...prev, query }));
+        setIsFilter(true);
+    };
+
+    const handleTypeFilter = (type: string) => {
+        setFilterStates((prev) => ({ ...prev, type }));
         setIsFilter(true);
     };
 
@@ -137,8 +145,12 @@ export default function TeamMembers({
                 )}
             </div>
             <CardContent className="space-y-2 p-4">
-                <h3 className="text-lg font-medium">{teamMember.name || 'Anonymous'}</h3>
+                <div className="flex items-center gap-2">
+                    <h3 className="text-lg font-medium">{teamMember.name || 'Anonymous'}</h3>
+                    {teamMember.type === 'star_member' && <Star className="h-4 w-4 fill-yellow-500 text-yellow-500" />}
+                </div>
                 {teamMember.designation && <p className="text-sm text-gray-600">{teamMember.designation}</p>}
+                <p className="text-sm text-gray-500 capitalize">{teamMember.type.replace('_', ' ')}</p>
                 <div className="flex items-center gap-2 text-sm text-gray-600">
                     <EmailActions email={teamMember.email as string} />
                 </div>
@@ -167,7 +179,12 @@ export default function TeamMembers({
                 <div className="flex items-center justify-between py-4">
                     <DashboardTitle title="Team Members" description="Manage the team members here." />
                     <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between md:gap-2">
-                        <TeamMemberFilters onSearch={handleSearch} defaultQuery={filters.query} />
+                        <TeamMemberFilters
+                            onSearch={handleSearch}
+                            onTypeFilter={handleTypeFilter}
+                            defaultQuery={filters.query}
+                            defaultType={filters.type}
+                        />
 
                         <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
                             <DialogTrigger asChild>
