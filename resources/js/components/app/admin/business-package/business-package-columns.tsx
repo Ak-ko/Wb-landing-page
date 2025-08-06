@@ -35,7 +35,7 @@ export const createBusinessPackageColumns = ({
             </h1>
         ),
         cell: ({ row }) => {
-            return <span className="line-clamp-2">{row.original.brand_guideline.title || '-'}</span>;
+            return <span className="line-clamp-2">{row.original.brand_guideline?.title || '-'}</span>;
         },
     },
     {
