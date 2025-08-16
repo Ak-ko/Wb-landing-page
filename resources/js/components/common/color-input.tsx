@@ -1,6 +1,8 @@
+import ColorSuggestions from '@/components/app/color-suggestions';
 import { Card, CardContent } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
+import { DefaultColorInput } from '@/components/ui/default-color-input';
 import { Label } from '@/components/ui/label';
+import { SimpleHexColorInput } from '@/components/ui/simple-hex-color-input';
 
 interface ColorInputProps {
     backgroundColor: string;
@@ -32,19 +34,17 @@ export function ColorInput({
                         Background Color
                     </Label>
                     <div className="flex items-center gap-2">
-                        <Input
-                            id="backgroundColor"
-                            type="color"
+                        <SimpleHexColorInput
                             value={backgroundColor}
-                            onChange={(e) => onBackgroundColorChange(e.target.value)}
-                            className="h-10 w-20 p-1"
-                        />
-                        <Input
-                            value={backgroundColor}
-                            onChange={(e) => onBackgroundColorChange(e.target.value)}
-                            placeholder="#3b82f6"
+                            onChange={onBackgroundColorChange}
+                            error={backgroundColorError}
+                            updateOnChange={false}
                             className="flex-1"
                         />
+                        <div className="flex items-center gap-2">
+                            <DefaultColorInput value={backgroundColor} onChange={onBackgroundColorChange} id="background-color-picker" />
+                            <ColorSuggestions onColorSelect={onBackgroundColorChange} />
+                        </div>
                     </div>
                     {backgroundColorError && <p className="text-sm text-red-500">{backgroundColorError}</p>}
                 </div>
@@ -55,14 +55,17 @@ export function ColorInput({
                         Text Color
                     </Label>
                     <div className="flex items-center gap-2">
-                        <Input
-                            id="textColor"
-                            type="color"
+                        <SimpleHexColorInput
                             value={textColor}
-                            onChange={(e) => onTextColorChange(e.target.value)}
-                            className="h-10 w-20 p-1"
+                            onChange={onTextColorChange}
+                            error={textColorError}
+                            updateOnChange={false}
+                            className="flex-1"
                         />
-                        <Input value={textColor} onChange={(e) => onTextColorChange(e.target.value)} placeholder="#ffffff" className="flex-1" />
+                        <div className="flex items-center gap-2">
+                            <DefaultColorInput value={textColor} onChange={onTextColorChange} id="text-color-picker" />
+                            <ColorSuggestions onColorSelect={onTextColorChange} />
+                        </div>
                     </div>
                     {textColorError && <p className="text-sm text-red-500">{textColorError}</p>}
                 </div>
