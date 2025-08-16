@@ -1,15 +1,16 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
-import { Head, Link } from '@inertiajs/react';
-import { ArrowLeft, Calendar, Clock, Edit } from 'lucide-react';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
+import { Head, Link } from '@inertiajs/react';
+import { ArrowLeft, Calendar, Clock, Edit } from 'lucide-react';
 
 interface AvailableWork {
     id: number;
     label: string;
     color: string;
+    text_color: string;
     is_published: boolean;
     order: number;
     created_at: string;
@@ -66,10 +67,18 @@ export default function Show({ availableWork }: Props) {
                             </div>
 
                             <div>
-                                <label className="text-muted-foreground text-sm font-medium">Color</label>
+                                <label className="text-muted-foreground text-sm font-medium">Background Color</label>
                                 <div className="mt-1 flex items-center gap-2">
                                     <div className="h-6 w-6 rounded-full border" style={{ backgroundColor: availableWork.color }} />
                                     <span className="font-mono text-sm">{availableWork.color}</span>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label className="text-muted-foreground text-sm font-medium">Text Color</label>
+                                <div className="mt-1 flex items-center gap-2">
+                                    <div className="h-6 w-6 rounded-full border" style={{ backgroundColor: availableWork.text_color }} />
+                                    <span className="font-mono text-sm">{availableWork.text_color}</span>
                                 </div>
                             </div>
 
@@ -128,7 +137,7 @@ export default function Show({ availableWork }: Props) {
                                 className="inline-block rounded-full px-4 py-2 text-sm font-medium"
                                 style={{
                                     backgroundColor: availableWork.color,
-                                    color: availableWork.color === '#FEC901' ? '#000' : '#fff',
+                                    color: availableWork.text_color,
                                 }}
                             >
                                 {availableWork.label}

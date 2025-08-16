@@ -26,6 +26,7 @@ interface AvailableWork {
     id: number;
     label: string;
     color: string;
+    text_color: string;
     is_published: boolean;
     order: number;
     created_at: string;
@@ -94,11 +95,17 @@ export default function Index({ availableWorks, filters }: Props) {
         },
         {
             accessorKey: 'color',
-            header: 'Color',
+            header: 'Colors',
             cell: ({ row }: any) => (
                 <div className="flex items-center gap-2">
-                    <div className="h-4 w-4 rounded-full border" style={{ backgroundColor: row.original.color }} />
-                    <span className="font-mono text-sm">{row.original.color}</span>
+                    <div className="flex items-center gap-1">
+                        <div className="h-4 w-4 rounded-full border" style={{ backgroundColor: row.original.color }} />
+                        <span className="font-mono text-xs">{row.original.color}</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                        <div className="h-4 w-4 rounded-full border" style={{ backgroundColor: row.original.text_color }} />
+                        <span className="font-mono text-xs">{row.original.text_color}</span>
+                    </div>
                 </div>
             ),
         },
@@ -194,9 +201,15 @@ export default function Index({ availableWorks, filters }: Props) {
                                         <div>
                                             <h3 className="mb-1 text-lg font-semibold">{item.label}</h3>
                                             <div className="mb-2 flex items-center gap-2">
-                                                <span className="text-sm font-medium">Color:</span>
-                                                <div className="h-4 w-4 rounded-full border" style={{ backgroundColor: item.color }} />
-                                                <span className="font-mono text-sm">{item.color}</span>
+                                                <span className="text-sm font-medium">Colors:</span>
+                                                <div className="flex items-center gap-1">
+                                                    <div className="h-4 w-4 rounded-full border" style={{ backgroundColor: item.color }} />
+                                                    <span className="font-mono text-xs">{item.color}</span>
+                                                </div>
+                                                <div className="flex items-center gap-1">
+                                                    <div className="h-4 w-4 rounded-full border" style={{ backgroundColor: item.text_color }} />
+                                                    <span className="font-mono text-xs">{item.text_color}</span>
+                                                </div>
                                             </div>
                                             <div className="mb-2 flex items-center gap-2">
                                                 <span className="text-sm font-medium">Order:</span>

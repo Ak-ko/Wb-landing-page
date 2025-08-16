@@ -1,3 +1,4 @@
+import { ColorInput } from '@/components/common/color-input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -23,6 +24,7 @@ export default function Create() {
     const { data, setData, post, processing, errors } = useForm({
         label: '',
         color: '#3b82f6',
+        text_color: '#ffffff',
         is_published: true,
         order: 0,
     });
@@ -67,25 +69,14 @@ export default function Create() {
                                 {errors.label && <p className="text-sm text-red-500">{errors.label}</p>}
                             </div>
 
-                            <div className="space-y-2">
-                                <Label htmlFor="color">Color</Label>
-                                <div className="flex items-center gap-2">
-                                    <Input
-                                        id="color"
-                                        type="color"
-                                        value={data.color}
-                                        onChange={(e) => setData('color', e.target.value)}
-                                        className="h-10 w-20 p-1"
-                                    />
-                                    <Input
-                                        value={data.color}
-                                        onChange={(e) => setData('color', e.target.value)}
-                                        placeholder="#3b82f6"
-                                        className="flex-1"
-                                    />
-                                </div>
-                                {errors.color && <p className="text-sm text-red-500">{errors.color}</p>}
-                            </div>
+                            <ColorInput
+                                backgroundColor={data.color}
+                                textColor={data.text_color}
+                                onBackgroundColorChange={(color) => setData('color', color)}
+                                onTextColorChange={(color) => setData('text_color', color)}
+                                backgroundColorError={errors.color}
+                                textColorError={errors.text_color}
+                            />
 
                             <div className="space-y-2">
                                 <Label htmlFor="order">Order</Label>

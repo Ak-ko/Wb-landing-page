@@ -48,6 +48,7 @@ class AvailableWorkController extends Controller
         $validated = $request->validate([
             'label' => 'required|string|max:255',
             'color' => 'required|string|max:7',
+            'text_color' => 'required|string|max:7',
             'is_published' => 'boolean',
             'order' => 'integer|min:0',
         ]);
@@ -55,6 +56,7 @@ class AvailableWorkController extends Controller
         AvailableWork::create([
             'label' => $validated['label'],
             'color' => $validated['color'],
+            'text_color' => $validated['text_color'],
             'is_published' => $validated['is_published'] ?? true,
             'order' => $validated['order'] ?? 0,
         ]);
@@ -90,6 +92,7 @@ class AvailableWorkController extends Controller
         $validated = $request->validate([
             'label' => 'required|string|max:255',
             'color' => 'required|string|max:7',
+            'text_color' => 'required|string|max:7',
             'is_published' => 'boolean',
             'order' => 'integer|min:0',
         ]);
@@ -97,6 +100,7 @@ class AvailableWorkController extends Controller
         $availableWork->update([
             'label' => $validated['label'],
             'color' => $validated['color'],
+            'text_color' => $validated['text_color'],
             'is_published' => $validated['is_published'] ?? $availableWork->is_published,
             'order' => $validated['order'] ?? $availableWork->order,
         ]);

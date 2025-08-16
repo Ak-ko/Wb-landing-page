@@ -12,6 +12,7 @@ class AvailableWork extends Model
     protected $fillable = [
         'label',
         'color',
+        'text_color',
         'is_published',
         'order',
     ];

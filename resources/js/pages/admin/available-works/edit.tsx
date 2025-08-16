@@ -1,3 +1,4 @@
+import { ColorInput } from '@/components/common/color-input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -12,6 +13,7 @@ interface AvailableWork {
     id: number;
     label: string;
     color: string;
+    text_color: string;
     is_published: boolean;
     order: number;
     created_at: string;
@@ -37,6 +39,7 @@ export default function Edit({ availableWork }: Props) {
     const { data, setData, put, processing, errors } = useForm({
         label: availableWork.label,
         color: availableWork.color,
+        text_color: availableWork.text_color,
         is_published: availableWork.is_published,
         order: availableWork.order,
     });
@@ -81,25 +84,14 @@ export default function Edit({ availableWork }: Props) {
                                 {errors.label && <p className="text-sm text-red-500">{errors.label}</p>}
                             </div>
 
-                            <div className="space-y-2">
-                                <Label htmlFor="color">Color</Label>
-                                <div className="flex items-center gap-2">
-                                    <Input
-                                        id="color"
-                                        type="color"
-                                        value={data.color}
-                                        onChange={(e) => setData('color', e.target.value)}
-                                        className="h-10 w-20 p-1"
-                                    />
-                                    <Input
-                                        value={data.color}
-                                        onChange={(e) => setData('color', e.target.value)}
-                                        placeholder="#3b82f6"
-                                        className="flex-1"
-                                    />
-                                </div>
-                                {errors.color && <p className="text-sm text-red-500">{errors.color}</p>}
-                            </div>
+                            <ColorInput
+                                backgroundColor={data.color}
+                                textColor={data.text_color}
+                                onBackgroundColorChange={(color) => setData('color', color)}
+                                onTextColorChange={(color) => setData('text_color', color)}
+                                backgroundColorError={errors.color}
+                                textColorError={errors.text_color}
+                            />
 
                             <div className="space-y-2">
                                 <Label htmlFor="order">Order</Label>

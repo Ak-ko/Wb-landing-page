@@ -17,14 +17,14 @@ export default function AvailableWorksSection() {
 
         const repeatedBadges = [...availableWorks, ...availableWorks, ...availableWorks, ...availableWorks];
 
-        return repeatedBadges.map((work: { id: number; label: string; color: string }, index) => (
+        return repeatedBadges.map((work: { id: number; label: string; color: string; text_color: string }, index) => (
             <div key={`badge-${work.id}-${index}`} className="mx-2 my-2">
                 <AvailableWorkBadge
                     label={work.label}
                     style={{
                         backgroundColor: work.color,
-                        color: work.color === '#FEC901' ? '#000' : '#fff',
                     }}
+                    textColor={work.text_color}
                 />
             </div>
         ));
