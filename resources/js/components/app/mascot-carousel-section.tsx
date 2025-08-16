@@ -30,7 +30,6 @@ export default function MascotCarouselSection() {
         }),
     };
 
-    // Animation variants for navigation buttons
     const navButtonVariants = {
         initial: { scale: 0.9, opacity: 0.7 },
         hover: { scale: 1.1, opacity: 1 },
@@ -58,7 +57,6 @@ export default function MascotCarouselSection() {
     if (!mascotArts || mascotArts?.length === 0) return null;
 
     const currentMascotArt = mascotArts[currentIndex];
-    // Only non-mascot images for modal
     const nonMascotImages = currentMascotArt.images.filter((img) => !img.is_mascot);
 
     return (
@@ -126,37 +124,39 @@ export default function MascotCarouselSection() {
                             <p className="leading-[1.7]">{currentMascotArt?.description}</p>
                         </motion.div>
                         <div className="grid w-full grid-cols-1 gap-5 py-11 lg:grid-cols-4">
-                            {currentMascotArt?.images?.map((image, idx) =>
-                                !image?.is_mascot ? (
-                                    <motion.img
-                                        key={image.id}
-                                        src={image?.image}
-                                        alt={'mascot-image' + image.id}
-                                        className={cn(
-                                            'col-span-2 h-[250px] w-full rounded-xl object-cover object-center sm:h-[300px] md:col-span-1 lg:h-[350px] lg:object-top',
-                                            image?.is_primary && '!col-span-2',
-                                        )}
-                                        initial={{ opacity: 0, scale: 0.9 }}
-                                        animate={{ opacity: 1, scale: 1 }}
-                                        transition={{ duration: 0.5 }}
-                                        whileHover={{ scale: 1.03 }}
-                                        onClick={() => {
-                                            setModalIndex(idx);
-                                            setIsModalOpen(true);
-                                        }}
-                                    />
-                                ) : (
-                                    <motion.img
-                                        key={image.id}
-                                        className="absolute top-[-20%] right-0 z-10 hidden max-w-full sm:block lg:max-w-[800px]"
-                                        src={image?.image}
-                                        alt="main-mascot"
-                                        initial={{ opacity: 0, x: 100 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        transition={{ delay: 0.9, duration: 0.7, type: 'spring' }}
-                                    />
-                                ),
+                            {currentMascotArt?.images?.map(
+                                (image, idx) =>
+                                    !image?.is_mascot && (
+                                        <motion.img
+                                            key={image.id}
+                                            src={image?.image}
+                                            alt={'mascot-image' + image.id}
+                                            className={cn(
+                                                'col-span-2 h-[250px] w-full rounded-xl object-cover object-center sm:h-[300px] md:col-span-1 lg:h-[350px] lg:object-top',
+                                                image?.is_primary && '!col-span-2',
+                                            )}
+                                            initial={{ opacity: 0, scale: 0.9 }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                            transition={{ duration: 0.5 }}
+                                            whileHover={{ scale: 1.03 }}
+                                            onClick={() => {
+                                                setModalIndex(idx);
+                                                setIsModalOpen(true);
+                                            }}
+                                        />
+                                    ),
                             )}
+                            {/* 
+                            <motion.img
+                                key={image.id}
+                                className="absolute top-[-20%] right-0 z-10 hidden max-w-full sm:block lg:max-w-[800px]"
+                                src={image?.image}
+                                alt="main-mascot"
+                                initial={{ opacity: 0, x: 100 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: 0.9, duration: 0.7, type: 'spring' }}
+                            />
+                             */}
                         </div>
                     </div>
                 </motion.div>

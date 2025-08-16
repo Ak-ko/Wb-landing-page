@@ -104,7 +104,7 @@ export default function HarmonyOfTheDesignSection() {
 
     const FullLayout = () => (
         <div className="grid [grid-auto-rows:300px] grid-cols-1 gap-3 lg:[grid-auto-rows:300px] lg:[grid-template-columns:repeat(4,_280px)] 2xl:lg:[grid-template-columns:repeat(4,_300px)]">
-            <div className="col-span-2 lg:col-span-1">
+            {/* <div className="col-span-2 lg:col-span-1">
                 <img src={images.one.image} alt="Image" className="h-full w-full rounded-lg object-cover" />
             </div>
             <div className="col-span-2 lg:col-span-1">
@@ -112,7 +112,7 @@ export default function HarmonyOfTheDesignSection() {
             </div>
             <div className="col-span-2">
                 <img src={images.three.image} alt="Image" className="h-full w-full rounded-lg object-cover" />
-            </div>
+            </div> */}
             <div className="col-span-2">
                 <img src={images.four.image} alt="Image" className="h-full w-full rounded-lg object-cover" />
             </div>
@@ -132,41 +132,41 @@ export default function HarmonyOfTheDesignSection() {
             <div className="col-span-2 lg:col-span-1">
                 <img src={images.seven.image} alt="Image" className="h-full w-full rounded-lg object-cover" />
             </div>
-            <div className="col-span-2">
+            {/* <div className="col-span-2">
                 <img src={images.eight.image} alt="Image" className="h-full w-full rounded-lg object-cover" />
-            </div>
-            <div className="col-span-2 flex w-full items-center">
+            </div> */}
+            {/* <div className="col-span-2 flex w-full items-center">
                 <h1 className="mx-auto max-w-[300px] text-[50px] font-bold uppercase md:text-[75px]">Design</h1>
-            </div>
-            <div className="col-span-2 flex w-full items-center">
+            </div> */}
+            {/* <div className="col-span-2 flex w-full items-center">
                 <h1 className="mx-auto max-w-[300px] text-[50px] font-bold uppercase md:text-[75px]">Meets</h1>
-            </div>
-            <div className="col-span-2 lg:col-span-1">
+            </div> */}
+            {/* <div className="col-span-2 lg:col-span-1">
                 <img src={images.nine.image} alt="Image" className="h-full w-full rounded-lg object-cover" />
-            </div>
+            </div> */}
             <div className="col-span-2 lg:col-span-1">
                 <img src={images.ten.image} alt="Image" className="h-full w-full rounded-lg object-cover" />
             </div>
             <div className="col-span-2 lg:col-span-1">
                 <img src={images.eleven.image} alt="Image" className="h-full w-full rounded-lg object-cover" />
             </div>
-            <div className="col-span-2 lg:col-span-1">
+            {/* <div className="col-span-2 lg:col-span-1">
                 <img src={images.twelve.image} alt="Image" className="h-full w-full rounded-lg object-cover" />
-            </div>
-            <div className="col-span-2 flex w-full items-center">
+            </div> */}
+            {/* <div className="col-span-2 flex w-full items-center">
                 <h1 className="mx-auto max-w-[300px] text-[50px] font-bold uppercase md:text-[75px]">Art</h1>
-            </div>
+            </div> */}
             <div className="col-span-2 flex w-full items-center">
                 <p className="ml-auto text-center text-xl font-light lg:mr-9 lg:max-w-[420px] lg:text-right">
                     When these two elements come together, they form a powerful tool that can transform businesses and inspire people
                 </p>
             </div>
-            <div className="col-span-2">
+            {/* <div className="col-span-2">
                 <img src={images.thirteen.image} alt="Image" className="h-full w-full rounded-lg object-cover" />
-            </div>
-            <div className="col-span-2">
+            </div> */}
+            {/* <div className="col-span-2">
                 <img src={images.fourteen.image} alt="Image" className="h-full w-full rounded-lg object-cover" />
-            </div>
+            </div> */}
             <div className="col-span-2 flex w-full items-center">
                 <p className="text-center text-xl font-light lg:ml-9 lg:max-w-[420px] lg:text-left">
                     Every brand has a story to tell, and through our artistic vision and design prowess, we help bring those stories to life.
@@ -178,16 +178,16 @@ export default function HarmonyOfTheDesignSection() {
             <div className="col-span-2 lg:col-span-1">
                 <img src={images.sixteen.image} alt="Image" className="h-full w-full rounded-lg object-cover" />
             </div>
-            <div className="col-span-2">
+            {/* <div className="col-span-2">
                 <img src={images.seventeen.image} alt="Image" className="h-full w-full rounded-lg object-cover" />
-            </div>
+            </div> */}
         </div>
     );
 
     return (
         <section ref={sectionRef} id="harmony-of-the-designs-section" className="py-32">
             <SectionHeader
-                header="The Harmony of Design and Art"
+                header="Design Meets Art"
                 description="At Walking Brands, we believe that design and art are two sides of the same coin. The fusion of these two disciplines allows us to create visually stunning and meaningful brand identities that resonate deeply with our clients and their audiences."
                 descriptionClass="sm:!max-w-[800px]"
             />

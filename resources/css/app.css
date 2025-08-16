@@ -196,7 +196,7 @@
     }
 
     .app-container {
-        @apply container mx-auto px-5 xl:px-8 2xl:!max-w-[2000px] 2xl:px-11;
+        @apply container mx-auto px-5 xl:px-8 2xl:!max-w-[1550px] 2xl:px-11;
 
         @media screen and (min-width: 2500px) {
             @apply !max-w-[2500px];

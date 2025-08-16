@@ -14,6 +14,7 @@ use App\Http\Controllers\ColorController;
 use App\Http\Controllers\ComicArtController;
 use App\Http\Controllers\CompanyPolicyController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\AvailableWorkController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\IllustrationArtController;
 use App\Http\Controllers\MascortArtController;
@@ -139,6 +140,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Faq
     Route::resource('/admin/faqs', FaqController::class);
+
+    // Available Works
+    Route::resource('/admin/available-works', AvailableWorkController::class);
 
     // Policy
     Route::resource('/admin/policies', CompanyPolicyController::class)

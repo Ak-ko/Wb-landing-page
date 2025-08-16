@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\AvailableWork;
 use App\Models\Color;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
@@ -60,6 +61,7 @@ class HandleInertiaRequests extends Middleware
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'colorSuggestions' => Color::getGroupedColors(),
+            'availableWorks' => AvailableWork::published()->ordered()->get(),
         ];
     }
 }

@@ -44,11 +44,20 @@ const PANELS = [
 type PanelKey = (typeof PANELS)[number]['key'];
 
 // BreadcrumbBar
-function BreadcrumbBar({ color, activePanel, setPanel }: { color: string; activePanel: PanelKey; setPanel: (panel: PanelKey) => void }) {
+function BreadcrumbBar({
+    color,
+    activePanel,
+    setPanel,
+    businessPackageId,
+}: {
+    color: string;
+    activePanel: PanelKey;
+    setPanel: (panel: PanelKey) => void;
+    businessPackageId: number;
+}) {
     const handlePanelClick = (panel: PanelKey) => {
         setPanel(panel);
-        // Smooth scroll to top of the section
-        const section = document.querySelector('.business-plan-section');
+        const section = document.querySelector(`[data-business-package-id="${businessPackageId}"]`);
         if (section) {
             section.scrollIntoView({
                 behavior: 'smooth',
@@ -67,7 +76,7 @@ function BreadcrumbBar({ color, activePanel, setPanel }: { color: string; active
                     <button
                         onClick={() => handlePanelClick(panel.key as PanelKey)}
                         className={cn(
-                            'cursor-pointer px-6 py-2 text-4xl font-bold uppercase transition-all hover:text-white 2xl:text-[38px]',
+                            'cursor-pointer px-6 py-2 text-3xl font-bold uppercase transition-all hover:text-white 2xl:text-[38px]',
                             activePanel === panel.key ? 'text-white' : 'text-white/50',
                             'focus:outline-none',
                         )}
@@ -373,7 +382,7 @@ function PriceSection({
     hasDiscount: boolean;
 }) {
     return (
-        <div className="flex flex-col items-center bg-white py-[200px] text-center">
+        <div className="mx-20 flex flex-col items-center rounded-xl border-4 bg-white py-[200px] text-center" style={{ borderColor: color }}>
             <div className="mb-5">
                 <div className="mb-2 text-[50px] font-bold uppercase" style={{ color }}>
                     {b?.name}
@@ -704,9 +713,9 @@ export default function BusinessPlanSection() {
                         const activePanel = activePanels[b.id] || 'main';
                         const setPanel = (panel: PanelKey) => setActivePanels((prev) => ({ ...prev, [b.id]: panel }));
                         return (
-                            <div key={b.id} className="business-plan-section mb-16">
-                                <div className="flex min-h-[1500px] w-full flex-col overflow-hidden bg-black py-11 2xl:min-h-[1800px]">
-                                    <div className="relative flex-1 overflow-y-auto">
+                            <div key={b.id} className="business-plan-section mb-16 px-11 2xl:px-20" data-business-package-id={b.id}>
+                                <div className="flex w-full flex-col overflow-hidden rounded-xl bg-black py-11">
+                                    <div className="relative min-h-[1500px] flex-1 overflow-y-auto">
                                         {/* Panels */}
                                         <motion.div
                                             animate={{ x: activePanel === 'main' ? 0 : activePanel === 'strategy' ? '-100%' : '-200%' }}
@@ -733,9 +742,9 @@ export default function BusinessPlanSection() {
                                             <GuidelinePanelContent b={b} color={color} />
                                         </motion.div>
                                     </div>
-                                    <BreadcrumbBar color={color} activePanel={activePanel} setPanel={setPanel} />
+                                    <BreadcrumbBar color={color} activePanel={activePanel} setPanel={setPanel} businessPackageId={b.id} />
+                                    <PriceSection b={b} color={color} hasDiscount={hasDiscount} />
                                 </div>
-                                <PriceSection b={b} color={color} hasDiscount={hasDiscount} />
                             </div>
                         );
                     })}

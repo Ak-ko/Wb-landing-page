@@ -11,9 +11,9 @@ const whyUsCards = [
     },
     {
         img: '/assets/ele2.png',
-        title: 'eco friendliness',
+        title: 'systematic creative process',
         description:
-            'We plant a tree for every project we finish to address environmental challenges and create sustainable communities for future generations.',
+            'Operating with a highly organised and repeatable creative process, we ensure efficiency, consistency, and predictable excellence in every project.',
     },
     {
         img: '/assets/ele3.png',

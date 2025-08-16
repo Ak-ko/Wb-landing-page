@@ -72,6 +72,11 @@ const mainNavItems: NavItem[] = [
                 href: '/admin/blogs',
                 icon: Briefcase,
             },
+            {
+                title: 'Available Works',
+                href: '/admin/available-works',
+                icon: Package,
+            },
         ],
     },
     {
