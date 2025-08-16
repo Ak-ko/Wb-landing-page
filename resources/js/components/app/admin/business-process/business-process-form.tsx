@@ -1,6 +1,6 @@
+import { ColorInput } from '@/components/common/color-input';
 import ImageUploader from '@/components/common/image-upload';
 import { Button } from '@/components/ui/button';
-import { ColorInput } from '@/components/ui/color-input';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { BusinessProcessT } from '@/types';
@@ -18,6 +18,7 @@ export default function BusinessProcessForm({ businessProcess, onSuccess }: Busi
         description: businessProcess?.description || '',
         image: businessProcess?.image || '',
         color_tag: businessProcess?.color_tag || '#000000',
+        text_color: businessProcess?.text_color || '#ffffff',
         step: businessProcess?.step || '',
         is_active: businessProcess?.is_active ?? true,
     });
@@ -77,7 +78,15 @@ export default function BusinessProcessForm({ businessProcess, onSuccess }: Busi
                 {errors.step && <p className="text-sm text-red-500">{errors.step}</p>}
             </div>
 
-            <ColorInput label="Color Tag" value={data.color_tag} onChange={(value) => setData('color_tag', value)} error={errors.color_tag} />
+            <ColorInput
+                label="Color Tag"
+                backgroundColor={data.color_tag}
+                textColor={data.text_color}
+                onBackgroundColorChange={(value) => setData('color_tag', value)}
+                onTextColorChange={(value) => setData('text_color', value)}
+                backgroundColorError={errors.color_tag}
+                textColorError={errors.text_color}
+            />
 
             <div className="space-y-2">
                 <label htmlFor="description" className="block text-sm font-medium">

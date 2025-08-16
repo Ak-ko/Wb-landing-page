@@ -1,5 +1,5 @@
+import { ColorInput } from '@/components/common/color-input';
 import { Button } from '@/components/ui/button';
-import { ColorInput } from '@/components/ui/color-input';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
@@ -50,6 +50,7 @@ export default function BusinessPackageForm({ businessPackage, onSuccess }: Busi
                 detail_link: 'detail_link' in item ? ((item as Record<string, unknown>).detail_link as string) || '' : '',
             })) || [],
         color: businessPackage?.color || '#000000',
+        text_color: businessPackage?.text_color || '#ffffff',
         is_recommended: businessPackage?.is_recommended || false,
         is_discount: businessPackage?.is_discount || false,
         discount_price_text: businessPackage?.is_discount ? businessPackage?.discount_price_text || '' : '',
@@ -172,7 +173,15 @@ export default function BusinessPackageForm({ businessPackage, onSuccess }: Busi
                     </div>
 
                     <div className="col-span-2">
-                        <ColorInput label="Package Color" value={data.color} onChange={(value) => setData('color', value)} error={errorMap.color} />
+                        <ColorInput
+                            label="Package Color"
+                            backgroundColor={data.color}
+                            textColor={data.text_color}
+                            onBackgroundColorChange={(value) => setData('color', value)}
+                            onTextColorChange={(value) => setData('text_color', value)}
+                            backgroundColorError={errorMap.color}
+                            textColorError={errorMap.text_color}
+                        />
                     </div>
 
                     <div className="col-span-2 flex items-center space-x-2">

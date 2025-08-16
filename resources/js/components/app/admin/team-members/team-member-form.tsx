@@ -3,10 +3,10 @@
 import { useForm, usePage } from '@inertiajs/react';
 import { useEffect } from 'react';
 
+import { ColorInput } from '@/components/common/color-input';
 import ImageUploader from '@/components/common/image-upload';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { ColorInput } from '@/components/ui/color-input';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -43,6 +43,7 @@ export default function TeamMemberForm({ teamMember, onSuccess }: TeamMemberForm
         image: teamMember?.image || '',
         bio: teamMember?.bio || '',
         color: teamMember?.color || '#000000',
+        text_color: teamMember?.text_color || '#ffffff',
         type: teamMember?.type || 'member',
         is_active: teamMember?.is_active ?? true,
     });
@@ -279,7 +280,15 @@ export default function TeamMemberForm({ teamMember, onSuccess }: TeamMemberForm
                 </div>
             </div>
 
-            <ColorInput label="Color" value={data.color} onChange={(value) => setData('color', value)} error={errors.color} />
+            <ColorInput
+                label="Color"
+                backgroundColor={data.color}
+                textColor={data.text_color}
+                onBackgroundColorChange={(value) => setData('color', value)}
+                onTextColorChange={(value) => setData('text_color', value)}
+                backgroundColorError={errors.color}
+                textColorError={errors.text_color}
+            />
 
             <div className="flex items-center space-x-2">
                 <Checkbox id="is_active" checked={data.is_active} onCheckedChange={(checked) => setData('is_active', checked as boolean)} />

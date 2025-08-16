@@ -1,5 +1,5 @@
+import { ColorInput } from '@/components/common/color-input';
 import { Button } from '@/components/ui/button';
-import { ColorInput } from '@/components/ui/color-input';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
@@ -18,6 +18,7 @@ export default function FaqForm({ faq }: FaqFormProps) {
         answer: faq?.answer || '',
         is_published: faq?.is_published ?? true,
         color: faq?.color || '#3b82f6',
+        text_color: faq?.text_color || '#ffffff',
     });
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -58,7 +59,15 @@ export default function FaqForm({ faq }: FaqFormProps) {
                     {errors.answer && <p className="text-destructive mt-1 text-sm">{errors.answer}</p>}
                 </div>
 
-                <ColorInput label="Color" value={data.color} onChange={(value) => setData('color', value)} error={errors.color} />
+                <ColorInput
+                    label="Color"
+                    backgroundColor={data.color}
+                    textColor={data.text_color}
+                    onBackgroundColorChange={(value) => setData('color', value)}
+                    onTextColorChange={(value) => setData('text_color', value)}
+                    backgroundColorError={errors.color}
+                    textColorError={errors.text_color}
+                />
 
                 <div className="flex items-center space-x-2">
                     <Switch id="is_published" checked={data.is_published} onCheckedChange={(checked) => setData('is_published', checked)} />

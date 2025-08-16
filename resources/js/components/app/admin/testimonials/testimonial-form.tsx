@@ -1,5 +1,5 @@
+import { ColorInput } from '@/components/common/color-input';
 import { Button } from '@/components/ui/button';
-import { ColorInput } from '@/components/ui/color-input';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useImageColor } from '@/hooks/use-image-color';
@@ -23,6 +23,7 @@ export default function TestimonialForm({ testimonial, onSuccess }: TestimonialF
         description: testimonial?.description || '',
         image: testimonial?.image || '',
         color_tag: testimonial?.color_tag || '#000000',
+        text_color: testimonial?.text_color || '#ffffff',
     });
 
     const [isImageUploading, setIsImageUploading] = useState(false);
@@ -116,7 +117,15 @@ export default function TestimonialForm({ testimonial, onSuccess }: TestimonialF
                 {errors.company && <p className="text-sm text-red-500">{errors.company}</p>}
             </div>
 
-            <ColorInput label="Color Tag" value={data.color_tag} onChange={(value) => setData('color_tag', value)} error={errors.color_tag} />
+            <ColorInput
+                label="Color Tag"
+                backgroundColor={data.color_tag}
+                textColor={data.text_color}
+                onBackgroundColorChange={(value) => setData('color_tag', value)}
+                onTextColorChange={(value) => setData('text_color', value)}
+                backgroundColorError={errors.color_tag}
+                textColorError={errors.text_color}
+            />
 
             <div className="space-y-2">
                 <label htmlFor="description" className="block text-sm font-medium">

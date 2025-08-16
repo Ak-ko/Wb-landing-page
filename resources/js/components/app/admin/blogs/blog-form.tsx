@@ -1,10 +1,10 @@
+import { ColorInput } from '@/components/common/color-input';
 import FormField from '@/components/common/form-field';
 import ImageDialog from '@/components/common/image-dialog';
 import ImageGallery from '@/components/common/image-gallery';
 import MultiImageUploader from '@/components/common/multi-image-upload';
 import TagSelector from '@/components/common/tag-selector';
 import { Button } from '@/components/ui/button';
-import { ColorInput } from '@/components/ui/color-input';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
@@ -40,6 +40,7 @@ export default function BlogForm({ blog, tags, onSuccess }: BlogFormProps) {
         is_published: blog?.is_published ?? true,
         tags: blog?.tags.map((tag) => tag.id) || [],
         color: blog?.color || '#3b82f6',
+        text_color: blog?.text_color || '#ffffff',
         images: blog?.images?.map((blogImage) => blogImage?.image) || ([] as string[]),
         new_images: [],
         removed_images: [] as number[],
@@ -286,7 +287,15 @@ export default function BlogForm({ blog, tags, onSuccess }: BlogFormProps) {
                 />
             </FormField>
 
-            <ColorInput label="Blog Color" value={data.color} onChange={(value) => setData('color', value)} error={errors.color} />
+            <ColorInput
+                label="Blog Color"
+                backgroundColor={data.color}
+                textColor={data.text_color}
+                onBackgroundColorChange={(value) => setData('color', value)}
+                onTextColorChange={(value) => setData('text_color', value)}
+                backgroundColorError={errors.color}
+                textColorError={errors.text_color}
+            />
 
             <div className="flex items-center space-x-2">
                 <Switch id="is_published" checked={data.is_published} onCheckedChange={(checked) => setData('is_published', checked)} />
