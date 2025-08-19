@@ -16,6 +16,67 @@ interface BusinessProcessItemProps {
 export default function BusinessProcessItem({ businessProcess }: BusinessProcessItemProps) {
     const isMobile = useIsMobile();
 
+    // Mobile Layout
+    if (isMobile) {
+        return (
+            <motion.div
+                id={`process-${businessProcess.id}`}
+                className="flex w-full flex-col items-center justify-center px-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+            >
+                <div className="relative flex w-full max-w-sm flex-col items-center gap-6">
+                    {/* Image */}
+                    <div className="w-full">
+                        {businessProcess?.image && (
+                            <motion.div
+                                className="relative w-full"
+                                initial={{ scale: 0.95, opacity: 0.8 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                transition={{ duration: 0.8, delay: 0.1 }}
+                            >
+                                <img
+                                    className="relative z-10 w-full rounded-2xl object-cover shadow-lg"
+                                    src={businessProcess.image}
+                                    alt={businessProcess.title}
+                                />
+                            </motion.div>
+                        )}
+                    </div>
+
+                    {/* Step Badge */}
+                    <motion.div
+                        className="rounded-lg px-4 py-2 shadow-lg"
+                        style={{ backgroundColor: businessProcess?.color_tag }}
+                        initial={{ scale: 0.9, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ duration: 0.6, delay: 0.2 }}
+                    >
+                        <span className={cn('text-lg font-bold', isLightColor(businessProcess?.color_tag) ? 'text-black' : 'text-white')}>
+                            STEP {String(businessProcess?.step).padStart(2, '0')}
+                        </span>
+                    </motion.div>
+
+                    {/* Text content */}
+                    <motion.div
+                        className="w-full text-center"
+                        initial={{ y: 20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ duration: 0.6, delay: 0.3 }}
+                    >
+                        <h1 className="mb-4 text-2xl font-bold uppercase dark:text-white" style={{ color: businessProcess.color_tag }}>
+                            {businessProcess?.title}
+                        </h1>
+                        <p className="text-sm leading-[1.7] text-gray-700 dark:text-gray-300">{businessProcess?.description}</p>
+                    </motion.div>
+                </div>
+            </motion.div>
+        );
+    }
+
+    // Desktop Layout
     return (
         <motion.div
             id={`process-${businessProcess.id}`}
@@ -25,17 +86,34 @@ export default function BusinessProcessItem({ businessProcess }: BusinessProcess
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
         >
-            <div className="relative grid w-full max-w-6xl grid-cols-1 items-center gap-4 md:grid-cols-3 md:gap-10">
-                {/* Step circle - First on mobile */}
-                <div className="order-1 flex justify-center md:order-2">
+            <div className="relative grid w-full max-w-6xl grid-cols-1 items-center gap-8 md:grid-cols-3 md:gap-12">
+                {/* Image - First on mobile */}
+                <div className="order-1 flex justify-center md:order-1">
+                    {businessProcess?.image && (
+                        <motion.div
+                            className="relative w-full max-w-[280px] md:max-w-[400px]"
+                            initial={{ scale: 0.95, opacity: 0.8 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={{ duration: 0.8, delay: 0.1 }}
+                        >
+                            <img
+                                className="relative z-10 w-full rounded-2xl object-cover shadow-lg"
+                                src={businessProcess.image}
+                                alt={businessProcess.title}
+                            />
+                        </motion.div>
+                    )}
+                </div>
+
+                {/* Step circle - Second on mobile */}
+                <div className="order-2 flex justify-center md:order-2">
                     <motion.div
-                        className="relative flex h-[120px] w-[120px] items-center justify-center md:h-[170px] md:w-[170px]"
+                        className="relative flex h-[140px] w-[140px] items-center justify-center md:h-[180px] md:w-[180px]"
                         initial={{ rotate: -5, scale: 0.9 }}
                         animate={{ rotate: 0, scale: 1 }}
                         transition={{ duration: 0.8, delay: 0.1 }}
                     >
-                        <div className="bg-primary/5 absolute inset-0 scale-110 transform animate-pulse rounded-full"></div>
-                        <WalkingProcess className="size-[150px]" color={businessProcess?.color_tag} />
+                        <WalkingProcess className="size-[160px]" color={businessProcess?.color_tag} />
                         <div
                             className={cn(
                                 'absolute inset-0 flex translate-y-[-15%] flex-col items-center justify-center',
@@ -62,39 +140,26 @@ export default function BusinessProcessItem({ businessProcess }: BusinessProcess
                     </motion.div>
                 </div>
 
-                {/* Text content - Second on mobile */}
-                <div className={cn('order-2 flex justify-center md:order-3 md:justify-start md:text-left')}>
+                {/* Text content - Third on mobile */}
+                <div className="order-3 flex justify-center md:order-3 md:justify-start md:text-left">
                     <motion.div
-                        className="w-full max-w-[300px] text-left md:max-w-[400px] md:text-inherit"
+                        className="w-full max-w-[320px] text-center md:max-w-[400px] md:text-left"
                         initial={{ y: isMobile ? 20 : 0, x: isMobile ? 0 : businessProcess.step % 2 === 0 ? 20 : -20, opacity: 0 }}
                         animate={{ y: 0, x: 0, opacity: 1 }}
                         transition={{ duration: 0.6, delay: 0.2 }}
                     >
-                        <h1 className="relative mb-2 inline-block text-2xl font-bold text-black uppercase md:mb-4 md:text-3xl dark:text-white">
+                        <h1
+                            className="relative mb-4 inline-block text-2xl font-bold uppercase md:mb-6 md:text-3xl dark:text-white"
+                            style={{
+                                color: businessProcess.color_tag,
+                            }}
+                        >
                             {businessProcess?.title}
                         </h1>
-                        <p className="text-sm leading-[1.6] font-light text-black md:text-base dark:text-white">{businessProcess?.description}</p>
+                        <p className="text-sm leading-[1.7] font-light text-gray-700 md:text-base dark:text-gray-300">
+                            {businessProcess?.description}
+                        </p>
                     </motion.div>
-                </div>
-
-                {/* Image - Last on mobile */}
-                <div className={cn('order-3 mt-4 flex justify-center md:order-1 md:mt-0 md:justify-start')}>
-                    {businessProcess?.image && (
-                        <motion.div
-                            className="relative w-full max-w-[200px] md:max-w-[400px]"
-                            initial={{ scale: 0.95, opacity: 0.8 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            transition={{ duration: 0.8, delay: 0.1 }}
-                        >
-                            <div className="from-primary/20 absolute inset-0 scale-105 rotate-3 transform rounded-2xl bg-gradient-to-tr to-transparent"></div>
-                            <img
-                                className="relative z-10 w-full rounded-2xl object-cover shadow-lg"
-                                src={businessProcess.image}
-                                alt={businessProcess.title}
-                            />
-                            <div className="bg-primary/10 absolute -right-3 -bottom-3 h-16 w-16 rounded-full blur-xl"></div>
-                        </motion.div>
-                    )}
                 </div>
             </div>
         </motion.div>

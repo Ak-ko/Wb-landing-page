@@ -1,39 +1,37 @@
+import { useIsMobile } from '@/hooks/use-mobile';
 import { BusinessProcessT } from '@/types';
 import { usePage } from '@inertiajs/react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 import BusinessProcessItem from './business-process-item';
+import FlagIcon from './icons/flag-icon';
 import SectionHeader from './section-header';
 
 export default function BusinessProcessSection() {
     const { businessProcesses } = usePage<{ businessProcesses: BusinessProcessT[] }>().props;
     const [currentIndex, setCurrentIndex] = useState(0);
     const [direction, setDirection] = useState(0);
+    const isMobile = useIsMobile();
 
     // Animation variants for slides
     const slideVariants = {
         enter: (direction: number) => ({
-            x: direction > 0 ? 50 : -50,
+            x: !isMobile ? (direction > 0 ? 50 : -50) : 0,
+            y: isMobile ? (direction > 0 ? 50 : -50) : 0,
             opacity: 0,
         }),
         center: {
             zIndex: 1,
             x: 0,
+            y: 0,
             opacity: 1,
         },
         exit: (direction: number) => ({
             zIndex: 0,
-            x: direction < 0 ? 50 : -50,
+            x: !isMobile ? (direction < 0 ? 50 : -50) : 0,
+            y: isMobile ? (direction < 0 ? 50 : -50) : 0,
             opacity: 0,
         }),
-    };
-
-    // Animation variants for navigation buttons
-    const navButtonVariants = {
-        initial: { scale: 0.9, opacity: 0.7 },
-        hover: { scale: 1.1, opacity: 1 },
-        tap: { scale: 0.95 },
     };
 
     const swipeConfidenceThreshold = 10000;
@@ -72,34 +70,76 @@ export default function BusinessProcessSection() {
             </div>
 
             <div className="relative">
-                {/* Navigation Buttons */}
-                <div className="app-container absolute top-1/2 right-4 left-4 z-20 flex -translate-y-1/2 justify-between">
-                    <motion.button
-                        onClick={() => paginate(-1)}
-                        className="flex h-10 w-10 items-center justify-center rounded-full bg-black text-white shadow-lg md:h-12 md:w-12"
-                        variants={navButtonVariants}
-                        initial="initial"
-                        whileHover="hover"
-                        whileTap="tap"
-                        aria-label="Previous step"
-                    >
-                        <ChevronLeft size={24} />
-                    </motion.button>
-                    <motion.button
-                        onClick={() => paginate(1)}
-                        className="flex h-10 w-10 items-center justify-center rounded-full bg-black text-white shadow-lg md:h-12 md:w-12"
-                        variants={navButtonVariants}
-                        initial="initial"
-                        whileHover="hover"
-                        whileTap="tap"
-                        aria-label="Next step"
-                    >
-                        <ChevronRight size={24} />
-                    </motion.button>
-                </div>
-
                 {/* Process Items */}
-                <div className="app-container">
+                <div className="app-container relative">
+                    {/* Mobile Progress Bar - Positioned absolutely on the left */}
+                    {isMobile && (
+                        <div className="absolute top-0 left-4 z-10 flex h-full flex-col items-center py-8">
+                            {/* Vertical Timeline */}
+                            <div className="relative flex flex-col items-center">
+                                {/* Vertical Line */}
+                                <div className="absolute top-4 left-1/2 h-[400px] w-1 -translate-x-1/2 rounded-full bg-gray-300 dark:bg-gray-700"></div>
+
+                                {/* Progress Line */}
+                                <motion.div
+                                    className="absolute top-4 left-1/2 w-1 -translate-x-1/2 rounded-full"
+                                    style={{
+                                        backgroundColor: currentBusinessProcess.color_tag,
+                                        height: `${(currentIndex / (businessProcesses.length - 1)) * 400}px`,
+                                    }}
+                                    initial={{ height: 0 }}
+                                    animate={{ height: `${(currentIndex / (businessProcesses.length - 1)) * 400}px` }}
+                                    transition={{ duration: 0.5, ease: 'easeInOut' }}
+                                ></motion.div>
+
+                                {/* Steps */}
+                                {businessProcesses.map((process, index) => (
+                                    <motion.button
+                                        key={process.id}
+                                        onClick={() => {
+                                            const direction = index > currentIndex ? 1 : -1;
+                                            setDirection(direction);
+                                            setCurrentIndex(index);
+                                        }}
+                                        className="relative mb-16 flex cursor-pointer items-center"
+                                        whileHover={{ scale: 1.1 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        aria-label={`Go to step ${index + 1}`}
+                                    >
+                                        {/* Step Circle */}
+                                        <motion.div
+                                            className={`relative h-6 w-6 rounded-full border-2 transition-all duration-300 ${
+                                                index <= currentIndex ? 'shadow-lg' : ''
+                                            }`}
+                                            style={{
+                                                borderColor: index <= currentIndex ? process.color_tag : '#d1d5db',
+                                                backgroundColor: 'white',
+                                            }}
+                                            initial={{ scale: 0.8, opacity: 0 }}
+                                            animate={{ scale: 1, opacity: 1 }}
+                                            transition={{ delay: index * 0.1 }}
+                                        ></motion.div>
+                                    </motion.button>
+                                ))}
+
+                                {/* Flag Icon at the bottom */}
+                                <motion.div
+                                    className="absolute bottom-[-150%] flex items-center"
+                                    initial={{ scale: 0.8, opacity: 0 }}
+                                    animate={{ scale: 1, opacity: 1 }}
+                                    transition={{ delay: businessProcesses.length * 0.1 }}
+                                >
+                                    <FlagIcon
+                                        className="h-6 w-6"
+                                        style={{
+                                            fill: currentBusinessProcess.color_tag,
+                                        }}
+                                    />
+                                </motion.div>
+                            </div>
+                        </div>
+                    )}
+
                     <AnimatePresence initial={false} custom={direction} mode="wait">
                         <motion.div
                             key={currentBusinessProcess.id}
@@ -110,20 +150,30 @@ export default function BusinessProcessSection() {
                             exit="exit"
                             transition={{
                                 x: { type: 'spring', stiffness: 300, damping: 30 },
+                                y: { type: 'spring', stiffness: 300, damping: 30 },
                                 opacity: { duration: 0.3 },
                             }}
-                            drag="x"
-                            dragConstraints={{ left: 0, right: 0 }}
+                            drag={isMobile ? 'y' : 'x'}
+                            dragConstraints={isMobile ? { top: 0, bottom: 0 } : { left: 0, right: 0 }}
                             dragElastic={1}
                             onDragEnd={(_, { offset, velocity }) => {
-                                const swipe = swipePower(offset.x, velocity.x);
-                                if (swipe < -swipeConfidenceThreshold) {
-                                    paginate(1);
-                                } else if (swipe > swipeConfidenceThreshold) {
-                                    paginate(-1);
+                                const swipe = isMobile ? swipePower(offset.y, velocity.y) : swipePower(offset.x, velocity.x);
+
+                                if (isMobile) {
+                                    if (swipe < -swipeConfidenceThreshold) {
+                                        paginate(1);
+                                    } else if (swipe > swipeConfidenceThreshold) {
+                                        paginate(-1);
+                                    }
+                                } else {
+                                    if (swipe < -swipeConfidenceThreshold) {
+                                        paginate(1);
+                                    } else if (swipe > swipeConfidenceThreshold) {
+                                        paginate(-1);
+                                    }
                                 }
                             }}
-                            className="flex items-center justify-center py-8"
+                            className={isMobile ? 'flex items-center justify-center py-8 pl-12' : 'flex items-center justify-center py-8'}
                         >
                             <BusinessProcessItem
                                 businessProcess={currentBusinessProcess}
@@ -136,23 +186,117 @@ export default function BusinessProcessSection() {
                     </AnimatePresence>
                 </div>
 
-                {/* Pagination Bars */}
-                <div className="mt-8 flex items-center justify-center gap-2">
-                    {businessProcesses.map((_, index) => (
-                        <motion.button
-                            key={index}
-                            onClick={() => {
-                                const direction = index > currentIndex ? 1 : -1;
-                                setDirection(direction);
-                                setCurrentIndex(index);
-                            }}
-                            className={`h-[3px] w-12 transition-all duration-300 ${currentIndex === index ? 'bg-black dark:bg-white' : 'bg-gray-300 dark:bg-gray-700'}`}
-                            aria-label={`Go to step ${index + 1}`}
-                            whileHover={{ scaleY: 1.5 }}
-                            whileTap={{ scale: 0.95 }}
-                        />
-                    ))}
-                </div>
+                {/* Mobile Navigation Buttons */}
+                {isMobile && (
+                    <div className="app-container mt-8 ml-5">
+                        <div className="flex justify-center gap-4">
+                            <motion.button
+                                onClick={() => paginate(-1)}
+                                className="flex h-12 w-12 items-center justify-center rounded-full shadow-lg transition-all duration-200"
+                                style={{ backgroundColor: currentBusinessProcess.color_tag }}
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
+                                disabled={currentIndex === 0}
+                            >
+                                <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                                </svg>
+                            </motion.button>
+
+                            <motion.button
+                                onClick={() => paginate(1)}
+                                className="flex h-12 w-12 items-center justify-center rounded-full shadow-lg transition-all duration-200"
+                                style={{ backgroundColor: currentBusinessProcess.color_tag }}
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
+                                disabled={currentIndex === businessProcesses.length - 1}
+                            >
+                                <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </motion.button>
+                        </div>
+                    </div>
+                )}
+
+                {/* Desktop Progress Bar */}
+                {!isMobile && (
+                    <div className="app-container mt-12">
+                        <div className="relative mx-auto flex max-w-[1200px] items-center">
+                            <div className="absolute top-1/2 right-0 left-0 h-[8px] -translate-y-1/2 rounded-full bg-gray-300 dark:bg-gray-700"></div>
+
+                            <motion.div
+                                className="absolute top-1/2 left-0 h-[8px] -translate-y-1/2 rounded-full"
+                                style={{
+                                    backgroundColor: currentBusinessProcess.color_tag,
+                                    width: `${(currentIndex / (businessProcesses.length - 1)) * 100}%`,
+                                }}
+                                initial={{ width: 0 }}
+                                animate={{ width: `${(currentIndex / (businessProcesses.length - 1)) * 100}%` }}
+                                transition={{ duration: 0.5, ease: 'easeInOut' }}
+                            ></motion.div>
+
+                            {/* Steps */}
+                            <div className="relative mt-6 flex w-full justify-around">
+                                {businessProcesses.map((process, index) => (
+                                    <motion.button
+                                        key={process.id}
+                                        onClick={() => {
+                                            const direction = index > currentIndex ? 1 : -1;
+                                            setDirection(direction);
+                                            setCurrentIndex(index);
+                                        }}
+                                        className="relative flex cursor-pointer flex-col items-center"
+                                        whileHover={{ scale: 1.1 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        aria-label={`Go to step ${index + 1}`}
+                                    >
+                                        {/* Step Circle */}
+                                        <motion.div
+                                            className={`relative h-8 w-8 rounded-full border-4 transition-all duration-300 md:h-13 md:w-13 md:border-[10px] ${
+                                                index <= currentIndex ? 'shadow-lg' : ''
+                                            }`}
+                                            style={{
+                                                borderColor: index <= currentIndex ? process.color_tag : '#d1d5db',
+                                                backgroundColor: 'white',
+                                            }}
+                                            initial={{ scale: 0.8, opacity: 0 }}
+                                            animate={{ scale: 1, opacity: 1 }}
+                                            transition={{ delay: index * 0.1 }}
+                                        ></motion.div>
+
+                                        {/* Step Label */}
+                                        <motion.span
+                                            className={`mt-3 text-xs font-medium md:text-sm ${
+                                                index === currentIndex ? 'font-bold' : 'text-gray-500 dark:text-gray-400'
+                                            }`}
+                                            style={{
+                                                color: index === currentIndex ? process.color_tag : undefined,
+                                            }}
+                                        >
+                                            STEP {index + 1}
+                                        </motion.span>
+                                    </motion.button>
+                                ))}
+                            </div>
+
+                            {/* Flag Icon at the rightmost end */}
+                            <motion.div
+                                className="absolute top-1 right-0 flex items-center"
+                                initial={{ scale: 0.8, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                transition={{ delay: businessProcesses.length * 0.1 }}
+                            >
+                                <FlagIcon
+                                    className="h-8 w-8 md:h-10 md:w-10"
+                                    style={{
+                                        fill: currentBusinessProcess.color_tag,
+                                    }}
+                                />
+                            </motion.div>
+                        </div>
+                    </div>
+                )}
             </div>
         </section>
     );
