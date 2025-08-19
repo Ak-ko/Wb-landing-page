@@ -274,20 +274,16 @@ export default function BrandingProjectDetail({ project, relatedProjects }: Bran
                             <div className="rounded-xl bg-white p-8 shadow-lg">
                                 <h2 className="mb-6 text-2xl font-bold">Project Overview</h2>
                                 <div
-                                    className="prose prose-lg max-w-none font-light"
+                                    className="prose prose-lg max-w-none font-light [&_.text-center]:text-center [&_.text-left]:text-left [&_.text-right]:text-right [&_em]:italic [&_h1]:mt-4 [&_h1]:mb-2 [&_h1]:text-2xl [&_h1]:font-bold [&_h2]:text-xl [&_h2]:font-bold [&_h3]:mt-2 [&_h3]:mb-1 [&_h3]:text-lg [&_h3]:font-bold [&_mark]:bg-yellow-200 [&_mark]:px-1 [&_ol]:ml-3 [&_ol]:list-decimal [&_p]:mb-4 [&_p]:leading-relaxed [&_strong]:font-semibold [&_ul]:ml-3 [&_ul]:list-disc [&>*:first-child]:mt-0 [&>*:last-child]:mb-0"
                                     dangerouslySetInnerHTML={{ __html: project.description as string }}
                                 />
 
                                 <div className="mt-8">
                                     <h3 className="mb-4 text-xl font-bold">Project Scope</h3>
-                                    <div className="prose prose-lg max-w-none font-light">
-                                        {project?.project_scopes?.split('\n').map((scope, index) => (
-                                            <p key={index} className="flex items-start gap-2">
-                                                <span className="bg-primary mt-2 h-2 w-2 rounded-full" />
-                                                {scope}
-                                            </p>
-                                        ))}
-                                    </div>
+                                    <div
+                                        className="prose prose-lg max-w-none font-light [&_.text-center]:text-center [&_.text-left]:text-left [&_.text-right]:text-right [&_em]:italic [&_h1]:mt-4 [&_h1]:mb-2 [&_h1]:text-2xl [&_h1]:font-bold [&_h2]:text-xl [&_h2]:font-bold [&_h3]:mt-2 [&_h3]:mb-1 [&_h3]:text-lg [&_h3]:font-bold [&_mark]:bg-yellow-200 [&_mark]:px-1 [&_ol]:ml-3 [&_ol]:list-decimal [&_p]:mb-4 [&_p]:leading-relaxed [&_strong]:font-semibold [&_ul]:ml-3 [&_ul]:list-disc [&>*:first-child]:mt-0 [&>*:last-child]:mb-0"
+                                        dangerouslySetInnerHTML={{ __html: project.project_scopes || '' }}
+                                    />
                                 </div>
                             </div>
                         </div>

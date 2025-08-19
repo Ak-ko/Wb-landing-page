@@ -50,7 +50,7 @@ Route::get('/', function () {
 
     $businessProcesses = BusinessProcess::active()->orderBy('step')->get();
 
-    $brandingProjects = BrandingProject::latest()->with('tags', 'images')->get()->take(6);
+    $brandingProjects = BrandingProject::featured()->published()->orderBy('order', 'asc')->with('tags', 'images')->get()->take(6);
 
     $brandingProjectTags = Tag::whereHas('brandingProjects')->get();
 

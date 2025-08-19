@@ -11,6 +11,10 @@ type BrandingProjectActionsProps = {
 
 export const createBrandingProjectColumns = ({ handleDeleteClick }: BrandingProjectActionsProps): ColumnDef<BrandingProjectT>[] => [
     {
+        accessorKey: 'order',
+        header: 'Order',
+    },
+    {
         accessorKey: 'title',
         header: 'Title',
     },
@@ -37,28 +41,22 @@ export const createBrandingProjectColumns = ({ handleDeleteClick }: BrandingProj
         header: 'Client',
     },
     {
-        accessorKey: 'client_origin',
-        header: 'Location',
-        cell: ({ row }) => {
-            if (!row.original.client_origin) return <span>-</span>;
-            return <span>{row.original.client_origin}</span>;
-        },
+        accessorKey: 'is_featured',
+        header: 'Featured',
+        cell: ({ row }) => (
+            <div className="flex justify-center">
+                <Badge variant={row.original.is_featured ? 'default' : 'outline'}>{row.original.is_featured ? 'Yes' : 'No'}</Badge>
+            </div>
+        ),
     },
     {
-        accessorKey: 'industry_type',
-        header: 'Industry',
-    },
-    {
-        accessorKey: 'year',
-        header: 'Year',
-        cell: ({ row }) => {
-            if (!row.original.year) return <span>-</span>;
-            return <span>{row.original.year}</span>;
-        },
-    },
-    {
-        accessorKey: 'project_scopes',
-        header: 'Project Scope',
+        accessorKey: 'is_published',
+        header: 'Published',
+        cell: ({ row }) => (
+            <div className="flex justify-center">
+                <Badge variant={row.original.is_published ? 'default' : 'outline'}>{row.original.is_published ? 'Yes' : 'No'}</Badge>
+            </div>
+        ),
     },
     {
         accessorKey: 'tags',

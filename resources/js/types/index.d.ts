@@ -110,6 +110,8 @@ export type BrandingProjectT = {
     project_scopes: string | null;
     project_link: string | null;
     is_published: boolean;
+    is_featured: boolean;
+    order: number;
     tags: TagT[];
     images: BrandingProjectImageT[];
     members: TeamMemberT[];

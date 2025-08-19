@@ -29,7 +29,8 @@ class BrandingProjectController extends Controller
             });
         }
 
-        $brandingProjects = $query->latest()
+        $brandingProjects = $query
+            ->ordered()
             ->paginate($request->input('perPage', 10))
             ->withQueryString();
 
@@ -68,6 +69,8 @@ class BrandingProjectController extends Controller
             'project_scopes' => 'required|string',
             'project_link' => 'required|string',
             'is_published' => 'required|boolean',
+            'is_featured' => 'boolean',
+            'order' => 'nullable|integer|min:0',
             'tags' => 'nullable|array',
             'tags.*' => 'exists:tags,id',
             'images' => 'required|array|min:2',
@@ -92,7 +95,9 @@ class BrandingProjectController extends Controller
             'project_scopes' => $validated['project_scopes'],
             'project_link' => $validated['project_link'],
             'industry_type' => $validated['industry_type'],
-            'is_published' => $validated['is_published'],
+            'is_published' => $validated['is_published'] ?? true,
+            'is_featured' => $validated['is_featured'] ?? true,
+            'order' => $validated['order'] ?? 0,
         ]);
 
         if (isset($validated['tags']) && !empty($validated['tags'])) {
@@ -180,6 +185,8 @@ class BrandingProjectController extends Controller
             'project_link' => 'required|string',
             'industry_type' => 'required|string',
             'is_published' => 'required|boolean',
+            'is_featured' => 'boolean',
+            'order' => 'nullable|integer|min:0',
             'tags' => 'nullable|array',
             'tags.*' => 'exists:tags,id',
             'images' => 'nullable|array|min:2',
@@ -206,7 +213,9 @@ class BrandingProjectController extends Controller
             'project_keywords' => $validated['project_keywords'],
             'project_scopes' => $validated['project_scopes'],
             'project_link' => $validated['project_link'],
-            'is_published' => $validated['is_published'],
+            'is_published' => $validated['is_published'] ?? $brandingProject->is_published,
+            'is_featured' => $validated['is_featured'] ?? $brandingProject->is_featured,
+            'order' => $validated['order'] ?? $brandingProject->order,
             'year' => $validated['year'],
         ]);
 
@@ -296,7 +305,7 @@ class BrandingProjectController extends Controller
     public function projectsList(Request $request)
     {
         $query = BrandingProject::with(['tags', 'images', 'members'])
-            ->latest()
+            ->ordered()
             ->published();
 
         if ($request->has('query') && $request->query('query') !== '') {
