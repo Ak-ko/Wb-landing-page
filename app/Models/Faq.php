@@ -13,7 +13,8 @@ class Faq extends Model
         'question',
         'answer',
         'color',
-        'is_published'
+        'is_published',
+        'order'
     ];
 
     public function scopePublished($query)

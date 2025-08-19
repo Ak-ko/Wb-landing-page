@@ -68,7 +68,10 @@ export default function ShowBrandingProject({ brandingProject }: ShowBrandingPro
                                     {brandingProject.description && (
                                         <div className="mb-6">
                                             <h4 className="mb-2 text-lg font-medium text-gray-700">Description</h4>
-                                            <p className="leading-relaxed text-gray-600">{brandingProject.description}</p>
+                                            <div
+                                                className="prose prose-sm max-w-none [&_.text-center]:text-center [&_.text-left]:text-left [&_.text-right]:text-right [&_em]:italic [&_h1]:mt-3 [&_h1]:mb-2 [&_h1]:text-xl [&_h1]:font-bold [&_h2]:text-lg [&_h2]:font-bold [&_h3]:mt-2 [&_h3]:mb-1 [&_h3]:text-base [&_h3]:font-bold [&_mark]:bg-yellow-200 [&_mark]:px-1 [&_ol]:ml-4 [&_ol]:list-decimal [&_p]:mb-3 [&_p]:leading-relaxed [&_strong]:font-semibold [&_ul]:ml-4 [&_ul]:list-disc [&>*:first-child]:mt-0 [&>*:last-child]:mb-0"
+                                                dangerouslySetInnerHTML={{ __html: brandingProject.description }}
+                                            />
                                         </div>
                                     )}
 
@@ -79,7 +82,10 @@ export default function ShowBrandingProject({ brandingProject }: ShowBrandingPro
 
                                     <div className="mb-6">
                                         <h4 className="mb-2 text-lg font-medium text-gray-700">Project Scope</h4>
-                                        <p className="leading-relaxed text-gray-600">{brandingProject.project_scopes}</p>
+                                        <div
+                                            className="prose prose-sm max-w-none [&_.text-center]:text-center [&_.text-left]:text-left [&_.text-right]:text-right [&_em]:italic [&_h1]:mt-3 [&_h1]:mb-2 [&_h1]:text-xl [&_h1]:font-bold [&_h2]:text-lg [&_h2]:font-bold [&_h3]:mt-2 [&_h3]:mb-1 [&_h3]:text-base [&_h3]:font-bold [&_mark]:bg-yellow-200 [&_mark]:px-1 [&_ol]:ml-4 [&_ol]:list-decimal [&_p]:mb-3 [&_p]:leading-relaxed [&_strong]:font-semibold [&_ul]:ml-4 [&_ul]:list-disc [&>*:first-child]:mt-0 [&>*:last-child]:mb-0"
+                                            dangerouslySetInnerHTML={{ __html: brandingProject.project_scopes || '' }}
+                                        />
                                     </div>
 
                                     <div className="mb-6">
@@ -172,6 +178,12 @@ export default function ShowBrandingProject({ brandingProject }: ShowBrandingPro
                                                     </span>
                                                 </div>
                                             )}
+
+                                            <div className="flex items-center gap-2 text-gray-600">
+                                                <Badge variant={brandingProject.is_featured ? 'default' : 'outline'}>
+                                                    {brandingProject.is_featured ? 'Featured' : 'Not Featured'}
+                                                </Badge>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

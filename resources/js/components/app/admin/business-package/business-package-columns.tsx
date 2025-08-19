@@ -16,6 +16,11 @@ export const createBusinessPackageColumns = ({
     handleDuplicateClick,
 }: BusinessPackageActionsProps): ColumnDef<BusinessPackageT>[] => [
     {
+        accessorKey: 'order',
+        header: 'Order',
+        cell: ({ row }) => <div className="text-center font-medium">{row.original.order || 0}</div>,
+    },
+    {
         accessorKey: 'name',
         header: 'Name',
     },

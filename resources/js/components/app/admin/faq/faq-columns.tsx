@@ -11,6 +11,11 @@ type FaqActionsProps = {
 
 export const createFaqColumns = ({ handleDeleteClick }: FaqActionsProps): ColumnDef<FaqT>[] => [
     {
+        accessorKey: 'order',
+        header: 'Order',
+        cell: ({ row }) => <div className="text-center font-medium">{row.original.order || 0}</div>,
+    },
+    {
         accessorKey: 'question',
         header: 'Question',
     },

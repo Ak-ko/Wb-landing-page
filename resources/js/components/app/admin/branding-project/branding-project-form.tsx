@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import { Textarea } from '@/components/ui/textarea';
 import { cn, shouldBePrimaryImage } from '@/lib/utils';
 import { BrandingProjectMemberT, BrandingProjectT, TagT, TeamMemberT } from '@/types';
 import { ImageItem, NewImage } from '@/types/common';
@@ -14,6 +13,7 @@ import { useForm, usePage } from '@inertiajs/react';
 import { useMemo, useState } from 'react';
 import Select, { MultiValue } from 'react-select';
 import ProjectLeadCard from '../../project-lead-card';
+import RichTextEditor from '../rich-editor/rich-text-editor';
 import BrandingProjectImageGallery from './branding-project-image-gallery';
 
 interface BrandingProjectFormProps {
@@ -52,8 +52,10 @@ export default function BrandingProjectForm({ brandingProject, tags, onSubmit }:
         project_keywords: brandingProject?.project_keywords || '',
         project_scopes: brandingProject?.project_scopes || '',
         project_link: brandingProject?.project_link || '',
+        order: brandingProject?.order || 0,
         tags: brandingProject?.tags.map((tag) => tag.id) || [],
-        is_published: brandingProject?.is_published || (true as boolean),
+        is_published: brandingProject?.is_published ?? true,
+        is_featured: brandingProject?.is_featured ?? true,
         images: brandingProject?.images?.map((brandingProjectImage) => brandingProjectImage?.image) || ([] as string[]),
         new_images: [],
         removed_images: [] as number[],
@@ -349,11 +351,10 @@ export default function BrandingProjectForm({ brandingProject, tags, onSubmit }:
                         <label htmlFor="project_scopes" className="block text-sm font-medium">
                             Project Scopes<span className="text-red-500">*</span>
                         </label>
-                        <Textarea
-                            id="project_scopes"
-                            placeholder="Enter Project Scopes"
-                            value={data.project_scopes}
-                            onChange={(e) => setData('project_scopes', e.target.value)}
+                        <RichTextEditor
+                            content={data.project_scopes}
+                            onChange={(content) => setData('project_scopes', content)}
+                            className={errors.project_scopes ? 'border-red-500' : ''}
                         />
                         {errors.project_scopes && <p className="text-sm text-red-500">{errors.project_scopes}</p>}
                     </div>
@@ -362,12 +363,10 @@ export default function BrandingProjectForm({ brandingProject, tags, onSubmit }:
                         <label htmlFor="description" className="block text-sm font-medium">
                             Description
                         </label>
-                        <Textarea
-                            id="description"
-                            placeholder="Enter project description"
-                            value={data.description}
-                            onChange={(e) => setData('description', e.target.value)}
-                            rows={3}
+                        <RichTextEditor
+                            content={data.description}
+                            onChange={(content) => setData('description', content)}
+                            className={errors.description ? 'border-red-500' : ''}
                         />
                         {errors.description && <p className="text-sm text-red-500">{errors.description}</p>}
                     </div>
@@ -384,6 +383,21 @@ export default function BrandingProjectForm({ brandingProject, tags, onSubmit }:
                             onChange={(e) => setData('project_link', e.target.value)}
                         />
                         {errors.project_link && <p className="text-sm text-red-500">{errors.project_link}</p>}
+                    </div>
+
+                    <div className="space-y-2">
+                        <label htmlFor="order" className="block text-sm font-medium">
+                            Display Order
+                        </label>
+                        <Input
+                            id="order"
+                            type="number"
+                            min="0"
+                            placeholder="Enter display order (0 = first)"
+                            value={data.order}
+                            onChange={(e) => setData('order', parseInt(e.target.value) || 0)}
+                        />
+                        {errors.order && <p className="text-sm text-red-500">{errors.order}</p>}
                     </div>
 
                     <div className="col-span-2 space-y-2">
@@ -535,16 +549,38 @@ export default function BrandingProjectForm({ brandingProject, tags, onSubmit }:
                 </div>
             )}
 
-            <div className="flex items-center space-x-2">
-                <Switch
-                    id="is_published"
-                    checked={data.is_published}
-                    onCheckedChange={(checked) => {
-                        setData('is_published', checked);
-                    }}
-                />
-                <Label htmlFor="is_published">Published</Label>
-                {errors.is_published && <p className="text-sm text-red-500">{errors.is_published}</p>}
+            <div className="space-y-4 rounded-lg border bg-gray-50 p-4">
+                <div className="flex items-center space-x-2">
+                    <Switch
+                        id="is_published"
+                        checked={data.is_published}
+                        onCheckedChange={(checked) => {
+                            setData('is_published', checked);
+                        }}
+                    />
+                    <Label htmlFor="is_published">Published</Label>
+                    {errors.is_published && <p className="text-sm text-red-500">{errors.is_published}</p>}
+                </div>
+                <p className="ml-6 text-sm text-gray-600">
+                    <strong>Note:</strong> If not published, the project will only be visible in the admin dashboard and won't appear on any
+                    client-facing pages.
+                </p>
+
+                <div className="flex items-center space-x-2">
+                    <Switch
+                        id="is_featured"
+                        checked={data.is_featured}
+                        onCheckedChange={(checked) => {
+                            setData('is_featured', checked);
+                        }}
+                    />
+                    <Label htmlFor="is_featured">Featured</Label>
+                    {errors.is_featured && <p className="text-sm text-red-500">{errors.is_featured}</p>}
+                </div>
+                <p className="ml-6 text-sm text-gray-600">
+                    <strong>Note:</strong> If published but not featured, the project will appear on the "Our Projects" page but won't be shown on the
+                    home page.
+                </p>
             </div>
             <div className="flex justify-end space-x-2">
                 <Button type="button" variant="outline" onClick={() => window.history.back()}>

@@ -5,9 +5,10 @@ import { TeamMemberT } from '@/types';
 interface PropsT {
     teamMember: TeamMemberT;
     varient?: 'compact' | 'expanded';
+    onClick?: () => void;
 }
 
-export default function TeamMemberCard({ teamMember, varient = 'expanded' }: PropsT) {
+export default function TeamMemberCard({ teamMember, varient = 'expanded', onClick }: PropsT) {
     const textColor = isLightColor(teamMember?.color as string) ? 'black' : 'white';
     const bgColor = teamMember?.color as string;
 
@@ -16,7 +17,12 @@ export default function TeamMemberCard({ teamMember, varient = 'expanded' }: Pro
             style={{
                 backgroundColor: bgColor,
             }}
-            className={cn('group overflow-hidden', varient === 'compact' ? 'max-h-[300px] rounded-none pt-5' : 'min-h-[350px] rounded-2xl px-9 pt-9')}
+            className={cn(
+                'group overflow-hidden',
+                varient === 'compact' ? 'max-h-[300px] rounded-none pt-5' : 'min-h-[350px] rounded-2xl px-9 pt-9',
+                onClick && 'cursor-pointer transition-transform duration-300 hover:scale-105',
+            )}
+            onClick={onClick}
         >
             <div className={cn('flex items-center justify-center gap-5', varient === 'compact' ? 'flex-col' : 'flex-col lg:flex-row')}>
                 {varient === 'compact' && (

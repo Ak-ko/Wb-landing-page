@@ -201,7 +201,6 @@ const duplicateHook = useDuplicateRecord({
     editRoute: (id) => route('your-resource.edit', id),
     onSuccess: (duplicatedId) => {
         // Custom logic after successful duplication
-        console.log('Duplicated record ID:', duplicatedId);
         router.reload();
     },
 });

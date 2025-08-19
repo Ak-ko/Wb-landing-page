@@ -1,5 +1,5 @@
+import { ColorInput } from '@/components/common/color-input';
 import { Button } from '@/components/ui/button';
-import { ColorInput } from '@/components/ui/color-input';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
@@ -19,6 +19,7 @@ export default function ArtPackageForm({ package: artPackage, types, onSuccess }
         title: artPackage?.title || '',
         type: artPackage?.type || '',
         color: artPackage?.color || '',
+        text_color: artPackage?.text_color || '#ffffff',
         items: artPackage?.items?.map((item) => ({ item: item.item })) || [],
         prices: artPackage?.prices?.map((price) => ({ price: price.price, duration: price.duration })) || [],
     });
@@ -105,7 +106,15 @@ export default function ArtPackageForm({ package: artPackage, types, onSuccess }
                     {errors.type && <p className="mt-1 text-sm text-red-500">{errors.type}</p>}
                 </div>
 
-                <ColorInput label="Color" value={data.color} onChange={(value) => setData('color', value)} error={errors.color} />
+                <ColorInput
+                    label="Color"
+                    backgroundColor={data.color}
+                    textColor={data.text_color}
+                    onBackgroundColorChange={(value) => setData('color', value)}
+                    onTextColorChange={(value) => setData('text_color', value)}
+                    backgroundColorError={errors.color}
+                    textColorError={errors.text_color}
+                />
 
                 <div>
                     <Label>

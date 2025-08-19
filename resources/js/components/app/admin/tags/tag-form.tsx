@@ -1,5 +1,5 @@
+import { ColorInput } from '@/components/common/color-input';
 import { Button } from '@/components/ui/button';
-import { ColorInput } from '@/components/ui/color-input';
 import { Input } from '@/components/ui/input';
 import { TagT } from '@/types';
 import { useForm } from '@inertiajs/react';
@@ -13,6 +13,7 @@ export default function TagForm({ tag, onSuccess }: TagFormProps) {
     const { data, setData, post, put, processing, errors, reset } = useForm({
         name: tag?.name || '',
         color: tag?.color || '#3b82f6', // Default blue color
+        text_color: tag?.text_color || '#ffffff',
     });
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -44,7 +45,15 @@ export default function TagForm({ tag, onSuccess }: TagFormProps) {
                 {errors.name && <p className="text-sm text-red-500">{errors.name}</p>}
             </div>
 
-            <ColorInput label="Tag Color" value={data.color} onChange={(value) => setData('color', value)} error={errors.color} />
+            <ColorInput
+                label="Tag Color"
+                backgroundColor={data.color}
+                textColor={data.text_color}
+                onBackgroundColorChange={(value) => setData('color', value)}
+                onTextColorChange={(value) => setData('text_color', value)}
+                backgroundColorError={errors.color}
+                textColorError={errors.text_color}
+            />
 
             <div className="flex justify-end space-x-2">
                 <Button type="button" variant="outline" onClick={onSuccess}>

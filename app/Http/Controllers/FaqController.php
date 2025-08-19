@@ -27,7 +27,8 @@ class FaqController extends Controller
             });
         }
 
-        $faqs = $query->latest()
+        $faqs = $query->orderBy('order', 'asc')
+            ->orderBy('created_at', 'desc')
             ->paginate($request->input('perPage', 10))
             ->withQueryString();
 
@@ -55,6 +56,7 @@ class FaqController extends Controller
             'answer' => 'required|string',
             'color' => 'required|string',
             'is_published' => 'boolean',
+            'order' => 'nullable|integer|min:0',
         ]);
 
         Faq::create([
@@ -62,6 +64,7 @@ class FaqController extends Controller
             'answer' => $validated['answer'],
             'color' => $validated['color'],
             'is_published' => $validated['is_published'] ?? true,
+            'order' => $validated['order'] ?? 0,
         ]);
 
         return redirect()->route('faqs.index')->with('success', 'FAQ created successfully.');
@@ -97,6 +100,7 @@ class FaqController extends Controller
             'answer' => 'required|string',
             'color' => 'required|string',
             'is_published' => 'boolean',
+            'order' => 'nullable|integer|min:0',
         ]);
 
         $faq->update([
@@ -104,6 +108,7 @@ class FaqController extends Controller
             'answer' => $validated['answer'],
             'color' => $validated['color'] ?? $faq->color,
             'is_published' => $validated['is_published'] ?? $faq->is_published,
+            'order' => $validated['order'] ?? $faq->order,
         ]);
 
         return redirect()->route('faqs.index')
@@ -175,7 +180,7 @@ class FaqController extends Controller
     public function getAllFaqs()
     {
         if (request()->expectsJson()) {
-            $faqs = Faq::published()->get();
+            $faqs = Faq::published()->orderBy('order', 'asc')->orderBy('created_at', 'desc')->get();
             return response()->json($faqs);
         }
     }

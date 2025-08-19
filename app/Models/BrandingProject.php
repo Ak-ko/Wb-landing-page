@@ -26,12 +26,15 @@ class BrandingProject extends Model
         'project_keywords',
         'project_scopes',
         'project_link',
-        'is_published'
+        'is_published',
+        'is_featured',
+        'order'
     ];
 
     protected $casts = [
         'service_fees' => 'decimal:2',
-        'is_published' => 'boolean'
+        'is_published' => 'boolean',
+        'is_featured' => 'boolean'
     ];
 
     protected $appends = ['team_size', 'status'];
@@ -72,5 +75,15 @@ class BrandingProject extends Model
     public function scopePublished($query)
     {
         return $query->where('is_published', true);
+    }
+
+    public function scopeFeatured($query)
+    {
+        return $query->where('is_featured', true);
+    }
+
+    public function scopeOrdered($query)
+    {
+        return $query->orderBy('order', 'asc');
     }
 }

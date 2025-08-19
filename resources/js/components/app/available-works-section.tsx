@@ -1,3 +1,4 @@
+import { usePage } from '@inertiajs/react';
 import Marquee from 'react-fast-marquee';
 import AvailableWorkBadge from './available-work-badge';
 
@@ -7,37 +8,24 @@ import { useIsMobile } from '../../hooks/use-mobile';
 export default function AvailableWorksSection() {
     const isMobile = useIsMobile();
     const [isTablet, setIsTablet] = useState(false);
-
-    const badges = [
-        { label: 'Brand Guidelines', className: 'bg-[#FEC901]' },
-        { label: 'Social Media Designs', className: 'bg-[#FF5A01] text-white' },
-        { label: 'Logos', className: 'bg-[#1274EF] text-white' },
-        { label: 'Branding', className: 'bg-[#FF1466] text-white' },
-        { label: 'Rebranding', className: 'bg-[#101010] text-white' },
-
-        { label: 'Brand Guidelines', className: 'bg-[#FEC901]' },
-        { label: 'Social Media Designs', className: 'bg-[#FF5A01] text-white' },
-        { label: 'Logos', className: 'bg-[#1274EF] text-white' },
-        { label: 'Branding', className: 'bg-[#FF1466] text-white' },
-        { label: 'Rebranding', className: 'bg-[#101010] text-white' },
-
-        { label: 'Brand Guidelines', className: 'bg-[#FEC901]' },
-        { label: 'Social Media Designs', className: 'bg-[#FF5A01] text-white' },
-        { label: 'Logos', className: 'bg-[#1274EF] text-white' },
-        { label: 'Branding', className: 'bg-[#FF1466] text-white' },
-        { label: 'Rebranding', className: 'bg-[#101010] text-white' },
-
-        { label: 'Brand Guidelines', className: 'bg-[#FEC901]' },
-        { label: 'Social Media Designs', className: 'bg-[#FF5A01] text-white' },
-        { label: 'Logos', className: 'bg-[#1274EF] text-white' },
-        { label: 'Branding', className: 'bg-[#FF1466] text-white' },
-        { label: 'Rebranding', className: 'bg-[#101010] text-white' },
-    ];
+    const { availableWorks } = usePage().props;
 
     const renderBadges = () => {
-        return badges.map((badge, index) => (
-            <div key={`badge-${index}`} className="mx-2 my-2">
-                <AvailableWorkBadge label={badge.label} className={badge.className} />
+        if (!availableWorks || !Array.isArray(availableWorks) || availableWorks.length === 0) {
+            return <div className="py-4 text-center">No available works found</div>;
+        }
+
+        const repeatedBadges = [...availableWorks, ...availableWorks, ...availableWorks, ...availableWorks];
+
+        return repeatedBadges.map((work: { id: number; label: string; color: string; text_color: string }, index) => (
+            <div key={`badge-${work.id}-${index}`} className="mx-2 my-2">
+                <AvailableWorkBadge
+                    label={work.label}
+                    style={{
+                        backgroundColor: work.color,
+                    }}
+                    textColor={work.text_color}
+                />
             </div>
         ));
     };

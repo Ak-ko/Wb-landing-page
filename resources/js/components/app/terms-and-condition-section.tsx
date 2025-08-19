@@ -20,7 +20,10 @@ export default function TermsAndConditionSection() {
                     className="relative mx-auto max-w-[900px]"
                 >
                     <PhilosophyCard title="Terms & Conditions" content={policy?.terms_and_conditions} />
-                    <CharacterWithTiltRightStyle className="absolute -right-8 bottom-[-15%] hidden rotate-y-[180deg] md:block" fill="#555" />
+                    <CharacterWithTiltRightStyle
+                        className="absolute -right-8 bottom-[-15%] hidden rotate-y-[180deg] md:block"
+                        fill="var(--secondary-orange)"
+                    />
                 </motion.div>
             </div>
         </section>

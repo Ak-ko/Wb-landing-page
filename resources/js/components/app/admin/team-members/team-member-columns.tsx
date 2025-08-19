@@ -15,6 +15,11 @@ type TeamMemberActionsProps = {
 
 export const createTeamMemberColumns = ({ handleEdit, handleToggleActive, handleDeleteClick }: TeamMemberActionsProps): ColumnDef<TeamMemberT>[] => [
     {
+        accessorKey: 'order',
+        header: 'Order',
+        cell: ({ row }) => <div className="text-center font-medium">{row.original.order || 0}</div>,
+    },
+    {
         accessorKey: 'name',
         header: 'Name',
         cell: ({ row }) => <div>{row.original.name || <span className="text-gray-400">Not provided</span>}</div>,

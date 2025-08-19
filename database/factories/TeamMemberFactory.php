@@ -30,6 +30,7 @@ class TeamMemberFactory extends Factory
             'image' => fake()->imageUrl(400, 400, 'people'),
             'color' => fake()->hexColor(),
             'type' => fake()->randomElement(['member', 'star_member']),
+            'order' => fake()->numberBetween(0, 100),
             'is_active' => fake()->boolean(),
         ];
     }

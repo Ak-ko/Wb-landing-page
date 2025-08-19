@@ -17,7 +17,7 @@ class BusinessPackagesFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'order' => fake()->numberBetween(0, 100),
         ];
     }
 }

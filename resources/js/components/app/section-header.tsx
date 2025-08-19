@@ -30,7 +30,14 @@ export default function SectionHeader({ header, headerClass, descriptionClass, d
                     {description}
                 </p>
             ) : (
-                description
+                <div
+                    className={cn(
+                        'text-md font-inter max-w-[350px] text-center font-normal sm:!max-w-[800px] sm:text-lg 2xl:max-w-[500px] 2xl:text-2xl',
+                        descriptionClass,
+                    )}
+                >
+                    {description}
+                </div>
             )}
         </motion.div>
     );

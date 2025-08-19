@@ -3,10 +3,10 @@
 import { useForm, usePage } from '@inertiajs/react';
 import { useEffect } from 'react';
 
+import { ColorInput } from '@/components/common/color-input';
 import ImageUploader from '@/components/common/image-upload';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { ColorInput } from '@/components/ui/color-input';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -43,7 +43,9 @@ export default function TeamMemberForm({ teamMember, onSuccess }: TeamMemberForm
         image: teamMember?.image || '',
         bio: teamMember?.bio || '',
         color: teamMember?.color || '#000000',
+        text_color: teamMember?.text_color || '#ffffff',
         type: teamMember?.type || 'member',
+        order: teamMember?.order || 0,
         is_active: teamMember?.is_active ?? true,
     });
 
@@ -177,7 +179,7 @@ export default function TeamMemberForm({ teamMember, onSuccess }: TeamMemberForm
                 <label htmlFor="type" className="block text-sm font-medium">
                     Type <span className="text-red-500">*</span>
                 </label>
-                <Select value={data.type} onValueChange={(value) => setData('type', value)}>
+                <Select value={data.type} onValueChange={(value: 'member' | 'star_member') => setData('type', value)}>
                     <SelectTrigger>
                         <SelectValue placeholder="Select member type" />
                     </SelectTrigger>
@@ -187,6 +189,20 @@ export default function TeamMemberForm({ teamMember, onSuccess }: TeamMemberForm
                     </SelectContent>
                 </Select>
                 {errors.type && <p className="text-sm text-red-500">{errors.type}</p>}
+            </div>
+
+            <div className="space-y-2">
+                <label htmlFor="order" className="block text-sm font-medium">
+                    Order
+                </label>
+                <Input
+                    id="order"
+                    type="number"
+                    placeholder="Enter order (0, 1, 2, 3...)"
+                    value={data.order}
+                    onChange={(e) => setData('order', parseInt(e.target.value) || 0)}
+                />
+                {errors.order && <p className="text-sm text-red-500">{errors.order}</p>}
             </div>
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -279,7 +295,15 @@ export default function TeamMemberForm({ teamMember, onSuccess }: TeamMemberForm
                 </div>
             </div>
 
-            <ColorInput label="Color" value={data.color} onChange={(value) => setData('color', value)} error={errors.color} />
+            <ColorInput
+                label="Color"
+                backgroundColor={data.color}
+                textColor={data.text_color}
+                onBackgroundColorChange={(value) => setData('color', value)}
+                onTextColorChange={(value) => setData('text_color', value)}
+                backgroundColorError={errors.color}
+                textColorError={errors.text_color}
+            />
 
             <div className="flex items-center space-x-2">
                 <Checkbox id="is_active" checked={data.is_active} onCheckedChange={(checked) => setData('is_active', checked as boolean)} />

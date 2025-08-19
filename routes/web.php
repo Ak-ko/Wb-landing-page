@@ -14,6 +14,7 @@ use App\Http\Controllers\ColorController;
 use App\Http\Controllers\ComicArtController;
 use App\Http\Controllers\CompanyPolicyController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\AvailableWorkController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\IllustrationArtController;
 use App\Http\Controllers\MascortArtController;
@@ -49,7 +50,7 @@ Route::get('/', function () {
 
     $businessProcesses = BusinessProcess::active()->orderBy('step')->get();
 
-    $brandingProjects = BrandingProject::latest()->with('tags', 'images')->get()->take(6);
+    $brandingProjects = BrandingProject::featured()->published()->orderBy('order', 'asc')->with('tags', 'images')->get()->take(6);
 
     $brandingProjectTags = Tag::whereHas('brandingProjects')->get();
 
@@ -140,6 +141,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Faq
     Route::resource('/admin/faqs', FaqController::class);
 
+    // Available Works
+    Route::resource('/admin/available-works', AvailableWorkController::class);
+
     // Policy
     Route::resource('/admin/policies', CompanyPolicyController::class)
         ->only(['index']);
@@ -210,7 +214,7 @@ Route::get('/contact-us', function () {
 
 Route::get('/about-us', function () {
     $policy = CompanyPolicy::first();
-    $teamMembers = TeamMember::active()->latest()->get();
+    $teamMembers = TeamMember::active()->orderBy('order', 'asc')->orderBy('name', 'asc')->get();
 
     return Inertia::render('about-us/about-us-page', [
         'policy' => $policy,
@@ -226,7 +230,7 @@ Route::get('/business-plans', function () {
         'brandGuideline.elements.items',
         'brandStrategy.elements.items', // Eager load brandStrategy and its elements/items
         'durations'
-    )->get();
+    )->orderBy('order', 'asc')->orderBy('created_at', 'desc')->get();
     $allItems = BusinessPackageItems::all();
     $businessPackageAddons = BusinessPackageAddon::all();
 

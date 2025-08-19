@@ -21,6 +21,7 @@ class BusinessPackages extends Model
         'discount_price_text',
         'discount_description',
         'discount_end_date',
+        'order',
         'business_brand_guideline_id',
         'brand_strategy_id',
     ];

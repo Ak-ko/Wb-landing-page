@@ -16,7 +16,7 @@ export default function SeeBusinessPlanServicesSection() {
                         <span className="text-secondary-pink"> Power of Design?</span>
                     </h1>
                     <p className="text-center text-[16.5px] leading-[1.7] font-semibold lg:text-right">
-                        Transform your brand with our artistic expertise,
+                        Empower your brand with our artistic expertise,
                         <br /> creating captivating visual identities that leave a <br /> lasting impression.
                     </p>
                     <div className="text-center lg:text-right">

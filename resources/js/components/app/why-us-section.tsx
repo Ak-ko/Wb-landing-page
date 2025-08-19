@@ -11,9 +11,9 @@ const whyUsCards = [
     },
     {
         img: '/assets/ele2.png',
-        title: 'eco friendliness',
+        title: 'systematic creative process',
         description:
-            'We plant a tree for every project we finish to address environmental challenges and create sustainable communities for future generations.',
+            'Operating with a highly organised and repeatable creative process, we ensure efficiency, consistency, and predictable excellence in every project.',
     },
     {
         img: '/assets/ele3.png',
@@ -42,7 +42,12 @@ export default function WhyUsSection() {
         <section className="about-sections py-32" id="about">
             <SectionHeader
                 header="Why Us?"
-                description="It has always been our reason for existence to help people achieve their goals while doing what we love."
+                description={
+                    <>
+                        It has always been our reason for existence to help people achieve their goals
+                        <br /> while doing what we love.
+                    </>
+                }
             />
 
             <CommonBodyAnimation>
