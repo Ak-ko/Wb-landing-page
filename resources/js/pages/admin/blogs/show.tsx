@@ -49,7 +49,10 @@ export default function BlogShow({ blog }: BlogShowProps) {
 
                             <div className="mb-6">
                                 <h2 className="mb-2 text-lg font-semibold">Description</h2>
-                                <p className="text-gray-700">{blog.description || 'No description provided.'}</p>
+                                <div
+                                    className="prose prose-sm max-w-none [&_.text-center]:text-center [&_.text-left]:text-left [&_.text-right]:text-right [&_em]:italic [&_h1]:mt-3 [&_h1]:mb-2 [&_h1]:text-xl [&_h1]:font-bold [&_h2]:text-lg [&_h2]:font-bold [&_h3]:mt-2 [&_h3]:mb-1 [&_h3]:text-base [&_h3]:font-bold [&_mark]:bg-yellow-200 [&_mark]:px-1 [&_ol]:ml-4 [&_ol]:list-decimal [&_p]:mb-3 [&_p]:leading-relaxed [&_strong]:font-semibold [&_ul]:ml-4 [&_ul]:list-disc [&>*:first-child]:mt-0 [&>*:last-child]:mb-0"
+                                    dangerouslySetInnerHTML={{ __html: blog.description || 'No description provided.' }}
+                                />
                             </div>
 
                             <div>

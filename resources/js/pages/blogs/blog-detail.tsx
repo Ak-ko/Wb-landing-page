@@ -71,7 +71,10 @@ export default function BlogDetail({ blog, relatedBlogs, readingTime }: BlogDeta
                             </Carousel>
                         </div>
                     )}
-                    <div className="prose prose-lg mb-12 max-w-none font-light" dangerouslySetInnerHTML={{ __html: blog.description || '' }} />
+                    <div
+                        className="prose prose-lg mb-12 max-w-none font-light [&_.text-center]:text-center [&_.text-left]:text-left [&_.text-right]:text-right [&_em]:italic [&_h1]:mt-4 [&_h1]:mb-2 [&_h1]:text-2xl [&_h1]:font-bold [&_h2]:text-xl [&_h2]:font-bold [&_h3]:mt-2 [&_h3]:mb-1 [&_h3]:text-lg [&_h3]:font-bold [&_mark]:bg-yellow-200 [&_mark]:px-1 [&_ol]:ml-3 [&_ol]:list-decimal [&_p]:mb-4 [&_p]:leading-relaxed [&_strong]:font-semibold [&_ul]:ml-3 [&_ul]:list-disc [&>*:first-child]:mt-0 [&>*:last-child]:mb-0"
+                        dangerouslySetInnerHTML={{ __html: blog.description || '' }}
+                    />
                     {relatedBlogs.length > 0 && (
                         <div className="mt-12">
                             <h2 className="mb-6 text-2xl font-bold">Related Blogs</h2>
