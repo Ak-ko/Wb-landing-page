@@ -45,6 +45,7 @@ export default function TeamMemberForm({ teamMember, onSuccess }: TeamMemberForm
         color: teamMember?.color || '#000000',
         text_color: teamMember?.text_color || '#ffffff',
         type: teamMember?.type || 'member',
+        order: teamMember?.order || 0,
         is_active: teamMember?.is_active ?? true,
     });
 
@@ -178,7 +179,7 @@ export default function TeamMemberForm({ teamMember, onSuccess }: TeamMemberForm
                 <label htmlFor="type" className="block text-sm font-medium">
                     Type <span className="text-red-500">*</span>
                 </label>
-                <Select value={data.type} onValueChange={(value) => setData('type', value)}>
+                <Select value={data.type} onValueChange={(value: 'member' | 'star_member') => setData('type', value)}>
                     <SelectTrigger>
                         <SelectValue placeholder="Select member type" />
                     </SelectTrigger>
@@ -188,6 +189,20 @@ export default function TeamMemberForm({ teamMember, onSuccess }: TeamMemberForm
                     </SelectContent>
                 </Select>
                 {errors.type && <p className="text-sm text-red-500">{errors.type}</p>}
+            </div>
+
+            <div className="space-y-2">
+                <label htmlFor="order" className="block text-sm font-medium">
+                    Order
+                </label>
+                <Input
+                    id="order"
+                    type="number"
+                    placeholder="Enter order (0, 1, 2, 3...)"
+                    value={data.order}
+                    onChange={(e) => setData('order', parseInt(e.target.value) || 0)}
+                />
+                {errors.order && <p className="text-sm text-red-500">{errors.order}</p>}
             </div>
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">

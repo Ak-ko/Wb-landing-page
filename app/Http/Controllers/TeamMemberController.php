@@ -22,7 +22,8 @@ class TeamMemberController extends Controller
             $query->where('type', $request->query('type'));
         }
 
-        $teamMembers = $query->orderBy('name')
+        $teamMembers = $query->orderBy('order', 'asc')
+            ->orderBy('name', 'asc')
             ->paginate($request->input('perPage', 10))
             ->withQueryString();
 
@@ -49,6 +50,7 @@ class TeamMemberController extends Controller
             'image' => 'nullable|string',
             'color' => 'nullable|string|max:20',
             'type' => 'required|in:member,star_member',
+            'order' => 'nullable|integer|min:0',
             'is_active' => 'boolean',
             'bio' => 'nullable|string|max:255',
         ]);
@@ -78,6 +80,7 @@ class TeamMemberController extends Controller
             'image' => 'nullable|string',
             'color' => 'nullable|string|max:20',
             'type' => 'required|in:member,star_member',
+            'order' => 'nullable|integer|min:0',
             'is_active' => 'boolean',
             'bio' => 'nullable|string|max:255',
         ]);

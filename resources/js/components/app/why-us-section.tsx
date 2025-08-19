@@ -42,7 +42,12 @@ export default function WhyUsSection() {
         <section className="about-sections py-32" id="about">
             <SectionHeader
                 header="Why Us?"
-                description="It has always been our reason for existence to help people achieve their goals while doing what we love."
+                description={
+                    <>
+                        It has always been our reason for existence to help people achieve their goals
+                        <br /> while doing what we love.
+                    </>
+                }
             />
 
             <CommonBodyAnimation>

@@ -23,6 +23,7 @@ class TeamMember extends Model
         'image',
         'color',
         'type',
+        'order',
         'is_active',
         'bio'
     ];

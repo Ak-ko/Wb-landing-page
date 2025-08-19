@@ -51,6 +51,7 @@ export default function BusinessPackageForm({ businessPackage, onSuccess }: Busi
             })) || [],
         color: businessPackage?.color || '#000000',
         text_color: businessPackage?.text_color || '#ffffff',
+        order: businessPackage?.order || 0,
         is_recommended: businessPackage?.is_recommended || false,
         is_discount: businessPackage?.is_discount || false,
         discount_price_text: businessPackage?.is_discount ? businessPackage?.discount_price_text || '' : '',
@@ -156,6 +157,20 @@ export default function BusinessPackageForm({ businessPackage, onSuccess }: Busi
                             onChange={(e) => setData('price_text', e.target.value)}
                         />
                         {errorMap.price_text && <p className="text-sm text-red-500">{errorMap.price_text}</p>}
+                    </div>
+
+                    <div className="space-y-2">
+                        <label htmlFor="order" className="block text-sm font-medium">
+                            Order
+                        </label>
+                        <Input
+                            id="order"
+                            type="number"
+                            placeholder="Enter order (0, 1, 2, 3...)"
+                            value={data.order}
+                            onChange={(e) => setData('order', parseInt(e.target.value) || 0)}
+                        />
+                        {errorMap.order && <p className="text-sm text-red-500">{errorMap.order}</p>}
                     </div>
 
                     <div className="space-y-2 md:col-span-2">

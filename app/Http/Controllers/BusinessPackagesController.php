@@ -28,6 +28,8 @@ class BusinessPackagesController extends Controller
             ->when($request->input('brand_strategy_id'), function ($query, $brandStrategyId) {
                 $query->where('brand_strategy_id', $brandStrategyId);
             })
+            ->orderBy('order', 'asc')
+            ->orderBy('created_at', 'desc')
             ->paginate($request->input('perPage', 10))
             ->withQueryString();
 
@@ -71,6 +73,7 @@ class BusinessPackagesController extends Controller
             'discount_price_text' => 'required_if:is_discount,true|string|nullable',
             'discount_description' => 'nullable|string',
             'discount_end_date' => 'required_if:is_discount,true|date|nullable',
+            'order' => 'nullable|integer|min:0',
             'business_brand_guideline_id' => 'nullable|integer|exists:business_brand_guidelines,id',
             'brand_strategy_id' => 'nullable|integer|exists:brand_strategies,id',
         ], [
@@ -139,6 +142,7 @@ class BusinessPackagesController extends Controller
             'discount_price_text' => 'required_if:is_discount,true|string|nullable',
             'discount_description' => 'nullable|string',
             'discount_end_date' => 'required_if:is_discount,true|date|nullable',
+            'order' => 'nullable|integer|min:0',
             'business_brand_guideline_id' => 'nullable|integer|exists:business_brand_guidelines,id',
             'brand_strategy_id' => 'nullable|integer|exists:brand_strategies,id',
         ], [
@@ -202,6 +206,7 @@ class BusinessPackagesController extends Controller
                 'discount_price_text' => $originalPackage->discount_price_text,
                 'discount_description' => $originalPackage->discount_description,
                 'discount_end_date' => $originalPackage->discount_end_date,
+                'order' => $originalPackage->order,
                 'business_brand_guideline_id' => $originalPackage->business_brand_guideline_id,
                 'brand_strategy_id' => $originalPackage->brand_strategy_id,
             ];

@@ -5,7 +5,15 @@ import { MapPin } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 interface BrandingProjectCardProps {
-    project: BrandingProjectT;
+    project: BrandingProjectT & {
+        images?: Array<{
+            id: number;
+            image: string;
+            is_primary: boolean;
+            order: number;
+            cachedImageUrl?: string;
+        }>;
+    };
     className?: string;
 }
 
@@ -13,7 +21,6 @@ export default function BrandingProjectCard({ project, className = '' }: Brandin
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-    // Memoize sorted images to prevent infinite re-renders
     const sortedImages = useMemo(() => {
         const images = project.images || [];
         return [...images].sort((a, b) => {
@@ -22,6 +29,14 @@ export default function BrandingProjectCard({ project, className = '' }: Brandin
             return a.order - b.order;
         });
     }, [project.images]);
+
+    // Get cached image URL for the current image
+    const currentImageUrl = useMemo(() => {
+        const currentImage = sortedImages[currentImageIndex];
+        if (!currentImage?.image) return '/assets/placeholder.png';
+        // Use cached URL if available, otherwise fallback to original
+        return currentImage.cachedImageUrl || currentImage.image;
+    }, [sortedImages, currentImageIndex]);
 
     // Start animation with proper cleanup
     useEffect(() => {
@@ -56,7 +71,7 @@ export default function BrandingProjectCard({ project, className = '' }: Brandin
                 <AnimatePresence initial={false}>
                     <motion.img
                         key={currentImageIndex}
-                        src={sortedImages[currentImageIndex]?.image || '/assets/placeholder.png'}
+                        src={currentImageUrl}
                         alt={project.title}
                         className="absolute inset-0 h-full w-full object-cover"
                         initial={{ y: '100%', opacity: 1 }}

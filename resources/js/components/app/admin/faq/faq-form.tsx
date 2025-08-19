@@ -19,6 +19,7 @@ export default function FaqForm({ faq }: FaqFormProps) {
         is_published: faq?.is_published ?? true,
         color: faq?.color || '#3b82f6',
         text_color: faq?.text_color || '#ffffff',
+        order: faq?.order || 0,
     });
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -57,6 +58,19 @@ export default function FaqForm({ faq }: FaqFormProps) {
                         className={cn(errors.answer && 'border-destructive')}
                     />
                     {errors.answer && <p className="text-destructive mt-1 text-sm">{errors.answer}</p>}
+                </div>
+
+                <div>
+                    <Label htmlFor="order">Order</Label>
+                    <Input
+                        id="order"
+                        type="number"
+                        placeholder="Enter order (0, 1, 2, 3...)"
+                        value={data.order}
+                        onChange={(e) => setData('order', parseInt(e.target.value) || 0)}
+                        className={cn(errors.order && 'border-destructive')}
+                    />
+                    {errors.order && <p className="text-destructive mt-1 text-sm">{errors.order}</p>}
                 </div>
 
                 <ColorInput

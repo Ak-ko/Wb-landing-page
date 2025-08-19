@@ -83,7 +83,6 @@ export default function Create() {
                                 <Input
                                     id="order"
                                     type="number"
-                                    min="0"
                                     value={data.order}
                                     onChange={(e) => setData('order', parseInt(e.target.value) || 0)}
                                     placeholder="0"

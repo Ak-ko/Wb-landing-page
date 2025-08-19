@@ -135,6 +135,7 @@ export type BlogT = {
     id: number;
     title: string;
     color: string;
+    text_color: string;
     description: string | null;
     is_published: boolean;
     images: BlogImage[];
@@ -148,6 +149,8 @@ export type FaqT = {
     answer: string;
     color: string;
     is_published: boolean;
+    text_color: string;
+    order?: number;
 } & TimestampsT;
 
 export type CompanyPolicyT = {
@@ -168,7 +171,9 @@ export type TeamMemberT = {
     social_links?: string;
     image?: string;
     color?: string;
+    text_color?: string;
     type: 'member' | 'star_member';
+    order?: number;
     bio?: string;
     is_active: boolean;
     pivot: BrandingProjectMemberT;
@@ -189,11 +194,13 @@ export type BusinessPackageT = {
     price: number | null;
     currency: string | null;
     color: string;
+    text_color: string;
     is_recommended: boolean;
     is_discount: boolean;
     discount_price_text: string | null;
     discount_description: string | null;
     discount_end_date: string | null;
+    order?: number;
     business_package_items: BusinessPackageItemT[];
     durations: BusinessPackageDurationT[];
     brand_guideline: BusinessBrandGuidelineT;
