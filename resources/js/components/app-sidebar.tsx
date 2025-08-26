@@ -9,6 +9,7 @@ import {
     Briefcase,
     Building,
     Clapperboard,
+    HandPlatter,
     LayoutDashboard,
     MessageCircleQuestion,
     Package,
@@ -75,7 +76,7 @@ const mainNavItems: NavItem[] = [
             {
                 title: 'Available Services',
                 href: '/admin/available-works',
-                icon: Package,
+                icon: HandPlatter,
             },
         ],
     },

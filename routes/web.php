@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\ArtPackageType;
+use App\Enums\TagType;
 use App\Http\Controllers\AnimationAndMotionController;
 use App\Http\Controllers\ArtPackageController;
 use App\Http\Controllers\BlogController;
@@ -52,7 +53,7 @@ Route::get('/', function () {
 
     $brandingProjects = BrandingProject::featured()->published()->orderBy('order', 'asc')->with('tags', 'images')->get()->take(6);
 
-    $brandingProjectTags = Tag::whereHas('brandingProjects')->get();
+    $brandingProjectTags = Tag::whereHas('brandingProjects')->where('type', TagType::INDUSTRY)->get();
 
     $blogs = Blog::latest()->published()->with(['tags', 'images'])->take(6)->get();
 
@@ -136,7 +137,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('/admin/blogs', BlogController::class);
 
     // Tags
-    Route::resource('/admin/tags', TagController::class);
+    Route::resource('/admin/tags', TagController::class)->except(['create', 'edit', 'show']);
 
     // Faq
     Route::resource('/admin/faqs', FaqController::class);
