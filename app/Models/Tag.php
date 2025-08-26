@@ -46,4 +46,30 @@ class Tag extends Model
     {
         return $this->brandingProjects()->get();
     }
+
+    /**
+     * Get tags for blog forms (blog type only + untyped tags).
+     * 
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public static function getBlogTags()
+    {
+        return self::where(function ($query) {
+            $query->where('type', TagType::BLOG)
+                ->orWhereNull('type');
+        })->get();
+    }
+
+    /**
+     * Get tags for project forms (industry and project types + untyped tags).
+     * 
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public static function getProjectTags()
+    {
+        return self::where(function ($query) {
+            $query->whereIn('type', [TagType::INDUSTRY, TagType::PROJECT])
+                ->orWhereNull('type');
+        })->get();
+    }
 }

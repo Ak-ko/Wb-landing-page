@@ -42,7 +42,7 @@ class BrandingProjectController extends Controller
 
     public function create()
     {
-        $tags = Tag::all();
+        $tags = Tag::getProjectTags();
         $teamMembers = TeamMember::orderBy('order', 'asc')->get();
 
         return Inertia::render('admin/branding-projects/create', [
@@ -157,7 +157,7 @@ class BrandingProjectController extends Controller
 
     public function edit(BrandingProject $brandingProject)
     {
-        $tags = Tag::all();
+        $tags = Tag::getProjectTags();
         $teamMembers = TeamMember::orderBy('order', 'asc')->orderBy('name', 'asc')->get();
 
         return Inertia::render('admin/branding-projects/edit', [
