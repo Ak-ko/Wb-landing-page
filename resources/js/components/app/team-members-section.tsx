@@ -4,8 +4,8 @@ import { Facebook, Globe, Instagram, Linkedin, Mail, Phone, Star, Twitter, X } f
 import { useState } from 'react';
 import { Dialog, DialogClose, DialogContent, DialogHeader, DialogOverlay, DialogTitle } from '../ui/dialog';
 
+import AboutUsHeader from './about-us-header';
 import CommonBodyAnimation from './common-body-animation';
-import SectionHeader from './section-header';
 import TeamMemberCard from './team-member-card';
 
 export default function TeamMembersSection() {
@@ -81,9 +81,8 @@ export default function TeamMembersSection() {
     return (
         <>
             <section className="py-32">
+                <AboutUsHeader />
                 <div className="app-container">
-                    <SectionHeader header="Meet the walking gang" />
-
                     {starTeamMembers && (
                         <div className="grid grid-cols-1 gap-4 py-11 xl:grid-cols-2">
                             {starTeamMembers.map((member, index) => (
