@@ -136,7 +136,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('/admin/blogs', BlogController::class);
 
     // Tags
-    Route::resource('/admin/tags', TagController::class);
+    Route::resource('/admin/tags', TagController::class)->except(['create', 'edit', 'show']);
 
     // Faq
     Route::resource('/admin/faqs', FaqController::class);

@@ -33,11 +33,13 @@ const breadcrumbs: BreadcrumbItem[] = [
 export default function Tags({
     tags,
     filters,
+    tagTypes,
 }: {
     tags: CommonPaginationT<TagT>;
     filters: {
         query: string;
     };
+    tagTypes: { value: string; label: string }[];
 }) {
     const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
@@ -130,7 +132,7 @@ export default function Tags({
                                 <DialogHeader>
                                     <DialogTitle>Add New Tag</DialogTitle>
                                 </DialogHeader>
-                                <TagForm onSuccess={() => setIsAddDialogOpen(false)} />
+                                <TagForm tagTypes={tagTypes} onSuccess={() => setIsAddDialogOpen(false)} />
                             </DialogContent>
                         </Dialog>
                     </div>
@@ -155,7 +157,7 @@ export default function Tags({
                         <DialogHeader>
                             <DialogTitle>Edit Tag</DialogTitle>
                         </DialogHeader>
-                        <TagForm tag={selectedTag} onSuccess={() => setIsEditDialogOpen(false)} />
+                        <TagForm tag={selectedTag} tagTypes={tagTypes} onSuccess={() => setIsEditDialogOpen(false)} />
                     </DialogContent>
                 </Dialog>
             )}

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\TagType;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -24,12 +25,8 @@ class TagController extends Controller
         return Inertia::render('admin/tags/index', [
             'tags' => $tags,
             'filters' => $request->only(['query']),
+            'tagTypes' => TagType::options(),
         ]);
-    }
-
-    public function create()
-    {
-        return Inertia::render('admin/tags/create');
     }
 
     public function store(Request $request)
@@ -37,6 +34,8 @@ class TagController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'color' => 'required|string|max:255',
+            'text_color' => 'required|string|max:255',
+            'type' => 'nullable|string|in:' . implode(',', array_column(TagType::cases(), 'value')),
         ]);
 
         Tag::create($validated);
@@ -45,18 +44,13 @@ class TagController extends Controller
             ->with('success', 'Tag created successfully.');
     }
 
-    public function edit(Tag $tag)
-    {
-        return Inertia::render('admin/tags/edit', [
-            'tag' => $tag,
-        ]);
-    }
-
     public function update(Request $request, Tag $tag)
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'color' => 'required|string|max:255',
+            'text_color' => 'required|string|max:255',
+            'type' => 'nullable|string|in:' . implode(',', array_column(TagType::cases(), 'value')),
         ]);
 
         $tag->update($validated);

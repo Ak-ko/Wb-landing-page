@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\TagType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
@@ -10,7 +11,11 @@ class Tag extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'color'];
+    protected $fillable = ['name', 'color', 'text_color', 'type'];
+
+    protected $casts = [
+        'type' => TagType::class,
+    ];
 
     public function brandingProjects(): MorphToMany
     {

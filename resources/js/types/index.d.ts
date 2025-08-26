@@ -84,6 +84,8 @@ export type TagT = {
     id: number;
     name: string;
     color: string;
+    text_color?: string;
+    type?: 'industry' | 'blog' | 'project' | null;
 } & TimestampsT;
 
 export type BrandingProjectImageT = {
