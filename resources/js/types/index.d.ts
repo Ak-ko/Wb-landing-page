@@ -165,6 +165,7 @@ export type CompanyPolicyT = {
     vision: string;
     core_values: string;
     terms_and_conditions: string;
+    terms_and_conditions_for_art_services: string;
 } & TimestampsT;
 
 export type TeamMemberT = {

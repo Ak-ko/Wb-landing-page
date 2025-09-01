@@ -184,9 +184,14 @@ const mainNavItems: NavItem[] = [
                 icon: Palette,
             },
             {
-                title: 'Company Policies',
+                title: 'Brand Philosophy',
                 href: '/admin/policies',
                 icon: SquareChartGantt,
+            },
+            {
+                title: 'Policies',
+                href: '/admin/terms-policies',
+                icon: Settings,
             },
             {
                 title: 'Profile Settings',

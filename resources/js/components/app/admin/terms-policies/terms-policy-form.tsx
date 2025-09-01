@@ -2,13 +2,13 @@ import RichTextEditor from '@/components/app/admin/rich-editor/rich-text-editor'
 import { Button } from '@/components/ui/button';
 import { useForm } from '@inertiajs/react';
 
-interface PolicyFormProps {
+interface TermsPolicyFormProps {
     content: string;
-    type: 'mission' | 'vision' | 'core_values';
+    type: 'terms_and_conditions' | 'terms_and_conditions_for_art_services';
     onSuccess: () => void;
 }
 
-export default function PolicyForm({ content, type, onSuccess }: PolicyFormProps) {
+export default function TermsPolicyForm({ content, type, onSuccess }: TermsPolicyFormProps) {
     const { data, setData, post, processing, errors } = useForm({
         content: content,
         type: type,
@@ -17,7 +17,7 @@ export default function PolicyForm({ content, type, onSuccess }: PolicyFormProps
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        post(route('policies.update'), {
+        post(route('terms-policies.update'), {
             onSuccess,
             preserveScroll: true,
         });

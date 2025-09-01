@@ -18,6 +18,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\AvailableWorkController;
 use App\Http\Controllers\ExpertiseSectionController;
 use App\Http\Controllers\FaqController;
+use App\Http\Controllers\TermsPolicyController;
 use App\Http\Controllers\IllustrationArtController;
 use App\Http\Controllers\MascortArtController;
 use App\Http\Controllers\ProjectShowcaseController;
@@ -155,11 +156,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Available Services
     Route::resource('/admin/available-works', AvailableWorkController::class);
 
-    // Policy
+    // Brand Philosophy (Company Policies)
     Route::resource('/admin/policies', CompanyPolicyController::class)
         ->only(['index']);
     Route::post('/admin/policies', [CompanyPolicyController::class, 'updatePolicy'])
         ->name('policies.update');
+
+    // Terms and Policies
+    Route::resource('/admin/terms-policies', TermsPolicyController::class)
+        ->only(['index']);
+    Route::post('/admin/terms-policies', [TermsPolicyController::class, 'updateTermsPolicy'])
+        ->name('terms-policies.update');
 
     // team member
     Route::resource('/admin/team-members', TeamMemberController::class);
@@ -277,6 +284,7 @@ Route::get('/business-plans', function () {
 
 Route::get('/art-plans', function () {
     $mascotArts = MascortArt::with('images')->latest()->get();
+    $policy = CompanyPolicy::first();
     $mascotArtPackages = ArtPackage::where('type', ArtPackageType::Mascot)
         ->with('items', 'prices')
         ->get();
@@ -307,7 +315,8 @@ Route::get('/art-plans', function () {
         'illustrationArtImages',
         'comicArtImages',
         'stickerArtImages',
-        'animationAndMotionsVideos'
+        'animationAndMotionsVideos',
+        'policy'
     ));
 })->name('art-plan-page');
 

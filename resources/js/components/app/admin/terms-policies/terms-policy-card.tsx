@@ -3,15 +3,15 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Edit, FileText } from 'lucide-react';
 import { useState } from 'react';
-import PolicyForm from './policy-form';
+import TermsPolicyForm from './terms-policy-form';
 
-interface PolicyCardProps {
+interface TermsPolicyCardProps {
     title: string;
     content: string | null;
-    type: 'mission' | 'vision' | 'core_values';
+    type: 'terms_and_conditions' | 'terms_and_conditions_for_art_services';
 }
 
-export default function PolicyCard({ title, content, type }: PolicyCardProps) {
+export default function TermsPolicyCard({ title, content, type }: TermsPolicyCardProps) {
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
     return (
@@ -41,7 +41,7 @@ export default function PolicyCard({ title, content, type }: PolicyCardProps) {
                     <DialogHeader>
                         <DialogTitle>Edit {title}</DialogTitle>
                     </DialogHeader>
-                    <PolicyForm
+                    <TermsPolicyForm
                         content={content || ''}
                         type={type}
                         onSuccess={() => {

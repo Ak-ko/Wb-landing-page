@@ -4,6 +4,10 @@
 
 - [x] Available Works => Available Services
 
+- [x] In multistep form => add item => to bottom
+
+- [x] Design meets Art => change the text and only big photos and dynamic photo, no full mood
+
 ---
 
 - [ ] Add save draft option
@@ -13,10 +17,6 @@
 - [ ] Wb - logo in the title of the website change
 
 - [ ] Operating with a highly organised and repeatable creative process, we ensure efficiency, consistency, and predictable excellence in every project. => from there => Operating with a highly organised creative process, we ensure efficiency, consistency, and predictable excellence in every project.
-
-- [ ] Design meets Art => change the text and only big photos and dynamic photo, no full mood
-
-- [ ] In multistep form => add item => to bottom
 
 - [ ] In plan => show decimal
 

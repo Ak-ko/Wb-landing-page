@@ -15,6 +15,7 @@ class CompanyPolicy extends Model
         'vision',
         'core_values',
         'terms_and_conditions',
+        'terms_and_conditions_for_art_services',
         'user_id',
     ];
 }
