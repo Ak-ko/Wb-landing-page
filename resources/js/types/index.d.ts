@@ -394,5 +394,17 @@ export interface ChunkUploadHook {
     }) => void;
 }
 
+export interface ExpertiseSectionT {
+    id: number;
+    title: string;
+    type: 'business' | 'established';
+    plans: { text: string; order: number }[];
+    color: string;
+    order: number;
+    is_active: boolean;
+    created_at: string;
+    updated_at: string;
+}
+
 // Export common types
 export * from './common';

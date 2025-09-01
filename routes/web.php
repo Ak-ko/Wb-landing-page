@@ -16,6 +16,7 @@ use App\Http\Controllers\ComicArtController;
 use App\Http\Controllers\CompanyPolicyController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\AvailableWorkController;
+use App\Http\Controllers\ExpertiseSectionController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\IllustrationArtController;
 use App\Http\Controllers\MascortArtController;
@@ -35,6 +36,7 @@ use App\Models\BusinessPackages;
 use App\Models\BusinessProcess;
 use App\Models\ComicArtImages;
 use App\Models\CompanyPolicy;
+use App\Models\ExpertiseSection;
 use App\Models\Faq;
 use App\Models\IllustrationArtImages;
 use App\Models\MascortArt;
@@ -63,6 +65,8 @@ Route::get('/', function () {
 
     $projectShowcases = ProjectShowcase::featured()->ordered()->get();
 
+    $expertiseSections = ExpertiseSection::active()->ordered()->get();
+
     return Inertia::render('home/home-page', [
         'brands' => $brands,
         'testimonials' => $testimonials,
@@ -72,6 +76,7 @@ Route::get('/', function () {
         'blogs' => $blogs,
         'faqs' => $faqs,
         'projectShowcases' => $projectShowcases,
+        'expertiseSections' => $expertiseSections,
         'page' => 'home'
     ]);
 })->name('home');
@@ -204,6 +209,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Project Showcases
     Route::resource('/admin/project-showcases', ProjectShowcaseController::class);
+
+    // Expertise Sections
+    Route::resource('/admin/expertise-sections', ExpertiseSectionController::class);
 });
 
 // faq
@@ -212,6 +220,10 @@ Route::post('/faq/send-email', [FaqController::class, 'sendFaqEmail'])
 
 Route::get('/faq/all', [FaqController::class, 'getAllFaqs'])
     ->name('faq.all');
+
+// Expertise sections API for frontend
+Route::get('/api/expertise-sections', [ExpertiseSectionController::class, 'getActiveSections'])
+    ->name('expertise-sections.api');
 
 // contact us
 Route::post('/contact/send', [ContactController::class, 'sendMessage'])

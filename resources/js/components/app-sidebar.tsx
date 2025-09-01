@@ -83,6 +83,11 @@ const mainNavItems: NavItem[] = [
                 href: '/admin/project-showcases',
                 icon: SquareChartGantt,
             },
+            {
+                title: 'Expertise Sections',
+                href: '/admin/expertise-sections',
+                icon: LayoutDashboard,
+            },
         ],
     },
     {

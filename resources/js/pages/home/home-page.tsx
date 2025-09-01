@@ -12,6 +12,7 @@ import OurExpertiseSection from '@/components/app/our-expertise-section';
 import TestimonialSection from '@/components/app/testimonial-section';
 import WhyUsSection from '@/components/app/why-us-section';
 import LandingLayout from '@/layouts/landing-layout';
+import { ExpertiseSectionT } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 
 interface ProjectShowcase {
@@ -25,7 +26,10 @@ interface ProjectShowcase {
 }
 
 export default function HomePage() {
-    const { projectShowcases } = usePage<{ projectShowcases: ProjectShowcase[] }>().props;
+    const { projectShowcases, expertiseSections } = usePage<{
+        projectShowcases: ProjectShowcase[];
+        expertiseSections: ExpertiseSectionT[];
+    }>().props;
     return (
         <LandingLayout>
             <Head title="Home" />
@@ -48,7 +52,7 @@ export default function HomePage() {
 
             <BlogSection />
 
-            <OurExpertiseSection />
+            <OurExpertiseSection expertiseSections={expertiseSections} />
 
             <FaqSection />
 
