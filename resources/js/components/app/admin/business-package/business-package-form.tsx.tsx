@@ -382,7 +382,7 @@ export default function BusinessPackageForm({ businessPackage, onSuccess }: Busi
                     Add the features or deliverables included in this package. You can also provide a detail link for more info.
                 </p>
                 {errorMap.items && <p className="text-sm font-normal text-red-500">{errorMap.items}</p>}
-                <div className="grid gap-4">
+                <div className="space-y-4">
                     {data.items.map((item: BusinessPackageItemWithLinkT, index: number) => (
                         <div
                             key={index}
@@ -438,10 +438,10 @@ export default function BusinessPackageForm({ businessPackage, onSuccess }: Busi
                             </div>
                         </div>
                     ))}
+                    <Button type="button" variant="outline" onClick={addItem} className="w-full">
+                        <Plus className="mr-2 h-4 w-4" /> Add Item
+                    </Button>
                 </div>
-                <Button type="button" variant="outline" onClick={addItem} className="mt-4 w-full">
-                    <Plus className="mr-2 h-4 w-4" /> Add Item
-                </Button>
             </fieldset>
 
             <div className="flex justify-end space-x-2">

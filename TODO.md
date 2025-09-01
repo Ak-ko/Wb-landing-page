@@ -1,16 +1,16 @@
 - [x] In working process => add subtitle
 
+- [x] The harmony of the package ( make it dynamic )
+
+- [x] Available Works => Available Services
+
 ---
 
 - [ ] Add save draft option
 
-- [ ] The harmony of the package ( make it dynamic )
-
 - [ ] Change the admin password
 
 - [ ] Wb - logo in the title of the website change
-
-- [ ] Available Works => Available Services
 
 - [ ] Operating with a highly organised and repeatable creative process, we ensure efficiency, consistency, and predictable excellence in every project. => from there => Operating with a highly organised creative process, we ensure efficiency, consistency, and predictable excellence in every project.
 

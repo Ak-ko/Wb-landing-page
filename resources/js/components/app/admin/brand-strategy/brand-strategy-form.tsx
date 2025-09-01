@@ -155,16 +155,13 @@ export default function BrandStrategyForm({ strategy }: BrandStrategyFormProps) 
                                 </Button>
                             </div>
                             <div className="my-5 ml-6">
-                                <div className="flex items-center justify-between">
+                                <div className="mb-2">
                                     <span className="font-semibold">Items</span>
-                                    <Button type="button" size="sm" onClick={() => addItem(idx)}>
-                                        <Plus className="h-4 w-4" /> Add Item
-                                    </Button>
                                 </div>
                                 <SortableList<BrandStrategyElementItemForm>
                                     items={element.items}
                                     onReorder={(newItems) => handleItemsReorder(idx, newItems)}
-                                    className="mt-2 space-y-2"
+                                    className="space-y-2"
                                     itemClassName="flex items-center gap-2"
                                     renderItem={(item, itemIdx) => (
                                         <>
@@ -195,6 +192,9 @@ export default function BrandStrategyForm({ strategy }: BrandStrategyFormProps) 
                                         </>
                                     )}
                                 />
+                                <Button type="button" size="sm" onClick={() => addItem(idx)} className="mt-2">
+                                    <Plus className="h-4 w-4" /> Add Item
+                                </Button>
                             </div>
                         </div>
                     )}
