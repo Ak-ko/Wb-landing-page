@@ -1,22 +1,8 @@
-- [x] In working process => add subtitle
-
-- [x] The harmony of the package ( make it dynamic )
-
-- [x] Available Works => Available Services
-
-- [x] In multistep form => add item => to bottom
-
-- [x] Design meets Art => change the text and only big photos and dynamic photo, no full mood
-
 ---
 
 - [ ] Add save draft option
 
 - [ ] Change the admin password
-
-- [ ] Wb - logo in the title of the website change
-
-- [ ] Operating with a highly organised and repeatable creative process, we ensure efficiency, consistency, and predictable excellence in every project. => from there => Operating with a highly organised creative process, we ensure efficiency, consistency, and predictable excellence in every project.
 
 - [ ] In plan => show decimal
 
@@ -25,9 +11,5 @@
 - [ ] 2 cols => package
 
 - [ ] Arrange the title
-
-- [ ] Brand Philosophy => Core , vision, mission
-
-- [ ] Terms & conditions => change into 2, design & art terms and condition
 
 - [ ] In modal => upgrade the margin and make that full width

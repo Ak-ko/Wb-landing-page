@@ -18,29 +18,11 @@
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-GRJP4SEMXS"></script>
     <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
 
-    gtag('config', 'G-GRJP4SEMXS');
-    </script>
-
-
-
-    <script>
-        // (function() {
-        /*
-        const appearance = '{{ $appearance ?? 'system' }}';
-
-        if (appearance === 'system') {
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-            if (prefersDark) {
-                document.documentElement.classList.add('dark');
-            }
-        }
-            */
-        // })();
+        gtag('config', 'G-GRJP4SEMXS');
     </script>
 
     <style>
