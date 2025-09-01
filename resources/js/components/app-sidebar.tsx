@@ -78,6 +78,11 @@ const mainNavItems: NavItem[] = [
                 href: '/admin/available-works',
                 icon: HandPlatter,
             },
+            {
+                title: 'Project Showcases',
+                href: '/admin/project-showcases',
+                icon: SquareChartGantt,
+            },
         ],
     },
     {

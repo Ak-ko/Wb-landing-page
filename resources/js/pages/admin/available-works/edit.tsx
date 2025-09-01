@@ -26,7 +26,7 @@ interface Props {
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Available Works',
+        title: 'Available Services',
         href: '/admin/available-works',
     },
     {

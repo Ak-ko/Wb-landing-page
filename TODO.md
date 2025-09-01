@@ -1,14 +1,12 @@
-- [ ] Add save draft option
+- [x] In working process => add subtitle
 
-- [ ] In home page => add is_featured column and order column for showing in home page.
+---
+
+- [ ] Add save draft option
 
 - [ ] The harmony of the package ( make it dynamic )
 
 - [ ] Change the admin password
-
-- [ ] home page projects showcases selectable and sortable
-
-- [ ] DND in reorder ( a little bit different )
 
 - [ ] Wb - logo in the title of the website change
 
@@ -17,8 +15,6 @@
 - [ ] Operating with a highly organised and repeatable creative process, we ensure efficiency, consistency, and predictable excellence in every project. => from there => Operating with a highly organised creative process, we ensure efficiency, consistency, and predictable excellence in every project.
 
 - [ ] Design meets Art => change the text and only big photos and dynamic photo, no full mood
-
-- [ ] In working process => add subtitle
 
 - [ ] In multistep form => add item => to bottom
 

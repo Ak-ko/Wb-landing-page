@@ -1,53 +1,53 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Switch } from '@/components/ui/switch';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
-import { ArrowLeft, Calendar, Clock, Edit } from 'lucide-react';
+import { ArrowLeft, Calendar, Check, Clock, Edit, X } from 'lucide-react';
 
-interface AvailableWork {
+interface ProjectShowcase {
     id: number;
-    label: string;
-    color: string;
-    text_color: string;
-    is_published: boolean;
+    content: string;
+    image: string;
+    image_url: string;
+    is_featured: boolean;
     order: number;
     created_at: string;
     updated_at: string;
 }
 
 interface Props {
-    availableWork: AvailableWork;
+    projectShowcase: ProjectShowcase;
 }
 
-export default function Show({ availableWork }: Props) {
+export default function Show({ projectShowcase }: Props) {
     const breadcrumbs: BreadcrumbItem[] = [
         {
-            title: 'Available Services',
-            href: '/admin/available-works',
+            title: 'Project Showcases',
+            href: '/admin/project-showcases',
         },
         {
-            title: availableWork.label,
-            href: `/admin/available-works/${availableWork.id}`,
+            title: `Showcase #${projectShowcase.id}`,
+            href: `/admin/project-showcases/${projectShowcase.id}`,
         },
     ];
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title={`Available Work - ${availableWork.label}`} />
+            <Head title={`Project Showcase #${projectShowcase.id}`} />
             <div className="space-y-6 p-4">
                 <div className="flex items-center gap-4">
-                    <Link href={route('available-works.index')}>
+                    <Link href={route('project-showcases.index')}>
                         <Button variant="outline" size="sm">
                             <ArrowLeft className="mr-2 h-4 w-4" />
                             Back
                         </Button>
                     </Link>
                     <div className="flex-1">
-                        <h1 className="text-3xl font-bold tracking-tight">{availableWork.label}</h1>
-                        <p className="text-muted-foreground">Available work details and information.</p>
+                        <h1 className="text-3xl font-bold tracking-tight">Project Showcase #{projectShowcase.id}</h1>
+                        <p className="text-muted-foreground">Project showcase details and information.</p>
                     </div>
-                    <Link href={route('available-works.edit', availableWork.id)}>
+                    <Link href={route('project-showcases.edit', projectShowcase.id)}>
                         <Button>
                             <Edit className="mr-2 h-4 w-4" />
                             Edit
@@ -62,36 +62,35 @@ export default function Show({ availableWork }: Props) {
                         </CardHeader>
                         <CardContent className="space-y-4">
                             <div>
-                                <label className="text-muted-foreground text-sm font-medium">Label</label>
-                                <p className="text-lg font-semibold">{availableWork.label}</p>
+                                <label className="text-muted-foreground text-sm font-medium">Content</label>
+                                <p className="mt-1 text-sm">{projectShowcase.content}</p>
                             </div>
 
                             <div>
-                                <label className="text-muted-foreground text-sm font-medium">Background Color</label>
-                                <div className="mt-1 flex items-center gap-2">
-                                    <div className="h-6 w-6 rounded-full border" style={{ backgroundColor: availableWork.color }} />
-                                    <span className="font-mono text-sm">{availableWork.color}</span>
-                                </div>
-                            </div>
-
-                            <div>
-                                <label className="text-muted-foreground text-sm font-medium">Text Color</label>
-                                <div className="mt-1 flex items-center gap-2">
-                                    <div className="h-6 w-6 rounded-full border" style={{ backgroundColor: availableWork.text_color }} />
-                                    <span className="font-mono text-sm">{availableWork.text_color}</span>
+                                <label className="text-muted-foreground text-sm font-medium">Image</label>
+                                <div className="mt-1">
+                                    <img src={projectShowcase.image_url} alt="Project Showcase" className="h-32 w-32 rounded border object-cover" />
                                 </div>
                             </div>
 
                             <div>
                                 <label className="text-muted-foreground text-sm font-medium">Order</label>
-                                <p className="text-lg font-semibold">{availableWork.order}</p>
+                                <p className="text-lg font-semibold">{projectShowcase.order}</p>
                             </div>
 
                             <div>
-                                <label className="text-muted-foreground text-sm font-medium">Status</label>
+                                <label className="text-muted-foreground text-sm font-medium">Featured Status</label>
                                 <div className="mt-1 flex items-center gap-2">
-                                    <Switch checked={availableWork.is_published} disabled />
-                                    <span className="text-sm">{availableWork.is_published ? 'Published' : 'Draft'}</span>
+                                    <div
+                                        className="flex h-6 w-6 items-center justify-center rounded-full border-2 text-white"
+                                        style={{
+                                            backgroundColor: projectShowcase.is_featured ? '#1274ef' : '#e53726',
+                                            borderColor: projectShowcase.is_featured ? '#1274ef' : '#e53726',
+                                        }}
+                                    >
+                                        {projectShowcase.is_featured ? <Check className="h-3 w-3" /> : <X className="h-3 w-3" />}
+                                    </div>
+                                    <span className="text-sm">{projectShowcase.is_featured ? 'Featured' : 'Not Featured'}</span>
                                 </div>
                             </div>
                         </CardContent>
@@ -107,8 +106,8 @@ export default function Show({ availableWork }: Props) {
                                 <div>
                                     <label className="text-muted-foreground text-sm font-medium">Created</label>
                                     <p className="text-sm">
-                                        {new Date(availableWork.created_at).toLocaleDateString()} at{' '}
-                                        {new Date(availableWork.created_at).toLocaleTimeString()}
+                                        {new Date(projectShowcase.created_at).toLocaleDateString()} at{' '}
+                                        {new Date(projectShowcase.created_at).toLocaleTimeString()}
                                     </p>
                                 </div>
                             </div>
@@ -118,8 +117,8 @@ export default function Show({ availableWork }: Props) {
                                 <div>
                                     <label className="text-muted-foreground text-sm font-medium">Last Updated</label>
                                     <p className="text-sm">
-                                        {new Date(availableWork.updated_at).toLocaleDateString()} at{' '}
-                                        {new Date(availableWork.updated_at).toLocaleTimeString()}
+                                        {new Date(projectShowcase.updated_at).toLocaleDateString()} at{' '}
+                                        {new Date(projectShowcase.updated_at).toLocaleTimeString()}
                                     </p>
                                 </div>
                             </div>
@@ -132,15 +131,16 @@ export default function Show({ availableWork }: Props) {
                         <CardTitle>Preview</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="flex items-center gap-2">
-                            <div
-                                className="inline-block rounded-full px-4 py-2 text-sm font-medium"
-                                style={{
-                                    backgroundColor: availableWork.color,
-                                    color: availableWork.text_color,
-                                }}
-                            >
-                                {availableWork.label}
+                        <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
+                            <div>
+                                <img
+                                    src={projectShowcase.image_url}
+                                    alt="Project Showcase Preview"
+                                    className="h-full w-full rounded-lg object-cover"
+                                />
+                            </div>
+                            <div className="flex items-center">
+                                <p className="text-xl font-light">{projectShowcase.content}</p>
                             </div>
                         </div>
                     </CardContent>

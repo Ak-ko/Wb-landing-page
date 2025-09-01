@@ -19,6 +19,7 @@ use App\Http\Controllers\AvailableWorkController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\IllustrationArtController;
 use App\Http\Controllers\MascortArtController;
+use App\Http\Controllers\ProjectShowcaseController;
 use App\Http\Controllers\StickerArtController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\TeamMemberController;
@@ -37,6 +38,7 @@ use App\Models\CompanyPolicy;
 use App\Models\Faq;
 use App\Models\IllustrationArtImages;
 use App\Models\MascortArt;
+use App\Models\ProjectShowcase;
 use App\Models\StickerArtImages;
 use App\Models\Tag;
 use App\Models\TeamMember;
@@ -59,6 +61,8 @@ Route::get('/', function () {
 
     $faqs = Faq::published()->take(10)->get();
 
+    $projectShowcases = ProjectShowcase::featured()->ordered()->get();
+
     return Inertia::render('home/home-page', [
         'brands' => $brands,
         'testimonials' => $testimonials,
@@ -67,6 +71,7 @@ Route::get('/', function () {
         'brandingProjectTags' => $brandingProjectTags,
         'blogs' => $blogs,
         'faqs' => $faqs,
+        'projectShowcases' => $projectShowcases,
         'page' => 'home'
     ]);
 })->name('home');
@@ -142,7 +147,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Faq
     Route::resource('/admin/faqs', FaqController::class);
 
-    // Available Works
+    // Available Services
     Route::resource('/admin/available-works', AvailableWorkController::class);
 
     // Policy
@@ -196,6 +201,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Theme Colors
     Route::resource('/admin/theme-colors', ColorController::class);
+
+    // Project Showcases
+    Route::resource('/admin/project-showcases', ProjectShowcaseController::class);
 });
 
 // faq
