@@ -73,9 +73,11 @@ export type TestimonialT = {
 export type BusinessProcessT = {
     id: number;
     title: string;
+    subtitle: string | null;
     description: string | null;
     image: string | null;
     color_tag: string;
+    text_color: string;
     is_active: boolean;
     step: number;
 } & TimestampsT;
