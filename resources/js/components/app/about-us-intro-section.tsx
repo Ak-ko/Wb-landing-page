@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import AboutUsIntroContent from './about-us-intro-content';
+import OurFoundingPurposeSection from './our-founding-purpose-section';
 
 export default function AboutUsIntroSection() {
     // Section container animation
@@ -41,6 +42,8 @@ succeed by providing top-notch creative solutions, while doing what we love."
                         imageClassName="w-full lg:w-auto"
                     />
                 </motion.div>
+
+                <OurFoundingPurposeSection />
 
                 <motion.div variants={contentBlockVariants}>
                     <AboutUsIntroContent

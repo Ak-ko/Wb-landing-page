@@ -17,6 +17,7 @@ class BusinessProcess extends Model
      */
     protected $fillable = [
         'title',
+        'subtitle',
         'description',
         'image',
         'color_tag',

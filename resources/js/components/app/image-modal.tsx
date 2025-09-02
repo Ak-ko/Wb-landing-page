@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useKeyboardNavigation } from '@/hooks/use-keyboard-navigation';
 import { useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
@@ -28,7 +29,6 @@ export default function ImageModal<ImgT extends { id: number; image: string }>({
         return videoExtensions.includes(extension);
     };
 
-    // Handle video loading states
     const handleVideoLoadStart = (index: number) => {
         setVideoLoadingStates((prev) => ({ ...prev, [`video-${index}`]: 'loading' }));
     };
@@ -42,10 +42,8 @@ export default function ImageModal<ImgT extends { id: number; image: string }>({
         setVideoLoadingStates((prev) => ({ ...prev, [`video-${index}`]: 'error' }));
     };
 
-    // Navigation helper function
     const scrollToImage = (index: number) => {
         if (index >= 0 && index < images.length && itemRefs.current[index]) {
-            // Pause all videos when navigating, but don't reset their state
             Object.values(videoRefs.current).forEach((video) => {
                 if (video && !video.paused) {
                     video.pause();
@@ -60,7 +58,6 @@ export default function ImageModal<ImgT extends { id: number; image: string }>({
         }
     };
 
-    // Use the reusable keyboard navigation hook
     useKeyboardNavigation({
         isActive: open,
         totalItems: images.length,
@@ -71,7 +68,6 @@ export default function ImageModal<ImgT extends { id: number; image: string }>({
         enableEscapeKey: true,
     });
 
-    // Handle body scroll prevention
     useEffect(() => {
         if (open) {
             document.body.style.overflow = 'hidden';
@@ -82,7 +78,6 @@ export default function ImageModal<ImgT extends { id: number; image: string }>({
         };
     }, [open]);
 
-    // Scroll to initial item when modal opens
     useEffect(() => {
         if (open && initialIndex >= 0) {
             setCurrentIndex(initialIndex);
@@ -92,7 +87,6 @@ export default function ImageModal<ImgT extends { id: number; image: string }>({
         }
     }, [open, initialIndex]);
 
-    // Track which image is currently in view for accurate indicators
     useEffect(() => {
         if (!open) return;
 
@@ -108,12 +102,11 @@ export default function ImageModal<ImgT extends { id: number; image: string }>({
                 });
             },
             {
-                threshold: 0.5, // Trigger when 50% of the image is visible
+                threshold: 0.5,
                 rootMargin: '0px',
             },
         );
 
-        // Observe all image containers
         itemRefs.current.forEach((ref) => {
             if (ref) observer.observe(ref);
         });
@@ -123,28 +116,23 @@ export default function ImageModal<ImgT extends { id: number; image: string }>({
         };
     }, [open, images.length]);
 
-    // Clean up when modal closes
     useEffect(() => {
         if (!open) {
-            // Pause all videos but don't clear refs to prevent remounting issues
             Object.values(videoRefs.current).forEach((video) => {
                 if (video && !video.paused) {
                     video.pause();
                 }
             });
-            // Reset loading states when modal closes
             setVideoLoadingStates({});
         }
     }, [open]);
 
     if (!open || !images || images.length === 0) return null;
 
-    // Portal target
     const modalRoot = typeof window !== 'undefined' ? document.body : null;
 
     const modalContent = (
         <div className="fixed inset-0 z-[1000] flex items-start justify-center bg-black">
-            {/* Close Button */}
             <button
                 className="fixed top-6 right-8 z-[1010] rounded-full bg-black/60 p-3 text-white transition-all hover:scale-110 hover:bg-black/80"
                 onClick={onClose}
@@ -165,7 +153,6 @@ export default function ImageModal<ImgT extends { id: number; image: string }>({
                 </svg>
             </button>
 
-            {/* Vertical scrollable content */}
             <div
                 ref={scrollContainerRef}
                 className="h-full w-full overflow-y-auto"
@@ -185,7 +172,7 @@ export default function ImageModal<ImgT extends { id: number; image: string }>({
                             className="flex w-full items-center justify-center"
                         >
                             {isVideo(image.image) ? (
-                                <div className="relative flex w-full max-w-[90vw] items-center justify-center">
+                                <div className="relative flex w-full max-w-[95vw] items-center justify-center">
                                     {videoLoadingStates[`video-${index}`] === 'loading' && (
                                         <div className="absolute inset-0 flex items-center justify-center bg-black/50 text-white">
                                             <div className="text-center">
@@ -203,7 +190,7 @@ export default function ImageModal<ImgT extends { id: number; image: string }>({
                                                         const video = videoRefs.current[`modal-video-${index}`];
                                                         if (video) {
                                                             handleVideoLoadStart(index);
-                                                            video.load(); // Retry loading
+                                                            video.load();
                                                         }
                                                     }}
                                                     className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
@@ -214,7 +201,7 @@ export default function ImageModal<ImgT extends { id: number; image: string }>({
                                         </div>
                                     )}
                                     <video
-                                        key={`modal-video-${image.id}`} // Use unique key to prevent reuse issues
+                                        key={`modal-video-${image.id}`}
                                         ref={(el) => {
                                             if (el) {
                                                 videoRefs.current[`modal-video-${index}`] = el;
@@ -243,8 +230,8 @@ export default function ImageModal<ImgT extends { id: number; image: string }>({
                                 <img
                                     src={image.image}
                                     alt={`Image ${index + 1}`}
-                                    className="h-full max-h-[90vh] w-full max-w-[90vw] object-contain"
-                                    loading={index <= 2 ? 'eager' : 'lazy'} // Load first few images immediately
+                                    className="h-full w-full max-w-[95vw] object-contain"
+                                    loading={index <= 2 ? 'eager' : 'lazy'}
                                     onError={(e) => {
                                         console.error('Image failed to load:', image.image);
                                         e.currentTarget.style.display = 'none';
@@ -256,7 +243,6 @@ export default function ImageModal<ImgT extends { id: number; image: string }>({
                 </div>
             </div>
 
-            {/* Scroll indicator (optional) */}
             {showIndicators && images.length > 1 && (
                 <div className="fixed top-1/2 right-6 z-[1010] flex -translate-y-1/2 flex-col gap-2">
                     {images.map((_, index) => (

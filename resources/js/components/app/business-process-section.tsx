@@ -78,17 +78,19 @@ export default function BusinessProcessSection() {
                             {/* Vertical Timeline */}
                             <div className="relative flex flex-col items-center">
                                 {/* Vertical Line */}
-                                <div className="absolute top-4 left-1/2 h-[400px] w-1 -translate-x-1/2 rounded-full bg-gray-300 dark:bg-gray-700"></div>
+                                <div className="absolute top-4 left-1/2 min-h-[400px] w-1 -translate-x-1/2 rounded-full bg-gray-300 dark:bg-gray-700"></div>
 
                                 {/* Progress Line */}
                                 <motion.div
                                     className="absolute top-4 left-1/2 w-1 -translate-x-1/2 rounded-full"
                                     style={{
                                         backgroundColor: currentBusinessProcess.color_tag,
-                                        height: `${(currentIndex / (businessProcesses.length - 1)) * 400}px`,
+                                        height: `${(currentIndex / Math.max(businessProcesses.length - 1, 1)) * 400}px`,
                                     }}
-                                    initial={{ height: 0 }}
-                                    animate={{ height: `${(currentIndex / (businessProcesses.length - 1)) * 400}px` }}
+                                    initial={{ height: currentIndex === 0 ? '16px' : 0 }}
+                                    animate={{
+                                        height: currentIndex === 0 ? '16px' : `${(currentIndex / Math.max(businessProcesses.length - 1, 1)) * 400}px`,
+                                    }}
                                     transition={{ duration: 0.5, ease: 'easeInOut' }}
                                 ></motion.div>
 
@@ -108,11 +110,11 @@ export default function BusinessProcessSection() {
                                     >
                                         {/* Step Circle */}
                                         <motion.div
-                                            className={`relative h-6 w-6 rounded-full border-2 transition-all duration-300 ${
+                                            className={`relative h-6 w-6 rounded-full border-4 transition-all duration-300 ${
                                                 index <= currentIndex ? 'shadow-lg' : ''
                                             }`}
                                             style={{
-                                                borderColor: index <= currentIndex ? process.color_tag : '#d1d5db',
+                                                borderColor: index <= currentIndex ? currentBusinessProcess.color_tag : '#d1d5db',
                                                 backgroundColor: 'white',
                                             }}
                                             initial={{ scale: 0.8, opacity: 0 }}
@@ -124,7 +126,7 @@ export default function BusinessProcessSection() {
 
                                 {/* Flag Icon at the bottom */}
                                 <motion.div
-                                    className="absolute bottom-[-150%] flex items-center"
+                                    className="absolute -bottom-22 flex items-center"
                                     initial={{ scale: 0.8, opacity: 0 }}
                                     animate={{ scale: 1, opacity: 1 }}
                                     transition={{ delay: businessProcesses.length * 0.1 }}
@@ -223,21 +225,22 @@ export default function BusinessProcessSection() {
                 {!isMobile && (
                     <div className="app-container mt-12">
                         <div className="relative mx-auto flex max-w-[1200px] items-center">
-                            <div className="absolute top-1/2 right-0 left-0 h-[8px] -translate-y-1/2 rounded-full bg-gray-300 dark:bg-gray-700"></div>
-
+                            <div className="absolute top-1/2 right-0 left-0 h-[11px] -translate-y-1/2 rounded-full bg-gray-300 dark:bg-gray-700"></div>
+                            <div className="invisible w-[30px] opacity-0">
+                                data {Math.round((currentIndex / (businessProcesses.length - 1)) * 100)}
+                            </div>
                             <motion.div
-                                className="absolute top-1/2 left-0 h-[8px] -translate-y-1/2 rounded-full"
+                                className="absolute top-1/2 left-0 h-[11px] -translate-y-1/2 rounded-full"
                                 style={{
                                     backgroundColor: currentBusinessProcess.color_tag,
-                                    width: `${(currentIndex / (businessProcesses.length - 1)) * 100}%`,
+                                    width: currentIndex === 0 ? 34 : `${(currentIndex / (businessProcesses.length - 1)) * 100}%`,
                                 }}
                                 initial={{ width: 0 }}
-                                animate={{ width: `${(currentIndex / (businessProcesses.length - 1)) * 100}%` }}
+                                animate={{ width: currentIndex === 0 ? 34 : `${(currentIndex / (businessProcesses.length - 1)) * 100}%` }}
                                 transition={{ duration: 0.5, ease: 'easeInOut' }}
                             ></motion.div>
-
                             {/* Steps */}
-                            <div className="relative mt-6 flex w-full justify-around">
+                            <div className="relative mt-6 flex w-full justify-between">
                                 {businessProcesses.map((process, index) => (
                                     <motion.button
                                         key={process.id}
@@ -253,11 +256,11 @@ export default function BusinessProcessSection() {
                                     >
                                         {/* Step Circle */}
                                         <motion.div
-                                            className={`relative h-8 w-8 rounded-full border-4 transition-all duration-300 md:h-13 md:w-13 md:border-[10px] ${
+                                            className={`relative size-9 rounded-full border-4 transition-all duration-300 md:h-13 md:w-13 md:border-[9px] ${
                                                 index <= currentIndex ? 'shadow-lg' : ''
                                             }`}
                                             style={{
-                                                borderColor: index <= currentIndex ? process.color_tag : '#d1d5db',
+                                                borderColor: index <= currentIndex ? currentBusinessProcess.color_tag : '#d1d5db',
                                                 backgroundColor: 'white',
                                             }}
                                             initial={{ scale: 0.8, opacity: 0 }}
@@ -268,10 +271,10 @@ export default function BusinessProcessSection() {
                                         {/* Step Label */}
                                         <motion.span
                                             className={`mt-3 text-xs font-medium md:text-sm ${
-                                                index === currentIndex ? 'font-bold' : 'text-gray-500 dark:text-gray-400'
+                                                index <= currentIndex ? 'font-bold' : 'text-gray-500 dark:text-gray-400'
                                             }`}
                                             style={{
-                                                color: index === currentIndex ? process.color_tag : undefined,
+                                                color: index <= currentIndex ? currentBusinessProcess.color_tag : undefined,
                                             }}
                                         >
                                             STEP {index + 1}
@@ -279,10 +282,12 @@ export default function BusinessProcessSection() {
                                     </motion.button>
                                 ))}
                             </div>
-
+                            <div className="invisible w-[30px] opacity-0">
+                                data {Math.round((currentIndex / (businessProcesses.length - 1)) * 100)}
+                            </div>
                             {/* Flag Icon at the rightmost end */}
                             <motion.div
-                                className="absolute top-1 right-0 flex items-center"
+                                className="absolute top-1 -right-3 flex items-center"
                                 initial={{ scale: 0.8, opacity: 0 }}
                                 animate={{ scale: 1, opacity: 1 }}
                                 transition={{ delay: businessProcesses.length * 0.1 }}

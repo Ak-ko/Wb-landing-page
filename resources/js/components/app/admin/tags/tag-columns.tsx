@@ -23,6 +23,24 @@ export const createTagColumns = ({ handleEdit, handleDeleteClick }: TagColumnAct
         ),
     },
     {
+        accessorKey: 'type',
+        header: 'Type',
+        cell: ({ row }) => {
+            const type = row.getValue('type') as string | null;
+            return (
+                <div className="text-center">
+                    {type ? (
+                        <span className="inline-flex items-center rounded-md bg-gray-100 px-2 py-1 text-xs font-medium text-gray-800">
+                            {type.charAt(0).toUpperCase() + type.slice(1)}
+                        </span>
+                    ) : (
+                        <span className="text-gray-400">-</span>
+                    )}
+                </div>
+            );
+        },
+    },
+    {
         accessorKey: 'created_at',
         header: 'Created At',
         cell: ({ row }) => <div>{new Date(row.getValue('created_at')).toLocaleDateString()}</div>,

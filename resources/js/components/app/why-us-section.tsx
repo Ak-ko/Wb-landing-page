@@ -13,7 +13,7 @@ const whyUsCards = [
         img: '/assets/ele2.png',
         title: 'systematic creative process',
         description:
-            'Operating with a highly organised and repeatable creative process, we ensure efficiency, consistency, and predictable excellence in every project.',
+            'Operating with a highly organised creative process, we ensure efficiency, consistency, and predictable excellence in every project.',
     },
     {
         img: '/assets/ele3.png',

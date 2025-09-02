@@ -15,6 +15,7 @@ interface BusinessProcessFormProps {
 export default function BusinessProcessForm({ businessProcess, onSuccess }: BusinessProcessFormProps) {
     const { data, setData, post, put, processing, errors, reset } = useForm({
         title: businessProcess?.title || '',
+        subtitle: businessProcess?.subtitle || '',
         description: businessProcess?.description || '',
         image: businessProcess?.image || '',
         color_tag: businessProcess?.color_tag || '#000000',
@@ -68,6 +69,14 @@ export default function BusinessProcessForm({ businessProcess, onSuccess }: Busi
                 </label>
                 <Input id="title" value={data.title} onChange={(e) => setData('title', e.target.value)} />
                 {errors.title && <p className="text-sm text-red-500">{errors.title}</p>}
+            </div>
+
+            <div className="space-y-2">
+                <label htmlFor="subtitle" className="block text-sm font-medium">
+                    Subtitle
+                </label>
+                <Input id="subtitle" value={data.subtitle} onChange={(e) => setData('subtitle', e.target.value)} />
+                {errors.subtitle && <p className="text-sm text-red-500">{errors.subtitle}</p>}
             </div>
 
             <div className="space-y-2">

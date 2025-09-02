@@ -66,10 +66,11 @@ export default function BusinessProcessItem({ businessProcess }: BusinessProcess
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ duration: 0.6, delay: 0.3 }}
                     >
-                        <h1 className="mb-4 text-2xl font-bold uppercase dark:text-white" style={{ color: businessProcess.color_tag }}>
+                        <h1 className="mb-1 text-2xl font-bold uppercase dark:text-white" style={{ color: businessProcess.color_tag }}>
                             {businessProcess?.title}
                         </h1>
-                        <p className="text-sm leading-[1.7] text-gray-700 dark:text-gray-300">{businessProcess?.description}</p>
+                        {businessProcess?.subtitle && <p className="mt-1 text-sm text-gray-500">{businessProcess.subtitle}</p>}
+                        <p className="mt-3 text-sm leading-[1.7] text-gray-700 dark:text-gray-300">{businessProcess?.description}</p>
                     </motion.div>
                 </div>
             </motion.div>
@@ -149,14 +150,15 @@ export default function BusinessProcessItem({ businessProcess }: BusinessProcess
                         transition={{ duration: 0.6, delay: 0.2 }}
                     >
                         <h1
-                            className="relative mb-4 inline-block text-2xl font-bold uppercase md:mb-6 md:text-3xl dark:text-white"
+                            className="relative mb-1 inline-block text-2xl font-bold uppercase md:mb-2 md:text-3xl dark:text-white"
                             style={{
                                 color: businessProcess.color_tag,
                             }}
                         >
                             {businessProcess?.title}
                         </h1>
-                        <p className="text-sm leading-[1.7] font-light text-gray-700 md:text-base dark:text-gray-300">
+                        {businessProcess?.subtitle && <p className="mt-1 text-sm text-gray-500">{businessProcess.subtitle}</p>}
+                        <p className="mt-3 text-sm leading-[1.7] font-light text-gray-700 md:text-base dark:text-gray-300">
                             {businessProcess?.description}
                         </p>
                     </motion.div>

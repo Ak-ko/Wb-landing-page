@@ -73,9 +73,11 @@ export type TestimonialT = {
 export type BusinessProcessT = {
     id: number;
     title: string;
+    subtitle: string | null;
     description: string | null;
     image: string | null;
     color_tag: string;
+    text_color: string;
     is_active: boolean;
     step: number;
 } & TimestampsT;
@@ -84,6 +86,8 @@ export type TagT = {
     id: number;
     name: string;
     color: string;
+    text_color?: string;
+    type?: 'industry' | 'blog' | 'project' | null;
 } & TimestampsT;
 
 export type BrandingProjectImageT = {
@@ -161,6 +165,7 @@ export type CompanyPolicyT = {
     vision: string;
     core_values: string;
     terms_and_conditions: string;
+    terms_and_conditions_for_art_services: string;
 } & TimestampsT;
 
 export type TeamMemberT = {
@@ -388,6 +393,18 @@ export interface ChunkUploadHook {
         onComplete: (response: any) => void;
         onError: (error: any) => void;
     }) => void;
+}
+
+export interface ExpertiseSectionT {
+    id: number;
+    title: string;
+    type: 'business' | 'established';
+    plans: { text: string; order: number }[];
+    color: string;
+    order: number;
+    is_active: boolean;
+    created_at: string;
+    updated_at: string;
 }
 
 // Export common types

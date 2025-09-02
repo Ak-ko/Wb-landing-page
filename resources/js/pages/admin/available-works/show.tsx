@@ -24,7 +24,7 @@ interface Props {
 export default function Show({ availableWork }: Props) {
     const breadcrumbs: BreadcrumbItem[] = [
         {
-            title: 'Available Works',
+            title: 'Available Services',
             href: '/admin/available-works',
         },
         {

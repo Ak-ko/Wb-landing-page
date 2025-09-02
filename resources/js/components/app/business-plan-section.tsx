@@ -76,7 +76,7 @@ function BreadcrumbBar({
                     <button
                         onClick={() => handlePanelClick(panel.key as PanelKey)}
                         className={cn(
-                            'cursor-pointer px-6 py-2 text-3xl font-bold uppercase transition-all hover:text-white 2xl:text-[38px]',
+                            'cursor-pointer px-6 py-2 text-2xl font-bold uppercase transition-all hover:text-white 2xl:text-[30px]',
                             activePanel === panel.key ? 'text-white' : 'text-white/50',
                             'focus:outline-none',
                         )}
@@ -85,7 +85,7 @@ function BreadcrumbBar({
                     </button>
                     {idx < PANELS.length - 1 && (
                         <span className="text-white/30">
-                            <ChevronRight className="size-[50px] 2xl:size-[70px]" />
+                            <ChevronRight className="size-[40px] 2xl:size-[50px]" />
                         </span>
                     )}
                 </React.Fragment>
@@ -107,9 +107,9 @@ function PackagePanelContent({
     };
     color: string;
 }) {
-    const [col1, col2, col3] = splitIntoColumns<AllItem>(b?.all_items ?? [], ~~b?.all_items?.length / 2.5);
+    const [col1, col2] = splitIntoColumns<AllItem>(b?.all_items ?? [], ~~b?.all_items?.length / 2);
 
-    if (col1?.length === 0 && col2?.length === 0 && col3?.length === 0) return null;
+    if (col1?.length === 0 && col2?.length === 0) return null;
 
     return (
         <div className="mb-11 w-[88%]">
@@ -133,7 +133,7 @@ function PackagePanelContent({
             <div
                 className="scrollbar-thin scrollbar-track-black mx-auto flex w-full overflow-y-auto"
                 style={{
-                    maxHeight: 1200,
+                    maxHeight: 500,
                     scrollbarColor: `${color} black`,
                     scrollbarWidth: 'thin',
                 }}
@@ -195,35 +195,6 @@ function PackagePanelContent({
                         ))}
                     </ul>
                 )}
-
-                {col3?.length > 0 && (
-                    <ul className="flex w-full flex-col gap-5">
-                        {col3?.map((i: AllItem) => (
-                            <li
-                                key={i?.id}
-                                className={cn(
-                                    'flex w-full items-start space-x-1 self-start text-xl 2xl:text-[25px]',
-                                    i?.is_included ? 'text-white' : 'text-white/50 line-through',
-                                )}
-                            >
-                                <Check className="shrink-0" style={{ color }} />
-                                <div className="space-x-2.5 !leading-[25px]">
-                                    <span className="text-wrap">{i?.name}</span>
-                                    {i?.detail_link && (
-                                        <a
-                                            href={i?.detail_link}
-                                            target="_blank"
-                                            style={{ color }}
-                                            className="inline-block text-xs font-normal text-nowrap text-white capitalize underline 2xl:mt-2 2xl:text-sm"
-                                        >
-                                            (See Detail)
-                                        </a>
-                                    )}
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
-                )}
             </div>
         </div>
     );
@@ -260,7 +231,7 @@ function StrategyPanelContent({
             <div
                 className="scrollbar-thin scrollbar-track-black w-full flex-1 overflow-y-auto"
                 style={{
-                    maxHeight: 1200,
+                    maxHeight: 500,
                     scrollbarColor: `${color} black`,
                     scrollbarWidth: 'thin',
                 }}
@@ -271,7 +242,7 @@ function StrategyPanelContent({
                             {column.map((i: BrandElement) => (
                                 <li key={i?.id}>
                                     <div className="flex w-full items-start gap-3 text-xl font-bold text-white uppercase 2xl:text-lg">
-                                        <span>{i?.order}</span>
+                                        <span>{i?.order}.</span>
                                         <span>{i?.title}</span>
                                     </div>
 
@@ -279,7 +250,8 @@ function StrategyPanelContent({
                                         {i?.items?.map((j: BrandElementItem, subIdx: number) => (
                                             <li key={j?.id} className="flex items-start gap-3 text-white">
                                                 <span>{j?.order}.</span>
-                                                <span className="2xl:text-md flex min-w-0 flex-1 items-center">
+                                                {/* TODO: if they want, please make flex */}
+                                                <span className="2xl:text-md hidden min-w-0 flex-1 items-center">
                                                     <span className="flex-1">{j?.title}</span>
                                                     <DynamicDots />
                                                     <span className="text-base text-white">{String(subIdx + 1).padStart(2, '0')}</span>
@@ -330,7 +302,7 @@ function GuidelinePanelContent({
             <div
                 className="scrollbar-thin scrollbar-track-black w-full flex-1 overflow-y-auto"
                 style={{
-                    maxHeight: 1200,
+                    maxHeight: 500,
                     scrollbarColor: `${color} black`,
                     scrollbarWidth: 'thin',
                 }}
@@ -341,14 +313,15 @@ function GuidelinePanelContent({
                             {column.map((i: BrandElement) => (
                                 <li key={i?.id}>
                                     <div className="flex w-full items-start gap-3 text-xl font-bold text-white uppercase 2xl:text-lg">
-                                        <span>{i?.order}</span>
+                                        <span>{i?.order}.</span>
                                         <span>{i?.title}</span>
                                     </div>
                                     <ul className="my-2">
                                         {i?.items?.map((j: BrandElementItem, subIdx: number) => (
                                             <li key={j?.id} className="flex items-start gap-3 text-white uppercase">
                                                 <span>{j?.order}.</span>
-                                                <span className="2xl:text-md flex min-w-0 flex-1 items-center">
+                                                {/* TODO: if they want, please make flex */}
+                                                <span className="2xl:text-md hidden min-w-0 flex-1 items-center">
                                                     <span className="flex-1">{j?.title}</span>
                                                     <DynamicDots />
                                                     <span className="text-base text-white">{String(subIdx + 1).padStart(2, '0')}</span>
@@ -382,24 +355,25 @@ function PriceSection({
     hasDiscount: boolean;
 }) {
     return (
-        <div className="mx-20 flex flex-col items-center rounded-xl border-4 bg-white py-[200px] text-center" style={{ borderColor: color }}>
+        <div className="mx-20 flex flex-col items-center rounded-3xl py-[50px] text-center">
             <div className="mb-5">
+                <div className="mb-1 text-lg font-light text-slate-300">Get This</div>
                 <div className="mb-2 text-[50px] font-bold uppercase" style={{ color }}>
                     {b?.name}
                 </div>
-                <div className="mb-1 text-xl text-black/80">for an investment of just</div>
+                <div className="mb-1 text-lg font-light text-slate-300">for an investment of just</div>
             </div>
             {hasDiscount && (
                 <div className="mb-5 space-y-3">
                     {b.discount_description && <div className="text-primary-orange text-3xl">{b.discount_description}</div>}
-                    <div className="relative mb-1 text-3xl text-gray-500">
+                    <div className="relative mb-1 text-2xl text-slate-300">
                         {b.price_text}
                         <div className="bg-primary-orange absolute top-1/2 left-0 h-[2px] w-[100%]" />
                     </div>
                 </div>
             )}
-            <div className="mb-5 text-[45px] font-bold text-black">{hasDiscount ? b.discount_price_text : b.price_text}</div>
-            <div className="mb-3 space-y-1 text-2xl text-black/80">
+            <div className="mb-8 text-[45px] font-bold text-slate-300">{hasDiscount ? b.discount_price_text : b.price_text} </div>
+            <div className="mb-8 space-y-4 text-xl text-slate-300">
                 {b?.durations?.map((d: Duration) => (
                     <div key={d?.id}>
                         <span>
@@ -413,7 +387,7 @@ function PriceSection({
             <a
                 href={MESSENGER}
                 target="_blank"
-                className="mt-4 rounded-lg px-8 py-3 font-bold text-white uppercase transition-all duration-300"
+                className="mt-4 rounded-lg px-8 py-3 font-bold text-white uppercase transition-all duration-300 duration-500 hover:-translate-y-1 hover:scale-x-[0.9] hover:scale-y-[1.1] active:-translate-y-0.5 active:scale-x-[1] active:scale-y-[1]"
                 style={{ minWidth: 180, background: color, color: isLightColor(color) ? 'black' : 'white' }}
             >
                 Get This Package
@@ -700,7 +674,7 @@ export default function BusinessPlanSection() {
 
             {/* Desktop version */}
             <section className="hidden py-16 md:block">
-                <div className="">
+                <div>
                     {businessPackages.map((bRaw) => {
                         const b = bRaw as BusinessPackageT & {
                             brand_strategy?: BrandStrategyOrGuideline;
@@ -713,9 +687,9 @@ export default function BusinessPlanSection() {
                         const activePanel = activePanels[b.id] || 'main';
                         const setPanel = (panel: PanelKey) => setActivePanels((prev) => ({ ...prev, [b.id]: panel }));
                         return (
-                            <div key={b.id} className="business-plan-section mb-16 px-11 2xl:px-20" data-business-package-id={b.id}>
-                                <div className="flex w-full flex-col overflow-hidden rounded-xl bg-black py-11">
-                                    <div className="relative min-h-[1500px] flex-1 overflow-y-auto">
+                            <div key={b.id} className="business-plan-section mb-16 px-22 2xl:px-[150px]" data-business-package-id={b.id}>
+                                <div className="flex w-full flex-col overflow-hidden rounded-3xl bg-black py-11 2xl:rounded-[50px]">
+                                    <div className="relative min-h-[800px] flex-1 overflow-y-auto">
                                         {/* Panels */}
                                         <motion.div
                                             animate={{ x: activePanel === 'main' ? 0 : activePanel === 'strategy' ? '-100%' : '-200%' }}

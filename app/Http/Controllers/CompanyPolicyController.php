@@ -23,14 +23,8 @@ class CompanyPolicyController extends Controller
 
         $cleanData = $request->validate([
             'content' => 'required',
-            'type' => 'required|in:mission,vision,terms_and_conditions,core_values'
+            'type' => 'required|in:mission,vision,core_values'
         ]);
-
-        if ($cleanData['type'] == 'terms_and_conditions') {
-            $policy->update([
-                'terms_and_conditions' => $cleanData['content']
-            ]);
-        }
 
         if ($cleanData['type'] == 'mission') {
             $policy->update([

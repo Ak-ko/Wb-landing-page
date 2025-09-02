@@ -46,7 +46,7 @@ class BlogController extends Controller
      */
     public function create()
     {
-        $tags = Tag::all();
+        $tags = Tag::getBlogTags();
 
         return Inertia::render('admin/blogs/create', [
             'tags' => $tags,
@@ -121,7 +121,7 @@ class BlogController extends Controller
     public function edit(Blog $blog)
     {
         $blog->load('tags', 'images');
-        $tags = Tag::all();
+        $tags = Tag::getBlogTags();
 
         return Inertia::render('admin/blogs/edit', [
             'blog' => $blog,

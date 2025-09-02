@@ -47,6 +47,7 @@ class BusinessProcessController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
+            'subtitle' => 'nullable|string|max:255',
             'description' => 'required|string',
             'image' => 'nullable|string',
             'color_tag' => 'nullable|string|max:50',
@@ -86,6 +87,7 @@ class BusinessProcessController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
+            'subtitle' => 'nullable|string|max:255',
             'description' => 'required|string',
             'image' => 'nullable|string',
             'color_tag' => 'nullable|string|max:50',

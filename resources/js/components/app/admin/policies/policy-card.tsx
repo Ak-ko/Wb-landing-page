@@ -8,7 +8,7 @@ import PolicyForm from './policy-form';
 interface PolicyCardProps {
     title: string;
     content: string | null;
-    type: 'mission' | 'vision' | 'core_values' | 'terms_and_conditions';
+    type: 'mission' | 'vision' | 'core_values';
 }
 
 export default function PolicyCard({ title, content, type }: PolicyCardProps) {

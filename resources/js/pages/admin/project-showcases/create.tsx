@@ -1,45 +1,44 @@
-import { Head, router } from '@inertiajs/react';
-import { ArrowLeft } from 'lucide-react';
-
-import TagForm from '@/components/app/admin/tags/tag-form';
+import ProjectShowcaseForm from '@/components/app/admin/project-showcases/project-showcase-form';
 import DashboardTitle from '@/components/app/dashboard-title';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
+import { Head, router } from '@inertiajs/react';
+import { ArrowLeft } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Tags',
-        href: '/admin/tags',
+        title: 'Project Showcases',
+        href: '/admin/project-showcases',
     },
     {
         title: 'Create',
-        href: '/admin/tags/create',
+        href: '/admin/project-showcases/create',
     },
 ];
 
-export default function CreateTag() {
+export default function Create() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Create Tag" />
+            <Head title="Create Project Showcase" />
 
             <div className="space-y-4 p-4">
                 <div className="flex items-center justify-between">
-                    <DashboardTitle title="Create Tag" description="Add a new tag to your collection" />
+                    <DashboardTitle title="Create Project Showcase" description="Add a new project showcase to the homepage" />
 
-                    <Button variant="outline" onClick={() => router.get('/admin/tags')}>
+                    <Button variant="outline" onClick={() => router.get('/admin/project-showcases')}>
                         <ArrowLeft className="mr-2 h-4 w-4" />
-                        Back to Tags
+                        Back to Project Showcases
                     </Button>
                 </div>
 
                 <Card>
                     <CardContent className="pt-6">
-                        <TagForm
+                        <ProjectShowcaseForm
                             onSuccess={() => {
-                                router.visit('/admin/tags', {
-                                    only: ['tags'],
+                                router.visit('/admin/project-showcases', {
+                                    only: ['projectShowcases'],
                                 });
                             }}
                         />

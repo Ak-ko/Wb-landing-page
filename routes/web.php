@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\ArtPackageType;
+use App\Enums\TagType;
 use App\Http\Controllers\AnimationAndMotionController;
 use App\Http\Controllers\ArtPackageController;
 use App\Http\Controllers\BlogController;
@@ -15,9 +16,12 @@ use App\Http\Controllers\ComicArtController;
 use App\Http\Controllers\CompanyPolicyController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\AvailableWorkController;
+use App\Http\Controllers\ExpertiseSectionController;
 use App\Http\Controllers\FaqController;
+use App\Http\Controllers\TermsPolicyController;
 use App\Http\Controllers\IllustrationArtController;
 use App\Http\Controllers\MascortArtController;
+use App\Http\Controllers\ProjectShowcaseController;
 use App\Http\Controllers\StickerArtController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\TeamMemberController;
@@ -33,9 +37,11 @@ use App\Models\BusinessPackages;
 use App\Models\BusinessProcess;
 use App\Models\ComicArtImages;
 use App\Models\CompanyPolicy;
+use App\Models\ExpertiseSection;
 use App\Models\Faq;
 use App\Models\IllustrationArtImages;
 use App\Models\MascortArt;
+use App\Models\ProjectShowcase;
 use App\Models\StickerArtImages;
 use App\Models\Tag;
 use App\Models\TeamMember;
@@ -52,11 +58,15 @@ Route::get('/', function () {
 
     $brandingProjects = BrandingProject::featured()->published()->orderBy('order', 'asc')->with('tags', 'images')->get()->take(6);
 
-    $brandingProjectTags = Tag::whereHas('brandingProjects')->get();
+    $brandingProjectTags = Tag::whereHas('brandingProjects')->where('type', TagType::INDUSTRY)->get();
 
     $blogs = Blog::latest()->published()->with(['tags', 'images'])->take(6)->get();
 
     $faqs = Faq::published()->take(10)->get();
+
+    $projectShowcases = ProjectShowcase::featured()->ordered()->get();
+
+    $expertiseSections = ExpertiseSection::active()->ordered()->get();
 
     return Inertia::render('home/home-page', [
         'brands' => $brands,
@@ -66,6 +76,8 @@ Route::get('/', function () {
         'brandingProjectTags' => $brandingProjectTags,
         'blogs' => $blogs,
         'faqs' => $faqs,
+        'projectShowcases' => $projectShowcases,
+        'expertiseSections' => $expertiseSections,
         'page' => 'home'
     ]);
 })->name('home');
@@ -136,19 +148,25 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('/admin/blogs', BlogController::class);
 
     // Tags
-    Route::resource('/admin/tags', TagController::class);
+    Route::resource('/admin/tags', TagController::class)->except(['create', 'edit', 'show']);
 
     // Faq
     Route::resource('/admin/faqs', FaqController::class);
 
-    // Available Works
+    // Available Services
     Route::resource('/admin/available-works', AvailableWorkController::class);
 
-    // Policy
+    // Brand Philosophy (Company Policies)
     Route::resource('/admin/policies', CompanyPolicyController::class)
         ->only(['index']);
     Route::post('/admin/policies', [CompanyPolicyController::class, 'updatePolicy'])
         ->name('policies.update');
+
+    // Terms and Policies
+    Route::resource('/admin/terms-policies', TermsPolicyController::class)
+        ->only(['index']);
+    Route::post('/admin/terms-policies', [TermsPolicyController::class, 'updateTermsPolicy'])
+        ->name('terms-policies.update');
 
     // team member
     Route::resource('/admin/team-members', TeamMemberController::class);
@@ -195,6 +213,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Theme Colors
     Route::resource('/admin/theme-colors', ColorController::class);
+
+    // Project Showcases
+    Route::resource('/admin/project-showcases', ProjectShowcaseController::class);
+
+    // Expertise Sections
+    Route::resource('/admin/expertise-sections', ExpertiseSectionController::class);
 });
 
 // faq
@@ -203,6 +227,10 @@ Route::post('/faq/send-email', [FaqController::class, 'sendFaqEmail'])
 
 Route::get('/faq/all', [FaqController::class, 'getAllFaqs'])
     ->name('faq.all');
+
+// Expertise sections API for frontend
+Route::get('/api/expertise-sections', [ExpertiseSectionController::class, 'getActiveSections'])
+    ->name('expertise-sections.api');
 
 // contact us
 Route::post('/contact/send', [ContactController::class, 'sendMessage'])
@@ -225,17 +253,18 @@ Route::get('/about-us', function () {
 
 Route::get('/business-plans', function () {
     $policy = CompanyPolicy::first();
-    $businessPackages = BusinessPackages::with(
+
+    $businessPackages = BusinessPackages::with([
         'businessPackageItems',
         'brandGuideline.elements.items',
-        'brandStrategy.elements.items', // Eager load brandStrategy and its elements/items
+        'brandStrategy.elements.items',
         'durations'
-    )->orderBy('order', 'asc')->orderBy('created_at', 'desc')->get();
-    $allItems = BusinessPackageItems::all();
+    ])->orderBy('order', 'asc')->orderBy('created_at', 'desc')->get();
+
     $businessPackageAddons = BusinessPackageAddon::all();
 
-    $businessPackages = $businessPackages->map(function ($package) use ($allItems) {
-        $package->all_items = $allItems->map(function ($item) {
+    $businessPackages = $businessPackages->map(function ($package) {
+        $package->all_items = $package->businessPackageItems->map(function ($item) {
             return [
                 'id' => $item->id,
                 'name' => $item->name,
@@ -244,7 +273,6 @@ Route::get('/business-plans', function () {
             ];
         });
 
-        // Attach both brand_guideline and brand_strategy to the package for frontend
         $package->brand_guideline = $package->brandGuideline;
         $package->brand_strategy = $package->brandStrategy;
 
@@ -256,6 +284,7 @@ Route::get('/business-plans', function () {
 
 Route::get('/art-plans', function () {
     $mascotArts = MascortArt::with('images')->latest()->get();
+    $policy = CompanyPolicy::first();
     $mascotArtPackages = ArtPackage::where('type', ArtPackageType::Mascot)
         ->with('items', 'prices')
         ->get();
@@ -286,7 +315,8 @@ Route::get('/art-plans', function () {
         'illustrationArtImages',
         'comicArtImages',
         'stickerArtImages',
-        'animationAndMotionsVideos'
+        'animationAndMotionsVideos',
+        'policy'
     ));
 })->name('art-plan-page');
 

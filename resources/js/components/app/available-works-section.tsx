@@ -12,7 +12,7 @@ export default function AvailableWorksSection() {
 
     const renderBadges = () => {
         if (!availableWorks || !Array.isArray(availableWorks) || availableWorks.length === 0) {
-            return <div className="py-4 text-center">No available works found</div>;
+            return <div className="py-4 text-center">No available services found</div>;
         }
 
         const repeatedBadges = [...availableWorks, ...availableWorks, ...availableWorks, ...availableWorks];

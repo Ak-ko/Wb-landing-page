@@ -42,7 +42,7 @@ interface Props {
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Available Works',
+        title: 'Available Services',
         href: '/admin/available-works',
     },
 ];
@@ -145,13 +145,13 @@ export default function Index({ availableWorks, filters }: Props) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Available Works" />
+            <Head title="Available Services" />
 
             <div className="space-y-4 p-4">
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-3xl font-bold tracking-tight">Available Works</h1>
-                        <p className="text-muted-foreground">Manage the available works that appear in the marquee section.</p>
+                        <h1 className="text-3xl font-bold tracking-tight">Available Services</h1>
+                        <p className="text-muted-foreground">Manage the available services that appear in the marquee section.</p>
                     </div>
                     <Link href={route('available-works.create')}>
                         <Button>
@@ -168,7 +168,7 @@ export default function Index({ availableWorks, filters }: Props) {
                                 <div className="relative flex-1">
                                     <Search className="text-muted-foreground absolute top-2.5 left-2 h-4 w-4" />
                                     <Input
-                                        placeholder="Search available works..."
+                                        placeholder="Search available services..."
                                         value={searchQuery}
                                         onChange={(e) => setSearchQuery(e.target.value)}
                                         className="pl-8"

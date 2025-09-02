@@ -4,7 +4,7 @@ import { useForm } from '@inertiajs/react';
 
 interface PolicyFormProps {
     content: string;
-    type: 'mission' | 'vision' | 'core_values' | 'terms_and_conditions';
+    type: 'mission' | 'vision' | 'core_values';
     onSuccess: () => void;
 }
 

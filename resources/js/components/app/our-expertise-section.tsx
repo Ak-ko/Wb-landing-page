@@ -1,5 +1,6 @@
 import useScroll from '@/hooks/use-scroll';
 import { cn } from '@/lib/utils';
+import { ExpertiseSectionT } from '@/types';
 import { Link } from '@inertiajs/react';
 import { motion } from 'framer-motion';
 import { Check } from 'lucide-react';
@@ -10,18 +11,11 @@ import CharacterRedWithSpring from './icons/characters/hero-section/character-re
 import CharacterWithCoffee from './icons/characters/hero-section/character-with-coffee';
 import SectionHeader from './section-header';
 
-const businessPlans = [
-    'Logo & Branding or rebranding',
-    'Brand Strategy & Guidelines',
-    'Illustration or Digital Art',
-    'Mascot Design',
-    'Comic Art',
-    'One-time Requests',
-];
+interface OurExpertiseSectionProps {
+    expertiseSections?: ExpertiseSectionT[];
+}
 
-const artPlans = ['Social media designs', 'UI / UX Designs', 'Unlimited Artworks', 'Unlimited requests', 'Unlimited Brands', 'Unlimited Users'];
-
-export default function OurExpertiseSection() {
+export default function OurExpertiseSection({ expertiseSections = [] }: OurExpertiseSectionProps) {
     const { scrollTo } = useScroll();
 
     return (
@@ -30,75 +24,119 @@ export default function OurExpertiseSection() {
                 <SectionHeader header="Our Expertise" />
 
                 <CommonBodyAnimation>
-                    <div className="3xl:px-[550px] grid grid-cols-1 gap-5 py-10 md:px-15 lg:grid-cols-2 xl:px-30 2xl:px-[320px]">
-                        {/* New Business Card */}
-                        <motion.div
-                            whileInView={{ x: 0 }}
-                            initial={{ x: -200 }}
-                            className="relative space-y-8 rounded-4xl bg-[#F5F5F5] p-9 shadow transition-all duration-500 hover:shadow-lg hover:shadow-[#1CB3CE50]"
-                        >
-                            <h1 className="text-center text-3xl font-bold md:text-start">
-                                Setting up your <br />
-                                <span className="text-crayola-blue">New Business?</span>
-                            </h1>
+                    <div className="3xl:px-[700px] grid grid-cols-1 gap-5 py-10 md:px-15 lg:grid-cols-2 xl:px-30 2xl:px-[200px]">
+                        {expertiseSections.map((section) => {
+                            const isBusinessType = section.type === 'business';
+                            const sortedPlans = section.plans.sort((a, b) => a.order - b.order);
 
-                            <p className="text-center text-xl font-bold text-black/50 md:text-start">Pick this if you need..</p>
-
-                            <ul className="list-none space-y-1">
-                                {businessPlans.map((b, x) => (
-                                    <li key={x} className="flex items-start text-lg font-semibold uppercase">
-                                        <Check className="text-crayola-blue mt-1 mr-2 h-4 w-4 stroke-2" />
-                                        <span>{b}</span>
-                                    </li>
-                                ))}
-                            </ul>
-
-                            <div>
-                                <Link
-                                    href={route('business-plan-page')}
-                                    className={cn('primary_btn', 'flex justify-center px-8 py-5 hover:bg-[#1bb4cf] md:inline-flex')}
+                            return (
+                                <motion.div
+                                    key={section.id}
+                                    whileInView={{ x: 0 }}
+                                    initial={{ x: isBusinessType ? -200 : 200 }}
+                                    className="relative space-y-8 rounded-4xl bg-[#F5F5F5] p-9 shadow transition-all duration-500 hover:shadow-lg"
+                                    style={
+                                        {
+                                            boxShadow: `0 10px 25px rgba(${parseInt(section.color.slice(1, 3), 16)}, ${parseInt(section.color.slice(3, 5), 16)}, ${parseInt(section.color.slice(5, 7), 16)}, 0.1)`,
+                                            '--hover-shadow': `0 20px 40px rgba(${parseInt(section.color.slice(1, 3), 16)}, ${parseInt(section.color.slice(3, 5), 16)}, ${parseInt(section.color.slice(5, 7), 16)}, 0.3)`,
+                                        } as React.CSSProperties & { '--hover-shadow': string }
+                                    }
+                                    onMouseEnter={(e) => {
+                                        e.currentTarget.style.boxShadow = `0 20px 40px rgba(${parseInt(section.color.slice(1, 3), 16)}, ${parseInt(section.color.slice(3, 5), 16)}, ${parseInt(section.color.slice(5, 7), 16)}, 0.3)`;
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.style.boxShadow = `0 10px 25px rgba(${parseInt(section.color.slice(1, 3), 16)}, ${parseInt(section.color.slice(3, 5), 16)}, ${parseInt(section.color.slice(5, 7), 16)}, 0.1)`;
+                                    }}
                                 >
-                                    See Packages
-                                </Link>
-                            </div>
+                                    <h1 className={cn('text-center text-3xl font-bold', isBusinessType ? 'md:text-start' : 'md:text-end')}>
+                                        {section.title.split(' ').map((word, wordIndex, words) => {
+                                            const isLastTwoWords = wordIndex >= words.length - 2;
+                                            return isLastTwoWords ? (
+                                                <span key={wordIndex} style={{ color: section.color }}>
+                                                    {word}
+                                                    {wordIndex < words.length - 1 ? ' ' : ''}
+                                                </span>
+                                            ) : (
+                                                <span key={wordIndex}>
+                                                    {word}
+                                                    {wordIndex < words.length - 3 ? ' ' : ' '}
+                                                    {wordIndex === words.length - 3 && <br />}
+                                                </span>
+                                            );
+                                        })}
+                                    </h1>
 
-                            <div className="absolute -bottom-[45px] hidden md:right-[calc(100%-85%)] md:-bottom-[38px] md:block lg:right-[calc(100%-110%)] xl:right-[calc(100%-100%)]">
-                                <CharacterWithCoffee className="w-[200px] md:w-[220px]" viewBox="0 0 300 300" fill="#1CB3CE" />
-                            </div>
-                        </motion.div>
+                                    <p
+                                        className={cn(
+                                            'text-center text-xl font-bold text-black/50',
+                                            isBusinessType ? 'md:text-start' : 'md:text-end',
+                                        )}
+                                    >
+                                        Pick this if you need..
+                                    </p>
 
-                        {/* Established Business Card */}
-                        <motion.div
-                            whileInView={{ x: 0 }}
-                            initial={{ x: 200 }}
-                            className="hover:shadow-chillie-red/20 relative space-y-8 rounded-4xl bg-[#F5F5F5] p-9 shadow transition-all duration-500 hover:shadow-lg"
-                        >
-                            <h1 className="text-center text-3xl font-bold md:text-end">
-                                Expanding Your <br />
-                                <span className="text-chillie-red">Established Business?</span>
-                            </h1>
+                                    <ul className={cn('list-none space-y-1', isBusinessType ? '' : 'text-end')}>
+                                        {sortedPlans.map((plan, planIndex) => (
+                                            <li
+                                                key={planIndex}
+                                                className={cn(
+                                                    'flex items-start text-lg font-semibold uppercase',
+                                                    isBusinessType ? '' : 'justify-end',
+                                                )}
+                                            >
+                                                {isBusinessType ? (
+                                                    <>
+                                                        <Check className="mt-1 mr-2 h-4 w-4 stroke-2" style={{ color: section.color }} />
+                                                        <span>{plan.text}</span>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <span>{plan.text}</span>
+                                                        <Check className="mt-1 ml-2 h-4 w-4 stroke-2" style={{ color: section.color }} />
+                                                    </>
+                                                )}
+                                            </li>
+                                        ))}
+                                    </ul>
 
-                            <p className="text-center text-xl font-bold text-black/50 md:text-end">Pick this if you need..</p>
+                                    <div className={isBusinessType ? '' : 'md:text-end'}>
+                                        <Link
+                                            href={route(isBusinessType ? 'business-plan-page' : 'art-plan-page')}
+                                            className={cn('primary_btn', 'flex justify-center px-8 py-5 transition-all duration-300 md:inline-flex')}
+                                            style={
+                                                {
+                                                    backgroundColor: '#000000',
+                                                    borderColor: '#000000',
+                                                    color: '#ffffff',
+                                                    '--hover-bg': section.color,
+                                                    '--hover-border': section.color,
+                                                } as React.CSSProperties & { '--hover-bg': string; '--hover-border': string }
+                                            }
+                                            onMouseEnter={(e) => {
+                                                e.currentTarget.style.backgroundColor = section.color;
+                                                e.currentTarget.style.borderColor = section.color;
+                                            }}
+                                            onMouseLeave={(e) => {
+                                                e.currentTarget.style.backgroundColor = '#000000';
+                                                e.currentTarget.style.borderColor = '#000000';
+                                            }}
+                                        >
+                                            See Packages
+                                        </Link>
+                                    </div>
 
-                            <ul className="list-none space-y-1 text-end">
-                                {artPlans.map((b, x) => (
-                                    <li key={x} className="flex items-start justify-end text-lg font-semibold uppercase">
-                                        <span>{b}</span>
-                                        <Check className="text-chillie-red mt-1 ml-2 h-4 w-4 stroke-2" />
-                                    </li>
-                                ))}
-                            </ul>
-
-                            <div className="md:text-end">
-                                <Link href={route('art-plan-page')} className={cn('primary_btn', 'flex justify-center px-8 py-5 md:inline-flex')}>
-                                    See Packages
-                                </Link>
-                            </div>
-
-                            <div className="absolute right-[calc(100%-70%)] -bottom-[61px] hidden md:block">
-                                <CharacterRedWithSpring className="w-[300px]" viewBox="0 0 300 300" />
-                            </div>
-                        </motion.div>
+                                    {isBusinessType ? (
+                                        <div className="absolute -bottom-[45px] hidden md:right-[calc(100%-85%)] md:-bottom-[38px] md:block lg:right-[calc(100%-110%)] xl:right-[calc(100%-100%)]">
+                                            <CharacterWithCoffee className="w-[200px] md:w-[220px]" viewBox="0 0 300 300" fill={section.color} />
+                                        </div>
+                                    ) : (
+                                        <div className="absolute right-[calc(100%-65%)] -bottom-[61px] hidden md:block">
+                                            <CharacterRedWithSpring className="w-[300px]" viewBox="0 0 300 300" />
+                                        </div>
+                                    )}
+                                </motion.div>
+                            );
+                        })}
                     </div>
                 </CommonBodyAnimation>
                 {/* HighlightText CTA */}

@@ -11,7 +11,7 @@ import { ArrowLeft } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Available Works',
+        title: 'Available Services',
         href: '/admin/available-works',
     },
     {

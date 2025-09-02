@@ -9,6 +9,7 @@ import {
     Briefcase,
     Building,
     Clapperboard,
+    HandPlatter,
     LayoutDashboard,
     MessageCircleQuestion,
     Package,
@@ -73,9 +74,19 @@ const mainNavItems: NavItem[] = [
                 icon: Briefcase,
             },
             {
-                title: 'Available Works',
+                title: 'Available Services',
                 href: '/admin/available-works',
-                icon: Package,
+                icon: HandPlatter,
+            },
+            {
+                title: 'Project Showcases',
+                href: '/admin/project-showcases',
+                icon: SquareChartGantt,
+            },
+            {
+                title: 'Expertise Sections',
+                href: '/admin/expertise-sections',
+                icon: LayoutDashboard,
             },
         ],
     },
@@ -173,9 +184,14 @@ const mainNavItems: NavItem[] = [
                 icon: Palette,
             },
             {
-                title: 'Company Policies',
+                title: 'Brand Philosophy',
                 href: '/admin/policies',
                 icon: SquareChartGantt,
+            },
+            {
+                title: 'Policies',
+                href: '/admin/terms-policies',
+                icon: Settings,
             },
             {
                 title: 'Profile Settings',
