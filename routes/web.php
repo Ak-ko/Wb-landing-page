@@ -253,17 +253,18 @@ Route::get('/about-us', function () {
 
 Route::get('/business-plans', function () {
     $policy = CompanyPolicy::first();
-    $businessPackages = BusinessPackages::with(
+
+    $businessPackages = BusinessPackages::with([
         'businessPackageItems',
         'brandGuideline.elements.items',
-        'brandStrategy.elements.items', // Eager load brandStrategy and its elements/items
+        'brandStrategy.elements.items',
         'durations'
-    )->orderBy('order', 'asc')->orderBy('created_at', 'desc')->get();
-    $allItems = BusinessPackageItems::all();
+    ])->orderBy('order', 'asc')->orderBy('created_at', 'desc')->get();
+
     $businessPackageAddons = BusinessPackageAddon::all();
 
-    $businessPackages = $businessPackages->map(function ($package) use ($allItems) {
-        $package->all_items = $allItems->map(function ($item) {
+    $businessPackages = $businessPackages->map(function ($package) {
+        $package->all_items = $package->businessPackageItems->map(function ($item) {
             return [
                 'id' => $item->id,
                 'name' => $item->name,
@@ -272,7 +273,6 @@ Route::get('/business-plans', function () {
             ];
         });
 
-        // Attach both brand_guideline and brand_strategy to the package for frontend
         $package->brand_guideline = $package->brandGuideline;
         $package->brand_strategy = $package->brandStrategy;
 
