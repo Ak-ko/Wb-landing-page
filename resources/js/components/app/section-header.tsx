@@ -23,7 +23,7 @@ export default function SectionHeader({ header, headerClass, descriptionClass, d
             {typeof description === 'string' ? (
                 <p
                     className={cn(
-                        'text-md font-inter max-w-[350px] text-center font-normal sm:!max-w-[800px] sm:text-lg 2xl:max-w-[500px] 2xl:text-2xl',
+                        'text-md font-inter max-w-[350px] text-center font-normal sm:!max-w-[800px] sm:text-lg 2xl:!max-w-[1000px] 2xl:text-2xl',
                         descriptionClass,
                     )}
                 >
@@ -32,7 +32,7 @@ export default function SectionHeader({ header, headerClass, descriptionClass, d
             ) : (
                 <div
                     className={cn(
-                        'text-md font-inter max-w-[350px] text-center font-normal sm:!max-w-[800px] sm:text-lg 2xl:max-w-[500px] 2xl:text-2xl',
+                        'text-md font-inter max-w-[350px] text-center font-normal sm:!max-w-[800px] sm:text-lg 2xl:!max-w-[1000px] 2xl:text-2xl',
                         descriptionClass,
                     )}
                 >

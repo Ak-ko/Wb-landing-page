@@ -70,26 +70,21 @@ export default function BusinessProcessSection() {
             </div>
 
             <div className="relative">
-                {/* Process Items */}
                 <div className="app-container relative">
-                    {/* Mobile Progress Bar - Positioned absolutely on the left */}
                     {isMobile && (
                         <div className="absolute top-0 left-4 z-10 flex h-full flex-col items-center py-8">
-                            {/* Vertical Timeline */}
                             <div className="relative flex flex-col items-center">
-                                {/* Vertical Line */}
-                                <div className="absolute top-4 left-1/2 min-h-[400px] w-1 -translate-x-1/2 rounded-full bg-gray-300 dark:bg-gray-700"></div>
-
+                                <div className="absolute top-4 left-1/2 h-full w-1 -translate-x-1/2 rounded-full bg-gray-300 dark:bg-gray-700"></div>
                                 {/* Progress Line */}
                                 <motion.div
                                     className="absolute top-4 left-1/2 w-1 -translate-x-1/2 rounded-full"
                                     style={{
                                         backgroundColor: currentBusinessProcess.color_tag,
-                                        height: `${(currentIndex / Math.max(businessProcesses.length - 1, 1)) * 400}px`,
+                                        height: `${(currentIndex / Math.max(businessProcesses.length - 1, 1)) * 555}px`,
                                     }}
-                                    initial={{ height: currentIndex === 0 ? '16px' : 0 }}
+                                    initial={{ height: 0 }}
                                     animate={{
-                                        height: currentIndex === 0 ? '16px' : `${(currentIndex / Math.max(businessProcesses.length - 1, 1)) * 400}px`,
+                                        height: `${(currentIndex / Math.max(businessProcesses.length - 1, 1)) * 555}px`,
                                     }}
                                     transition={{ duration: 0.5, ease: 'easeInOut' }}
                                 ></motion.div>
@@ -103,12 +98,11 @@ export default function BusinessProcessSection() {
                                             setDirection(direction);
                                             setCurrentIndex(index);
                                         }}
-                                        className="relative mb-16 flex cursor-pointer items-center"
+                                        className="relative mb-8 flex cursor-pointer items-center"
                                         whileHover={{ scale: 1.1 }}
                                         whileTap={{ scale: 0.95 }}
                                         aria-label={`Go to step ${index + 1}`}
                                     >
-                                        {/* Step Circle */}
                                         <motion.div
                                             className={`relative h-6 w-6 rounded-full border-4 transition-all duration-300 ${
                                                 index <= currentIndex ? 'shadow-lg' : ''
@@ -124,9 +118,8 @@ export default function BusinessProcessSection() {
                                     </motion.button>
                                 ))}
 
-                                {/* Flag Icon at the bottom */}
                                 <motion.div
-                                    className="absolute -bottom-22 flex items-center"
+                                    className="absolute -bottom-11 flex items-center"
                                     initial={{ scale: 0.8, opacity: 0 }}
                                     animate={{ scale: 1, opacity: 1 }}
                                     transition={{ delay: businessProcesses.length * 0.1 }}

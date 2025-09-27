@@ -46,13 +46,6 @@ export default function HarmonyOfTheDesignSection() {
                     description="At Walking Brands, we believe that design and art are two sides of the same coin. The fusion of these two disciplines allows us to create visually stunning and meaningful brand identities that resonate deeply with our clients and their audiences."
                     descriptionClass="sm:!max-w-[800px]"
                 />
-                <CommonBodyAnimation>
-                    <div className="app-container flex justify-center py-15">
-                        <div className="w-full text-center">
-                            <p className="text-gray-500">No project showcases available at the moment.</p>
-                        </div>
-                    </div>
-                </CommonBodyAnimation>
             </section>
         );
     }

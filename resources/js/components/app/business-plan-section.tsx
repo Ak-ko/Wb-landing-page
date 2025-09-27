@@ -6,7 +6,6 @@ import { usePage } from '@inertiajs/react';
 import { AnimatePresence, motion as framerMotion, motion } from 'framer-motion';
 import { ArrowLeft, Check, ChevronRight } from 'lucide-react';
 import React, { useState } from 'react';
-import DynamicDots from './dynamic-dots';
 
 interface BrandElementItem {
     id: number | string;
@@ -247,14 +246,11 @@ function StrategyPanelContent({
                                     </div>
 
                                     <ul className="my-2 space-y-2">
-                                        {i?.items?.map((j: BrandElementItem, subIdx: number) => (
+                                        {i?.items?.map((j: BrandElementItem) => (
                                             <li key={j?.id} className="flex items-start gap-3 text-white">
                                                 <span>{j?.order}.</span>
-                                                {/* TODO: if they want, please make flex */}
-                                                <span className="2xl:text-md hidden min-w-0 flex-1 items-center">
+                                                <span className="2xl:text-md flex-1 items-center">
                                                     <span className="flex-1">{j?.title}</span>
-                                                    <DynamicDots />
-                                                    <span className="text-base text-white">{String(subIdx + 1).padStart(2, '0')}</span>
                                                 </span>
                                             </li>
                                         ))}
@@ -316,15 +312,12 @@ function GuidelinePanelContent({
                                         <span>{i?.order}.</span>
                                         <span>{i?.title}</span>
                                     </div>
-                                    <ul className="my-2">
-                                        {i?.items?.map((j: BrandElementItem, subIdx: number) => (
+                                    <ul className="my-2 space-y-2">
+                                        {i?.items?.map((j: BrandElementItem) => (
                                             <li key={j?.id} className="flex items-start gap-3 text-white uppercase">
                                                 <span>{j?.order}.</span>
-                                                {/* TODO: if they want, please make flex */}
-                                                <span className="2xl:text-md hidden min-w-0 flex-1 items-center">
+                                                <span className="2xl:text-md flex-1 items-center">
                                                     <span className="flex-1">{j?.title}</span>
-                                                    <DynamicDots />
-                                                    <span className="text-base text-white">{String(subIdx + 1).padStart(2, '0')}</span>
                                                 </span>
                                             </li>
                                         ))}
