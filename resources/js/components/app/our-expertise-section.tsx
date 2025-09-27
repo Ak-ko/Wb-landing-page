@@ -1,7 +1,7 @@
 import useScroll from '@/hooks/use-scroll';
 import { cn } from '@/lib/utils';
 import { ExpertiseSectionT } from '@/types';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import { motion } from 'framer-motion';
 import { Check } from 'lucide-react';
 
@@ -11,11 +11,8 @@ import CharacterRedWithSpring from './icons/characters/hero-section/character-re
 import CharacterWithCoffee from './icons/characters/hero-section/character-with-coffee';
 import SectionHeader from './section-header';
 
-interface OurExpertiseSectionProps {
-    expertiseSections?: ExpertiseSectionT[];
-}
-
-export default function OurExpertiseSection({ expertiseSections = [] }: OurExpertiseSectionProps) {
+export default function OurExpertiseSection() {
+    const { expertiseSections } = usePage<{ expertiseSections: ExpertiseSectionT[] }>().props;
     const { scrollTo } = useScroll();
 
     return (

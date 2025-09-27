@@ -12,24 +12,9 @@ import OurExpertiseSection from '@/components/app/our-expertise-section';
 import TestimonialSection from '@/components/app/testimonial-section';
 import WhyUsSection from '@/components/app/why-us-section';
 import LandingLayout from '@/layouts/landing-layout';
-import { ExpertiseSectionT } from '@/types';
-import { Head, usePage } from '@inertiajs/react';
-
-interface ProjectShowcase {
-    id: number;
-    content: string;
-    image: string;
-    is_featured: boolean;
-    order: number;
-    created_at: string;
-    updated_at: string;
-}
+import { Head } from '@inertiajs/react';
 
 export default function HomePage() {
-    const { projectShowcases, expertiseSections } = usePage<{
-        projectShowcases: ProjectShowcase[];
-        expertiseSections: ExpertiseSectionT[];
-    }>().props;
     return (
         <LandingLayout>
             <Head title="Home" />
@@ -44,7 +29,7 @@ export default function HomePage() {
 
             <TestimonialSection />
 
-            <HarmonyOfTheDesignSection projectShowcases={projectShowcases} />
+            <HarmonyOfTheDesignSection />
 
             <BusinessProcessSection />
 
@@ -52,7 +37,7 @@ export default function HomePage() {
 
             <BlogSection />
 
-            <OurExpertiseSection expertiseSections={expertiseSections} />
+            <OurExpertiseSection />
 
             <FaqSection />
 

@@ -1,3 +1,4 @@
+import { usePage } from '@inertiajs/react';
 import { motion } from 'framer-motion';
 import CommonBodyAnimation from './common-body-animation';
 import SectionHeader from './section-header';
@@ -13,11 +14,8 @@ interface ProjectShowcase {
     updated_at: string;
 }
 
-interface HarmonyOfTheDesignSectionProps {
-    projectShowcases?: ProjectShowcase[];
-}
-
-export default function HarmonyOfTheDesignSection({ projectShowcases = [] }: HarmonyOfTheDesignSectionProps) {
+export default function HarmonyOfTheDesignSection() {
+    const { projectShowcases } = usePage<{ projectShowcases: ProjectShowcase[] }>().props;
     const itemVariants = {
         hidden: { opacity: 0, y: 20 },
         visible: {
