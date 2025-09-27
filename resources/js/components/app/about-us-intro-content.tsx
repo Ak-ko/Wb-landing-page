@@ -93,7 +93,7 @@ export default function AboutUsIntroContent({
                 </motion.p>
             </motion.div>
             <motion.div className="shrink-0" variants={imageVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }}>
-                <img className={cn('!h-[300px] rounded-2xl object-cover lg:!w-[550px]', imageClassName)} src={image} alt="about us" />
+                <img className={cn('!h-[300px] rounded-2xl object-cover lg:!w-[550px]', imageClassName)} src={image} alt="about us" loading="lazy" />
             </motion.div>
         </div>
     );

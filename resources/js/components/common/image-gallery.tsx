@@ -87,7 +87,7 @@ export default function ImageGallery({
                             </div>
                         </div>
                     ) : (
-                        <img src={image.url} alt={`Image ${index + 1}`} className="h-full w-full object-cover" />
+                        <img src={image.url} alt={`Image ${index + 1}`} loading="lazy" decoding="async" className="h-full w-full object-cover" />
                     )}
 
                     {isEditing && allowDrag && showDragHandle && (
