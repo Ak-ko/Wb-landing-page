@@ -243,9 +243,7 @@ export default function BusinessProcessSection() {
                                               : `${Math.round((currentIndex / (businessProcesses.length - 1)) * 100 - currentIndex + 3)}%`,
                                 }}
                                 transition={{ duration: 0.5, ease: 'easeInOut' }}
-                            >
-                                {currentIndex === businessProcesses?.length - 1 ? 0 : currentIndex + 3}
-                            </motion.div>
+                            ></motion.div>
                             {/* Steps */}
                             <div className="relative mt-6 flex w-full justify-between">
                                 {businessProcesses.map((process, index) => (
