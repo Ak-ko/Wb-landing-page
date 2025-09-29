@@ -29,7 +29,7 @@ export default function BusinessProcessItem({ businessProcess }: BusinessProcess
             >
                 <div className="relative flex w-full max-w-sm flex-col items-center gap-6">
                     {/* Image */}
-                    <div className="w-full">
+                    <div className="-full">
                         {businessProcess?.image && (
                             <motion.div
                                 className="relative w-full"

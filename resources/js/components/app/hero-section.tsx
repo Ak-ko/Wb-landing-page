@@ -37,7 +37,7 @@ export default function HeroSection() {
                 whileInView={{ opacity: 1 }}
                 className="flex flex-col items-center leading-[1.3] sm:leading-normal"
             >
-                <h1 className="hero-section-header-text-size max-w-[360px] text-center font-extrabold uppercase sm:font-bold md:max-w-2xl xl:max-w-3xl">
+                <h1 className="hero-section-header-text-size max-w-[360px] text-center font-extrabold uppercase sm:font-bold md:max-w-2xl xl:max-w-3xl 2xl:max-w-[785px]">
                     creating brands <span className="text-secondary-pink">You can be proud of</span>
                 </h1>
                 <p className="mt-5 max-w-[300px] text-center text-xl font-semibold tracking-wide uppercase sm:max-w-full lg:mt-3">

@@ -80,11 +80,11 @@ export default function BusinessProcessSection() {
                                     className="absolute top-4 left-1/2 w-1 -translate-x-1/2 rounded-full"
                                     style={{
                                         backgroundColor: currentBusinessProcess.color_tag,
-                                        height: `${(currentIndex / Math.max(businessProcesses.length - 1, 1)) * 555}px`,
+                                        height: `${(currentIndex / Math.max(businessProcesses.length - 1, 1)) * 560}px`,
                                     }}
                                     initial={{ height: 0 }}
                                     animate={{
-                                        height: `${(currentIndex / Math.max(businessProcesses.length - 1, 1)) * 555}px`,
+                                        height: `${(currentIndex / Math.max(businessProcesses.length - 1, 1)) * 560}px`,
                                     }}
                                     transition={{ duration: 0.5, ease: 'easeInOut' }}
                                 ></motion.div>
@@ -226,12 +226,26 @@ export default function BusinessProcessSection() {
                                 className="absolute top-1/2 left-0 h-[11px] -translate-y-1/2 rounded-full"
                                 style={{
                                     backgroundColor: currentBusinessProcess.color_tag,
-                                    width: currentIndex === 0 ? 34 : `${(currentIndex / (businessProcesses.length - 1)) * 100}%`,
+                                    width:
+                                        currentIndex === 0
+                                            ? 34
+                                            : currentIndex === businessProcesses?.length - 1
+                                              ? `${Math.round((currentIndex / (businessProcesses.length - 1)) * 100)}%`
+                                              : `${Math.round((currentIndex / (businessProcesses.length - 1)) * 100) - currentIndex + 3}%`,
                                 }}
                                 initial={{ width: 0 }}
-                                animate={{ width: currentIndex === 0 ? 34 : `${(currentIndex / (businessProcesses.length - 1)) * 100}%` }}
+                                animate={{
+                                    width:
+                                        currentIndex === 0
+                                            ? 34
+                                            : currentIndex === businessProcesses?.length - 1
+                                              ? `${Math.round((currentIndex / (businessProcesses.length - 1)) * 100)}%`
+                                              : `${Math.round((currentIndex / (businessProcesses.length - 1)) * 100 - currentIndex + 3)}%`,
+                                }}
                                 transition={{ duration: 0.5, ease: 'easeInOut' }}
-                            ></motion.div>
+                            >
+                                {currentIndex === businessProcesses?.length - 1 ? 0 : currentIndex + 3}
+                            </motion.div>
                             {/* Steps */}
                             <div className="relative mt-6 flex w-full justify-between">
                                 {businessProcesses.map((process, index) => (
