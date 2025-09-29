@@ -13,6 +13,7 @@ export default function Navbar() {
     const isMobile = useIsMobile();
     const navToggleBtn = useRef<HTMLButtonElement>(null);
     const { isVisible, isScrolled } = useScrollDirection();
+    const navSidebarRef = useRef<HTMLDivElement>(null);
 
     const handleToggleNav = () => {
         toggle();
@@ -24,7 +25,7 @@ export default function Navbar() {
         }
     };
 
-    useOnClickOutside(navToggleBtn as RefObject<HTMLButtonElement>, handleNavClickoutside);
+    useOnClickOutside(navSidebarRef as RefObject<HTMLDivElement>, handleNavClickoutside);
 
     return (
         <header
@@ -53,7 +54,7 @@ export default function Navbar() {
                 </button>
             </nav>
 
-            <NavSidebar />
+            <NavSidebar ref={navSidebarRef as RefObject<HTMLDivElement>} />
         </header>
     );
 }

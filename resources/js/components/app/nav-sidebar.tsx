@@ -51,7 +51,7 @@ const links: LinksT[] = [
     },
 ];
 
-export default function NavSidebar() {
+export default function NavSidebar({ ref }: { ref?: React.RefObject<HTMLDivElement> }) {
     const { isToggle, toggle } = useNavStore();
 
     useEffect(() => {
@@ -71,7 +71,8 @@ export default function NavSidebar() {
     };
     return (
         <div
-            className={`fixed top-0 bottom-0 z-[888] h-screen w-screen bg-black transition-all duration-300 ease-in md:w-[40vw] lg:w-[30vw] ${isToggle ? 'right-0' : '-right-[100%] md:-right-[60%]'}`}
+            ref={ref}
+            className={`fixed top-0 bottom-0 z-[888] h-screen w-screen bg-black transition-all duration-300 ease-in md:w-[40vw] lg:w-[30vw] 2xl:w-[25vw] ${isToggle ? 'right-0' : '-right-[100%] md:-right-[60%]'}`}
         >
             <div className="hidden min-h-[92px] items-center justify-between border-b border-b-white/25 px-5 py-3 sm:flex">
                 <div className="flex items-center gap-2 text-white">
@@ -106,6 +107,7 @@ export default function NavSidebar() {
                         ) : (
                             <Link
                                 href={link.href}
+                                onClick={handleCloseNav}
                                 key={indx}
                                 className="font-inter flex min-h-[60px] w-full cursor-pointer items-center justify-center border-b border-b-white/25 font-bold text-white/50 uppercase transition-all duration-500 hover:text-white"
                             >
