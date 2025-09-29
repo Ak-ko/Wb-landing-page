@@ -38,6 +38,8 @@ export default function BusinessProcessItem({ businessProcess }: BusinessProcess
                                 transition={{ duration: 0.8, delay: 0.1 }}
                             >
                                 <img
+                                    loading="lazy"
+                                    decoding="async"
                                     className="relative z-10 w-full rounded-2xl object-cover shadow-lg"
                                     src={businessProcess.image}
                                     alt={businessProcess.title}
@@ -98,6 +100,8 @@ export default function BusinessProcessItem({ businessProcess }: BusinessProcess
                             transition={{ duration: 0.8, delay: 0.1 }}
                         >
                             <img
+                                loading="lazy"
+                                decoding="async"
                                 className="relative z-10 w-full rounded-2xl object-cover shadow-lg"
                                 src={businessProcess.image}
                                 alt={businessProcess.title}

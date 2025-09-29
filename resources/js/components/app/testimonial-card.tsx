@@ -15,7 +15,7 @@ export default function TestimonialCard({ testimonial, containerClass, onClick }
     return (
         <div
             className={cn(
-                'w-full rounded-xl bg-[#f4f4f4] p-6 shadow transition-all duration-300 md:p-16 lg:min-w-[650px]',
+                '3xl:!min-w-[900px] w-full rounded-xl bg-[#f4f4f4] p-6 shadow transition-all duration-300 md:p-16 lg:min-w-[650px]',
                 'transform cursor-pointer hover:-translate-y-1 hover:shadow-lg',
                 containerClass,
             )}

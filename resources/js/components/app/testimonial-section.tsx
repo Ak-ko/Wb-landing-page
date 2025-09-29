@@ -33,7 +33,7 @@ export default function TestimonialSection() {
         <>
             <section
                 id="testimonials"
-                className="app-container flex flex-col items-center py-32 lg:flex-row lg:justify-between xl:!px-[100px] 2xl:!px-[300px]"
+                className="app-container 3xl:!px-[300px] flex flex-col items-center py-32 lg:flex-row lg:justify-between xl:!px-[100px]"
             >
                 <SectionHeader
                     containerClass="lg:block "
@@ -48,7 +48,7 @@ export default function TestimonialSection() {
                         </div>
                     }
                 />
-                <div className="relative mt-18 w-full lg:mt-0 lg:w-[650px] 2xl:w-[800px]">
+                <div className="3xl:w-[900px] relative mt-18 w-full lg:mt-0 lg:w-[650px] 2xl:w-[800px]">
                     <SlideUpCarousel
                         items={testimonials}
                         renderItem={(testimonial) => (
