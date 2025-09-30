@@ -38,7 +38,7 @@ export default function BrandingProjectCard({ project, className = '' }: Brandin
     if (!sortedImages.length) return null;
 
     return (
-        <div className={`group relative cursor-pointer overflow-hidden rounded-lg shadow-md hover:shadow-xl ${className}`} onClick={handleCardClick}>
+        <div className={`group l relative cursor-pointer overflow-hidden rounded-lg ${className}`} onClick={handleCardClick}>
             {/* Single image display */}
             <div className="relative aspect-[4/3] w-full overflow-hidden bg-gray-100">
                 <img src={imageUrl} alt={project.title} className="h-full w-full object-cover" loading="lazy" decoding="async" />

@@ -1,4 +1,5 @@
 import { useIsMobile } from '@/hooks/use-mobile';
+import { cn } from '@/lib/utils';
 import { BusinessProcessT } from '@/types';
 import { usePage } from '@inertiajs/react';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -218,17 +219,25 @@ export default function BusinessProcessSection() {
                 {!isMobile && (
                     <div className="app-container mt-12">
                         <div className="relative mx-auto flex max-w-[1200px] items-center">
-                            <div className="absolute top-1/2 right-0 left-0 h-[11px] -translate-y-1/2 rounded-full bg-gray-300 dark:bg-gray-700"></div>
+                            <div
+                                className={cn(
+                                    'absolute top-1/2 right-0 left-0 -translate-y-1/2 rounded-full bg-gray-300 dark:bg-gray-700',
+                                    businessProcesses?.length >= 8 ? 'h-[10px]' : 'h-[11px]',
+                                )}
+                            ></div>
                             <div className="invisible w-[30px] opacity-0">
                                 data {Math.round((currentIndex / (businessProcesses.length - 1)) * 100)}
                             </div>
                             <motion.div
-                                className="absolute top-1/2 left-0 h-[11px] -translate-y-1/2 rounded-full"
+                                className={cn(
+                                    'absolute top-1/2 left-0 -translate-y-1/2 rounded-full',
+                                    businessProcesses?.length >= 8 ? 'h-[10px]' : 'h-[11px]',
+                                )}
                                 style={{
                                     backgroundColor: currentBusinessProcess.color_tag,
                                     width:
                                         currentIndex === 0
-                                            ? 34
+                                            ? 38
                                             : currentIndex === businessProcesses?.length - 1
                                               ? `${Math.round((currentIndex / (businessProcesses.length - 1)) * 100)}%`
                                               : `${Math.round((currentIndex / (businessProcesses.length - 1)) * 100) - currentIndex + 3}%`,
@@ -237,7 +246,7 @@ export default function BusinessProcessSection() {
                                 animate={{
                                     width:
                                         currentIndex === 0
-                                            ? 34
+                                            ? 38
                                             : currentIndex === businessProcesses?.length - 1
                                               ? `${Math.round((currentIndex / (businessProcesses.length - 1)) * 100)}%`
                                               : `${Math.round((currentIndex / (businessProcesses.length - 1)) * 100 - currentIndex + 3)}%`,
@@ -261,9 +270,9 @@ export default function BusinessProcessSection() {
                                     >
                                         {/* Step Circle */}
                                         <motion.div
-                                            className={`relative size-9 rounded-full border-4 transition-all duration-300 md:h-13 md:w-13 md:border-[9px] ${
+                                            className={`relative rounded-full border-4 transition-all duration-300 md:border-[9px] ${
                                                 index <= currentIndex ? 'shadow-lg' : ''
-                                            }`}
+                                            } ${businessProcesses?.length >= 8 ? 'md:size-10' : 'md:size-13'}`}
                                             style={{
                                                 borderColor: index <= currentIndex ? currentBusinessProcess.color_tag : '#d1d5db',
                                                 backgroundColor: 'white',
@@ -272,7 +281,6 @@ export default function BusinessProcessSection() {
                                             animate={{ scale: 1, opacity: 1 }}
                                             transition={{ delay: index * 0.1 }}
                                         ></motion.div>
-
                                         {/* Step Label */}
                                         <motion.span
                                             className={`mt-3 text-xs font-medium md:text-sm ${

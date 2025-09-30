@@ -89,9 +89,9 @@ export default function BusinessProcessItem({ businessProcess }: BusinessProcess
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
         >
-            <div className="relative grid w-full max-w-6xl grid-cols-1 items-center gap-8 md:grid-cols-3 md:gap-12">
+            <div className="relative grid w-full max-w-6xl grid-cols-1 items-center gap-8 md:grid-cols-5 md:gap-12">
                 {/* Image - First on mobile */}
-                <div className="order-1 flex justify-center md:order-1">
+                <div className="order-1 flex justify-center md:order-1 md:col-span-2">
                     {businessProcess?.image && (
                         <motion.div
                             className="relative w-full max-w-[280px] md:max-w-[400px]"
@@ -111,7 +111,7 @@ export default function BusinessProcessItem({ businessProcess }: BusinessProcess
                 </div>
 
                 {/* Step circle - Second on mobile */}
-                <div className="order-2 flex justify-center md:order-2">
+                <div className="order-2 flex justify-center md:order-2 md:col-span-1">
                     <motion.div
                         className="relative flex h-[140px] w-[140px] items-center justify-center md:h-[180px] md:w-[180px]"
                         initial={{ rotate: -5, scale: 0.9 }}
@@ -146,7 +146,7 @@ export default function BusinessProcessItem({ businessProcess }: BusinessProcess
                 </div>
 
                 {/* Text content - Third on mobile */}
-                <div className="order-3 flex justify-center md:order-3 md:justify-start md:text-left">
+                <div className="order-3 flex justify-center md:order-3 md:col-span-2 md:justify-start md:text-left">
                     <motion.div
                         className="w-full max-w-[320px] text-center md:max-w-[400px] md:text-left"
                         initial={{ y: isMobile ? 20 : 0, x: isMobile ? 0 : businessProcess.step % 2 === 0 ? 20 : -20, opacity: 0 }}
