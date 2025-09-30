@@ -37,12 +37,12 @@ export default function FaqSection() {
     };
 
     return (
-        <section id="faqSection" className="">
-            <div className="app-container">
+        <section id="faqSection">
+            <div className="app-container 3xl:px-[400px]">
                 <SectionHeader header="Commonly Asked Questions" containerClass="!justify-start !items-start" headerClass="!lg:text-start" />
 
                 <CommonBodyAnimation>
-                    <div className="flex flex-col lg:flex-row">
+                    <div className="flex w-full flex-col lg:flex-row">
                         <div className="basis-[80%]">
                             {faqs.length > 0 && (
                                 <div className="mt-8">
@@ -76,7 +76,7 @@ export default function FaqSection() {
                             )}
                         </div>
 
-                        <div className="mx-auto max-w-[500px] basis-[30%]">
+                        <div className="mx-auto max-w-[800] basis-[30%]">
                             <FaqUserForm />
                         </div>
                     </div>

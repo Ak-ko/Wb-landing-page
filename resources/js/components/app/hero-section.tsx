@@ -90,7 +90,7 @@ export default function HeroSection() {
                     <CharacterWithCoffee className="w-[120px] justify-self-end" viewBox="0 0 200 100" />
                 </div>
                 <motion.div
-                    className="relative mt-1 flex w-full flex-col items-center justify-center gap-5 xl:flex-row"
+                    className="relative mt-1 flex w-[80%] flex-col items-center justify-center gap-5 xl:flex-row"
                     animate={{ y: 0, opacity: 1 }}
                     initial={{ y: 100, opacity: 0 }}
                     transition={{ duration: 0.8, type: 'ease' }}

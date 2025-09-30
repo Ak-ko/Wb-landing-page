@@ -15,6 +15,10 @@ export default function OurExpertiseSection() {
     const { expertiseSections } = usePage<{ expertiseSections: ExpertiseSectionT[] }>().props;
     const { scrollTo } = useScroll();
 
+    if (!expertiseSections?.length) {
+        return null;
+    }
+
     return (
         <section className="py-32">
             <div className="app-container overflow-hidden">
