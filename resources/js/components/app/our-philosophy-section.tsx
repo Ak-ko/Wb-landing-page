@@ -22,7 +22,7 @@ export default function OurPhilosophySection() {
                     />
 
                     <CommonBodyAnimation>
-                        <div className="mx-auto grid max-w-4xl grid-cols-1 gap-3 py-11">
+                        <div className="mx-auto grid max-w-4xl grid-cols-1 gap-8 py-11">
                             {policy?.mission && (
                                 <div className="h-full w-full">
                                     <PhilosophyCard

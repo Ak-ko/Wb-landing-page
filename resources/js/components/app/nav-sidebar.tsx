@@ -93,14 +93,14 @@ export default function NavSidebar({ ref }: { ref?: React.RefObject<HTMLDivEleme
             </div>
 
             <div className="relative hidden h-full w-full items-center sm:flex">
-                <div className="w-full -translate-y-[30%] text-white">
+                <div className="3xl:-translate-y-[80%] w-full -translate-y-[30%] text-white">
                     {links?.map((link: LinksT, indx: number) =>
                         link?.externalLink ? (
                             <a
                                 href={link.href}
                                 key={indx}
                                 target="_blank"
-                                className="font-inter flex min-h-[60px] w-full cursor-pointer items-center justify-center border-b border-b-white/25 font-medium text-white/50 uppercase transition-all duration-500 hover:text-white"
+                                className="font-inter 3xl:min-h-[80px] flex min-h-[60px] w-full cursor-pointer items-center justify-center border-b border-b-white/25 font-medium text-white/50 uppercase transition-all duration-500 hover:text-white"
                             >
                                 {link.label}
                             </a>
@@ -109,7 +109,7 @@ export default function NavSidebar({ ref }: { ref?: React.RefObject<HTMLDivEleme
                                 href={link.href}
                                 onClick={handleCloseNav}
                                 key={indx}
-                                className="font-inter flex min-h-[60px] w-full cursor-pointer items-center justify-center border-b border-b-white/25 font-medium text-white/50 uppercase transition-all duration-500 hover:text-white"
+                                className="font-inter 3xl:min-h-[80px] flex min-h-[60px] w-full cursor-pointer items-center justify-center border-b border-b-white/25 font-medium text-white/50 uppercase transition-all duration-500 hover:text-white"
                             >
                                 {link.label}
                             </Link>

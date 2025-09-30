@@ -15,7 +15,7 @@ export default function BusinessAddonOptions() {
 
     return (
         <section className="py-16">
-            <div className="app-container space-y-5 sm:px-11">
+            <div className="app-container 3xl:px-[400px] space-y-5 sm:px-11">
                 <SectionHeader header="Add-On Options" />
 
                 <div className="grid grid-cols-1 gap-0.5 lg:grid-cols-2">

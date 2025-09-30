@@ -27,7 +27,7 @@ export default function AboutUsIntroSection() {
     return (
         <motion.section className="py-32" variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }}>
             <div className="app-container">
-                <motion.div className="mb-32" variants={contentBlockVariants}>
+                <motion.div className="3xl:px-[500px] mb-32" variants={contentBlockVariants}>
                     <AboutUsIntroContent
                         titleClassName="text-center lg:text-start"
                         title={
@@ -45,7 +45,7 @@ succeed by providing top-notch creative solutions, while doing what we love."
 
                 <OurFoundingPurposeSection />
 
-                <motion.div variants={contentBlockVariants}>
+                <motion.div className="3xl:px-[500px]" variants={contentBlockVariants}>
                     <AboutUsIntroContent
                         isReversed
                         title={

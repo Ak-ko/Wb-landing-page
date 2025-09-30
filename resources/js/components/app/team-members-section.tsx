@@ -82,7 +82,7 @@ export default function TeamMembersSection() {
         <>
             <section className="py-32">
                 <AboutUsHeader />
-                <div className="app-container">
+                <div className="app-container 3xl:px-[500px]">
                     {starTeamMembers && (
                         <div className="grid grid-cols-1 gap-4 py-11 xl:grid-cols-2">
                             {starTeamMembers.map((member, index) => (

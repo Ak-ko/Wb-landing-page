@@ -67,7 +67,7 @@ function BreadcrumbBar({
 
     return (
         <div
-            className="mx-auto my-11 flex h-25 w-[88%] items-center justify-between"
+            className="mx-auto my-11 flex h-25 w-[88%] items-center justify-center"
             style={{ borderTop: `2px solid ${color}`, borderBottom: `2px solid ${color}`, background: 'black' }}
         >
             {PANELS.map((panel, idx) => (
@@ -240,7 +240,7 @@ function StrategyPanelContent({
                         <ul key={colIdx} className="flex w-full flex-col gap-8">
                             {column.map((i: BrandElement) => (
                                 <li key={i?.id}>
-                                    <div className="flex w-full items-start gap-3 text-xl font-bold text-white uppercase 2xl:text-lg">
+                                    <div className="flex w-full items-start gap-3 text-xl font-bold text-white uppercase 2xl:text-2xl">
                                         <span>{i?.order}.</span>
                                         <span>{i?.title}</span>
                                     </div>
@@ -249,7 +249,7 @@ function StrategyPanelContent({
                                         {i?.items?.map((j: BrandElementItem) => (
                                             <li key={j?.id} className="flex items-start gap-3 text-white">
                                                 <span>{j?.order}.</span>
-                                                <span className="2xl:text-md flex-1 items-center">
+                                                <span className="flex-1 items-center 2xl:text-xl">
                                                     <span className="flex-1">{j?.title}</span>
                                                 </span>
                                             </li>
@@ -308,7 +308,7 @@ function GuidelinePanelContent({
                         <ul key={colIdx} className="flex w-full flex-col gap-8">
                             {column.map((i: BrandElement) => (
                                 <li key={i?.id}>
-                                    <div className="flex w-full items-start gap-3 text-xl font-bold text-white uppercase 2xl:text-lg">
+                                    <div className="flex w-full items-start gap-3 text-xl font-bold text-white uppercase 2xl:text-2xl">
                                         <span>{i?.order}.</span>
                                         <span>{i?.title}</span>
                                     </div>
@@ -316,7 +316,7 @@ function GuidelinePanelContent({
                                         {i?.items?.map((j: BrandElementItem) => (
                                             <li key={j?.id} className="flex items-start gap-3 text-white uppercase">
                                                 <span>{j?.order}.</span>
-                                                <span className="2xl:text-md flex-1 items-center">
+                                                <span className="flex-1 items-center 2xl:text-xl">
                                                     <span className="flex-1">{j?.title}</span>
                                                 </span>
                                             </li>
@@ -680,7 +680,11 @@ export default function BusinessPlanSection() {
                         const activePanel = activePanels[b.id] || 'main';
                         const setPanel = (panel: PanelKey) => setActivePanels((prev) => ({ ...prev, [b.id]: panel }));
                         return (
-                            <div key={b.id} className="business-plan-section mb-16 px-22 2xl:px-[150px]" data-business-package-id={b.id}>
+                            <div
+                                key={b.id}
+                                className="business-plan-section 3xl:px-[500px] mb-16 px-22 2xl:px-[150px]"
+                                data-business-package-id={b.id}
+                            >
                                 <div className="flex w-full flex-col overflow-hidden rounded-3xl bg-black py-11 2xl:rounded-[50px]">
                                     <div className="relative min-h-[800px] flex-1 overflow-y-auto">
                                         {/* Panels */}

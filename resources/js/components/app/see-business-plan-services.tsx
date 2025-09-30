@@ -6,9 +6,9 @@ export default function SeeBusinessPlanServicesSection() {
         <section className="relative mx-auto overflow-hidden py-[100px] lg:py-[259px]">
             <img
                 src="/assets/red-dragon.png"
-                className="absolute right-[8%] hidden max-w-[1500px] -rotate-y-[180deg] lg:top-[-10%] lg:block lg:w-[1100px] xl:top-[-50%] xl:w-auto 2xl:left-[-5%] 2xl:max-w-[1800px]"
+                className="3xl:w-[2000px] absolute right-[8%] hidden max-w-[1500px] -rotate-y-[180deg] lg:top-[-10%] lg:block lg:w-[1100px] xl:top-[-50%] xl:w-auto 2xl:left-[-5%] 2xl:max-w-[1800px]"
             />
-            <div className="app-container flex justify-end space-y-5 sm:px-11">
+            <div className="app-container 3xl:pr-[400px] flex justify-end space-y-5 sm:px-11">
                 <div className="relative z-1 w-full space-y-6 lg:max-w-[520px]">
                     <h1 className="text-center text-[35px] leading-[1.2] font-bold sm:text-[40px] lg:text-right">
                         Want to upgrade your <span className="text-crayola-blue">Brand</span>

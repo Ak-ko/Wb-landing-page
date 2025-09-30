@@ -8,11 +8,11 @@ export default function BusinessPlanHeader() {
                 <SectionHeader
                     header="Strategy-Based Branding"
                     description="HOW BRANDING DESIGN SHOULD BE DONE IN THE FIRST PLACE"
-                    descriptionClass="text-secondary-pink font-bold !text-[30px] !max-w-[700px] sm:!text-[35px] uppercase mt-2 "
+                    descriptionClass="text-secondary-pink font-bold !text-[30px] !max-w-[700px] 3xl:!max-w-[800px] sm:!text-[35px] uppercase mt-2 "
                     containerClass="-mt-5"
                 />
                 <CommonBodyAnimation>
-                    <p className="mx-auto mt-5 max-w-[800px] text-center text-lg font-medium 2xl:max-w-[900px] 2xl:text-3xl">
+                    <p className="mx-auto mt-5 text-center text-lg font-medium 2xl:text-3xl">
                         We transform businesses into brands that people can trust, follow, and love.
                     </p>
                 </CommonBodyAnimation>
