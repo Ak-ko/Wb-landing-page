@@ -118,7 +118,7 @@ export default function TestimonialSection() {
 
                                     {/* Quote icon */}
                                     <div className="absolute top-6 right-6 md:relative md:top-0 md:right-0">
-                                        <CloseQuote color={selectedTestimonial.color_tag || '#6366f1'} width={80} />
+                                        <CloseQuote color={selectedTestimonial.color_tag || '#6366f1'} className="mr-10 size-20" />
                                     </div>
                                 </div>
 

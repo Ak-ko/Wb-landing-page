@@ -100,7 +100,7 @@ export default function NavSidebar({ ref }: { ref?: React.RefObject<HTMLDivEleme
                                 href={link.href}
                                 key={indx}
                                 target="_blank"
-                                className="font-inter flex min-h-[60px] w-full cursor-pointer items-center justify-center border-b border-b-white/25 font-bold text-white/50 uppercase transition-all duration-500 hover:text-white"
+                                className="font-inter flex min-h-[60px] w-full cursor-pointer items-center justify-center border-b border-b-white/25 font-medium text-white/50 uppercase transition-all duration-500 hover:text-white"
                             >
                                 {link.label}
                             </a>
@@ -109,7 +109,7 @@ export default function NavSidebar({ ref }: { ref?: React.RefObject<HTMLDivEleme
                                 href={link.href}
                                 onClick={handleCloseNav}
                                 key={indx}
-                                className="font-inter flex min-h-[60px] w-full cursor-pointer items-center justify-center border-b border-b-white/25 font-bold text-white/50 uppercase transition-all duration-500 hover:text-white"
+                                className="font-inter flex min-h-[60px] w-full cursor-pointer items-center justify-center border-b border-b-white/25 font-medium text-white/50 uppercase transition-all duration-500 hover:text-white"
                             >
                                 {link.label}
                             </Link>
@@ -151,7 +151,7 @@ export default function NavSidebar({ ref }: { ref?: React.RefObject<HTMLDivEleme
                                 <a
                                     href={link.href}
                                     target="_blank"
-                                    className="flex min-h-[60px] w-full cursor-pointer items-center justify-center text-lg font-bold text-white/50 uppercase transition-all duration-500 hover:text-white active:text-white"
+                                    className="flex min-h-[60px] w-full cursor-pointer items-center justify-center text-lg font-medium text-white/50 uppercase transition-all duration-500 hover:text-white active:text-white"
                                 >
                                     {link.label}
                                 </a>
@@ -161,7 +161,7 @@ export default function NavSidebar({ ref }: { ref?: React.RefObject<HTMLDivEleme
                                         router.visit(link.href);
                                         handleCloseNav();
                                     }}
-                                    className="flex min-h-[60px] w-full cursor-pointer items-center justify-center text-lg font-bold text-white/50 uppercase transition-all duration-500 hover:text-white active:text-white"
+                                    className="flex min-h-[60px] w-full cursor-pointer items-center justify-center text-lg font-medium text-white/50 uppercase transition-all duration-500 hover:text-white active:text-white"
                                 >
                                     {link.label}
                                 </div>

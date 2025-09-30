@@ -85,12 +85,12 @@ export default function HeroSection() {
                 </div>
             )}
 
-            <div className="relative mx-auto flex max-w-[2500px] flex-col items-center justify-center gap-5 pt-7 lg:flex-row">
+            <div className="relative mx-auto -mt-[130px] flex max-w-[2500px] flex-col items-end justify-center gap-5 lg:flex-row">
                 <div className="hidden w-full md:block">
-                    <CharacterWithCoffee className="hero__left__mascot absolute w-[120px] md:bottom-0 lg:-bottom-8 xl:left-[calc(100vw-76%)] 2xl:left-[calc(100vw-65%)]" />
+                    <CharacterWithCoffee className="w-[120px] justify-self-end" viewBox="0 0 200 100" />
                 </div>
                 <motion.div
-                    className="relative flex w-full flex-col items-center justify-center gap-5 xl:flex-row"
+                    className="relative mt-1 flex w-full flex-col items-center justify-center gap-5 xl:flex-row"
                     animate={{ y: 0, opacity: 1 }}
                     initial={{ y: 100, opacity: 0 }}
                     transition={{ duration: 0.8, type: 'ease' }}
@@ -128,7 +128,7 @@ export default function HeroSection() {
                     />
                 </motion.div>
                 <div className="hidden w-full md:block">
-                    <CharacterRedWithSpring className="hero__right__mascot absolute w-[170px] md:-bottom-5 lg:-bottom-13" />
+                    <CharacterRedWithSpring className="w-[170px]" viewBox="0 0 300 50" />
                 </div>
             </div>
 
