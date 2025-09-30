@@ -1,3 +1,4 @@
+import BrandingProjectCard from '@/components/app/branding-project-card';
 import BehanceIcon from '@/components/app/icons/social-links/benance-icon';
 import ImageModal from '@/components/app/image-modal';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
@@ -5,7 +6,7 @@ import ThemedAccordion from '@/components/ui/themed-accordion';
 import useTopScrollAnimation from '@/hooks/use-top-scroll-animation';
 import LandingLayout from '@/layouts/landing-layout';
 import { BrandingProjectT } from '@/types';
-import { Head, Link } from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
 import { Building2, Calendar, Crown, MapPin, Play } from 'lucide-react';
 import { useRef, useState } from 'react';
 
@@ -298,31 +299,7 @@ export default function BrandingProjectDetail({ project, relatedProjects }: Bran
                             <h2 className="mb-8 text-2xl font-bold">Related Projects</h2>
                             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
                                 {relatedProjects.map((project) => (
-                                    <Link
-                                        key={project.id}
-                                        href={route('branding-projects.detail', { project: project.id })}
-                                        className="group block overflow-hidden rounded-xl bg-white shadow-lg transition-all hover:shadow-xl"
-                                    >
-                                        {project.images?.[0] && (
-                                            <div className="aspect-video overflow-hidden">
-                                                <img
-                                                    src={project.images[0].image}
-                                                    alt={project.title}
-                                                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-                                                />
-                                            </div>
-                                        )}
-                                        <div className="p-6">
-                                            <h3 className="mb-2 text-xl font-bold text-gray-900">{project.title}</h3>
-                                            <p className="mb-2 text-sm text-gray-600">{project.client_company}</p>
-                                            {project.client_origin && (
-                                                <div className="flex items-center gap-1 text-xs text-gray-500">
-                                                    <MapPin size={12} />
-                                                    <span>{project.client_origin}</span>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </Link>
+                                    <BrandingProjectCard key={project.id} project={project} />
                                 ))}
                             </div>
                         </div>
