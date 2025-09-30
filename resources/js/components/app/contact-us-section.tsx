@@ -12,7 +12,7 @@ import MessengerIcon from './icons/social-links/messenger-icon';
 export default function ContactUsSection() {
     return (
         <section className="py-32">
-            <div className="app-container overflow-hidden">
+            <div className="app-container 3xl:px-[400px] overflow-hidden">
                 <CommonBodyAnimation>
                     <div className="flex flex-col items-center gap-11 lg:flex-row lg:items-stretch lg:justify-between lg:gap-0">
                         <motion.div initial={{ x: -100 }} whileInView={{ x: 0 }} className="flex flex-col justify-between">
