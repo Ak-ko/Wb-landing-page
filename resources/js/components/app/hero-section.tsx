@@ -85,12 +85,12 @@ export default function HeroSection() {
                 </div>
             )}
 
-            <div className="relative mx-auto -mt-[130px] flex max-w-[2500px] flex-col items-end justify-center gap-5 lg:flex-row">
-                <div className="hidden w-full md:block">
-                    <CharacterWithCoffee className="w-[120px] justify-self-end" viewBox="0 0 200 100" />
+            <div className="relative mx-auto mt-[40px] flex max-w-[2500px] flex-col items-end justify-center gap-5 lg:flex-row xl:-mt-[130px]">
+                <div className="hidden w-full xl:block">
+                    <CharacterWithCoffee className="ml-auto w-[120px] justify-self-end" viewBox="0 0 200 100" />
                 </div>
                 <motion.div
-                    className="relative mt-1 flex w-[80%] flex-col items-center justify-center gap-5 xl:flex-row"
+                    className="relative mt-1 flex w-full flex-col items-center justify-center gap-5 lg:w-[80%] xl:flex-row"
                     animate={{ y: 0, opacity: 1 }}
                     initial={{ y: 100, opacity: 0 }}
                     transition={{ duration: 0.8, type: 'ease' }}
@@ -127,7 +127,7 @@ export default function HeroSection() {
                         href={route('art-plan-page')}
                     />
                 </motion.div>
-                <div className="hidden w-full md:block">
+                <div className="hidden w-full xl:block">
                     <CharacterRedWithSpring className="w-[170px]" viewBox="0 0 300 50" />
                 </div>
             </div>
