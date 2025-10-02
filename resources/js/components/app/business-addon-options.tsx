@@ -26,6 +26,7 @@ export default function BusinessAddonOptions() {
                             whileInView={{ scaleX: 1 }}
                             initial={{ scaleX: 0 }}
                             transition={{ duration: 0.5, delay: 1, ease: 'easeInOut' }}
+                            viewport={{ once: true }}
                             className="w-full origin-left rounded-2xl bg-gray-100 p-3 text-center font-bold text-black"
                         >
                             <h1 className="uppercase">All designs have 2 rounds of revision.</h1>

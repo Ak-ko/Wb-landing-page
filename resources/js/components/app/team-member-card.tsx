@@ -43,7 +43,7 @@ export default function TeamMemberCard({ teamMember, varient = 'expanded', onCli
                     <img
                         src={teamMember?.image}
                         className={cn(
-                            'invisible absolute left-1/2 h-full w-full shrink-0 -translate-x-1/2 -translate-y-[100px] scale-0 object-cover opacity-0 transition-all duration-500 group-hover:visible group-hover:translate-y-0 group-hover:scale-[1] group-hover:opacity-100',
+                            'invisible absolute left-1/2 h-full w-full shrink-0 -translate-x-1/2 translate-y-[100px] scale-0 object-cover opacity-0 transition-all duration-500 group-hover:visible group-hover:translate-y-0 group-hover:scale-[1] group-hover:opacity-100',
                             varient === 'compact' ? 'max-w-[210px] !-translate-y-6.5' : 'max-w-[320px]',
                         )}
                         alt="human-image"
@@ -51,7 +51,7 @@ export default function TeamMemberCard({ teamMember, varient = 'expanded', onCli
                     <img
                         src={teamMember?.mascot_image}
                         className={cn(
-                            'visible shrink-0 scale-[1] opacity-100 transition-all duration-500 group-hover:invisible group-hover:translate-y-[100%] group-hover:scale-[0] group-hover:opacity-0',
+                            'visible shrink-0 scale-[1] opacity-100 transition-all duration-500 group-hover:invisible group-hover:-translate-y-[100%] group-hover:scale-[0] group-hover:opacity-0',
                             varient === 'compact' ? 'max-w-[210px] -translate-y-6.5' : 'max-w-[320px] translate-y-0',
                         )}
                         alt="mascot-image"

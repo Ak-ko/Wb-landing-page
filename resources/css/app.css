@@ -191,6 +191,11 @@
         @apply border-border;
     }
 
+    .hide-horizontal-scrollbar {
+        overflow-x: hidden;
+        scrollbar-width: none;
+    }
+
     body {
         @apply bg-background text-foreground;
     }

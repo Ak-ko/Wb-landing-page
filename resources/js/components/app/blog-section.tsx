@@ -160,20 +160,33 @@ export default function BlogSection() {
                         {blogs?.length > 1 && (
                             <>
                                 <CarouselPrevious
-                                    disabled={currentIndex === 0}
+                                    disabled={false}
+                                    onClick={() => {
+                                        if (currentIndex === 0) {
+                                            // scroll to last item
+                                            return api?.scrollTo(blogs.length - 1);
+                                        }
+                                        return api?.scrollTo(currentIndex - 1);
+                                    }}
                                     style={{
                                         backgroundColor: blogs[currentIndex]?.color,
                                         color: isLightColor(blogs[currentIndex]?.color) ? 'black' : 'white',
                                     }}
-                                    className="left-0 size-[50px] md:left-2"
+                                    className="left-0 size-[50px] cursor-pointer transition-all duration-300 hover:scale-[1.2] active:scale-[0.8] md:left-2"
                                 />
                                 <CarouselNext
-                                    disabled={currentIndex === blogs.length - 1}
+                                    disabled={false}
+                                    onClick={() => {
+                                        if (currentIndex === blogs.length - 1) {
+                                            return api?.scrollTo(0);
+                                        }
+                                        return api?.scrollTo(currentIndex + 1);
+                                    }}
                                     style={{
                                         backgroundColor: blogs[currentIndex]?.color,
                                         color: isLightColor(blogs[currentIndex]?.color) ? 'black' : 'white',
                                     }}
-                                    className="right-0 size-[50px] md:right-2"
+                                    className="right-0 size-[50px] cursor-pointer transition-all duration-300 hover:scale-[1.2] active:scale-[0.8] md:right-2"
                                 />
                             </>
                         )}

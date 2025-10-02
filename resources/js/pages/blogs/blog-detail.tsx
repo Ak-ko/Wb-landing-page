@@ -1,10 +1,11 @@
 import BlogCard from '@/components/app/blog-card';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import { Carousel, CarouselApi, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import useTopScrollAnimation from '@/hooks/use-top-scroll-animation';
 import LandingLayout from '@/layouts/landing-layout';
 import { BlogT } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { Calendar, Clock } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 interface BlogDetailProps {
     blog: BlogT;
@@ -14,6 +15,16 @@ interface BlogDetailProps {
 
 export default function BlogDetail({ blog, relatedBlogs, readingTime }: BlogDetailProps) {
     const { topBarClass } = useTopScrollAnimation();
+    const [api, setApi] = useState<CarouselApi>();
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    useEffect(() => {
+        if (!api) return;
+        setCurrentIndex(api.selectedScrollSnap());
+        api.on('select', () => {
+            setCurrentIndex(api.selectedScrollSnap());
+        });
+    }, [api]);
 
     return (
         <LandingLayout>
@@ -21,7 +32,7 @@ export default function BlogDetail({ blog, relatedBlogs, readingTime }: BlogDeta
             <div className={`${topBarClass} fixed top-0 left-0 z-[5] h-[5px] w-full origin-left`} />
 
             <div className="min-h-[90vh] py-5">
-                <div className="app-container mx-auto max-w-3xl">
+                <div className="app-container mx-auto">
                     <div className="mb-4 flex items-center gap-2 text-sm text-gray-500">
                         <Link href={route('blogs.list')} className="hover:text-primary">
                             Blogs
@@ -54,18 +65,34 @@ export default function BlogDetail({ blog, relatedBlogs, readingTime }: BlogDeta
                     </div>
                     {blog.images.length > 0 && (
                         <div className="mb-8">
-                            <Carousel className="w-full">
+                            <Carousel setApi={setApi} className="w-full">
                                 <CarouselContent>
                                     {blog.images.map((image) => (
                                         <CarouselItem key={image.id}>
-                                            <img src={image.image} alt={blog.title} className="mx-auto max-w-[500px] rounded-xl object-cover" />
+                                            <img src={image.image} alt={blog.title} className="mx-auto h-full w-full rounded-xl object-cover" />
                                         </CarouselItem>
                                     ))}
                                 </CarouselContent>
                                 {blog.images.length > 1 && (
                                     <>
-                                        <CarouselPrevious />
-                                        <CarouselNext />
+                                        <CarouselPrevious
+                                            disabled={false}
+                                            onClick={() => {
+                                                if (currentIndex === 0) {
+                                                    return api?.scrollTo(blog.images.length - 1);
+                                                }
+                                                return api?.scrollTo(currentIndex - 1);
+                                            }}
+                                        />
+                                        <CarouselNext
+                                            disabled={false}
+                                            onClick={() => {
+                                                if (currentIndex === blog.images.length - 1) {
+                                                    return api?.scrollTo(0);
+                                                }
+                                                return api?.scrollTo(currentIndex + 1);
+                                            }}
+                                        />
                                     </>
                                 )}
                             </Carousel>

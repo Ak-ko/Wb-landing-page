@@ -686,7 +686,7 @@ export default function BusinessPlanSection() {
                                 data-business-package-id={b.id}
                             >
                                 <div className="flex w-full flex-col overflow-hidden rounded-3xl bg-black py-11 2xl:rounded-[50px]">
-                                    <div className="relative min-h-[800px] flex-1 overflow-y-auto">
+                                    <div className="relative min-h-[800px] flex-1 overflow-x-hidden overflow-y-auto">
                                         {/* Panels */}
                                         <motion.div
                                             animate={{ x: activePanel === 'main' ? 0 : activePanel === 'strategy' ? '-100%' : '-200%' }}

@@ -30,16 +30,19 @@ export default function BrandingProjectsGrid({ projects }: { projects: BrandingP
                                     <span>{project.client_origin}</span>
                                 </div>
                             )}
-                            <div className="flex flex-wrap gap-2">
-                                {project.tags.map((tag) => (
+                            <div className="flex gap-2">
+                                {project.tags?.slice(0, 3).map((tag) => (
                                     <span
                                         key={tag.id}
-                                        className="rounded-full px-3 py-1 text-xs font-medium"
+                                        className="rounded-full px-2 py-1 text-xs font-medium"
                                         style={{ backgroundColor: tag.color, color: '#fff' }}
                                     >
                                         {tag.name}
                                     </span>
                                 ))}
+                                {project.tags?.length > 3 && (
+                                    <span className="bg-primary-orange rounded-full px-3 py-1 text-xs text-white">+{project.tags?.length - 3}</span>
+                                )}
                             </div>
                         </div>
                     </Link>

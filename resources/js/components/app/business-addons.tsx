@@ -14,8 +14,9 @@ export default function BusinessAddons({ businessPackageAddons }: { businessPack
             <tbody className="block">
                 {businessPackageAddons.map((addon, indx) => (
                     <motion.tr
-                        whileInView={{ y: 0, x: 0, scale: 1, opacity: 1 }}
                         initial={{ y: 50, x: 50, scale: 1.5, opacity: 0 }}
+                        whileInView={{ y: 0, x: 0, scale: 1, opacity: 1 }}
+                        viewport={{ once: true, amount: 0.3 }}
                         transition={{ duration: 0.95, delay: 0.2 + indx / 10, type: 'spring' }}
                         key={addon?.id}
                         className="my-2 block w-full space-x-1 lg:space-x-3"

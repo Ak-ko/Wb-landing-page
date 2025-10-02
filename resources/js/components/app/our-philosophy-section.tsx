@@ -28,7 +28,7 @@ export default function OurPhilosophySection() {
                                     <PhilosophyCard
                                         title="Mission"
                                         containerClassName="h-full"
-                                        titleClassName="text-secondary-orange"
+                                        titleClassName="text-black"
                                         content={policy.mission}
                                     />
                                 </div>
@@ -36,12 +36,7 @@ export default function OurPhilosophySection() {
 
                             {policy?.vision && (
                                 <div className="h-full w-full">
-                                    <PhilosophyCard
-                                        containerClassName="h-full"
-                                        title="Vision"
-                                        titleClassName="text-crayola-blue"
-                                        content={policy.vision}
-                                    />
+                                    <PhilosophyCard containerClassName="h-full" title="Vision" titleClassName="text-black" content={policy.vision} />
                                 </div>
                             )}
 
@@ -50,7 +45,7 @@ export default function OurPhilosophySection() {
                                     <PhilosophyCard
                                         containerClassName="h-full"
                                         title="Core values"
-                                        titleClassName="text-secondary-pink"
+                                        titleClassName="text-black"
                                         content={policy.core_values}
                                     />
                                 </div>

@@ -141,7 +141,7 @@ export default function BrandingProjectDetail({ project, relatedProjects }: Bran
             ? [
                   {
                       id: 'technologies',
-                      title: 'Technologies & Tools',
+                      title: 'Fields',
                       content: (
                           <div className="flex flex-wrap gap-2">
                               {project.tags.map((tag) => (

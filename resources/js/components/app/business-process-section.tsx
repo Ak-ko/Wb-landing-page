@@ -230,8 +230,9 @@ export default function BusinessProcessSection() {
                             </div>
                             <motion.div
                                 className={cn(
-                                    'absolute top-1/2 left-0 -translate-y-1/2 rounded-full',
+                                    'absolute top-1/2 left-0 -translate-y-1/2',
                                     businessProcesses?.length >= 8 ? 'h-[10px]' : 'h-[11px]',
+                                    currentIndex === businessProcesses?.length - 1 ? 'rounded-full' : 'rounded-r-none',
                                 )}
                                 style={{
                                     backgroundColor: currentBusinessProcess.color_tag,
