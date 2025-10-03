@@ -11,7 +11,7 @@
 
     <meta property="og:title" content="Walking Brands Design and Art Consultancy | Design Studio in Asia">
     <meta property="og:description" content="Explore the creative work of Walking Brands Design and Art Consultancy — a design studio based in Asia offering branding and art consultancy services.">
-    <meta property="og:image" content="/assets/logo.png">
+    <meta property="og:image" content="/assets/favicon.png">
     <meta property="og:url" content="https://walkingbrands.co">
     <meta property="og:type" content="website">
 
@@ -40,7 +40,7 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
 
-    <link rel="icon" href="/assets/logo.png" />
+    <link rel="icon" href="/assets/favicon.png" />
 
     @routes
     @viteReactRefresh
