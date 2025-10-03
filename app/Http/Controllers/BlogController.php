@@ -220,12 +220,10 @@ class BlogController extends Controller
      */
     public function destroy(Blog $blog)
     {
-        // Delete associated images from storage
         foreach ($blog->images as $image) {
-            Storage::disk('public')->delete($image->image);
+            Storage::delete($image->image);
         }
 
-        // The blog and its images will be deleted due to the cascade constraint
         $blog->delete();
 
         return redirect()->route('blogs.index')->with('success', 'Blog deleted successfully.');
