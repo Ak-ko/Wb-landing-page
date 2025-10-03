@@ -3,7 +3,6 @@
 namespace App\Traits;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
@@ -70,7 +69,12 @@ trait ChunkUploadHandler
         $finalPath = $directory . '/' . $filename;
 
         // Move the file to the final location
-        Storage::putFileAs($directory, $file, $filename);
+        Storage::putFileAs(
+            $directory,
+            $file,
+            $filename,
+            config('filesystems.disks.' . config('filesystems.default') . '.visibility')
+        );
 
         // Return the path to the final file
         return response()->json([

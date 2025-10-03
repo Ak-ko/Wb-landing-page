@@ -293,7 +293,7 @@ class BrandingProjectController extends Controller
     {
         // Delete associated images from storage
         foreach ($brandingProject->images as $image) {
-            Storage::disk('public')->delete($image->image);
+            Storage::delete($image->image);
         }
 
         $brandingProject->delete();

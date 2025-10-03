@@ -41,7 +41,7 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
             'throw' => false,
             'report' => false,
@@ -58,6 +58,24 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'throw' => false,
             'report' => false,
+        ],
+
+        'spaces' => [
+            'driver' => 's3',
+            'key' => env('DO_SPACE_ACCESS_KEY_ID'),
+            'secret' => env('DO_SPACE_SECRET_ACCESS_KEY'),
+            'region' => env('DO_SPACE_DEFAULT_REGION', 'sgp1'),
+            'bucket' => env('DO_SPACE_BUCKET'),
+            'url' => env('DO_SPACE_URL'),
+            'endpoint' => env('DO_SPACE_ENDPOINT'),
+            'throw' => env('DO_SPACE_THROW', true),
+            'report' => env('DO_SPACE_REPORT', false),
+            'use_path_style_endpoint' => env('DO_SPACE_USE_PATH_STYLE_ENDPOINT', false),
+            'visibility' => env('DO_SPACE_VISIBILITY', 'public'),
+            'options' => [
+                'timeout' => 300,     // total timeout
+                'connect_timeout' => 60, // connection timeout
+            ],
         ],
 
     ],
