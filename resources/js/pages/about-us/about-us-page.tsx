@@ -1,28 +1,42 @@
-import AboutUsIntroSection from '@/components/app/about-us-intro-section';
-import AboutWalkingBrandSection from '@/components/app/about-walking-brands-section';
-import BlogSection from '@/components/app/blog-section';
-import ContactUsSection from '@/components/app/contact-us-section';
-import OurPhilosophySection from '@/components/app/our-philosophy-section';
-import TeamMembersSection from '@/components/app/team-members-section';
 import LandingLayout from '@/layouts/landing-layout';
 import { Head } from '@inertiajs/react';
+import { lazy, Suspense } from 'react';
+
+const AboutUsIntroSection = lazy(() => import('@/components/app/about-us-intro-section'));
+const AboutWalkingBrandSection = lazy(() => import('@/components/app/about-walking-brands-section'));
+const BlogSection = lazy(() => import('@/components/app/blog-section'));
+const ContactUsSection = lazy(() => import('@/components/app/contact-us-section'));
+const OurPhilosophySection = lazy(() => import('@/components/app/our-philosophy-section'));
+const TeamMembersSection = lazy(() => import('@/components/app/team-members-section'));
 
 export default function AboutUsPage() {
     return (
         <LandingLayout>
             <Head title="About Us" />
 
-            <AboutWalkingBrandSection />
+            <Suspense fallback={<div />}>
+                <AboutWalkingBrandSection />
+            </Suspense>
 
-            <AboutUsIntroSection />
+            <Suspense fallback={<div />}>
+                <AboutUsIntroSection />
+            </Suspense>
 
-            <OurPhilosophySection />
+            <Suspense fallback={<div />}>
+                <OurPhilosophySection />
+            </Suspense>
 
-            <TeamMembersSection />
+            <Suspense fallback={<div />}>
+                <TeamMembersSection />
+            </Suspense>
 
-            <BlogSection />
+            <Suspense fallback={<div />}>
+                <BlogSection />
+            </Suspense>
 
-            <ContactUsSection />
+            <Suspense fallback={<div />}>
+                <ContactUsSection />
+            </Suspense>
         </LandingLayout>
     );
 }

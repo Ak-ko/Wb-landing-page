@@ -1,4 +1,3 @@
-import BrandingProjectCard from '@/components/app/branding-project-card';
 import BehanceIcon from '@/components/app/icons/social-links/benance-icon';
 import ImageModal from '@/components/app/image-modal';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
@@ -8,7 +7,9 @@ import LandingLayout from '@/layouts/landing-layout';
 import { BrandingProjectT } from '@/types';
 import { Head } from '@inertiajs/react';
 import { Building2, Calendar, Crown, MapPin, Play } from 'lucide-react';
-import { useRef, useState } from 'react';
+import { lazy, Suspense, useRef, useState } from 'react';
+
+const BrandingProjectCard = lazy(() => import('@/components/app/branding-project-card'));
 
 interface BrandingProjectDetailProps {
     project: BrandingProjectT;
@@ -299,7 +300,9 @@ export default function BrandingProjectDetail({ project, relatedProjects }: Bran
                             <h2 className="mb-8 text-2xl font-bold">Related Projects</h2>
                             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
                                 {relatedProjects.map((project) => (
-                                    <BrandingProjectCard key={project.id} project={project} />
+                                    <Suspense key={project.id} fallback={<div />}>
+                                        <BrandingProjectCard project={project} />
+                                    </Suspense>
                                 ))}
                             </div>
                         </div>

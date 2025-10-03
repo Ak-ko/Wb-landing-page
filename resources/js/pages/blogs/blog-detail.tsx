@@ -1,11 +1,12 @@
-import BlogCard from '@/components/app/blog-card';
 import { Carousel, CarouselApi, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import useTopScrollAnimation from '@/hooks/use-top-scroll-animation';
 import LandingLayout from '@/layouts/landing-layout';
 import { BlogT } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { Calendar, Clock } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
+
+const BlogCard = lazy(() => import('@/components/app/blog-card'));
 
 interface BlogDetailProps {
     blog: BlogT;
@@ -107,7 +108,9 @@ export default function BlogDetail({ blog, relatedBlogs, readingTime }: BlogDeta
                             <h2 className="mb-6 text-2xl font-bold">Related Blogs</h2>
                             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                                 {relatedBlogs.map((blog) => (
-                                    <BlogCard key={blog.id} blog={blog} />
+                                    <Suspense key={blog.id} fallback={<div />}>
+                                        <BlogCard blog={blog} />
+                                    </Suspense>
                                 ))}
                             </div>
                         </div>

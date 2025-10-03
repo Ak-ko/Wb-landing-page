@@ -1,49 +1,77 @@
-import AvailableWorksSection from '@/components/app/available-works-section';
-import BlogSection from '@/components/app/blog-section';
-import BookACallSection from '@/components/app/book-a-call-section';
-import BrandSection from '@/components/app/brand-section';
-import BrandingProjectSection from '@/components/app/branding-project-section';
-import BusinessProcessSection from '@/components/app/business-process-section';
-import ContactUsSection from '@/components/app/contact-us-section';
-import FaqSection from '@/components/app/faq-section';
-import HarmonyOfTheDesignSection from '@/components/app/harmony-of-the-design-section';
-import HeroSection from '@/components/app/hero-section';
-import OurExpertiseSection from '@/components/app/our-expertise-section';
-import TestimonialSection from '@/components/app/testimonial-section';
-import WhyUsSection from '@/components/app/why-us-section';
 import LandingLayout from '@/layouts/landing-layout';
 import { Head } from '@inertiajs/react';
+import { lazy, Suspense } from 'react';
+
+const AvailableWorksSection = lazy(() => import('@/components/app/available-works-section'));
+const BlogSection = lazy(() => import('@/components/app/blog-section'));
+const BookACallSection = lazy(() => import('@/components/app/book-a-call-section'));
+const BrandSection = lazy(() => import('@/components/app/brand-section'));
+const BrandingProjectSection = lazy(() => import('@/components/app/branding-project-section'));
+const BusinessProcessSection = lazy(() => import('@/components/app/business-process-section'));
+const ContactUsSection = lazy(() => import('@/components/app/contact-us-section'));
+const FaqSection = lazy(() => import('@/components/app/faq-section'));
+const HarmonyOfTheDesignSection = lazy(() => import('@/components/app/harmony-of-the-design-section'));
+const HeroSection = lazy(() => import('@/components/app/hero-section'));
+const OurExpertiseSection = lazy(() => import('@/components/app/our-expertise-section'));
+const TestimonialSection = lazy(() => import('@/components/app/testimonial-section'));
+const WhyUsSection = lazy(() => import('@/components/app/why-us-section'));
 
 export default function HomePage() {
     return (
         <LandingLayout>
             <Head title="Home" />
 
-            <HeroSection />
+            <Suspense fallback={<div />}>
+                <HeroSection />
+            </Suspense>
 
-            <AvailableWorksSection />
+            <Suspense fallback={<div />}>
+                <AvailableWorksSection />
+            </Suspense>
 
-            <WhyUsSection />
+            <Suspense fallback={<div />}>
+                <WhyUsSection />
+            </Suspense>
 
-            <BrandSection />
+            <Suspense fallback={<div />}>
+                <BrandSection />
+            </Suspense>
 
-            <TestimonialSection />
+            <Suspense fallback={<div />}>
+                <TestimonialSection />
+            </Suspense>
 
-            <HarmonyOfTheDesignSection />
+            <Suspense fallback={<div />}>
+                <HarmonyOfTheDesignSection />
+            </Suspense>
 
-            <BusinessProcessSection />
+            <Suspense fallback={<div />}>
+                <BusinessProcessSection />
+            </Suspense>
 
-            <BrandingProjectSection />
+            <Suspense fallback={<div />}>
+                <BrandingProjectSection />
+            </Suspense>
 
-            <BlogSection />
+            <Suspense fallback={<div />}>
+                <BlogSection />
+            </Suspense>
 
-            <OurExpertiseSection />
+            <Suspense fallback={<div />}>
+                <OurExpertiseSection />
+            </Suspense>
 
-            <FaqSection />
+            <Suspense fallback={<div />}>
+                <FaqSection />
+            </Suspense>
 
-            <BookACallSection />
+            <Suspense fallback={<div />}>
+                <BookACallSection />
+            </Suspense>
 
-            <ContactUsSection />
+            <Suspense fallback={<div />}>
+                <ContactUsSection />
+            </Suspense>
         </LandingLayout>
     );
 }

@@ -1,34 +1,52 @@
-import AnimationAndArtSection from '@/components/app/animation-and-art-section';
-import ArtPlanHeader from '@/components/app/art-plan-header';
-import ComicArtSection from '@/components/app/comic-art-section';
-import IllustrationArtSection from '@/components/app/illustration-art-section';
-import MascotArtSection from '@/components/app/mascot-art-section';
-import SeeBusinessPlanServicesSection from '@/components/app/see-business-plan-services';
-import StickerArtSection from '@/components/app/sticker-art-section';
-import TermsAndConditionSection from '@/components/app/terms-and-condition-section';
 import LandingLayout from '@/layouts/landing-layout';
 import { Head } from '@inertiajs/react';
+import { lazy, Suspense } from 'react';
+
+const AnimationAndArtSection = lazy(() => import('@/components/app/animation-and-art-section'));
+const ArtPlanHeader = lazy(() => import('@/components/app/art-plan-header'));
+const ComicArtSection = lazy(() => import('@/components/app/comic-art-section'));
+const IllustrationArtSection = lazy(() => import('@/components/app/illustration-art-section'));
+const MascotArtSection = lazy(() => import('@/components/app/mascot-art-section'));
+const SeeBusinessPlanServicesSection = lazy(() => import('@/components/app/see-business-plan-services'));
+const StickerArtSection = lazy(() => import('@/components/app/sticker-art-section'));
+const TermsAndConditionSection = lazy(() => import('@/components/app/terms-and-condition-section'));
 
 export default function ArtPlanPage() {
     return (
         <LandingLayout>
             <Head title="Art Plan" />
 
-            <ArtPlanHeader />
+            <Suspense fallback={<div />}>
+                <ArtPlanHeader />
+            </Suspense>
 
-            <MascotArtSection />
+            <Suspense fallback={<div />}>
+                <MascotArtSection />
+            </Suspense>
 
-            <IllustrationArtSection />
+            <Suspense fallback={<div />}>
+                <IllustrationArtSection />
+            </Suspense>
 
-            <ComicArtSection />
+            <Suspense fallback={<div />}>
+                <ComicArtSection />
+            </Suspense>
 
-            <AnimationAndArtSection />
+            <Suspense fallback={<div />}>
+                <AnimationAndArtSection />
+            </Suspense>
 
-            <StickerArtSection />
+            <Suspense fallback={<div />}>
+                <StickerArtSection />
+            </Suspense>
 
-            <SeeBusinessPlanServicesSection />
+            <Suspense fallback={<div />}>
+                <SeeBusinessPlanServicesSection />
+            </Suspense>
 
-            <TermsAndConditionSection />
+            <Suspense fallback={<div />}>
+                <TermsAndConditionSection />
+            </Suspense>
         </LandingLayout>
     );
 }

@@ -1,16 +1,22 @@
-import BlogPageHeader from '@/components/app/blog-page-header';
-import BlogPageSection from '@/components/app/blog-page-section';
 import LandingLayout from '@/layouts/landing-layout';
 import { Head } from '@inertiajs/react';
+import { lazy, Suspense } from 'react';
+
+const BlogPageHeader = lazy(() => import('@/components/app/blog-page-header'));
+const BlogPageSection = lazy(() => import('@/components/app/blog-page-section'));
 
 export default function BlogsPage() {
     return (
         <LandingLayout>
             <Head title="Blogs" />
 
-            <BlogPageHeader />
+            <Suspense fallback={<div />}>
+                <BlogPageHeader />
+            </Suspense>
 
-            <BlogPageSection />
+            <Suspense fallback={<div />}>
+                <BlogPageSection />
+            </Suspense>
         </LandingLayout>
     );
 }

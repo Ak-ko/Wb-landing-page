@@ -1,25 +1,37 @@
-import BusinessAddonOptions from '@/components/app/business-addon-options';
-import BusinessPlanHeader from '@/components/app/business-plan-header';
-import BusinessPlanSection from '@/components/app/business-plan-section';
-import SeeArtServicesSection from '@/components/app/see-art-services';
-import TermsAndConditionSection from '@/components/app/terms-and-condition-section';
 import LandingLayout from '@/layouts/landing-layout';
 import { Head } from '@inertiajs/react';
+import { lazy, Suspense } from 'react';
+
+const BusinessAddonOptions = lazy(() => import('@/components/app/business-addon-options'));
+const BusinessPlanHeader = lazy(() => import('@/components/app/business-plan-header'));
+const BusinessPlanSection = lazy(() => import('@/components/app/business-plan-section'));
+const SeeArtServicesSection = lazy(() => import('@/components/app/see-art-services'));
+const TermsAndConditionSection = lazy(() => import('@/components/app/terms-and-condition-section'));
 
 export default function BusinessPlanPage() {
     return (
         <LandingLayout>
             <Head title="Business Plan" />
 
-            <BusinessPlanHeader />
+            <Suspense fallback={<div />}>
+                <BusinessPlanHeader />
+            </Suspense>
 
-            <BusinessPlanSection />
+            <Suspense fallback={<div />}>
+                <BusinessPlanSection />
+            </Suspense>
 
-            <BusinessAddonOptions />
+            <Suspense fallback={<div />}>
+                <BusinessAddonOptions />
+            </Suspense>
 
-            <SeeArtServicesSection />
+            <Suspense fallback={<div />}>
+                <SeeArtServicesSection />
+            </Suspense>
 
-            <TermsAndConditionSection />
+            <Suspense fallback={<div />}>
+                <TermsAndConditionSection />
+            </Suspense>
         </LandingLayout>
     );
 }
