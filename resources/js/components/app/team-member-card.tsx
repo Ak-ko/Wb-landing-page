@@ -43,7 +43,7 @@ export default function TeamMemberCard({ teamMember, varient = 'expanded', onCli
                     <img
                         src={teamMember?.image}
                         className={cn(
-                            'invisible absolute left-1/2 h-full w-full shrink-0 -translate-x-1/2 translate-y-[100px] scale-0 object-cover opacity-0 transition-all duration-500 group-hover:visible group-hover:translate-y-0 group-hover:scale-[1] group-hover:opacity-100',
+                            'invisible absolute left-1/2 shrink-0 -translate-x-1/2 translate-y-[100px] scale-0 object-cover opacity-0 transition-all duration-500 group-hover:visible group-hover:translate-y-0 group-hover:scale-[1] group-hover:opacity-100',
                             varient === 'compact' ? 'max-w-[210px] !-translate-y-6.5' : 'max-w-[320px]',
                         )}
                         alt="human-image"
@@ -63,7 +63,7 @@ export default function TeamMemberCard({ teamMember, varient = 'expanded', onCli
                         style={{
                             color: textColor,
                         }}
-                        className="space-y-2 text-center lg:text-start"
+                        className="relative z-[2] space-y-2 text-center lg:text-start"
                     >
                         <h1 className="text-2xl font-bold uppercase">{teamMember?.name}</h1>
                         <p className="text-md font-semibold uppercase">{teamMember?.designation}</p>
