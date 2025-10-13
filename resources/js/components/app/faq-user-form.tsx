@@ -4,7 +4,6 @@ import { ChangeEvent } from 'react';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
-import CharacterWithTwoFingers from './icons/characters/faq-section/character-with-two-finger';
 
 export default function FaqUserForm() {
     const { data, errors, post, setData, reset, processing } = useForm({
@@ -26,7 +25,7 @@ export default function FaqUserForm() {
     return (
         <div>
             <div className="flex flex-col items-center justify-center gap-2">
-                <CharacterWithTwoFingers className="w-[180px]" />
+                <img src="assets/3dmascot/peace-mascot.png" loading="lazy" className="w-[200px]" />
                 <h1 className="text-center text-xl font-bold">Any Questions ?</h1>
                 <p className="text-center text-sm font-light text-gray-500">You can ask anything you want to know about Feedback.</p>
             </div>

@@ -3,8 +3,8 @@ import { Link } from '@inertiajs/react';
 
 export default function SeeBusinessPlanServicesSection() {
     return (
-        <section className="app-container relative mx-auto flex flex-col-reverse items-center overflow-hidden py-[100px] lg:flex-row lg:py-[259px]">
-            <img src="/assets/running-3d-mascot.png" className="max-w-[500px] -rotate-y-[180deg]" />
+        <section className="app-container 3xl:pl-[500px] 3xl:pr-[300px] relative mx-auto flex flex-col-reverse items-center overflow-hidden lg:flex-row">
+            <img src="/assets/running-3d-mascot.png" className="-mb-11 max-w-[500px] -rotate-y-[180deg]" />
             <div className="app-container 3xl:pr-[400px] flex space-y-5 px-0 sm:px-11 lg:justify-end">
                 <div className="relative z-1 w-full space-y-6 lg:max-w-[520px]">
                     <h1 className="text-center text-[35px] leading-[1.2] font-bold sm:text-[40px] lg:text-right">

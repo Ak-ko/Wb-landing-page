@@ -24,7 +24,7 @@ export default function SeeArtServicesSection() {
             </div>
             <img
                 src="/assets/red-dragon.png"
-                className="3xl:w-[2000px] 3xl:top-[-89%] 3xl:max-w-[4000px] absolute right-[0%] hidden max-w-[1500px] lg:top-[-10%] lg:block lg:w-[900px] xl:top-[-40%] xl:w-auto"
+                className="3xl:w-[2000px] 3xl:top-[-86%] 3xl:max-w-[4000px] absolute right-[0%] hidden max-w-[1500px] lg:top-[-10%] lg:block lg:w-[900px] xl:top-[-40%] xl:w-auto"
             />
         </section>
     );

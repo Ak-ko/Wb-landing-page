@@ -4,8 +4,6 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import ActivePing from './active-ping';
 import HeroSectionBtn from './hero-section-btn';
-import CharacterRedWithSpring from './icons/characters/hero-section/character-red-with-spring';
-import CharacterWithCoffee from './icons/characters/hero-section/character-with-coffee';
 
 export default function HeroSection() {
     const [showPasswordPrompt, setShowPasswordPrompt] = useState(false);
@@ -85,9 +83,9 @@ export default function HeroSection() {
                 </div>
             )}
 
-            <div className="relative mx-auto mt-[40px] flex max-w-[2500px] flex-col items-end justify-center gap-5 lg:flex-row xl:-mt-[130px]">
+            <div className="relative mx-auto mt-[40px] flex max-w-[2500px] flex-col items-end justify-center gap-5 lg:flex-row xl:-mt-[60px] 2xl:gap-0">
                 <div className="hidden w-full xl:block">
-                    <CharacterWithCoffee className="ml-auto w-[120px] justify-self-end" viewBox="0 0 200 100" />
+                    <img src="assets/3dmascot/coffee-cool-mascot.png" loading="lazy" className="-mb-3 ml-auto w-[180px] justify-self-end" />
                 </div>
                 <motion.div
                     className="relative mt-1 flex w-full flex-col items-center justify-center gap-5 lg:w-[80%] xl:flex-row"
@@ -128,7 +126,7 @@ export default function HeroSection() {
                     />
                 </motion.div>
                 <div className="hidden w-full xl:block">
-                    <CharacterRedWithSpring className="w-[170px]" viewBox="0 0 300 50" />
+                    <img src="assets/3dmascot/thumbs-up-cool-mascot.png" loading="lazy" className="-mb-3 w-[170px]" />
                 </div>
             </div>
 
