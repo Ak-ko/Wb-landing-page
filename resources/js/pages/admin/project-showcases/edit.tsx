@@ -49,14 +49,7 @@ export default function Edit({ projectShowcase }: Props) {
 
                 <Card>
                     <CardContent className="pt-6">
-                        <ProjectShowcaseForm
-                            projectShowcase={projectShowcase}
-                            onSuccess={() => {
-                                router.visit('/admin/project-showcases', {
-                                    only: ['projectShowcases'],
-                                });
-                            }}
-                        />
+                        <ProjectShowcaseForm projectShowcase={projectShowcase} />
                     </CardContent>
                 </Card>
             </div>

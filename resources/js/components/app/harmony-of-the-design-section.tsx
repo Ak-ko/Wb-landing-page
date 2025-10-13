@@ -65,13 +65,19 @@ export default function HarmonyOfTheDesignSection() {
                             const isEven = index % 2 === 0;
 
                             return (
-                                <motion.div key={showcase.id} variants={itemVariants} className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-8">
+                                <motion.div
+                                    key={showcase.id}
+                                    variants={itemVariants}
+                                    className="3xl:px-[500px] grid grid-cols-1 gap-6 px-20 lg:grid-cols-2 lg:gap-8"
+                                >
                                     {/* Image */}
                                     <div className={`${isEven ? 'lg:order-1' : 'lg:order-2'}`}>
                                         <img
+                                            loading="lazy"
+                                            decoding="async"
                                             src={showcase.image_url}
                                             alt={`Project Showcase ${showcase.id}`}
-                                            className="h-[300px] w-full rounded-lg object-cover lg:h-[400px]"
+                                            className="h-[300px] w-full rounded-lg object-cover object-center"
                                         />
                                     </div>
 

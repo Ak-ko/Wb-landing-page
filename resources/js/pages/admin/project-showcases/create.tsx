@@ -35,13 +35,7 @@ export default function Create() {
 
                 <Card>
                     <CardContent className="pt-6">
-                        <ProjectShowcaseForm
-                            onSuccess={() => {
-                                router.visit('/admin/project-showcases', {
-                                    only: ['projectShowcases'],
-                                });
-                            }}
-                        />
+                        <ProjectShowcaseForm />
                     </CardContent>
                 </Card>
             </div>

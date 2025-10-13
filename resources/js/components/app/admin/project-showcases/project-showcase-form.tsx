@@ -20,7 +20,7 @@ interface ProjectShowcase {
 
 interface ProjectShowcaseFormProps {
     projectShowcase?: ProjectShowcase;
-    onSuccess: () => void;
+    onSuccess?: () => void;
 }
 
 export default function ProjectShowcaseForm({ projectShowcase, onSuccess }: ProjectShowcaseFormProps) {
@@ -55,14 +55,14 @@ export default function ProjectShowcaseForm({ projectShowcase, onSuccess }: Proj
         if (projectShowcase) {
             put(url, {
                 onSuccess: () => {
-                    onSuccess();
+                    onSuccess?.();
                 },
             });
         } else {
             post(url, {
                 onSuccess: () => {
                     reset();
-                    onSuccess();
+                    onSuccess?.();
                 },
             });
         }
@@ -84,7 +84,6 @@ export default function ProjectShowcaseForm({ projectShowcase, onSuccess }: Proj
             </div>
 
             <div className="space-y-2">
-                <Label htmlFor="image">Image</Label>
                 <ImageUploader
                     initialImage={data.image ? `/storage/${data.image}` : null}
                     onImageChange={handleImageChange}
