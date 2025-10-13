@@ -46,4 +46,15 @@ class BrandingProjectImage extends Model
 
         return $this->getImageUrl($value);
     }
+
+    /**
+     * Get the raw image path without Storage::url() transformation.
+     * Useful for operations that need the actual stored path.
+     *
+     * @return string|null
+     */
+    public function getRawImagePath()
+    {
+        return $this->getRawOriginal('image');
+    }
 }

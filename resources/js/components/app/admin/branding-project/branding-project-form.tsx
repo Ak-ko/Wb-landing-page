@@ -29,7 +29,7 @@ export default function BrandingProjectForm({ brandingProject, tags, onSubmit }:
     const [existingImages, setExistingImages] = useState(
         brandingProject?.images.map((img) => ({
             id: img.id,
-            url: `${img.image}`,
+            url: img.image,
             is_primary: img.is_primary,
         })) || [],
     );
@@ -56,9 +56,9 @@ export default function BrandingProjectForm({ brandingProject, tags, onSubmit }:
         tags: brandingProject?.tags.map((tag) => tag.id) || [],
         is_published: brandingProject?.is_published ?? true,
         is_featured: brandingProject?.is_featured ?? true,
-        images: brandingProject?.images?.map((brandingProjectImage) => brandingProjectImage?.image) || ([] as string[]),
         new_images: [],
         removed_images: [] as number[],
+        existing_images_order: [] as number[], // Track order of existing images
         primary_image_id: brandingProject?.images.find((img) => img.is_primary)?.id || null,
         primary_image_index: null as number | null,
         project_members:
@@ -130,9 +130,13 @@ export default function BrandingProjectForm({ brandingProject, tags, onSubmit }:
         const currentExistingImagesLength = existingImages.length;
         const primary = shouldBePrimaryImage(currentNewImagesLength, currentExistingImagesLength, isPrimary, index, total);
 
+        // Construct URL using asset() helper or use Storage::url() from backend
+        // For preview, we need to generate the proper URL
+        const previewUrl = file.startsWith('http') ? file : `/storage/${file}`;
+
         const newImage = {
-            file,
-            url: `/storage/${file}`,
+            file, // Store the raw path without /storage/ prefix for backend
+            url: previewUrl, // Use proper URL for preview
             is_primary: primary,
         };
 
@@ -145,7 +149,7 @@ export default function BrandingProjectForm({ brandingProject, tags, onSubmit }:
             setNewImages((prev) => [...prev, newImage]);
         }
 
-        setData('images', [...data.images, file]);
+        // Don't add to data.images - we'll only use new_images array to avoid duplication
     };
 
     const handleImageUploadForGallery = (file: File | string, isPrimary = false) => {
@@ -175,10 +179,6 @@ export default function BrandingProjectForm({ brandingProject, tags, onSubmit }:
         const isRemovingPrimary = newImages[index]?.is_primary || false;
 
         setNewImages((prev) => prev.filter((_, i) => i !== index));
-        setData(
-            'images',
-            data.images.filter((_, i) => i !== index),
-        );
 
         if (isRemovingPrimary) {
             if (newImages.length > 1) {
@@ -265,11 +265,13 @@ export default function BrandingProjectForm({ brandingProject, tags, onSubmit }:
 
         const url = brandingProject ? route('branding-projects.update', brandingProject.id) : route('branding-projects.store');
 
-        const reorderedImagePaths = displayImages.map(getImagePath);
+        // Separate existing and new images from displayImages
+        const existingImagesOrder = displayImages.filter((img) => typeof img.id === 'number').map((img) => img.id as number);
 
         const reorderedNewImages = displayImages
             .filter(
-                (img): img is { id: string; url: string; is_primary: boolean; isNew: boolean; file: string | File } => 'isNew' in img && img.isNew,
+                (img): img is { id: string; url: string; is_primary: boolean; isNew: boolean; file: string | File } =>
+                    typeof img.id === 'string' && img.id.startsWith('new-') && 'isNew' in img && img.isNew,
             )
             .map((img) => ({
                 file: typeof img.file === 'string' ? img.file : img.url.replace('/storage/', ''),
@@ -278,7 +280,7 @@ export default function BrandingProjectForm({ brandingProject, tags, onSubmit }:
 
         transform((data) => ({
             ...data,
-            images: reorderedImagePaths,
+            existing_images_order: existingImagesOrder,
             new_images: reorderedNewImages,
         }));
 
@@ -503,7 +505,7 @@ export default function BrandingProjectForm({ brandingProject, tags, onSubmit }:
                 <MultiImageUploader
                     onImageChange={handleImageUpload}
                     onImageRemove={() => {}}
-                    error={errors.images}
+                    error={errors.new_images}
                     maxFiles={10}
                     helperText="SVG, PNG, JPG, GIF, MP4, WebM (max. 300 MB each)"
                     labelText="Media"
@@ -524,7 +526,7 @@ export default function BrandingProjectForm({ brandingProject, tags, onSubmit }:
                         />
                     </div>
                 )}
-                {errors.images && <p className="text-sm text-red-500">{errors.images}</p>}
+                {errors.new_images && <p className="text-sm text-red-500">{errors.new_images}</p>}
             </div>
 
             {tags?.length > 0 && (
