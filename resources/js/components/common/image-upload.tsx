@@ -51,6 +51,7 @@ export default function ImageUploader({
     const uploaderRef = useRef<any>(null);
     const uploadInitiatedRef = useRef<boolean>(false);
     const [showSuccessAnimation, setShowSuccessAnimation] = useState(false);
+    const [isDragging, setIsDragging] = useState(false);
 
     useEffect(() => {
         setImagePreview(initialImage);
@@ -215,6 +216,74 @@ export default function ImageUploader({
         }
     };
 
+    // Drag and drop handlers
+    const handleDragEnter = (e: React.DragEvent<HTMLLabelElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDragging(true);
+    };
+
+    const handleDragOver = (e: React.DragEvent<HTMLLabelElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+    };
+
+    const handleDragLeave = (e: React.DragEvent<HTMLLabelElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDragging(false);
+    };
+
+    const handleDrop = (e: React.DragEvent<HTMLLabelElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDragging(false);
+
+        const file = e.dataTransfer.files?.[0];
+        if (!file) return;
+
+        // Validate file size
+        if (file.size > maxSizeMB * 1024 * 1024) {
+            setFileError(`File size exceeds ${maxSizeMB}MB limit`);
+            return;
+        }
+
+        setFileError(null);
+        setUploadState('idle');
+        uploadInitiatedRef.current = false;
+
+        // Check if it's a video file
+        const isVideo = file.type.startsWith('video/');
+
+        if (isVideo) {
+            // For videos, create a video preview
+            const video = document.createElement('video');
+            video.preload = 'metadata';
+            video.onloadedmetadata = () => {
+                const canvas = document.createElement('canvas');
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                const ctx = canvas.getContext('2d');
+                if (ctx) {
+                    ctx.drawImage(video, 0, 0);
+                    const preview = canvas.toDataURL('image/jpeg');
+                    setImagePreview(preview);
+                }
+            };
+            video.src = URL.createObjectURL(file);
+        } else {
+            // For images, use FileReader
+            const reader = new FileReader();
+            reader.onload = () => {
+                setImagePreview(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Set the selected file to trigger the upload
+        setSelectedFile(file);
+    };
+
     // Improved Circular progress indicator with smooth animation
     const CircularProgress = ({ progress }: { progress: number }) => {
         const circumference = 2 * Math.PI * 45; // 45 is the radius
@@ -352,7 +421,6 @@ export default function ImageUploader({
                             </div>
                         )}
                     </motion.div>
-
                     {/* Upload overlay with circular progress */}
                     <AnimatePresence mode="wait">
                         {(uploadState === 'uploading' || uploadState === 'paused') && (
@@ -510,7 +578,6 @@ export default function ImageUploader({
                             </motion.div>
                         )}
                     </AnimatePresence>
-
                     {/* Only show remove button when not uploading */}
                     {uploadState !== 'uploading' && uploadState !== 'paused' && !showSuccessAnimation && (
                         <motion.div
@@ -534,16 +601,25 @@ export default function ImageUploader({
             ) : (
                 <Label
                     htmlFor="file"
-                    className="hover:border-primary/50 relative flex flex-col items-center justify-center rounded-md border-2 border-dashed border-gray-300 p-6 transition-all hover:bg-gray-50"
+                    className={`relative flex flex-col items-center justify-center rounded-md border-2 border-dashed p-6 transition-all ${
+                        isDragging ? 'border-primary bg-primary/5 scale-[1.02]' : 'hover:border-primary/50 border-gray-300 hover:bg-gray-50'
+                    }`}
+                    onDragEnter={handleDragEnter}
+                    onDragOver={handleDragOver}
+                    onDragLeave={handleDragLeave}
+                    onDrop={handleDrop}
                 >
                     <motion.div
-                        className="mb-2 rounded-full bg-gray-100 p-3"
+                        className={`mb-2 rounded-full p-3 ${isDragging ? 'bg-primary/10' : 'bg-gray-100'}`}
+                        animate={isDragging ? { scale: [1, 1.1, 1] } : { scale: 1 }}
+                        transition={{ repeat: isDragging ? Infinity : 0, duration: 1 }}
                         whileHover={{ scale: 1.1, backgroundColor: '#f0f9ff' }}
-                        transition={{ type: 'spring', stiffness: 400, damping: 10 }}
                     >
-                        <Upload className="h-8 w-8 text-gray-400" />
+                        <Upload className={`h-8 w-8 ${isDragging ? 'text-primary' : 'text-gray-400'}`} />
                     </motion.div>
-                    <p className="mb-2 text-sm text-gray-500">{placeholderText}</p>
+                    <p className={`mb-2 text-sm ${isDragging ? 'text-primary font-medium' : 'text-gray-500'}`}>
+                        {isDragging ? 'Drop your file here' : placeholderText}
+                    </p>
                     <p className="text-xs text-gray-400">{helperText}</p>
                     <Input
                         id="file"
