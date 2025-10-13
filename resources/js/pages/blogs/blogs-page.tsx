@@ -4,6 +4,7 @@ import { lazy, Suspense } from 'react';
 
 const BlogPageHeader = lazy(() => import('@/components/app/blog-page-header'));
 const BlogPageSection = lazy(() => import('@/components/app/blog-page-section'));
+const ContactUsSection = lazy(() => import('@/components/app/contact-us-section'));
 
 export default function BlogsPage() {
     return (
@@ -16,6 +17,10 @@ export default function BlogsPage() {
 
             <Suspense fallback={<div />}>
                 <BlogPageSection />
+            </Suspense>
+
+            <Suspense fallback={<div />}>
+                <ContactUsSection />
             </Suspense>
         </LandingLayout>
     );

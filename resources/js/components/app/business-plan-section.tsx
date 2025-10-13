@@ -558,11 +558,12 @@ function MobileBusinessPackageDetail({
                     </div>
                 )}
                 {/* Price Section (mobile) */}
-                <div className="mt-8 flex flex-col items-center rounded-xl bg-white py-8 text-center">
+                <div className="mt-8 flex flex-col items-center rounded-xl bg-black py-8 text-center">
+                    <p className="mb-2 text-base text-white/80">Get This</p>
                     <div className="mb-2 text-2xl font-bold uppercase" style={{ color }}>
                         {b.name}
                     </div>
-                    <div className="mb-1 text-base text-black/80">for an investment of just</div>
+                    <div className="mb-1 text-base text-white/80">for an investment of just</div>
                     {hasDiscount && (
                         <div className="mb-3">
                             {b.discount_description && <div className="text-primary-orange text-lg font-semibold">{b.discount_description}</div>}
@@ -571,8 +572,8 @@ function MobileBusinessPackageDetail({
                             </div>
                         </div>
                     )}
-                    <div className="mb-3 text-2xl font-bold text-black">{hasDiscount ? b.discount_price_text : b.price_text}</div>
-                    <div className="mb-2 space-y-1 text-base text-black/80">
+                    <div className="mb-3 text-2xl font-bold text-white">{hasDiscount ? b.discount_price_text : b.price_text}</div>
+                    <div className="mb-2 space-y-1 text-base text-white/80">
                         {b?.durations?.map((d: Duration) => (
                             <div key={d?.id}>
                                 <span>

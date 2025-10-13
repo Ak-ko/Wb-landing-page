@@ -250,7 +250,7 @@ Route::get('/about-us', function () {
 })->name('about-us-page');
 
 
-Route::get('/business-plans', function () {
+Route::get('/design', function () {
     $policy = CompanyPolicy::first();
 
     $businessPackages = BusinessPackages::with([
@@ -281,7 +281,7 @@ Route::get('/business-plans', function () {
     return Inertia::render('business-plan/business-plan', compact('businessPackages', 'businessPackageAddons', 'policy'));
 })->name('business-plan-page');
 
-Route::get('/art-plans', function () {
+Route::get('/art', function () {
     $mascotArts = MascortArt::with('images')->latest()->get();
     $policy = CompanyPolicy::first();
     $mascotArtPackages = ArtPackage::where('type', ArtPackageType::Mascot)
