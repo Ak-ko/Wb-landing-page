@@ -218,7 +218,7 @@
     }
 
     .primary_btn {
-        @apply font-inter cursor-pointer rounded-xl bg-black px-8 py-4 font-bold text-white uppercase transition-all duration-500 hover:bg-[#E63829] hover:text-white active:bg-[#E63829];
+        @apply font-inter cursor-pointer rounded-xl bg-black px-8 py-4 font-bold uppercase text-white transition-all duration-500 hover:bg-[#E63829] hover:text-white active:bg-[#E63829];
     }
 
     @keyframes why-us-img-bounce {
@@ -249,6 +249,15 @@
         width: 100%;
         transform: scaleX(0);
         transition: background-color 0.3s;
+    }
+
+    /* GPU acceleration utilities for drag and drop performance */
+    .transform-gpu {
+        transform: translateZ(0);
+    }
+
+    .backface-hidden {
+        backface-visibility: hidden;
     }
 }
 
