@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useForm, usePage } from '@inertiajs/react';
-import { useEffect } from 'react';
 
 import { ColorInput } from '@/components/common/color-input';
 import ImageUploader from '@/components/common/image-upload';
@@ -11,7 +10,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { useImageColor } from '@/hooks/use-image-color'; // Assuming this hook exists
 import { TeamMemberT } from '@/types'; // Assuming TeamMemberT type
 import { MinusCircle, PlusCircle } from 'lucide-react'; // Assuming lucide-react is installed
 import { useState } from 'react';
@@ -54,16 +52,7 @@ export default function TeamMemberForm({ teamMember, onSuccess }: TeamMemberForm
     const [currentMascotImageUrl, setCurrentMascotImageUrl] = useState<string>(data.mascot_image || '');
     const [currentUserImageUrl, setCurrentUserImageUrl] = useState<string>(data.image || '');
 
-    const { dominantColor, isLoading: isColorLoading } = useImageColor(currentMascotImageUrl, '#000000');
-
     const props = usePage<{ ziggy: { url: string } }>().props;
-
-    useEffect(() => {
-        if (!isColorLoading && dominantColor && currentMascotImageUrl) {
-            setData('color', dominantColor);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dominantColor, isColorLoading, currentMascotImageUrl]);
 
     const handleMascotImageChange = async (file: File | string) => {
         if (typeof file === 'string') {
@@ -105,7 +94,7 @@ export default function TeamMemberForm({ teamMember, onSuccess }: TeamMemberForm
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (isMascotImageUploading || isUserImageUploading || (currentMascotImageUrl && isColorLoading)) {
+        if (isMascotImageUploading || isUserImageUploading || currentMascotImageUrl) {
             return;
         }
 
@@ -142,7 +131,7 @@ export default function TeamMemberForm({ teamMember, onSuccess }: TeamMemberForm
         }
     };
 
-    const isProcessing = processing || isMascotImageUploading || isUserImageUploading || (currentMascotImageUrl && isColorLoading);
+    const isProcessing = processing || isMascotImageUploading || isUserImageUploading || currentMascotImageUrl;
 
     return (
         <form onSubmit={handleSubmit} className="!max-h-[650px] space-y-6 !overflow-y-auto">
@@ -317,8 +306,8 @@ export default function TeamMemberForm({ teamMember, onSuccess }: TeamMemberForm
                         ? 'Saving...'
                         : isMascotImageUploading || isUserImageUploading
                           ? 'Uploading...'
-                          : currentMascotImageUrl && isColorLoading
-                            ? 'Extracting color...'
+                          : currentMascotImageUrl
+                            ? 'Saving...'
                             : teamMember
                               ? 'Update Team Member'
                               : 'Create Team Member'}
