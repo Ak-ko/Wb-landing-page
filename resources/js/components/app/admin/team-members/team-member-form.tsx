@@ -94,7 +94,7 @@ export default function TeamMemberForm({ teamMember, onSuccess }: TeamMemberForm
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (isMascotImageUploading || isUserImageUploading || currentMascotImageUrl) {
+        if (isMascotImageUploading || isUserImageUploading) {
             return;
         }
 
@@ -131,7 +131,7 @@ export default function TeamMemberForm({ teamMember, onSuccess }: TeamMemberForm
         }
     };
 
-    const isProcessing = processing || isMascotImageUploading || isUserImageUploading || currentMascotImageUrl;
+    const isProcessing = processing || isMascotImageUploading || isUserImageUploading;
 
     return (
         <form onSubmit={handleSubmit} className="!max-h-[650px] space-y-6 !overflow-y-auto">
@@ -306,11 +306,9 @@ export default function TeamMemberForm({ teamMember, onSuccess }: TeamMemberForm
                         ? 'Saving...'
                         : isMascotImageUploading || isUserImageUploading
                           ? 'Uploading...'
-                          : currentMascotImageUrl
-                            ? 'Saving...'
-                            : teamMember
-                              ? 'Update Team Member'
-                              : 'Create Team Member'}
+                          : teamMember
+                            ? 'Update Team Member'
+                            : 'Create Team Member'}
                 </Button>
             </div>
         </form>
