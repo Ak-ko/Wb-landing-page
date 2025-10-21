@@ -22,6 +22,7 @@ class TeamMember extends Model
         'social_links',
         'image',
         'color',
+        'text_color',
         'type',
         'order',
         'is_active',
